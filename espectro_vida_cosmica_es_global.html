@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#070915">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora de la astrobiología: desde los ingredientes cósmicos y la habitabilidad hasta las biofirmas, la inteligencia extraterrestre y la vida desconocida.">
+  <meta name="application-name" content="Espectro de la Vida Cósmica: del Planeta Habitable a la Inteligencia Extraterrestre">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro de la Vida Cósmica">
+  <meta property="og:description" content="Toca y asciende desde el horizonte desconocido hasta las posibles huellas de vida e inteligencia en el cosmos.">
+  <title>Espectro de la Vida Cósmica: del Planeta Habitable a la Inteligencia Extraterrestre</title>
+  <style>
+    :root {
+      --accent: 116 228 255;
+      --accent-soft: rgb(var(--accent) / .34);
+      --ink: 255 255 255;
+      --panel: 8 9 14;
+      --scan-x: 50vw;
+      --scan-y: 96vh;
+      --progress: 2%;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #05070a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: rgb(var(--ink));
+      font-family: Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #cosmic-life-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette,
+    #top-bloom,
+    #bottom-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background: radial-gradient(circle at var(--scan-x) var(--scan-y), rgb(var(--accent) / .56) 0, rgb(var(--accent) / .15) 11%, transparent 35%);
+      mix-blend-mode: screen;
+    }
+    body.active #light-field { opacity: .82; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg, transparent calc(var(--scan-x) - 1px), rgb(var(--accent) / .52) var(--scan-x), transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg, transparent calc(var(--scan-y) - 1px), rgb(var(--accent) / .32) var(--scan-y), transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+    body.active #scan-line { opacity: .17; }
+
+    #grain {
+      z-index: 4;
+      opacity: .042;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 38%, rgb(0 0 0 / .22) 72%, rgb(0 0 0 / .84) 128%),
+        linear-gradient(90deg, rgb(0 0 0 / .47), transparent 13%, transparent 87%, rgb(0 0 0 / .45));
+    }
+
+    #top-bloom {
+      z-index: 1;
+      opacity: .5;
+      background: radial-gradient(ellipse at 50% -10%, rgb(225 241 255 / .38), transparent 52%);
+      mix-blend-mode: screen;
+    }
+
+    #bottom-glow {
+      z-index: 1;
+      opacity: .46;
+      background: radial-gradient(ellipse at 50% 110%, rgb(190 210 255 / .18), transparent 50%);
+      mix-blend-mode: screen;
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 49%;
+      width: min(92vw, 860px);
+      padding: clamp(15px, 3.2vw, 27px) clamp(19px, 5vw, 52px) clamp(18px, 3.7vw, 33px);
+      border: 1px solid rgb(255 255 255 / .22);
+      border-radius: clamp(25px, 6vw, 52px);
+      color: white;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        rgb(var(--panel) / .66);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .58),
+        0 0 86px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .26),
+        inset 0 -1px 0 rgb(0 0 0 / .25);
+      backdrop-filter: blur(23px) saturate(1.36);
+      -webkit-backdrop-filter: blur(23px) saturate(1.36);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #evidence-class {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 27px;
+      margin-bottom: clamp(9px, 2vw, 15px);
+      padding: 6px 13px 7px;
+      border: 1px solid rgb(var(--accent) / .62);
+      border-radius: 999px;
+      color: rgb(var(--accent));
+      font-size: clamp(.62rem, 2.1vw, .87rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: rgb(var(--accent) / .09);
+      box-shadow: 0 0 25px var(--accent-soft), inset 0 1px 0 rgb(255 255 255 / .1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.5vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow: 0 0 30px var(--accent-soft), 0 5px 24px rgb(0 0 0 / .5);
+    }
+    #zone-name.compact { font-size: clamp(1.7rem, 7.15vw, 5.55rem); letter-spacing: -.046em; line-height: .9; }
+    #zone-name.long { font-size: clamp(1.38rem, 5.9vw, 4.45rem); letter-spacing: -.034em; line-height: .94; }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 880;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(10px, 2vw, 17px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.67rem, 2.2vw, .92rem);
+      font-weight: 820;
+      line-height: 1.12;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .2);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .11);
+    }
+
+    #fact {
+      display: block;
+      max-width: 700px;
+      margin: clamp(10px, 2.25vw, 17px) auto 0;
+      font-size: clamp(.82rem, 2.63vw, 1.1rem);
+      font-weight: 600;
+      line-height: 1.42;
+      letter-spacing: .005em;
+      color: rgb(255 255 255 / .91);
+      text-wrap: pretty;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 93%;
+      width: clamp(58px, 15vw, 104px);
+      aspect-ratio: 1;
+      border: 1px solid rgb(var(--accent) / .82);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(.4);
+      background: radial-gradient(circle, rgb(255 255 255 / .82) 0 2%, rgb(var(--accent) / .34) 7%, rgb(var(--accent) / .09) 36%, transparent 70%);
+      box-shadow: 0 0 18px rgb(var(--accent) / .58), 0 0 62px rgb(var(--accent) / .42), inset 0 0 26px rgb(var(--accent) / .19);
+      transition: opacity 150ms ease, transform 260ms cubic-bezier(.16, 1, .3, 1);
+    }
+    #touch-orb.visible { opacity: .9; transform: translate(-50%, -50%) scale(1); }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(10px, env(safe-area-inset-right));
+      top: max(19px, env(safe-area-inset-top));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: clamp(50px, 10vw, 78px);
+      pointer-events: none;
+      opacity: .58;
+      transition: opacity 180ms ease;
+    }
+    body.active #journey-scale { opacity: .9; }
+
+    #scale-track {
+      position: absolute;
+      right: 11px;
+      top: 48px;
+      bottom: 48px;
+      width: 3px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgb(255 255 255 / .14);
+      box-shadow: 0 0 12px rgb(0 0 0 / .5);
+    }
+    #scale-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(to top, rgb(94 214 164 / .68), rgb(var(--accent)));
+      box-shadow: 0 0 14px rgb(var(--accent) / .72);
+    }
+    #scale-dot {
+      position: absolute;
+      right: 6px;
+      bottom: 48px;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgb(255 255 255 / .84);
+      border-radius: 50%;
+      transform: translateY(50%);
+      background: rgb(var(--accent));
+      box-shadow: 0 0 17px rgb(var(--accent) / .85);
+    }
+    #scale-bottom,
+    #scale-top {
+      position: absolute;
+      right: 0;
+      width: 74px;
+      font-size: clamp(.49rem, 1.6vw, .61rem);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: .11em;
+      text-align: right;
+      text-transform: uppercase;
+      color: rgb(255 255 255 / .65);
+    }
+    #scale-top { top: 0; }
+    #scale-bottom { bottom: 0; }
+    #scale-value {
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      width: min(34vh, 250px);
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right center;
+      font-size: clamp(.54rem, 1.7vw, .66rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .14em;
+      text-align: center;
+      text-transform: uppercase;
+      color: rgb(var(--accent));
+      text-shadow: 0 0 14px rgb(var(--accent) / .6);
+      white-space: nowrap;
+    }
+
+    #hint {
+      position: fixed;
+      z-index: 6;
+      left: 50%;
+      bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+      width: min(78vw, 530px);
+      transform: translateX(-50%);
+      color: rgb(255 255 255 / .78);
+      text-align: center;
+      pointer-events: none;
+      font-size: clamp(.7rem, 2.4vw, .94rem);
+      font-weight: 800;
+      line-height: 1.34;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 16px rgb(0 0 0 / .8);
+      animation: breathe 3.2s ease-in-out infinite;
+    }
+    #hint strong { color: rgb(var(--accent)); }
+
+    .ripple {
+      position: fixed;
+      z-index: 7;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgb(var(--accent) / .78);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 22px rgb(var(--accent) / .52), inset 0 0 15px rgb(var(--accent) / .2);
+      animation: ripple 920ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple { to { width: min(72vw, 560px); height: min(72vw, 560px); opacity: 0; } }
+    @keyframes breathe {
+      0%, 100% { opacity: .4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: .95; transform: translateX(-50%) translateY(-3px); }
+    }
+
+    @media (max-height: 620px) {
+      #readout { width: min(88vw, 760px); padding-top: 12px; padding-bottom: 14px; }
+      #evidence-class { margin-bottom: 7px; }
+      #fact { margin-top: 8px; line-height: 1.32; }
+      #metric { margin-top: 7px; }
+      #journey-scale { opacity: .46; }
+    }
+
+    @media (max-width: 460px) {
+      #readout { width: 91vw; }
+      #journey-scale { right: 6px; }
+      #scale-value { display: none; }
+      #scale-bottom, #scale-top { width: 68px; font-size: .42rem; }
+      #hint { width: 72vw; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #hint { animation: none; }
+      .ripple { animation-duration: 1ms; }
+      #readout, #touch-orb, #light-field, #scan-line { transition-duration: 1ms; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="cosmic-life-spectrum" tabindex="0" role="application" aria-label="Exploración táctil de la vida cósmica, desde el horizonte desconocido en la parte inferior hasta las formas de vida no clasificadas en la parte superior. Toca, arrastra o usa las flechas del teclado."></canvas>
+  <div id="top-bloom" aria-hidden="true"></div><div id="bottom-glow" aria-hidden="true"></div><div id="light-field" aria-hidden="true"></div><div id="scan-line" aria-hidden="true"></div><div id="grain" aria-hidden="true"></div><div id="vignette" aria-hidden="true"></div>
+  <div id="hint" aria-hidden="true"><strong>Toca y asciende</strong> · del horizonte desconocido a la vida cósmica</div>
+  <div id="readout" aria-live="polite" aria-atomic="true"><span id="evidence-class"></span><strong id="zone-name"></strong><span id="feature-name"></span><span id="metric"></span><span id="fact"></span></div>
+  <div id="touch-orb" aria-hidden="true"></div>
+  <div id="journey-scale" aria-hidden="true"><span id="scale-top">Vida cósmica desconocida</span><div id="scale-track"><div id="scale-fill"></div></div><div id="scale-dot"></div><span id="scale-value">Horizonte desconocido</span><span id="scale-bottom">Horizonte desconocido</span></div>
+
+  <!--
+    Visualización educativa conceptual, táctil y sin dependencias externas.
+
+    La escala vertical representa una búsqueda cada vez más amplia: condiciones astronómicas y químicas,
+    habitabilidad, posibles biosferas, evidencia indirecta, inteligencia y contacto. No es una escalera
+    evolutiva ni afirma que la vida, la complejidad o la tecnología sean inevitables. La dimensión horizontal
+    muestra ambientes, mecanismos e interpretaciones alternativas.
+
+    La aplicación distingue ingredientes, habitabilidad, vida, biofirmas y tecnofirmas. También distingue
+    observación, inferencia e hipótesis. Ninguna escena representa una detección confirmada de vida o
+    inteligencia extraterrestre. Las imágenes son metáforas científicas y no retratos de mundos conocidos.
+  -->
+
+  <script>
+  (() => {
+    "use strict";
+
+    const canvas = document.getElementById("cosmic-life-spectrum");
+    const ctx = canvas.getContext("2d", { alpha: false });
+    const root = document.documentElement;
+    const readout = document.getElementById("readout");
+    const evidenceClass = document.getElementById("evidence-class");
+    const zoneName = document.getElementById("zone-name");
+    const featureName = document.getElementById("feature-name");
+    const metric = document.getElementById("metric");
+    const fact = document.getElementById("fact");
+    const touchOrb = document.getElementById("touch-orb");
+    const scaleValue = document.getElementById("scale-value");
+    const scaleDot = document.getElementById("scale-dot");
+    const hint = document.getElementById("hint");
+
+    const TAU = Math.PI * 2;
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const mix = (a, b, t) => a + (b - a) * t;
+    const smooth = t => t * t * (3 - 2 * t);
+    const fract = v => v - Math.floor(v);
+    const seeded = n => fract(Math.sin(n * 127.1 + 311.7) * 43758.5453123);
+    const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+    const ZONES = [{"id":"unknown-horizon","name":"Horizonte desconocido","className":"Punto de partida · preguntas abiertas, no afirmaciones","color":[225,238,255],"metric":"Imaginación informada + observación + incertidumbre → preguntas investigables","fact":"La astrobiología no supone que exista vida extraterrestre: estudia qué condiciones podrían producirla y qué evidencias permitirían reconocerla.","features":[["estrellas lejanas","Más allá de nuestros sistemas conocidos existen mundos que apenas podemos inferir a partir de su luz."],["planetas posibles","La presencia de un planeta no implica océanos, atmósfera estable ni condiciones adecuadas para la vida."],["sondas autónomas","Una señal tecnológica podría proceder de una máquina, de una civilización activa o de un sistema abandonado."],["inteligencias desconocidas","Otras mentes, si existen, podrían no compartir cuerpos, ritmos, sentidos ni objetivos humanos."],["regiones inexploradas","La mayor parte del cosmos nunca ha sido examinada con resolución suficiente para buscar vida."],["señales en el ruido","Una señal débil puede ser un fenómeno natural, interferencia, error instrumental o una pista auténtica."],["futuros ajenos","La evolución y la historia podrían estar desarrollándose de formas distintas en innumerables mundos."],["cambio de perspectiva","En lugar de preguntar solo hasta dónde llegará la humanidad, preguntamos qué podría estar viviendo o construyendo en otros lugares."]],"p0":0.0,"p1":0.04,"scene":0,"sound":{"base":48.0,"filter":720,"noise":0.012,"pulse":0.04,"type":"sine"}},{"id":"cosmic-ingredients","name":"Ingredientes cósmicos","className":"Materia común · organización no garantizada","color":[255,199,121],"metric":"Nucleosíntesis + nubes moleculares + química → materiales potencialmente biológicos","fact":"La vida terrestre utiliza elementos comunes en el universo, pero disponer de los ingredientes no garantiza que lleguen a organizarse como vida.","features":[["hidrógeno primordial","El hidrógeno se formó en el universo temprano y sigue siendo el elemento más abundante del cosmos."],["carbono","Las estrellas fabrican carbono, capaz de formar cadenas y estructuras químicas muy diversas."],["oxígeno","El oxígeno participa en agua, rocas y metabolismos, aunque también puede producirse sin vida."],["nitrógeno","El nitrógeno forma parte de proteínas y ácidos nucleicos, pero debe encontrarse en formas químicamente accesibles."],["fósforo","El fósforo participa en membranas y transferencia de energía, y su disponibilidad puede limitar ecosistemas."],["azufre","El azufre interviene en proteínas y metabolismos capaces de operar sin oxígeno."],["polvo estelar","Elementos pesados expulsados por estrellas se incorporan a nuevas nubes, planetas y organismos potenciales."],["moléculas interestelares","En nubes frías se detectan moléculas orgánicas, pero orgánico significa basado en carbono, no vivo."]],"p0":0.04,"p1":0.08,"scene":1,"sound":{"base":51.65,"filter":808,"noise":0.016,"pulse":0.058,"type":"triangle"}},{"id":"stellar-stability","name":"Estrellas y estabilidad","className":"Fuente de energía · entorno dinámico","color":[255,225,105],"metric":"Vida estelar + radiación + actividad + órbitas → entorno energético de larga duración","fact":"Una estrella puede suministrar energía durante miles de millones de años y, al mismo tiempo, erosionar atmósferas o irradiar intensamente sus planetas.","features":[["vida estelar","Las estrellas pequeñas pueden durar muchísimo tiempo; las muy masivas evolucionan con rapidez."],["luminosidad","La energía recibida por un planeta depende de la potencia estelar y de la distancia orbital."],["radiación ultravioleta","La radiación ultravioleta puede impulsar química prebiótica y también dañar moléculas y atmósferas."],["fulguraciones","Erupciones frecuentes pueden bombardear planetas cercanos con radiación y partículas."],["actividad magnética","El viento y el campo magnético estelares modifican la pérdida atmosférica y el clima espacial."],["sistemas binarios","Los planetas pueden existir alrededor de una o dos estrellas, aunque la estabilidad orbital varía."],["órbitas estables","La habitabilidad prolongada requiere evitar perturbaciones que alteren drásticamente temperatura o trayectoria."],["enriquecimiento químico","Las generaciones estelares anteriores aportan los elementos necesarios para formar mundos rocosos y química compleja."]],"p0":0.08,"p1":0.12,"scene":2,"sound":{"base":55.3,"filter":896,"noise":0.02,"pulse":0.076,"type":"sine"}},{"id":"planetary-systems","name":"Sistemas planetarios","className":"Mundos en evolución · posiciones cambiantes","color":[176,206,255],"metric":"Disco protoplanetario + acreción + migración + impactos → arquitectura planetaria","fact":"La posición actual de un planeta no siempre es el lugar donde se formó: los sistemas planetarios cambian durante su evolución.","features":[["disco protoplanetario","Gas y polvo giran alrededor de una estrella joven y se agrupan gradualmente en cuerpos mayores."],["planetas rocosos","Mundos dominados por silicatos y metales pueden sostener superficies, atmósferas o actividad interna."],["gigantes gaseosos","Planetas masivos alteran órbitas, distribuyen cometas y pueden proteger o desestabilizar mundos interiores."],["gigantes helados","Mundos ricos en hielos y gases amplían la diversidad de composiciones planetarias."],["lunas","Satélites grandes pueden tener atmósferas, océanos internos, volcanismo y fuentes propias de energía."],["asteroides","Restos rocosos conservan materiales primitivos y participan en impactos y transporte químico."],["cometas","Cuerpos helados trasladan agua, carbono y otros compuestos, aunque su contribución varía entre sistemas."],["migración planetaria","Interacciones con el disco y otros planetas pueden desplazar mundos a enormes distancias de su lugar de nacimiento."]],"p0":0.12,"p1":0.16,"scene":3,"sound":{"base":58.95,"filter":984,"noise":0.024,"pulse":0.094,"type":"triangle"}},{"id":"habitable-zone","name":"Zona habitable","className":"Agua superficial posible · habitabilidad no garantizada","color":[123,241,169],"metric":"Distancia + luminosidad + atmósfera básica → intervalo térmico potencial","fact":"Estar dentro de la zona habitable no significa estar habitado, ni siquiera ser realmente habitable.","features":[["distancia estelar","Demasiada energía puede evaporar océanos; demasiado poca puede congelar la superficie."],["radiación recibida","La energía total depende de la estrella, la órbita, el albedo y la atmósfera."],["límite interior","Cerca de la estrella puede desencadenarse un efecto invernadero intenso y pérdida de agua."],["límite exterior","Lejos de la estrella, incluso una atmósfera con gases de efecto invernadero puede no evitar la congelación."],["excentricidad","Una órbita alargada produce variaciones estacionales extremas y modifica el promedio energético."],["acoplamiento de marea","Un planeta puede mostrar siempre la misma cara a su estrella sin quedar automáticamente inhabitable."],["estrella cambiante","La luminosidad estelar evoluciona, por lo que la zona habitable se desplaza con el tiempo."],["franja móvil","La zona habitable es un rango dependiente de modelos, no un anillo verde rígido que certifique vida."]],"p0":0.16,"p1":0.2,"scene":4,"sound":{"base":62.6,"filter":1072,"noise":0.028,"pulse":0.112,"type":"sine"}},{"id":"real-habitability","name":"Habitabilidad real","className":"Planeta, ambiente y biosfera son niveles distintos","color":[74,214,186],"metric":"Atmósfera + presión + clima + geología + energía → ambientes capaces de sostener procesos vivos","fact":"Zona habitable, planeta potencialmente habitable, ambiente habitable y planeta habitado no son conceptos equivalentes.","features":[["atmósfera","Una envoltura gaseosa regula temperatura, química, radiación y transporte de materiales."],["presión superficial","El agua líquida y otros solventes dependen tanto de la temperatura como de la presión."],["efecto invernadero","Algunos gases retienen calor; demasiado poco o demasiado puede impedir condiciones estables."],["solventes líquidos","El agua es central para la vida terrestre, pero se estudian también otros medios químicos posibles."],["ciclos geológicos","Intercambios entre interior, superficie y atmósfera pueden estabilizar nutrientes y clima durante largos periodos."],["protección magnética","Un campo magnético puede reducir parte del impacto del viento estelar, aunque no es la única protección posible."],["estabilidad climática","La vida compleja puede requerir intervalos prolongados sin cambios planetarios esterilizantes."],["energía disponible","Luz, reacciones químicas, calor interno y gradientes físicos pueden alimentar metabolismo."]],"p0":0.2,"p1":0.24,"scene":5,"sound":{"base":66.25,"filter":1160,"noise":0.012,"pulse":0.13,"type":"triangle"}},{"id":"prebiotic-chemistry","name":"Química prebiótica","className":"Moléculas complejas · todavía no vida","color":[119,255,201],"metric":"Moléculas + superficies + energía + ciclos → química organizada antes de la biología","fact":"Las moléculas orgánicas no están necesariamente vivas: son materiales químicos que pueden participar en procesos previos a la vida.","features":[["moléculas orgánicas","Compuestos de carbono pueden formarse en atmósferas, océanos, rocas, meteoritos y nubes interestelares."],["aminoácidos","Son componentes de proteínas terrestres, pero su presencia aislada no demuestra organismos."],["nucleótidos","Construir unidades capaces de almacenar información requiere rutas químicas, energía y condiciones adecuadas."],["membranas lipídicas","Algunas moléculas se autoensamblan en vesículas que separan un interior del ambiente."],["minerales catalíticos","Superficies minerales pueden concentrar reactivos y acelerar reacciones químicas."],["fuentes hidrotermales","Gradientes de temperatura y química proporcionan energía continua y microambientes protegidos."],["gradientes energéticos","La diferencia entre dos estados puede impulsar reacciones sin que exista todavía metabolismo."],["autoensamblaje","El orden molecular puede surgir espontáneamente, pero autoorganización no equivale a evolución biológica."]],"p0":0.24,"p1":0.28,"scene":6,"sound":{"base":69.9,"filter":1248,"noise":0.016,"pulse":0.148,"type":"sine"}},{"id":"origin-of-life","name":"Origen de la vida","className":"Problema abierto · hipótesis que interactúan","color":[87,255,151],"metric":"Compartimentos + herencia + metabolismo + variación → sistemas capaces de evolucionar","fact":"Sabemos que la vida apareció temprano en la historia terrestre, pero todavía no conocemos el camino completo desde la química no viva hasta los primeros sistemas evolutivos.","features":[["moléculas replicantes","Copiar información con errores heredables permitiría competencia y selección, si el sistema puede sostenerse."],["metabolismo primero","Redes químicas autocatalíticas podrían haber organizado energía antes de una genética moderna."],["mundo de ARN","Moléculas parecidas al ARN podrían combinar almacenamiento de información y actividad catalítica."],["protocélulas","Compartimentos simples pueden mantener componentes juntos y competir por recursos."],["compartimentación","Separar interior y exterior permite concentrar reacciones y controlar intercambios."],["herencia","La continuidad biológica requiere que parte de la organización pase a nuevas generaciones."],["variación","Sin diferencias heredables no existe evolución acumulativa por selección natural."],["varias rutas","El origen pudo depender de múltiples ambientes y etapas, no de una única reacción milagrosa."]],"p0":0.28,"p1":0.32,"scene":7,"sound":{"base":73.55,"filter":1336,"noise":0.02,"pulse":0.04,"type":"triangle"}},{"id":"simple-biospheres","name":"Biosferas simples","className":"Vida microscópica · efectos planetarios","color":[103,238,112],"metric":"Metabolismo + reproducción + ecosistemas microbianos → planeta químicamente transformado","fact":"Un planeta vivo no necesita bosques, animales ni inteligencia: durante gran parte de la historia terrestre, la vida fue exclusivamente microscópica.","features":[["células individuales","Un solo organismo microscópico puede detectar recursos, mantener metabolismo y reproducirse."],["ecosistemas microbianos","Comunidades de microbios intercambian nutrientes, señales y productos metabólicos."],["metabolismo anaerobio","La vida puede obtener energía sin oxígeno mediante muchas rutas químicas."],["fotosíntesis","Capturar energía luminosa puede transformar atmósferas y ampliar la productividad planetaria."],["quimiosíntesis","Reacciones entre minerales y fluidos sostienen ecosistemas independientes de la luz solar."],["vida subterránea","Rocas y sedimentos pueden proteger organismos de radiación, sequedad y cambios superficiales."],["latencia","Algunos sistemas reducen su actividad durante periodos adversos sin permanecer indefinidamente viables."],["huella planetaria","Una biosfera extensa puede alterar gases, minerales e isótopos a escala global."]],"p0":0.32,"p1":0.36,"scene":8,"sound":{"base":77.2,"filter":1424,"noise":0.024,"pulse":0.058,"type":"sine"}},{"id":"complex-life","name":"Vida compleja","className":"Transiciones adicionales · resultado no inevitable","color":[76,219,197],"metric":"Células complejas + cooperación + diferenciación + ecología → organismos multicelulares","fact":"La aparición de vida simple no implica que la evolución produzca inevitablemente organismos complejos.","features":[["oxigenación","El oxígeno amplía algunas rutas energéticas, pero fue tóxico para muchos organismos y no garantiza complejidad."],["células complejas","Las células eucariotas contienen compartimentos internos y surgieron tras una historia evolutiva prolongada."],["simbiosis","La cooperación íntima entre organismos puede originar nuevas capacidades y nuevas unidades evolutivas."],["multicelularidad","Las células pueden permanecer unidas y coordinar crecimiento, reproducción y defensa."],["diferenciación celular","Distintos tipos celulares permiten tejidos, órganos y cuerpos con funciones especializadas."],["competencia ecológica","Depredación, recursos y cooperación modifican las trayectorias evolutivas sin dirigirlas hacia una meta."],["sistemas nerviosos","Coordinar movimiento y percepción favorece redes de procesamiento, pero no todas las formas complejas los necesitan."],["tiempo estable","Las transiciones complejas pueden requerir miles de millones de años y sobrevivir a crisis planetarias."]],"p0":0.36,"p1":0.4,"scene":9,"sound":{"base":80.85,"filter":1512,"noise":0.028,"pulse":0.076,"type":"triangle"}},{"id":"extremophiles","name":"Extremófilos","className":"Límites de adaptación · no prueba de origen universal","color":[255,154,103],"metric":"Vida establecida + selección + tiempo → adaptación a condiciones extremas","fact":"Los extremófilos no demuestran que la vida pueda originarse en cualquier condición extrema. Demuestran que la vida, una vez establecida, puede adaptarse a ambientes antes considerados inhabitables.","features":[["temperaturas altas","Algunos organismos mantienen proteínas y membranas funcionales cerca de fuentes hidrotermales."],["frío extremo","La vida puede ralentizarse, usar anticongelantes y ocupar películas microscópicas de agua."],["acidez","Organismos acidófilos regulan su química interna en medios que dañan la mayoría de las células."],["salinidad","Los halófilos equilibran grandes concentraciones de sales mediante moléculas y bombas celulares."],["radiación","Ciertos microbios reparan daños genéticos con eficacia, pero ningún organismo es invulnerable."],["presión intensa","La vida de aguas profundas adapta membranas y proteínas a presiones enormes."],["roca profunda","Comunidades lentas viven en poros y fracturas, alimentadas por reacciones entre agua y minerales."],["energía mínima","Algunos metabolismos operan cerca de límites energéticos y pueden tardar muchísimo en reproducirse."]],"p0":0.4,"p1":0.44,"scene":10,"sound":{"base":84.5,"filter":1600,"noise":0.012,"pulse":0.094,"type":"sine"}},{"id":"mars","name":"Marte","className":"Agua antigua · vida todavía no demostrada","color":[245,124,83],"metric":"Geología + química + muestras + contexto → evaluación de habitabilidad marciana","fact":"Evidencia de agua, ambiente habitable, química orgánica y posible evidencia biológica son niveles distintos; ninguno demuestra por sí solo que haya existido vida.","features":[["ríos antiguos","Valles y deltas indican que agua líquida fluyó sobre la superficie marciana en el pasado."],["sedimentos lacustres","Capas depositadas en antiguos lagos pueden conservar minerales, moléculas y estructuras delicadas."],["atmósfera perdida","Marte tuvo una atmósfera más densa y perdió gran parte de ella durante su evolución."],["hielo subterráneo","Reservas de agua congelada sobreviven bajo el suelo y en regiones polares."],["química orgánica","Se han detectado compuestos de carbono, pero pueden originarse mediante procesos no biológicos."],["radiación superficial","La atmósfera tenue y la falta de protección global exponen la superficie a radiación destructiva."],["hábitats profundos","El subsuelo podría conservar agua, calor y protección durante más tiempo que la superficie."],["análisis de muestras","La interpretación exige controlar contaminación, historia geológica y múltiples explicaciones alternativas."]],"p0":0.44,"p1":0.48,"scene":11,"sound":{"base":88.15,"filter":1688,"noise":0.016,"pulse":0.112,"type":"triangle"}},{"id":"ocean-worlds","name":"Mundos oceánicos","className":"Habitabilidad bajo el hielo · energía sin superficie terrestre","color":[96,204,255],"metric":"Océano + calor de marea + química rocosa + tiempo → ambiente subterráneo potencial","fact":"La habitabilidad no requiere necesariamente una superficie similar a la Tierra. Un océano protegido bajo kilómetros de hielo podría contener ambientes químicos de larga duración.","features":[["Europa","Su corteza helada probablemente cubre un océano global calentado por las mareas de Júpiter."],["Encélado","Géiseres expulsan al espacio agua, sales, compuestos orgánicos y material procedente del océano interior."],["Titán","Posee lagos de hidrocarburos en la superficie y probablemente un océano de agua en profundidad."],["Ganímedes","La luna más grande del Sistema Solar contiene capas de hielo y agua y posee campo magnético propio."],["océanos internos","El agua líquida puede mantenerse gracias a calor interno incluso muy lejos del Sol."],["calentamiento de marea","La gravedad variable de un planeta gigante deforma las lunas y genera calor."],["actividad hidrotermal","El contacto entre agua y roca podría producir gradientes químicos semejantes a los de fondos oceánicos terrestres."],["química orgánica","Materiales carbonados pueden llegar por impactos, formarse internamente o mezclarse entre océano y superficie."]],"p0":0.48,"p1":0.52,"scene":12,"sound":{"base":91.8,"filter":1776,"noise":0.02,"pulse":0.13,"type":"sine"}},{"id":"exoplanets","name":"Exoplanetas","className":"Mundos reconstruidos a partir de señales diminutas","color":[150,180,255],"metric":"Luz estelar + movimiento + modelos → masa, radio, órbita y atmósfera inferidos","fact":"La mayoría de los exoplanetas no se observan como mundos detallados: sus propiedades se reconstruyen a partir de cambios muy pequeños en la luz de sus estrellas.","features":[["tránsito","Un planeta que cruza frente a su estrella produce una disminución periódica de brillo."],["velocidad radial","El tirón gravitatorio del planeta mueve ligeramente la estrella y desplaza sus líneas espectrales."],["imagen directa","Bloquear el brillo estelar permite detectar algunos planetas grandes, jóvenes o muy separados."],["masa","La masa ayuda a distinguir mundos rocosos, ricos en volátiles o gigantes gaseosos."],["radio","El tamaño combinado con la masa permite estimar densidad y composición probable."],["densidad","Dos planetas del mismo tamaño pueden contener proporciones muy distintas de roca, agua y gas."],["periodo orbital","La repetición de señales revela cuánto tarda el planeta en completar una órbita."],["espectros atmosféricos","La luz filtrada o emitida por una atmósfera puede revelar moléculas, nubes y temperatura."]],"p0":0.52,"p1":0.56,"scene":13,"sound":{"base":95.45,"filter":1864,"noise":0.024,"pulse":0.148,"type":"triangle"}},{"id":"biosignatures","name":"Biofirmas","className":"Señales posibles · requieren contexto planetario","color":[93,255,180],"metric":"Múltiples observaciones + desequilibrio + contexto → hipótesis biológica contrastable","fact":"Una biofirma aislada puede tener explicaciones no biológicas. La evidencia más convincente combinaría varias señales independientes dentro de un contexto planetario coherente.","features":[["oxígeno atmosférico","La fotosíntesis puede producir oxígeno, pero ciertos procesos fotoquímicos también lo generan."],["ozono","El ozono puede indicar oxígeno y protege de radiación ultravioleta, aunque su interpretación depende de la estrella."],["metano","Puede ser biológico, volcánico, hidrotermal o producido por reacciones entre agua y roca."],["desequilibrio químico","Gases que reaccionarían entre sí pueden requerir una fuente continua, posiblemente biológica."],["pigmentos superficiales","Organismos fotosintéticos podrían modificar el color reflejado por continentes u océanos."],["variación estacional","Cambios periódicos pueden seguir ciclos biológicos, climáticos o geológicos."],["distribución orgánica","Patrones moleculares selectivos podrían resultar más difíciles de explicar mediante química aleatoria."],["isótopos","La vida puede preferir ciertos isótopos, pero los procesos geológicos también fraccionan elementos."]],"p0":0.56,"p1":0.6,"scene":14,"sound":{"base":99.1,"filter":1952,"noise":0.028,"pulse":0.04,"type":"sine"}},{"id":"false-positives","name":"Falsos positivos","className":"Interpretaciones rivales · evidencia extraordinaria","color":[255,183,94],"metric":"Señal observada × alternativas × repetición × control → grado de confianza","fact":"Detectar una molécula asociada con la vida no equivale a detectar un organismo.","features":[["oxígeno abiótico","La pérdida de agua o ciertas reacciones fotoquímicas pueden acumular oxígeno sin una biosfera."],["metano volcánico","Volcanes y sistemas hidrotermales pueden producir gases que también aparecen en metabolismos."],["escape atmosférico","La radiación estelar puede separar moléculas y eliminar hidrógeno, alterando profundamente la composición."],["reacciones minerales","Agua, roca y calor producen compuestos orgánicos e hidrógeno sin intervención biológica."],["contaminación","Material terrestre o señales locales pueden introducir una falsa detección en muestras o instrumentos."],["ruido instrumental","Errores, calibración incompleta y artefactos de procesamiento pueden imitar patrones reales."],["modelos incompletos","Una atmósfera alienígena puede comportarse de formas no incluidas en nuestros modelos actuales."],["observaciones conflictivas","La ciencia aumenta confianza cuando distintos instrumentos y métodos convergen en la misma explicación."]],"p0":0.6,"p1":0.64,"scene":15,"sound":{"base":102.75,"filter":2040,"noise":0.012,"pulse":0.058,"type":"triangle"}},{"id":"evolutionary-intelligence","name":"Inteligencia evolutiva","className":"Una posibilidad entre muchas · no una meta","color":[125,218,255],"metric":"Percepción + aprendizaje + cooperación + cultura → capacidades cognitivas contingentes","fact":"La evolución no trabaja hacia un objetivo predeterminado. La inteligencia tecnológica es una posibilidad evolutiva, no una etapa obligatoria.","features":[["procesamiento sensorial","Los organismos construyen respuestas a partir de señales relevantes para su propio ambiente."],["aprendizaje","Modificar conducta con la experiencia permite adaptación durante una vida sin alterar genes."],["uso de herramientas","Manipular objetos puede resolver problemas sin producir necesariamente tecnología acumulativa."],["cooperación social","Grupos coordinados comparten vigilancia, alimento, crianza o conocimiento."],["comunicación","Señales químicas, acústicas, visuales o eléctricas pueden transmitir estados e intenciones."],["cultura acumulativa","Las innovaciones se vuelven más complejas cuando sobreviven a individuos y generaciones."],["razonamiento abstracto","Representar relaciones ausentes permite planificación, matemática y explicaciones generales."],["modificación ambiental","Muchas especies transforman hábitats; la escala tecnológica humana es un caso extremo, no la definición de inteligencia."]],"p0":0.64,"p1":0.68,"scene":16,"sound":{"base":106.4,"filter":2128,"noise":0.016,"pulse":0.076,"type":"sine"}},{"id":"alien-intelligence-forms","name":"Formas de inteligencia alienígena","className":"Arquitecturas cognitivas sin modelo humano obligatorio","color":[207,147,255],"metric":"Cuerpo + ambiente + tiempo + organización → formas posibles de mente","fact":"Podríamos no reconocer como inteligente a una entidad que no habla, no construye ciudades, no vive a nuestra velocidad o no posee un cuerpo individual.","features":[["inteligencia solitaria","Una especie podría resolver problemas complejos sin sociedades grandes ni comunicación intensa."],["cognición de enjambre","Muchos agentes simples pueden producir decisiones colectivas sin un centro controlador."],["mente oceánica","Un organismo distribuido en un medio líquido podría percibir mediante corrientes, presión, química o electricidad."],["organismo distribuido","La frontera entre individuo, colonia y ecosistema podría ser distinta de la terrestre."],["descendientes mecánicos","Una civilización biológica podría ser reemplazada o continuada por sistemas artificiales."],["mente colectiva","Memorias y decisiones podrían estar repartidas entre numerosos cuerpos conectados."],["cognición lenta","Procesos mentales podrían durar años o siglos y resultar invisibles en observaciones breves."],["sentidos desconocidos","Una mente puede basarse en campos magnéticos, neutrinos, química fina u otras señales poco intuitivas para nosotros."]],"p0":0.68,"p1":0.72,"scene":17,"sound":{"base":110.05,"filter":2216,"noise":0.02,"pulse":0.094,"type":"triangle"}},{"id":"technosignatures","name":"Tecnofirmas","className":"Efectos tecnológicos · intención y supervivencia desconocidas","color":[255,128,221],"metric":"Energía organizada + artefactos + patrones no naturales → actividad tecnológica posible","fact":"Una tecnofirma sería evidencia de actividad tecnológica, no necesariamente de una civilización todavía activa, amistosa o interesada en establecer contacto.","features":[["radio artificial","Emisiones estrechas, moduladas o repetitivas pueden destacar frente a fuentes naturales."],["pulsos ópticos","Destellos láser breves podrían transportar información o servir para propulsión."],["contaminantes atmosféricos","Moléculas industriales difíciles de producir naturalmente podrían permanecer detectables."],["iluminación nocturna","Una superficie con luz artificial intensa modificaría el brillo del lado oscuro de un planeta."],["calor industrial","Toda actividad energética genera calor residual, aunque distinguirlo de fuentes naturales es difícil."],["estructuras orbitales","Grandes colectores, hábitats o redes podrían alterar curvas de tránsito y emisión infrarroja."],["tránsitos diseñados","Objetos con geometrías o secuencias improbables podrían actuar como balizas deliberadas."],["sondas interestelares","Artefactos pequeños podrían visitar sistemas sin que exista comunicación continua con su origen."]],"p0":0.72,"p1":0.76,"scene":18,"sound":{"base":113.7,"filter":2304,"noise":0.024,"pulse":0.112,"type":"sine"}},{"id":"fermi-paradox","name":"Paradoja de Fermi","className":"Abundancia posible · silencio observado","color":[196,208,255],"metric":"Número de mundos × tiempo cósmico × detectabilidad → expectativa comparada con evidencia","fact":"La paradoja de Fermi no demuestra que no existan otras civilizaciones. Señala una tensión entre algunas expectativas y la ausencia actual de evidencia confirmada.","features":[["muchísimas estrellas","La galaxia contiene enormes cantidades de estrellas y planetas, pero no conocemos la frecuencia de la vida."],["sistemas antiguos","Algunos mundos tuvieron miles de millones de años más que la Tierra para desarrollar historias propias."],["expansión posible","Incluso viajes lentos podrían extender presencia por una galaxia en escalas menores que su edad."],["sin señales confirmadas","Hasta ahora no existe una detección verificada de tecnología extraterrestre."],["búsqueda limitada","Solo hemos observado una fracción diminuta de lugares, frecuencias, épocas y tipos de señal."],["vidas tecnológicas breves","Una fase detectable puede durar poco comparada con la edad de un planeta."],["silencio deliberado","Una civilización podría evitar emisiones o contacto, aunque no existe evidencia de esa estrategia."],["vida rara","Uno o varios pasos desde la química hasta la tecnología podrían ser extremadamente improbables."]],"p0":0.76,"p1":0.8,"scene":19,"sound":{"base":117.35,"filter":2392,"noise":0.028,"pulse":0.13,"type":"triangle"}},{"id":"great-filter","name":"El gran filtro","className":"Marco hipotético · ubicación desconocida","color":[255,112,132],"metric":"Cadena evolutiva × probabilidad de cada transición → supervivencia de civilizaciones detectables","fact":"El gran filtro es un marco hipotético. No sabemos si existe un único filtro, muchos filtros o ninguno que pueda describirse de esta manera.","features":[["mundos habitables","Puede ser raro formar y conservar planetas con ambientes estables durante tiempo suficiente."],["origen de la vida","La abiogénesis podría ser común, extremadamente rara o depender de condiciones todavía desconocidas."],["células complejas","La transición a células eucariotas ocurrió una vez de forma conocida en la Tierra."],["multicelularidad","Surgió varias veces, pero no siempre produjo organismos grandes, móviles o conscientes."],["inteligencia","La cognición avanzada puede no conducir a lenguaje simbólico ni cultura acumulativa."],["civilización tecnológica","Construir tecnología planetaria requiere cooperación, energía, materiales y continuidad cultural."],["supervivencia prolongada","Riesgos naturales y creados pueden limitar la duración de sociedades detectables."],["expansión interestelar","Una civilización puede sobrevivir sin expandirse o encontrar obstáculos físicos, sociales o éticos."]],"p0":0.8,"p1":0.84,"scene":20,"sound":{"base":121.0,"filter":2480,"noise":0.012,"pulse":0.148,"type":"sine"}},{"id":"alien-civilizations","name":"Civilizaciones alienígenas","className":"Diversidad imaginada · conocimiento no reclamado","color":[223,171,255],"metric":"Biología o máquinas + ambiente + historia + valores → organización civilizatoria posible","fact":"Compartir las mismas leyes físicas no implica compartir nuestra biología, psicología, historia, tecnología ni forma de organizar la sociedad.","features":[["civilización biológica","Organismos podrían construir tecnología manteniendo cuerpos y ecosistemas de origen."],["sociedad postbiológica","Mentes sintéticas podrían operar en ambientes extremos y escalas temporales distintas."],["cultura planetaria","Una sociedad puede permanecer en un solo mundo y gestionar cuidadosamente sus límites."],["hábitats artificiales","Comunidades podrían vivir en estructuras orbitales sin depender de superficies planetarias."],["inteligencia en red","La sociedad y la mente podrían superponerse en sistemas distribuidos de información."],["sistemas nómadas","Naves o hábitats móviles podrían viajar sin reclamar planetas como hogares permanentes."],["civilización dormida","Una sociedad podría hibernar durante largos periodos y activarse solo ante energía o eventos concretos."],["valores extraños","Metas, emociones, cooperación y conflicto podrían carecer de equivalentes humanos directos."]],"p0":0.84,"p1":0.88,"scene":21,"sound":{"base":124.65,"filter":2568,"noise":0.016,"pulse":0.04,"type":"triangle"}},{"id":"interstellar-communication","name":"Comunicación interestelar","className":"Diálogo limitado por la velocidad de la luz","color":[112,213,255],"metric":"Distancia + potencia + codificación + contexto → intercambio lento y parcial","fact":"Una conversación entre estrellas podría requerir décadas, siglos o milenios entre una pregunta y su respuesta.","features":[["velocidad de la luz","Ningún mensaje conocido puede llegar antes que la luz, incluso si la transmisión es instantánea localmente."],["años de viaje","Un mensaje a una estrella cercana tarda años en llegar y otros tantos en recibir respuesta."],["ventanas estrechas","Una señal puede apuntar a un lugar, frecuencia y momento que no estemos observando."],["descifrado","Reconocer estructura no garantiza comprender símbolos, referencias o intenciones."],["patrones matemáticos","Regularidades simples pueden demostrar diseño sin proporcionar un idioma compartido."],["contexto cultural","Conceptos básicos para una especie pueden ser invisibles o irrelevantes para otra."],["durabilidad","Mensajes físicos o repetidos pueden sobrevivir más que transmisiones breves y civilizaciones emisoras."],["diálogo generacional","Quienes responden podrían no haber nacido cuando salió la pregunta original."]],"p0":0.88,"p1":0.92,"scene":22,"sound":{"base":128.3,"filter":2656,"noise":0.02,"pulse":0.058,"type":"sine"}},{"id":"uncertain-contact","name":"Contacto incierto","className":"Verificación científica · consecuencias planetarias","color":[255,214,132],"metric":"Señal + replicación + revisión + coordinación → evidencia pública y respuesta responsable","fact":"El primer contacto más plausible podría consistir únicamente en datos: una señal, una composición atmosférica o una estructura difícil de explicar mediante procesos naturales.","features":[["señal ambigua","La primera pista probablemente admitirá explicaciones rivales y requerirá nuevas observaciones."],["verificación independiente","Equipos, países e instrumentos distintos deben confirmar que la señal existe y procede del lugar indicado."],["transparencia científica","Compartir datos y métodos facilita corrección, aunque también puede amplificar interpretaciones prematuras."],["desinformación","Rumores, falsificaciones y afirmaciones políticas podrían adelantarse a la evidencia."],["coordinación internacional","Ninguna institución representa automáticamente a toda la humanidad en una decisión de respuesta."],["decidir si responder","Transmitir información puede tener consecuencias a muy largo plazo y no existe consenso universal."],["impacto cultural","La confirmación afectaría religiones, filosofías, identidades y expectativas de maneras imprevisibles."],["representación planetaria","La pregunta de quién habla por la Tierra es política, ética y cultural, no solo técnica."]],"p0":0.92,"p1":0.96,"scene":23,"sound":{"base":131.95,"filter":2744,"noise":0.024,"pulse":0.076,"type":"triangle"}},{"id":"unknown-cosmic-life","name":"Vida cósmica desconocida","className":"Frontera de categorías construidas desde un solo ejemplo","color":[238,245,255],"metric":"Observación limitada + conceptos terrestres + fenómenos extraños → clasificación provisional","fact":"Buscamos vida mediante conceptos construidos a partir de un solo ejemplo: la Tierra. Cuanto más diferente sea otra forma de vida, más difícil podría ser distinguirla de la geología, la química, la tecnología o incluso del ruido.","features":[["química no carbonada","Otros elementos podrían participar en sistemas complejos, aunque el carbono posee ventajas químicas extraordinarias."],["solventes extraños","Líquidos distintos del agua podrían sostener reacciones, pero sus velocidades y estructuras serían diferentes."],["organismos atmosféricos","La vida podría flotar en capas estables de una atmósfera sin tocar una superficie sólida."],["biosferas subterráneas","Un mundo aparentemente muerto podría ocultar ecosistemas profundos desconectados de su superficie."],["vida artificial","Sistemas diseñados podrían reproducirse, evolucionar y alejarse de la biología que los creó."],["híbridos biológicos","Máquinas y organismos podrían formar unidades difíciles de separar en natural y artificial."],["inteligencia sin individuos","La cognición podría pertenecer a un ecosistema, una red o un proceso sin cuerpos personales."],["señal irresuelta","El descubrimiento puede comenzar no con una respuesta, sino con una anomalía que resiste explicaciones conocidas."]],"p0":0.96,"p1":1.0,"scene":24,"sound":{"base":135.6,"filter":2832,"noise":0.028,"pulse":0.094,"type":"sine"}}];
+
+    let width = 1, height = 1, dpr = 1;
+    let pointerDown = false;
+    let targetX = .5, targetY = .982, pointerX = .5, pointerY = .982;
+    let shownX = .5, shownY = .982;
+    let lastZoneId = "", lastFeature = -1;
+    let hideTimer = 0, speechTimer = 0, lastSpoken = "", speechUnlocked = false;
+    let lastFrame = performance.now(), elapsed = 0, currentProgress = .018, touchEnergy = 0;
+
+    const particles = [], nodes = [], structures = [], packets = [], glyphs = [], bursts = [], waves = [];
+    let audioCtx = null, master = null, droneA = null, droneB = null, droneGain = null;
+    let droneFilter = null, pulseOsc = null, pulseGain = null, noiseSource = null;
+    let noiseGain = null, noiseFilter = null, stereo = null;
+
+    function depthFromY(yNorm) { return clamp(1 - yNorm, 0, 1); }
+    function zoneForDepth(p) {
+      for (const zone of ZONES) if (p >= zone.p0 && p < zone.p1) return zone;
+      return ZONES[ZONES.length - 1];
+    }
+    function featureFor(zone, xNorm) {
+      const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .999999) * zone.features.length));
+      return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+    }
+    function setAccent(zone) { root.style.setProperty("--accent", `${zone.color[0]} ${zone.color[1]} ${zone.color[2]}`); }
+    function setCssPoint(x, y) { root.style.setProperty("--scan-x", `${x}px`); root.style.setProperty("--scan-y", `${y}px`); }
+
+    function buildScene() {
+      particles.length = nodes.length = structures.length = packets.length = glyphs.length = 0;
+      const count = reducedMotion ? 90 : Math.round(clamp(width * height / 4800, 150, 380));
+      for (let i=0;i<count;i++) particles.push({x:seeded(i+1),y:seeded(i+1000),r:.5+seeded(i+2000)*2.4,phase:seeded(i+3000)*TAU,speed:.12+seeded(i+4000)*.9,kind:i%11});
+      for (let i=0;i<70;i++) nodes.push({x:.05+seeded(i+5000)*.9,y:.07+seeded(i+6000)*.86,r:2+seeded(i+7000)*5,phase:seeded(i+8000)*TAU,kind:i%9});
+      for (let i=0;i<46;i++) structures.push({x:.03+seeded(i+9000)*.94,y:.08+seeded(i+10000)*.84,w:.025+seeded(i+11000)*.09,h:.03+seeded(i+12000)*.16,phase:seeded(i+13000)*TAU,kind:i%10});
+      for (let i=0;i<62;i++) packets.push({x1:seeded(i+14000),y1:seeded(i+15000),x2:seeded(i+16000),y2:seeded(i+17000),phase:seeded(i+18000)*TAU,speed:.16+seeded(i+18100)*.55,kind:i%7});
+      const chars='01λΣΔAI{}<>→∞⊕◌⌁✦?';
+      for (let i=0;i<80;i++) glyphs.push({x:.04+seeded(i+19000)*.92,y:.06+seeded(i+20000)*.86,char:chars[i%chars.length],size:9+seeded(i+21000)*22,phase:seeded(i+22000)*TAU,speed:.2+seeded(i+23000)*.9});
+    }
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      width = Math.max(1, rect.width); height = Math.max(1, rect.height);
+      dpr = Math.min(2, devicePixelRatio || 1);
+      canvas.width = Math.round(width*dpr); canvas.height = Math.round(height*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0); buildScene();
+      shownX = targetX*width; shownY = targetY*height; setCssPoint(shownX, shownY);
+    }
+
+    function ensureAudio() {
+      if (audioCtx) { if (audioCtx.state === "suspended") audioCtx.resume().catch(()=>{}); return; }
+      const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
+      audioCtx = new AudioContext(); master = audioCtx.createGain(); master.gain.value = 0;
+      const compressor = audioCtx.createDynamicsCompressor(); compressor.threshold.value=-24; compressor.knee.value=20; compressor.ratio.value=5;
+      master.connect(compressor).connect(audioCtx.destination);
+      droneA=audioCtx.createOscillator(); droneB=audioCtx.createOscillator(); droneGain=audioCtx.createGain(); droneFilter=audioCtx.createBiquadFilter();
+      stereo=audioCtx.createStereoPanner?audioCtx.createStereoPanner():audioCtx.createGain();
+      droneA.type='sine'; droneB.type='triangle'; droneGain.gain.value=.0001; droneFilter.type='lowpass'; droneFilter.frequency.value=850; droneFilter.Q.value=.8;
+      droneA.connect(droneGain); droneB.connect(droneGain); droneGain.connect(droneFilter).connect(stereo).connect(master); droneA.start(); droneB.start();
+      pulseOsc=audioCtx.createOscillator(); pulseGain=audioCtx.createGain(); pulseOsc.type='sine'; pulseGain.gain.value=.0001; pulseOsc.connect(pulseGain).connect(master); pulseOsc.start();
+      const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate), channel=buffer.getChannelData(0);
+      for(let i=0;i<channel.length;i++) channel[i]=Math.random()*2-1;
+      noiseSource=audioCtx.createBufferSource(); noiseSource.buffer=buffer; noiseSource.loop=true;
+      noiseFilter=audioCtx.createBiquadFilter(); noiseFilter.type='bandpass'; noiseFilter.frequency.value=1100; noiseFilter.Q.value=.5;
+      noiseGain=audioCtx.createGain(); noiseGain.gain.value=.0001; noiseSource.connect(noiseFilter).connect(noiseGain).connect(master); noiseSource.start();
+    }
+
+    function setAudioFor(zone,xNorm,progress,active){
+      if(!audioCtx||!master)return; const now=audioCtx.currentTime,s=zone.sound,base=s.base*(.94+xNorm*.13);
+      droneA.type=s.type; droneB.type=s.type==='sawtooth'?'triangle':'sine';
+      droneA.frequency.setTargetAtTime(base,now,.08); droneB.frequency.setTargetAtTime(base*(1.496+progress*.012),now,.1);
+      droneFilter.frequency.setTargetAtTime(s.filter*(.84+xNorm*.3),now,.1); droneGain.gain.setTargetAtTime(active?.010+progress*.006:.0001,now,.09);
+      pulseOsc.frequency.setTargetAtTime(base*(1.985+s.pulse),now,.08); pulseGain.gain.setTargetAtTime(active?.0024+progress*.002:.0001,now,.1);
+      noiseFilter.frequency.setTargetAtTime(s.filter*1.13,now,.1); noiseGain.gain.setTargetAtTime(active?Math.max(.0001,s.noise*.052):.0001,now,.1);
+      if(stereo.pan)stereo.pan.setTargetAtTime((xNorm-.5)*.7,now,.08); master.gain.setTargetAtTime(active?.25:.0001,now,.09);
+    }
+
+    function ping(zone,xNorm,index=0){
+      if(!audioCtx||!master)return; const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),filter=audioCtx.createBiquadFilter();
+      const pan=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null; osc.type=index%3===0?'sine':index%3===1?'triangle':'square';
+      osc.frequency.value=zone.sound.base*(2.05+index*.12); filter.type='lowpass'; filter.frequency.value=1800+zone.scene*105;
+      gain.gain.setValueAtTime(.0001,now); gain.gain.exponentialRampToValueAtTime(.065,now+.012); gain.gain.exponentialRampToValueAtTime(.0001,now+.48);
+      osc.connect(filter).connect(gain); if(pan){pan.pan.value=(xNorm-.5)*1.25;gain.connect(pan).connect(master)}else gain.connect(master); osc.start(now);osc.stop(now+.54);
+    }
+
+    function queueSpeech(label){
+      if(!speechUnlocked||!("speechSynthesis" in window)||!label||label===lastSpoken)return; clearTimeout(speechTimer);
+      speechTimer=setTimeout(()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(label);u.lang='es-ES';u.rate=.86;u.pitch=1;
+        const voices=speechSynthesis.getVoices();const voice=voices.find(v=>/^es(-|_)/i.test(v.lang))||voices.find(v=>/spanish|español/i.test(v.name));if(voice)u.voice=voice;
+        speechSynthesis.speak(u);lastSpoken=label;}catch(_){ }},360);
+    }
+
+    function addRipple(x,y){const node=document.createElement('div');node.className='ripple';node.style.left=`${x}px`;node.style.top=`${y}px`;document.body.appendChild(node);node.addEventListener('animationend',()=>node.remove(),{once:true});}
+    function addBurst(x,y,color){const count=reducedMotion?5:13;for(let i=0;i<count;i++){const a=Math.random()*TAU,s=18+Math.random()*72;bursts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:.8+Math.random()*2.4,life:1,decay:1+Math.random()*.8,color});}waves.push({x,y,radius:5,life:1,color});}
+
+    function updateReadout(x,y,isNewPress=false){
+      const xNorm=clamp(x/width,0,.999999),yNorm=clamp(y/height,0,.999999),progress=depthFromY(yNorm),zone=zoneForDepth(progress),feature=featureFor(zone,xNorm);
+      if(isNewPress){currentProgress=progress;pointerX=xNorm;pointerY=yNorm;}
+      targetX=xNorm;targetY=yNorm;touchEnergy=1;setCssPoint(x,y);setAccent(zone);root.style.setProperty('--progress',`${Math.max(1.2,progress*100)}%`);
+      scaleDot.style.bottom=`${48+progress*Math.max(0,height-96)}px`;touchOrb.style.left=`${x}px`;touchOrb.style.top=`${y}px`;scaleValue.textContent=zone.className;
+      const changed=zone.id!==lastZoneId||feature.index!==lastFeature;
+      if(changed||isNewPress){evidenceClass.textContent=zone.className;zoneName.textContent=zone.name;zoneName.className=zone.name.length>31?'long':zone.name.length>21?'compact':'';
+        featureName.textContent=feature.name;metric.textContent=zone.metric;fact.textContent=feature.fact||zone.fact;ping(zone,xNorm,feature.index);addBurst(x,y,zone.color);queueSpeech(feature.name);lastZoneId=zone.id;lastFeature=feature.index;}
+      readout.classList.add('visible');touchOrb.classList.add('visible');document.body.classList.add('active');hint.style.display='none';setAudioFor(zone,xNorm,progress,true);
+    }
+    function releaseInteraction(delay=1050){clearTimeout(hideTimer);hideTimer=setTimeout(()=>{readout.classList.remove('visible');touchOrb.classList.remove('visible');document.body.classList.remove('active');const z=zoneForDepth(depthFromY(targetY));setAudioFor(z,targetX,depthFromY(targetY),false);},delay);}
+    function endPointer(){pointerDown=false;releaseInteraction();}
+    canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.focus({preventScroll:true});pointerDown=true;speechUnlocked=true;ensureAudio();try{canvas.setPointerCapture(e.pointerId)}catch(_){ }updateReadout(e.clientX,e.clientY,true);addRipple(e.clientX,e.clientY);});
+    canvas.addEventListener('pointermove',e=>{if(!pointerDown&&e.pointerType!=='mouse')return;if(!pointerDown&&e.buttons===0){targetX=clamp(e.clientX/width,0,1);targetY=clamp(e.clientY/height,0,1);return;}e.preventDefault();updateReadout(e.clientX,e.clientY);});
+    canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);canvas.addEventListener('lostpointercapture',endPointer);
+    canvas.addEventListener('keydown',e=>{const keys=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter',' '];if(!keys.includes(e.key))return;e.preventDefault();speechUnlocked=true;ensureAudio();const step=e.shiftKey?.09:.035;
+      if(e.key==='ArrowUp')targetY=clamp(targetY-step,.005,.995);if(e.key==='ArrowDown')targetY=clamp(targetY+step,.005,.995);if(e.key==='ArrowLeft')targetX=clamp(targetX-step,.005,.995);if(e.key==='ArrowRight')targetX=clamp(targetX+step,.005,.995);
+      updateReadout(targetX*width,targetY*height,e.key==='Enter'||e.key===' ');releaseInteraction(1600);});
+
+    function softHalo(cx,cy,radius,color,alpha){const g=ctx.createRadialGradient(cx,cy,0,cx,cy,radius);g.addColorStop(0,rgba(color,alpha));g.addColorStop(.35,rgba(color,alpha*.4));g.addColorStop(1,rgba(color,0));ctx.fillStyle=g;ctx.fillRect(cx-radius,cy-radius,radius*2,radius*2);}
+    function roundedRectPath(x,y,w,h,r){const rr=Math.min(r,w*.5,h*.5);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();}
+    function line(x1,y1,x2,y2,stroke='rgba(255,255,255,.3)',lw=1){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+    function circle(x,y,r,fill='rgba(255,255,255,.5)',stroke=null,lw=1){ctx.fillStyle=fill;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+    function polygon(points,fill,stroke=null,lw=1){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+    function drawGear(cx,cy,r,teeth,color,rotation=0){ctx.save();ctx.translate(cx,cy);ctx.rotate(rotation);ctx.strokeStyle=color;ctx.fillStyle='rgba(0,0,0,.15)';ctx.lineWidth=1.6;ctx.beginPath();for(let i=0;i<teeth*2;i++){const a=i/(teeth*2)*TAU,rr=i%2?r:r*.76;const x=Math.cos(a)*rr,y=Math.sin(a)*rr;if(!i)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.closePath();ctx.fill();ctx.stroke();circle(0,0,r*.27,'rgba(0,0,0,.42)',color,1.2);ctx.restore();}
+    function drawGlobe(cx,cy,r,z,time,network=true){
+      softHalo(cx,cy,r*2.15,z.color,.2);const g=ctx.createRadialGradient(cx-r*.38,cy-r*.43,r*.04,cx,cy,r);g.addColorStop(0,'rgba(205,248,255,.98)');g.addColorStop(.42,'rgba(63,173,222,.94)');g.addColorStop(1,'rgba(8,39,92,.97)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.fill();ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.clip();ctx.fillStyle='rgba(86,186,114,.67)';for(let i=0;i<12;i++){const a=seeded(i+300)*TAU,rr=seeded(i+330)*r*.77,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.78;ctx.beginPath();ctx.ellipse(x,y,r*(.055+seeded(i+350)*.13),r*(.025+seeded(i+370)*.065),a,0,TAU);ctx.fill();}ctx.strokeStyle='rgba(255,255,255,.15)';for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(cx-r*.24+i*r*.075,cy-r*.13+i*r*.035,r*(.47+i*.05),.18,2.55);ctx.stroke();}ctx.restore();ctx.strokeStyle='rgba(190,240,255,.55)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();
+      if(network){for(let i=0;i<27;i++){const a=i/27*TAU+time*.01,x=cx+Math.cos(a)*r*.82,y=cy+Math.sin(a)*r*.82;circle(x,y,1.5+i%3,rgba(i%4?z.color:[255,240,185],.46));}}
+    }
+    function drawBuilding(x,ground,w,h,color,lit=.45){ctx.fillStyle='rgba(8,14,25,.58)';ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.fillRect(x-w*.5,ground-h,w,h);ctx.strokeRect(x-w*.5,ground-h,w,h);let row=0;for(let ry=0;ry<h-w*.2;ry+=Math.max(10,w*.38),row++)for(let c=-1;c<=1;c++){const on=fract(Math.sin((x+row*17+c*31)*12.9898)*43758.5453)<lit;circle(x+c*w*.23,ground-h+w*.22+ry,1.25,on?'rgba(255,230,145,.45)':'rgba(120,220,255,.2)');}}
+    function drawTool(x,y,len,angle,type,color){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.lineCap='round';if(type==='hammer'){line(-len*.42,0,len*.35,0,'rgba(180,120,73,.9)',len*.10);ctx.fillStyle=color;roundedRectPath(len*.17,-len*.18,len*.34,len*.36,len*.05);ctx.fill();}else if(type==='knife'){line(-len*.42,0,-len*.1,0,'rgba(156,96,55,.9)',len*.12);polygon([[-len*.1,-len*.08],[len*.45,-len*.03],[len*.28,len*.12],[-len*.1,len*.08]],'rgba(220,240,250,.75)',color,1);}else if(type==='needle'){line(-len*.45,0,len*.45,0,color,2);circle(-len*.36,0,len*.055,'rgba(0,0,0,.2)',color,1);}else if(type==='rope'){ctx.strokeStyle=color;ctx.lineWidth=len*.045;ctx.beginPath();for(let i=0;i<=30;i++){const xx=-len*.45+i/30*len*.9,yy=Math.sin(i*.7)*len*.04;i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy);}ctx.stroke();}else{line(-len*.42,0,len*.42,0,color,len*.06);circle(len*.34,0,len*.12,'rgba(0,0,0,.2)',color,2);}ctx.restore();}
+
+    function drawBackground(progress,time){
+      const f=clamp(progress*(ZONES.length-1),0,ZONES.length-1),i=Math.floor(f),j=Math.min(ZONES.length-1,i+1),t=smooth(f-i),a=ZONES[i].color,b=ZONES[j].color;
+      const c=a.map((v,k)=>Math.round(mix(v,b[k],t))), dark=c.map(v=>Math.round(v*.09)), mid=c.map(v=>Math.round(v*.29));
+      const g=ctx.createLinearGradient(0,height,0,0);g.addColorStop(0,`rgb(${Math.max(3,dark[0]-4)} ${Math.max(5,dark[1]-2)} ${Math.max(8,dark[2])})`);g.addColorStop(.56,`rgb(${mid[0]} ${mid[1]} ${mid[2]})`);g.addColorStop(1,`rgb(${Math.min(255,c[0]*.62)} ${Math.min(255,c[1]*.62)} ${Math.min(255,c[2]*.62)})`);ctx.fillStyle=g;ctx.fillRect(0,0,width,height);
+      softHalo(width*(.44+.1*Math.sin(time*.05)),height*(.74-progress*.46),Math.max(width,height)*.72,c,.105+progress*.05);
+      for(const p of particles){const x=fract(p.x+time*.0018*p.speed)*width+Math.sin(time*.19+p.phase)*4,y=fract(p.y-time*.0011*p.speed)*height+Math.cos(time*.15+p.phase)*4,col=p.kind%3===0?c:p.kind%3===1?[255,244,215]:[132,226,255];circle(x,y,p.r*(.72+progress*.38),rgba(col,.07+.15*(.5+.5*Math.sin(time*p.speed+p.phase))));}
+      for(let k=1;k<8;k++)line(k/8*width,0,k/8*width,height,'rgba(255,255,255,.016)');
+    }
+
+
+    function drawPlanet(cx,cy,r,z,time,land=true){
+      softHalo(cx,cy,r*2.2,z.color,.18);const g=ctx.createRadialGradient(cx-r*.32,cy-r*.38,r*.03,cx,cy,r);g.addColorStop(0,'rgba(225,250,255,.98)');g.addColorStop(.38,rgba(z.color,.78));g.addColorStop(1,'rgba(7,20,55,.98)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.fill();ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.clip();
+      if(land){ctx.fillStyle='rgba(105,207,145,.58)';for(let i=0;i<10;i++){const a=seeded(i+310)*TAU,rr=seeded(i+340)*r*.72;ctx.beginPath();ctx.ellipse(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.78,r*(.055+seeded(i+370)*.14),r*(.026+seeded(i+390)*.07),a,0,TAU);ctx.fill();}}
+      ctx.strokeStyle='rgba(255,255,255,.13)';for(let i=0;i<6;i++){ctx.beginPath();ctx.ellipse(cx,cy,r*(.35+i*.11),r*(.12+i*.035),time*.006+i*.27,0,TAU);ctx.stroke();}ctx.restore();ctx.strokeStyle='rgba(215,245,255,.55)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();
+    }
+    function drawStar(cx,cy,r,color,time){softHalo(cx,cy,r*3,color,.2);const g=ctx.createRadialGradient(cx-r*.25,cy-r*.3,0,cx,cy,r);g.addColorStop(0,'rgba(255,255,240,1)');g.addColorStop(.38,rgba(color,.96));g.addColorStop(1,rgba([255,128,70],.48));ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r*(1+.025*Math.sin(time*1.8)),0,TAU);ctx.fill();for(let i=0;i<12;i++){const a=i/12*TAU+time*.025,lineR=r*(1.25+(i%3)*.2);line(cx+Math.cos(a)*r*1.05,cy+Math.sin(a)*r*1.05,cx+Math.cos(a)*lineR,cy+Math.sin(a)*lineR,rgba(color,.22),1.3);}}
+    function drawSatellite(x,y,s,z,angle=0){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.fillStyle='rgba(220,235,245,.68)';roundedRectPath(-s*.12,-s*.08,s*.24,s*.16,s*.035);ctx.fill();ctx.strokeStyle=rgba(z.color,.7);ctx.stroke();ctx.fillStyle=rgba(z.color,.28);ctx.fillRect(-s*.42,-s*.07,s*.25,s*.14);ctx.fillRect(s*.17,-s*.07,s*.25,s*.14);line(0,-s*.08,0,-s*.22,'rgba(255,255,255,.52)',1.5);circle(0,-s*.25,s*.025,rgba(z.color,.78));ctx.restore();}
+    function drawHabitat(x,y,s,z,domes=3){line(x-s*.42,y,x+s*.42,y,rgba(z.color,.35),3);for(let i=0;i<domes;i++){const dx=(i-(domes-1)/2)*s*.27,r=s*(.095+(i%2)*.018);ctx.fillStyle=rgba(z.color,.12);ctx.strokeStyle=rgba(z.color,.65);ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(x+dx,y,r,Math.PI,TAU);ctx.lineTo(x+dx+r,y);ctx.lineTo(x+dx-r,y);ctx.closePath();ctx.fill();ctx.stroke();for(let k=-1;k<=1;k++)circle(x+dx+k*r*.38,y-r*.42,1.4,'rgba(255,235,160,.62)');}}
+    function drawNetwork(cx,cy,r,z,time,count=18){for(let i=0;i<count;i++){const a=i/count*TAU+seeded(i+900)*.5,rr=r*(.36+seeded(i+930)*.64),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.72;nodes[i]._x=x;nodes[i]._y=y;circle(x,y,2+i%3,rgba(i%4?z.color:[255,240,180],.68));}for(let i=0;i<count*2;i++){const a=nodes[i%count],b=nodes[(i*7+3)%count];line(a._x,a._y,b._x,b._y,rgba(z.color,.075+(i%4)*.018),1);const p=fract(time*(.07+(i%3)*.012)+i*.053);circle(mix(a._x,b._x,p),mix(a._y,b._y,p),1.3,rgba([255,250,220],.5));}}
+    function drawBranching(originX,originY,targetY,z,time,branches=9,spread=.82){for(let i=0;i<branches;i++){const ex=width*((1-spread)/2+i/(branches-1)*spread),cx=originX+(ex-originX)*.36+Math.sin(i*2.1)*width*.035;ctx.strokeStyle=rgba(i%3===0?[255,170,190]:i%3===1?z.color:[140,255,176],.2+i*.012);ctx.lineWidth=1.7+i%3;ctx.beginPath();ctx.moveTo(originX,originY);ctx.bezierCurveTo(cx,mix(originY,targetY,.32),cx,mix(originY,targetY,.7),ex,targetY);ctx.stroke();const p=fract(time*(.045+i*.004)+i*.09),u=1-p,x=(u*u*u)*originX+3*u*u*p*cx+3*u*p*p*cx+p*p*p*ex,y=(u*u*u)*originY+3*u*u*p*mix(originY,targetY,.32)+3*u*p*p*mix(originY,targetY,.7)+p*p*p*targetY;circle(x,y,2+i%2,rgba([255,250,225],.54));circle(ex,targetY,3+i%3,rgba(i%2?z.color:[255,184,130],.46));}}
+    function drawRiskSymbol(x,y,r,z,type){ctx.strokeStyle=rgba(z.color,.75);ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.stroke();ctx.font=`900 ${r*.95}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=rgba(z.color,.8);ctx.fillText(type,x,y+r*.05);ctx.textBaseline='alphabetic';}
+
+
+    function drawOrbitalRing(cx,cy,rx,ry,angle,color,alpha=.35,lw=1.2){ctx.save();ctx.translate(cx,cy);ctx.rotate(angle);ctx.strokeStyle=rgba(color,alpha);ctx.lineWidth=lw;ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,TAU);ctx.stroke();ctx.restore();}
+    function drawMolecule(cx,cy,r,z,time,count=7){const pts=[];for(let i=0;i<count;i++){const a=i/count*TAU+time*.025,rr=r*(.45+seeded(i+61)*.5);pts.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.7]);}for(let i=0;i<count;i++){const a=pts[i],b=pts[(i*3+2)%count];line(a[0],a[1],b[0],b[1],rgba(z.color,.18),1.6);}pts.forEach((p,i)=>{softHalo(p[0],p[1],r*.18,i%3?z.color:[255,215,130],.09);circle(p[0],p[1],r*(.035+(i%3)*.012),rgba(i%3?z.color:[255,225,155],.68),rgba([255,255,255],.5),1);});}
+    function drawCell(cx,cy,r,z,time,kind=0){softHalo(cx,cy,r*1.8,z.color,.16);ctx.save();ctx.translate(cx,cy);ctx.rotate(time*.015+kind);ctx.fillStyle=rgba(z.color,.16);ctx.strokeStyle=rgba(z.color,.72);ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<=48;i++){const a=i/48*TAU,rr=r*(1+.055*Math.sin(a*(3+kind%4)+time*.7));const x=Math.cos(a)*rr,y=Math.sin(a)*rr*.82;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.closePath();ctx.fill();ctx.stroke();circle(0,0,r*.27,'rgba(10,30,42,.7)',rgba([255,245,185],.55),1.4);for(let i=0;i<10;i++){const a=i/10*TAU+time*.03,rr=r*(.4+seeded(i+201)*.3);circle(Math.cos(a)*rr,Math.sin(a)*rr*.75,r*(.025+i%3*.01),rgba(i%2?z.color:[255,190,130],.52));}ctx.restore();}
+    function drawSpectrum(x,y,w,h,z,time,peaks=8){line(x,y+h,x+w,y+h,'rgba(255,255,255,.32)',1);for(let i=0;i<peaks;i++){const px=x+w*(.07+i/(peaks-1)*.86),ph=h*(.2+seeded(i+300)*.72);line(px,y+h,px,y+h-ph,rgba(i%3?z.color:[255,210,120],.62),1.5+i%2);softHalo(px,y+h-ph,w*.035,z.color,.07);}ctx.strokeStyle=rgba([255,255,255],.2);ctx.beginPath();for(let i=0;i<=60;i++){const u=i/60,yy=y+h*.65-Math.sin(u*TAU*2+time*.2)*h*.05-(.5+.5*Math.sin(u*TAU*7+time*.1))*h*.12;i?ctx.lineTo(x+u*w,yy):ctx.moveTo(x+u*w,yy);}ctx.stroke();}
+    function drawSignal(cx,cy,r,z,time,rings=7){for(let i=0;i<rings;i++){const p=fract(time*.14+i/rings),rr=r*(.12+p),ctxAlpha=(1-p)*.38;ctx.strokeStyle=rgba(z.color,ctxAlpha);ctx.lineWidth=1.1+(i%2);ctx.beginPath();ctx.arc(cx,cy,rr,0,TAU);ctx.stroke();}circle(cx,cy,r*.035,rgba([255,245,200],.8));}
+    function drawIceMoon(cx,cy,r,z,time){drawPlanet(cx,cy,r,{color:[175,225,255]},time,false);ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.clip();ctx.strokeStyle='rgba(255,255,255,.5)';for(let i=0;i<15;i++){const y=cy-r+i*r*.14;ctx.beginPath();ctx.moveTo(cx-r,y);for(let x=cx-r;x<=cx+r;x+=r*.12)ctx.lineTo(x,y+Math.sin(x*.05+i)*r*.025);ctx.stroke();}ctx.restore();}
+    function drawAbstractBody(cx,cy,r,z,time,mode){ctx.save();ctx.translate(cx,cy);ctx.rotate(time*.012+mode*.4);ctx.strokeStyle=rgba(z.color,.62);ctx.fillStyle=rgba(z.color,.12);ctx.lineWidth=1.7;ctx.beginPath();const n=5+mode%5;for(let i=0;i<=n;i++){const a=i/n*TAU,rr=r*(.65+.32*Math.sin(a*(2+mode%4)+mode));const x=Math.cos(a)*rr,y=Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.closePath();ctx.fill();ctx.stroke();for(let i=0;i<n;i++){const a=i/n*TAU+time*.02,rr=r*.48;circle(Math.cos(a)*rr,Math.sin(a)*rr,r*.045,rgba(i%2?z.color:[255,230,160],.58));}ctx.restore();}
+    function footerLabel(text,z){const s=Math.min(width,height);ctx.font=`900 ${s*.023}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.57)';ctx.fillText(text,width*.5,height*.86);}
+
+    function sceneUnknownHorizon(z,time){const s=Math.min(width,height);for(let i=0;i<85;i++){const x=seeded(i+40)*width,y=seeded(i+90)*height,r=.5+seeded(i+140)*2.1;circle(x,y,r,rgba(i%7?z.color:[255,220,160],.15+.35*seeded(i+190)));}for(let i=0;i<6;i++){const x=width*(.1+i*.16),y=height*(.25+.1*Math.sin(i*1.7));drawSignal(x,y,s*.08,z,time+i,4);}drawBranching(width*.5,height*.82,height*.18,z,time,9,.88);footerLabel('DE NUESTRO FUTURO A OTRAS POSIBILIDADES',z);}
+    function sceneIngredients(z,time){const s=Math.min(width,height);drawStar(width*.18,height*.28,s*.07,[255,206,110],time);drawStar(width*.82,height*.22,s*.05,[150,205,255],time);for(let i=0;i<4;i++){drawMolecule(width*(.2+i*.2),height*(.6+(i%2)*.12),s*(.10+i*.008),z,time+i,5+i);}for(let i=0;i<26;i++){const p=fract(time*.025+i*.037);circle(mix(width*.14,width*.86,p),height*.42+Math.sin(p*TAU+i)*s*.08,1+i%3,rgba(z.color,.36*(1-p)));}footerLabel('INGREDIENTES COMUNES · ORGANIZACIÓN INCIERTA',z);}
+    function sceneStellar(z,time){const s=Math.min(width,height),x=width*(.5+(pointerX-.5)*.3);drawStar(x,height*.42,s*.12,z.color,time);for(let i=0;i<5;i++){drawOrbitalRing(x,height*.42,s*(.17+i*.055),s*(.055+i*.017),time*.004+i*.3,z.color,.2);const a=time*(.05-i*.005)+i*1.7;circle(x+Math.cos(a)*s*(.17+i*.055),height*.42+Math.sin(a)*s*(.055+i*.017),s*(.012+i*.003),rgba(i%2?[115,190,255]:[255,165,100],.66));}for(let i=0;i<8;i++){const a=i/8*TAU+time*.22;line(x+Math.cos(a)*s*.14,height*.42+Math.sin(a)*s*.14,x+Math.cos(a)*s*.25,height*.42+Math.sin(a)*s*.25,rgba([255,120,100],.15+.08*(i%2)),2);}footerLabel('ENERGÍA DURADERA · ACTIVIDAD CAMBIANTE',z);}
+    function scenePlanetarySystems(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5;softHalo(cx,cy,s*.35,z.color,.12);drawStar(cx,cy,s*.055,[255,220,120],time);for(let i=0;i<7;i++){const rx=s*(.11+i*.045),ry=rx*(.35+.12*seeded(i+4));drawOrbitalRing(cx,cy,rx,ry,i*.22,z.color,.17,1);const a=time*(.08/(1+i*.25))+i;circle(cx+Math.cos(a)*rx,cy+Math.sin(a)*ry,s*(.009+i*.003),rgba(i<3?[195,145,110]:i<5?[100,165,255]:[160,205,230],.78));}for(let i=0;i<30;i++){const a=i/30*TAU+time*.01,rr=s*(.31+seeded(i+9)*.035);circle(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.42,1.1,rgba(z.color,.28));}footerLabel('LOS SISTEMAS CAMBIAN MIENTRAS SE FORMAN',z);}
+    function sceneHabitableZone(z,time){const s=Math.min(width,height),cx=width*.24,cy=height*.5;drawStar(cx,cy,s*.09,[255,220,105],time);const inner=s*(.18+.035*Math.sin(time*.12)),outer=s*(.40+.025*Math.cos(time*.1));ctx.save();ctx.translate(cx,cy);ctx.rotate(-.08);ctx.strokeStyle=rgba([80,255,160],.34);ctx.lineWidth=s*.08;ctx.beginPath();ctx.ellipse(0,0,(inner+outer)/2,(inner+outer)*.28,0,0,TAU);ctx.stroke();ctx.restore();for(let i=0;i<4;i++){const rr=s*(.14+i*.1),a=time*.045+i*1.6;circle(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.28,s*(.016+i*.005),rgba(i===2?z.color:[160,180,210],.72));}footerLabel('ZONA HABITABLE ≠ PLANETA HABITADO',z);}
+    function sceneRealHabitability(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.55,r=s*.22;drawPlanet(cx,cy,r,z,time,true);for(let i=0;i<4;i++){ctx.strokeStyle=rgba(i===0?[140,220,255]:i===1?[110,255,180]:i===2?[255,220,120]:z.color,.16);ctx.lineWidth=2+i*2;ctx.beginPath();ctx.arc(cx,cy,r*(1.08+i*.08),0,TAU);ctx.stroke();}for(let i=0;i<12;i++){const a=i/12*TAU+time*.02;line(cx+Math.cos(a)*r*.4,cy+Math.sin(a)*r*.4,cx+Math.cos(a)*r*.86,cy+Math.sin(a)*r*.86,rgba(z.color,.15),1);}footerLabel('ATMÓSFERA · CLIMA · GEOLOGÍA · ENERGÍA',z);}
+    function scenePrebiotic(z,time){const s=Math.min(width,height);for(let i=0;i<6;i++)drawMolecule(width*(.12+i*.15),height*(.26+(i%3)*.23),s*.075,z,time+i,5+i%4);for(let i=0;i<12;i++){const p=fract(time*.04+i*.08),x=mix(width*.08,width*.92,p),y=height*.82-Math.sin(p*Math.PI)*s*.16;circle(x,y,2+i%2,rgba(i%3?z.color:[255,170,110],.48));}ctx.strokeStyle=rgba(z.color,.22);ctx.beginPath();ctx.moveTo(0,height*.84);for(let x=0;x<=width;x+=8)ctx.lineTo(x,height*.84-Math.sin(x*.03+time*.15)*s*.035);ctx.stroke();footerLabel('ORGÁNICO NO SIGNIFICA VIVO',z);}
+    function sceneOrigin(z,time){const s=Math.min(width,height);drawCell(width*.5,height*.55,s*.23,z,time,1);for(let i=0;i<7;i++){const a=i/7*TAU+time*.03,x=width*.5+Math.cos(a)*s*.31,y=height*.55+Math.sin(a)*s*.22;drawMolecule(x,y,s*.045,z,time+i,5);}drawBranching(width*.5,height*.53,height*.15,z,time,7,.72);footerLabel('HERENCIA + VARIACIÓN + SELECCIÓN',z);}
+    function sceneSimpleBiospheres(z,time){const s=Math.min(width,height);for(let i=0;i<18;i++){const x=width*(.06+seeded(i+500)*.88),y=height*(.18+seeded(i+550)*.64),r=s*(.02+seeded(i+600)*.035);drawCell(x,y,r,z,time+i,i%4);}const g=ctx.createLinearGradient(0,height*.72,0,height);g.addColorStop(0,'rgba(30,105,90,.05)');g.addColorStop(1,rgba(z.color,.18));ctx.fillStyle=g;ctx.fillRect(0,height*.7,width,height*.3);footerLabel('UN MUNDO VIVO PUEDE SER MICROSCÓPICO',z);}
+    function sceneComplexLife(z,time){const s=Math.min(width,height);for(let i=0;i<7;i++){const x=width*(.12+i*.13),y=height*(.56+.12*Math.sin(i));drawAbstractBody(x,y,s*(.055+i*.004),z,time,i);}drawBranching(width*.5,height*.84,height*.18,z,time,9,.86);for(let i=0;i<10;i++){const x=width*(.08+i*.09),h=s*(.07+seeded(i+800)*.16);line(x,height*.84,x,height*.84-h,rgba(z.color,.24),2);circle(x,height*.84-h,s*.012,rgba(i%2?z.color:[255,200,120],.58));}footerLabel('COMPLEJIDAD: POSIBILIDAD, NO DESTINO',z);}
+    function sceneExtremophiles(z,time){const s=Math.min(width,height),cols=[[255,115,75],[120,205,255],[255,220,140],[205,130,255]];for(let i=0;i<4;i++){const x=width*(.14+i*.24),y=height*.5;softHalo(x,y,s*.15,cols[i],.13);ctx.strokeStyle=rgba(cols[i],.45);ctx.strokeRect(x-s*.09,y-s*.2,s*.18,s*.4);for(let k=0;k<5;k++)drawCell(x+(seeded(i*10+k)-.5)*s*.11,y+(seeded(i*10+k+40)-.5)*s*.27,s*.018,z,time+k,i+k);}footerLabel('ADAPTACIÓN EXTREMA · ORIGEN NO DEMOSTRADO',z);}
+    function sceneMars(z,time){const s=Math.min(width,height),h=height*.68;const g=ctx.createLinearGradient(0,h,0,height);g.addColorStop(0,'rgba(150,63,42,.18)');g.addColorStop(1,'rgba(90,32,25,.75)');ctx.fillStyle=g;ctx.fillRect(0,h,width,height-h);ctx.strokeStyle=rgba(z.color,.45);ctx.beginPath();ctx.moveTo(0,h);for(let x=0;x<=width;x+=width/18)ctx.lineTo(x,h-seeded(x+30)*s*.1-Math.sin(x*.015)*s*.035);ctx.lineTo(width,height);ctx.lineTo(0,height);ctx.closePath();ctx.fill();ctx.stroke();for(let i=0;i<5;i++){const p=fract(time*.04+i*.2),x=width*(.08+p*.84),y=h-s*(.04+.2*Math.sin(p*Math.PI));circle(x,y,s*.012,'rgba(225,220,205,.7)',rgba(z.color,.7),1);line(x,y+s*.012,x-s*.015,y+s*.055,'rgba(220,220,220,.5)',2);line(x,y+s*.012,x+s*.015,y+s*.055,'rgba(220,220,220,.5)',2);}footerLabel('AGUA ANTIGUA · EVIDENCIA BIOLÓGICA NO CONFIRMADA',z);}
+    function sceneOceanWorlds(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.48,r=s*.24;drawIceMoon(cx,cy,r,z,time);ctx.save();ctx.beginPath();ctx.arc(cx,cy,r*.82,0,Math.PI);ctx.clip();ctx.fillStyle='rgba(20,110,170,.5)';ctx.fillRect(cx-r,cy-r*.1,r*2,r);for(let i=0;i<8;i++){const x=cx-r*.72+i*r*.2;line(x,cy+r*.48,x+Math.sin(i)*r*.05,cy+r*.15,rgba([255,170,100],.35),2);softHalo(x,cy+r*.16,r*.12,[255,145,90],.08);}ctx.restore();for(let i=0;i<5;i++){const p=fract(time*.07+i*.2);circle(cx+r*.65,cy-r*.5-p*s*.22,2+i%2,rgba([220,245,255],.55*(1-p)));}footerLabel('OCÉANOS OCULTOS BAJO KILÓMETROS DE HIELO',z);}
+    function sceneExoplanets(z,time){const s=Math.min(width,height),sx=width*.32,sy=height*.45;drawStar(sx,sy,s*.11,[255,225,135],time);const p=fract(time*.075),px=mix(width*.08,width*.9,p);circle(px,sy,s*.035,'rgba(10,18,32,.95)',rgba(z.color,.7),1.3);ctx.strokeStyle=rgba(z.color,.55);ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<=80;i++){const u=i/80,d=Math.exp(-Math.pow((u-.5)/.085,2))*.28;const x=width*.08+u*width*.84,y=height*.82-d*s*.3;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.stroke();drawSpectrum(width*.52,height*.16,width*.4,height*.22,z,time,7);footerLabel('MUNDOS INFERIDOS A PARTIR DE SU LUZ',z);}
+    function sceneBiosignatures(z,time){const s=Math.min(width,height);drawPlanet(width*.28,height*.56,s*.17,z,time,true);drawSpectrum(width*.48,height*.22,width*.43,height*.32,z,time,10);const labels=['O₂','O₃','CH₄','H₂O'];for(let i=0;i<labels.length;i++){const x=width*(.54+i*.1),y=height*.68;circle(x,y,s*.036,rgba(i%2?z.color:[255,205,120],.2),rgba(i%2?z.color:[255,205,120],.62),1.3);ctx.font=`900 ${s*.025}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.7)';ctx.fillText(labels[i],x,y+s*.009);}footerLabel('UNA SEÑAL AISLADA NO BASTA',z);}
+    function sceneFalsePositives(z,time){const s=Math.min(width,height),ox=width*.5,oy=height*.78;drawBranching(ox,oy,height*.2,z,time,8,.88);const symbols=['BIO','UV','VOL','MIN','ERR','?'];for(let i=0;i<6;i++){const x=width*(.1+i*.16),y=height*.19;circle(x,y,s*.045,rgba(i===0?[90,255,170]:[255,160,100],.16),rgba(i===0?[90,255,170]:[255,160,100],.58),1.4);ctx.font=`900 ${s*.018}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.64)';ctx.fillText(symbols[i],x,y+s*.006);}footerLabel('SEÑAL → ALTERNATIVAS → VERIFICACIÓN',z);}
+    function sceneEvolutionaryIntelligence(z,time){const s=Math.min(width,height);for(let i=0;i<6;i++){const x=width*(.1+i*.16),y=height*(.65-.06*Math.sin(i));drawAbstractBody(x,y,s*.07,z,time,i);const nodesN=3+i;for(let k=0;k<nodesN;k++){const a=k/nodesN*TAU+time*.03;circle(x+Math.cos(a)*s*.09,y+Math.sin(a)*s*.06,2,rgba(z.color,.5));}}drawBranching(width*.5,height*.84,height*.2,z,time,10,.9);footerLabel('LA EVOLUCIÓN NO TIENE UNA ESCALERA ÚNICA',z);}
+    function sceneAlienForms(z,time){const s=Math.min(width,height);for(let i=0;i<8;i++){const x=width*(.1+(i%4)*.265),y=height*(.3+Math.floor(i/4)*.36);drawAbstractBody(x,y,s*.08,z,time,i+2);if(i===1||i===5)drawNetwork(x,y,s*.1,z,time,10+i);}footerLabel('¿RECONOCERÍAMOS OTRA FORMA DE MENTE?',z);}
+    function sceneTechnosignatures(z,time){const s=Math.min(width,height);drawStar(width*.28,height*.42,s*.08,[255,220,120],time);for(let i=0;i<18;i++){const a=i/18*TAU+time*.025,rr=s*(.13+(i%3)*.025),x=width*.28+Math.cos(a)*rr,y=height*.42+Math.sin(a)*rr*.55;polygon([[x-s*.01,y],[x+s*.01,y],[x+s*.015,y+s*.007],[x-s*.015,y+s*.007]],rgba(z.color,.48),rgba([255,255,255],.35),1);}drawSignal(width*.74,height*.4,s*.22,z,time,9);drawSpectrum(width*.48,height*.66,width*.42,height*.15,z,time,6);footerLabel('TECNOLOGÍA POSIBLE · INTENCIÓN DESCONOCIDA',z);}
+    function sceneFermi(z,time){const s=Math.min(width,height);for(let i=0;i<120;i++){const x=seeded(i+2400)*width,y=seeded(i+2500)*height*.72,r=.4+seeded(i+2600)*1.8;circle(x,y,r,rgba(i%9?z.color:[255,225,160],.12+.3*seeded(i+2700)));}const cx=width*.5,cy=height*.52;for(let i=0;i<6;i++){ctx.strokeStyle=rgba(z.color,.08);ctx.beginPath();ctx.arc(cx,cy,s*(.08+i*.055),0,TAU);ctx.stroke();}ctx.font=`900 ${s*.11}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.12)';ctx.fillText('?',cx,cy+s*.035);footerLabel('MUCHOS MUNDOS · NINGUNA SEÑAL CONFIRMADA',z);}
+    function sceneGreatFilter(z,time){const s=Math.min(width,height);for(let i=0;i<8;i++){const x=width*(.08+i*.12),h=s*(.14+seeded(i+2800)*.28);ctx.strokeStyle=rgba(i<4?z.color:[255,220,150],.35);ctx.strokeRect(x,height*.5-h*.5,s*.045,h);const p=fract(time*.035+i*.11);circle(x+s*.022,height*.5+h*.5-p*h,2+i%2,rgba([255,245,210],.48));}drawBranching(width*.5,height*.86,height*.14,z,time,8,.85);footerLabel('¿QUÉ TRANSICIÓN ES REALMENTE RARA?',z);}
+    function sceneAlienCivilizations(z,time){const s=Math.min(width,height);const centers=[[.18,.56],[.5,.34],[.8,.6]];centers.forEach((p,i)=>{const x=width*p[0],y=height*p[1];softHalo(x,y,s*.17,i===0?[100,230,180]:i===1?z.color:[255,180,115],.13);if(i===0)drawHabitat(x,y+s*.08,s*.38,z,3);if(i===1)drawNetwork(x,y,s*.15,z,time,20);if(i===2){for(let k=0;k<9;k++){const a=k/9*TAU+time*.02,rr=s*.11;polygon([[x+Math.cos(a)*rr-s*.012,y+Math.sin(a)*rr*.6],[x+Math.cos(a)*rr+s*.012,y+Math.sin(a)*rr*.6],[x+Math.cos(a)*rr,y+Math.sin(a)*rr*.6-s*.026]],rgba(z.color,.32),rgba([255,255,255],.4),1);}}});footerLabel('MISMA FÍSICA · HISTORIAS Y VALORES DISTINTOS',z);}
+    function sceneCommunication(z,time){const s=Math.min(width,height);drawStar(width*.18,height*.35,s*.05,[255,220,120],time);drawStar(width*.82,height*.62,s*.05,[150,205,255],time);ctx.setLineDash([7,10]);line(width*.22,height*.37,width*.78,height*.6,rgba(z.color,.3),1.5);ctx.setLineDash([]);for(let i=0;i<7;i++){const p=fract(time*.035+i/7),x=mix(width*.22,width*.78,p),y=mix(height*.37,height*.6,p);circle(x,y,2+i%2,rgba([255,245,190],.55));}drawSignal(width*.18,height*.35,s*.11,z,time,5);drawSignal(width*.82,height*.62,s*.11,z,-time,5);footerLabel('PREGUNTA HOY · RESPUESTA EN OTRA GENERACIÓN',z);}
+    function sceneUncertainContact(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.36;drawSignal(cx,cy,s*.18,z,time,8);const stations=8;for(let i=0;i<stations;i++){const a=i/stations*TAU+time*.005,x=cx+Math.cos(a)*s*.29,y=cy+Math.sin(a)*s*.18;circle(x,y,s*.026,'rgba(10,20,35,.55)',rgba(z.color,.55),1.2);line(cx,cy,x,y,rgba(z.color,.12),1);ctx.font=`800 ${s*.015}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.48)';ctx.fillText(i%2?'DATOS':'REV',x,y+s*.006);}drawBranching(cx,height*.72,height*.9,z,time,7,.8);footerLabel('CONTACTO PUEDE SIGNIFICAR SOLO DATOS',z);}
+    function sceneUnknownCosmicLife(z,time){const s=Math.min(width,height);const g=ctx.createLinearGradient(0,height,0,0);g.addColorStop(0,'rgba(5,9,22,.98)');g.addColorStop(.55,'rgba(45,60,90,.36)');g.addColorStop(1,'rgba(225,240,255,.16)');ctx.fillStyle=g;ctx.fillRect(0,0,width,height);for(let i=0;i<65;i++){const x=seeded(i+3100)*width,y=seeded(i+3200)*height*.74,r=.5+seeded(i+3300)*2.1;circle(x,y,r,rgba(i%8?z.color:[255,220,160],.13+.32*seeded(i+3400)));}for(let i=0;i<7;i++){const x=width*(.08+i*.14),y=height*(.22+.09*Math.sin(i*2.3));const mode=i%3;if(mode===0)drawMolecule(x,y,s*.055,z,time+i,6);else if(mode===1)drawAbstractBody(x,y,s*.055,z,time,i);else drawSignal(x,y,s*.07,z,time+i,4);}for(let i=0;i<4;i++){const x=width*(.24+i*.18),y=height*.66;ctx.strokeStyle=rgba(z.color,.16);ctx.beginPath();ctx.arc(x,y,s*(.025+i*.012),0,TAU);ctx.stroke();ctx.font=`900 ${s*.045}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.15)';ctx.fillText('?',x,y+s*.014);}footerLabel('MÁS ALLÁ: EL CONTACTO CÓSMICO',z);}
+
+    const SCENES=[sceneUnknownHorizon,sceneIngredients,sceneStellar,scenePlanetarySystems,sceneHabitableZone,sceneRealHabitability,scenePrebiotic,sceneOrigin,sceneSimpleBiospheres,sceneComplexLife,sceneExtremophiles,sceneMars,sceneOceanWorlds,sceneExoplanets,sceneBiosignatures,sceneFalsePositives,sceneEvolutionaryIntelligence,sceneAlienForms,sceneTechnosignatures,sceneFermi,sceneGreatFilter,sceneAlienCivilizations,sceneCommunication,sceneUncertainContact,sceneUnknownCosmicLife];
+
+    function zoneWeight(progress,p0,p1,feather=.035){const enter=smooth(clamp((progress-(p0-feather))/feather,0,1)),exit=1-smooth(clamp((progress-p1)/feather,0,1));return enter*exit;}
+    function drawScene(progress,time){for(const z of ZONES){const alpha=zoneWeight(progress,z.p0,z.p1,.016);if(alpha<.003)continue;ctx.save();ctx.globalAlpha=alpha;SCENES[z.scene](z,time);ctx.restore();}}
+    function drawBursts(dt){for(let i=bursts.length-1;i>=0;i--){const p=bursts[i];p.life-=dt*p.decay;if(p.life<=0){bursts.splice(i,1);continue}p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.94,dt*60);p.vy*=Math.pow(.94,dt*60);circle(p.x,p.y,p.r*(.5+p.life),rgba(p.color,p.life*.55));}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.life-=dt*1.05;if(w.life<=0){waves.splice(i,1);continue}w.radius+=dt*Math.min(width,height)*.24;ctx.strokeStyle=rgba(w.color,w.life*.25);ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(w.x,w.y,w.radius,0,TAU);ctx.stroke();}}
+
+    function render(now){const dt=Math.min(.04,Math.max(.001,(now-lastFrame)/1000));lastFrame=now;elapsed+=reducedMotion?dt*.24:dt;pointerX+=(targetX-pointerX)*(1-Math.pow(.001,dt));pointerY+=(targetY-pointerY)*(1-Math.pow(.001,dt));currentProgress+=(depthFromY(pointerY)-currentProgress)*(1-Math.pow(.005,dt));shownX+=(pointerX*width-shownX)*(1-Math.pow(.001,dt));shownY+=(pointerY*height-shownY)*(1-Math.pow(.001,dt));touchEnergy*=Math.pow(.075,dt);
+      drawBackground(currentProgress,elapsed);drawScene(currentProgress,elapsed);drawBursts(dt);if(!pointerDown)setAccent(zoneForDepth(currentProgress));requestAnimationFrame(render);}
+    window.addEventListener('resize',resize,{passive:true});window.addEventListener('orientationchange',()=>setTimeout(resize,120),{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden&&audioCtx&&audioCtx.state==='running')audioCtx.suspend().catch(()=>{});});
+    resize();setAccent(ZONES[0]);requestAnimationFrame(render);
+  })();
+</script>
+<div id="final-transition" hidden>Más allá: descubrir otra inteligencia no respondería solamente a la pregunta de si estamos solos. Abriría preguntas sobre cómo interpretar una mente radicalmente distinta, cómo comunicarnos a través de enormes distancias y qué significa compartir el cosmos con otra civilización.</div>
+</body>
+</html>
