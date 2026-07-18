@@ -1,0 +1,4727 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+    />
+    <meta name="theme-color" content="#070915" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="Exploración táctil, visual y sonora de las perspectivas cósmicas: desde una visión humana situada hasta muchas formas de comprender una realidad compartida."
+    />
+    <meta
+      name="application-name"
+      content="Espectro de las Perspectivas Cósmicas: de una Visión Humana a Muchas Formas de Comprender el Universo"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:title" content="Espectro de las Perspectivas Cósmicas" />
+    <meta
+      property="og:description"
+      content="Toca y asciende desde una perspectiva humana hasta una comprensión cósmica plural, comparando sentidos, mentes, matemáticas y cosmologías."
+    />
+    <title>
+      Espectro de las Perspectivas Cósmicas: de una Visión Humana a Muchas
+      Formas de Comprender el Universo
+    </title>
+    <style>
+      :root {
+        --accent: 180 235 245;
+        --accent-soft: rgb(var(--accent) / 0.34);
+        --ink: 255 255 255;
+        --panel: 8 9 14;
+        --scan-x: 50vw;
+        --scan-y: 96vh;
+        --progress: 2%;
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        overscroll-behavior: none;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+        background: #05070a;
+      }
+
+      body {
+        position: fixed;
+        inset: 0;
+        color: rgb(var(--ink));
+        font-family:
+          Inter,
+          ui-rounded,
+          "SF Pro Rounded",
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+      }
+
+      #cosmic-perspectives-spectrum {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: crosshair;
+        outline: none;
+      }
+
+      #light-field,
+      #scan-line,
+      #grain,
+      #vignette,
+      #top-bloom,
+      #bottom-glow {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      #light-field {
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 180ms ease;
+        background: radial-gradient(
+          circle at var(--scan-x) var(--scan-y),
+          rgb(var(--accent) / 0.56) 0,
+          rgb(var(--accent) / 0.15) 11%,
+          transparent 35%
+        );
+        mix-blend-mode: screen;
+      }
+      body.active #light-field {
+        opacity: 0.82;
+      }
+
+      #scan-line {
+        z-index: 3;
+        opacity: 0;
+        transition: opacity 150ms ease;
+        background:
+          linear-gradient(
+            90deg,
+            transparent calc(var(--scan-x) - 1px),
+            rgb(var(--accent) / 0.52) var(--scan-x),
+            transparent calc(var(--scan-x) + 1px)
+          ),
+          linear-gradient(
+            180deg,
+            transparent calc(var(--scan-y) - 1px),
+            rgb(var(--accent) / 0.32) var(--scan-y),
+            transparent calc(var(--scan-y) + 1px)
+          );
+        mix-blend-mode: screen;
+      }
+      body.active #scan-line {
+        opacity: 0.17;
+      }
+
+      #grain {
+        z-index: 4;
+        opacity: 0.042;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+        mix-blend-mode: overlay;
+      }
+
+      #vignette {
+        z-index: 5;
+        background:
+          radial-gradient(
+            ellipse at center,
+            transparent 38%,
+            rgb(0 0 0 / 0.22) 72%,
+            rgb(0 0 0 / 0.84) 128%
+          ),
+          linear-gradient(
+            90deg,
+            rgb(0 0 0 / 0.47),
+            transparent 13%,
+            transparent 87%,
+            rgb(0 0 0 / 0.45)
+          );
+      }
+
+      #top-bloom {
+        z-index: 1;
+        opacity: 0.5;
+        background: radial-gradient(
+          ellipse at 50% -10%,
+          rgb(225 241 255 / 0.38),
+          transparent 52%
+        );
+        mix-blend-mode: screen;
+      }
+
+      #bottom-glow {
+        z-index: 1;
+        opacity: 0.46;
+        background: radial-gradient(
+          ellipse at 50% 110%,
+          rgb(190 210 255 / 0.18),
+          transparent 50%
+        );
+        mix-blend-mode: screen;
+      }
+
+      #readout {
+        position: fixed;
+        z-index: 9;
+        left: 50%;
+        top: 49%;
+        width: min(92vw, 860px);
+        padding: clamp(15px, 3.2vw, 27px) clamp(19px, 5vw, 52px)
+          clamp(18px, 3.7vw, 33px);
+        border: 1px solid rgb(255 255 255 / 0.22);
+        border-radius: clamp(25px, 6vw, 52px);
+        color: white;
+        text-align: center;
+        pointer-events: none;
+        opacity: 0;
+        filter: blur(14px);
+        transform: translate(-50%, -50%) scale(0.7);
+        background:
+          linear-gradient(145deg, rgb(255 255 255 / 0.12), transparent 56%),
+          rgb(var(--panel) / 0.66);
+        box-shadow:
+          0 24px 80px rgb(0 0 0 / 0.58),
+          0 0 86px var(--accent-soft),
+          inset 0 1px 0 rgb(255 255 255 / 0.26),
+          inset 0 -1px 0 rgb(0 0 0 / 0.25);
+        backdrop-filter: blur(23px) saturate(1.36);
+        -webkit-backdrop-filter: blur(23px) saturate(1.36);
+        transition:
+          opacity 170ms ease,
+          filter 240ms ease,
+          transform 410ms cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 140ms linear;
+        will-change: opacity, filter, transform;
+      }
+
+      #readout.visible {
+        opacity: 1;
+        filter: blur(0);
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      #evidence-class {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 27px;
+        margin-bottom: clamp(9px, 2vw, 15px);
+        padding: 6px 13px 7px;
+        border: 1px solid rgb(var(--accent) / 0.62);
+        border-radius: 999px;
+        color: rgb(var(--accent));
+        font-size: clamp(0.62rem, 2.1vw, 0.87rem);
+        font-weight: 950;
+        line-height: 1;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        background: rgb(var(--accent) / 0.09);
+        box-shadow:
+          0 0 25px var(--accent-soft),
+          inset 0 1px 0 rgb(255 255 255 / 0.1);
+      }
+
+      #zone-name {
+        display: block;
+        margin: 0;
+        font-size: clamp(2rem, 8.5vw, 6.8rem);
+        font-weight: 950;
+        line-height: 0.86;
+        letter-spacing: -0.058em;
+        word-spacing: 0.1em;
+        text-transform: uppercase;
+        text-wrap: balance;
+        text-shadow:
+          0 0 30px var(--accent-soft),
+          0 5px 24px rgb(0 0 0 / 0.5);
+      }
+      #zone-name.compact {
+        font-size: clamp(1.7rem, 7.15vw, 5.55rem);
+        letter-spacing: -0.046em;
+        line-height: 0.9;
+      }
+      #zone-name.long {
+        font-size: clamp(1.38rem, 5.9vw, 4.45rem);
+        letter-spacing: -0.034em;
+        line-height: 0.94;
+      }
+
+      #feature-name {
+        display: block;
+        margin-top: clamp(8px, 1.8vw, 14px);
+        font-size: clamp(0.9rem, 3.2vw, 1.62rem);
+        font-weight: 880;
+        line-height: 1.08;
+        letter-spacing: 0.105em;
+        text-transform: uppercase;
+      }
+
+      #metric {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 29px;
+        margin-top: clamp(10px, 2vw, 17px);
+        padding: 7px 13px 8px;
+        border: 1px solid rgb(255 255 255 / 0.18);
+        border-radius: 999px;
+        font-size: clamp(0.67rem, 2.2vw, 0.92rem);
+        font-weight: 820;
+        line-height: 1.12;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        background: rgb(0 0 0 / 0.2);
+        box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11);
+      }
+
+      #fact {
+        display: block;
+        max-width: 700px;
+        margin: clamp(10px, 2.25vw, 17px) auto 0;
+        font-size: clamp(0.82rem, 2.63vw, 1.1rem);
+        font-weight: 600;
+        line-height: 1.42;
+        letter-spacing: 0.005em;
+        color: rgb(255 255 255 / 0.91);
+        text-wrap: pretty;
+      }
+
+      #touch-orb {
+        position: fixed;
+        z-index: 8;
+        left: 50%;
+        top: 93%;
+        width: clamp(58px, 15vw, 104px);
+        aspect-ratio: 1;
+        border: 1px solid rgb(var(--accent) / 0.82);
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -50%) scale(0.4);
+        background: radial-gradient(
+          circle,
+          rgb(255 255 255 / 0.82) 0 2%,
+          rgb(var(--accent) / 0.34) 7%,
+          rgb(var(--accent) / 0.09) 36%,
+          transparent 70%
+        );
+        box-shadow:
+          0 0 18px rgb(var(--accent) / 0.58),
+          0 0 62px rgb(var(--accent) / 0.42),
+          inset 0 0 26px rgb(var(--accent) / 0.19);
+        transition:
+          opacity 150ms ease,
+          transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      #touch-orb.visible {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      #journey-scale {
+        position: fixed;
+        z-index: 7;
+        right: max(10px, env(safe-area-inset-right));
+        top: max(19px, env(safe-area-inset-top));
+        bottom: max(18px, env(safe-area-inset-bottom));
+        width: clamp(50px, 10vw, 78px);
+        pointer-events: none;
+        opacity: 0.58;
+        transition: opacity 180ms ease;
+      }
+      body.active #journey-scale {
+        opacity: 0.9;
+      }
+
+      #scale-track {
+        position: absolute;
+        right: 11px;
+        top: 48px;
+        bottom: 48px;
+        width: 3px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgb(255 255 255 / 0.14);
+        box-shadow: 0 0 12px rgb(0 0 0 / 0.5);
+      }
+      #scale-fill {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--progress);
+        border-radius: inherit;
+        background: linear-gradient(
+          to top,
+          rgb(94 214 164 / 0.68),
+          rgb(var(--accent))
+        );
+        box-shadow: 0 0 14px rgb(var(--accent) / 0.72);
+      }
+      #scale-dot {
+        position: absolute;
+        right: 6px;
+        bottom: 48px;
+        width: 13px;
+        height: 13px;
+        border: 2px solid rgb(255 255 255 / 0.84);
+        border-radius: 50%;
+        transform: translateY(50%);
+        background: rgb(var(--accent));
+        box-shadow: 0 0 17px rgb(var(--accent) / 0.85);
+      }
+      #scale-bottom,
+      #scale-top {
+        position: absolute;
+        right: 0;
+        width: 74px;
+        font-size: clamp(0.49rem, 1.6vw, 0.61rem);
+        font-weight: 900;
+        line-height: 1.06;
+        letter-spacing: 0.11em;
+        text-align: right;
+        text-transform: uppercase;
+        color: rgb(255 255 255 / 0.65);
+      }
+      #scale-top {
+        top: 0;
+      }
+      #scale-bottom {
+        bottom: 0;
+      }
+      #scale-value {
+        position: absolute;
+        right: 25px;
+        top: 50%;
+        width: min(34vh, 250px);
+        transform: translateY(-50%) rotate(-90deg);
+        transform-origin: right center;
+        font-size: clamp(0.54rem, 1.7vw, 0.66rem);
+        font-weight: 950;
+        line-height: 1;
+        letter-spacing: 0.14em;
+        text-align: center;
+        text-transform: uppercase;
+        color: rgb(var(--accent));
+        text-shadow: 0 0 14px rgb(var(--accent) / 0.6);
+        white-space: nowrap;
+      }
+
+      #hint {
+        position: fixed;
+        z-index: 6;
+        left: 50%;
+        bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+        width: min(78vw, 530px);
+        transform: translateX(-50%);
+        color: rgb(255 255 255 / 0.78);
+        text-align: center;
+        pointer-events: none;
+        font-size: clamp(0.7rem, 2.4vw, 0.94rem);
+        font-weight: 800;
+        line-height: 1.34;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-shadow: 0 2px 16px rgb(0 0 0 / 0.8);
+        animation: breathe 3.2s ease-in-out infinite;
+      }
+      #hint strong {
+        color: rgb(var(--accent));
+      }
+
+      .ripple {
+        position: fixed;
+        z-index: 7;
+        width: 20px;
+        height: 20px;
+        border: 1px solid rgb(var(--accent) / 0.78);
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        box-shadow:
+          0 0 22px rgb(var(--accent) / 0.52),
+          inset 0 0 15px rgb(var(--accent) / 0.2);
+        animation: ripple 920ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes ripple {
+        to {
+          width: min(72vw, 560px);
+          height: min(72vw, 560px);
+          opacity: 0;
+        }
+      }
+      @keyframes breathe {
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          opacity: 0.95;
+          transform: translateX(-50%) translateY(-3px);
+        }
+      }
+
+      @media (max-height: 620px) {
+        #readout {
+          width: min(88vw, 760px);
+          padding-top: 12px;
+          padding-bottom: 14px;
+        }
+        #evidence-class {
+          margin-bottom: 7px;
+        }
+        #fact {
+          margin-top: 8px;
+          line-height: 1.32;
+        }
+        #metric {
+          margin-top: 7px;
+        }
+        #journey-scale {
+          opacity: 0.46;
+        }
+      }
+
+      @media (max-height: 360px) {
+        #readout {
+          top: 50%;
+          width: min(88vw, 760px);
+          padding: 8px 18px 10px;
+          border-radius: 24px;
+        }
+        #evidence-class {
+          min-height: 20px;
+          margin-bottom: 4px;
+          padding: 4px 10px 5px;
+          font-size: 0.52rem;
+        }
+        #zone-name {
+          font-size: clamp(1.35rem, 6.2vw, 3.15rem);
+          line-height: 0.87;
+        }
+        #zone-name.compact {
+          font-size: clamp(1.22rem, 5.45vw, 2.75rem);
+        }
+        #zone-name.long {
+          font-size: clamp(1.06rem, 4.75vw, 2.35rem);
+        }
+        #feature-name {
+          margin-top: 4px;
+          font-size: clamp(0.62rem, 2.25vw, 0.83rem);
+        }
+        #metric {
+          min-height: 21px;
+          margin-top: 5px;
+          padding: 4px 10px 5px;
+          font-size: clamp(0.49rem, 1.8vw, 0.66rem);
+        }
+        #fact {
+          margin-top: 5px;
+          font-size: clamp(0.58rem, 1.9vw, 0.72rem);
+          line-height: 1.22;
+        }
+      }
+
+      @media (max-width: 460px) {
+        #readout {
+          width: 91vw;
+        }
+        #journey-scale {
+          right: 6px;
+        }
+        #scale-value {
+          display: none;
+        }
+        #scale-bottom,
+        #scale-top {
+          width: 68px;
+          font-size: 0.42rem;
+        }
+        #hint {
+          width: 72vw;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #hint {
+          animation: none;
+        }
+        .ripple {
+          animation-duration: 1ms;
+        }
+        #readout,
+        #touch-orb,
+        #light-field,
+        #scan-line {
+          transition-duration: 1ms;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas
+      id="cosmic-perspectives-spectrum"
+      tabindex="0"
+      role="application"
+      aria-label="Exploración táctil de perspectivas cósmicas, desde otra perspectiva sobre la realidad en la parte inferior hasta una perspectiva cósmica plural en la parte superior. La posición horizontal cambia el marco cognitivo. Toca, arrastra o usa las flechas del teclado."
+    ></canvas>
+    <div id="top-bloom" aria-hidden="true"></div>
+    <div id="bottom-glow" aria-hidden="true"></div>
+    <div id="light-field" aria-hidden="true"></div>
+    <div id="scan-line" aria-hidden="true"></div>
+    <div id="grain" aria-hidden="true"></div>
+    <div id="vignette" aria-hidden="true"></div>
+    <div id="hint" aria-hidden="true">
+      <strong>Toca y asciende</strong> · de una visión humana a muchas formas de
+      comprender
+    </div>
+    <div id="readout" aria-live="polite" aria-atomic="true">
+      <span id="evidence-class"></span><strong id="zone-name"></strong
+      ><span id="feature-name"></span><span id="metric"></span
+      ><span id="fact"></span>
+    </div>
+    <div id="touch-orb" aria-hidden="true"></div>
+    <div id="journey-scale" aria-hidden="true">
+      <span id="scale-top">Perspectiva plural</span>
+      <div id="scale-track"><div id="scale-fill"></div></div>
+      <div id="scale-dot"></div>
+      <span id="scale-value">Otra perspectiva sobre la realidad</span
+      ><span id="scale-bottom">Otra perspectiva</span>
+    </div>
+
+    <!--
+    Visualización educativa conceptual, táctil y sin dependencias externas.
+
+    La escala vertical representa una ampliación de perspectiva: mente humana, mente alienígena,
+    conceptos alternativos, modelos comparados y perspectiva plural. No representa una jerarquía
+    en la que una inteligencia superior sustituye a otra. La dimensión horizontal contrasta marcos:
+    identidad individual o colectiva, tiempo lineal o cíclico, realidad de objetos o de procesos,
+    cognición biológica o artificial, acuerdo empírico o desacuerdo fundamental.
+
+    La aplicación evita tanto el antropocentrismo como el relativismo. Diferentes perspectivas pueden
+    producir modelos distintos, pero las observaciones, predicciones y pruebas siguen limitando qué
+    afirmaciones funcionan. Sus escenas son metáforas educativas sobre posibilidades, no descripciones
+    confirmadas de civilizaciones extraterrestres.
+  -->
+
+    <script>
+      (() => {
+        "use strict";
+
+        const canvas = document.getElementById("cosmic-perspectives-spectrum");
+        const ctx = canvas.getContext("2d", { alpha: false });
+        const root = document.documentElement;
+        const readout = document.getElementById("readout");
+        const evidenceClass = document.getElementById("evidence-class");
+        const zoneName = document.getElementById("zone-name");
+        const featureName = document.getElementById("feature-name");
+        const metric = document.getElementById("metric");
+        const fact = document.getElementById("fact");
+        const touchOrb = document.getElementById("touch-orb");
+        const scaleValue = document.getElementById("scale-value");
+        const scaleDot = document.getElementById("scale-dot");
+        const hint = document.getElementById("hint");
+
+        const TAU = Math.PI * 2;
+        const reducedMotion = matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+        const mix = (a, b, t) => a + (b - a) * t;
+        const smooth = (t) => t * t * (3 - 2 * t);
+        const fract = (v) => v - Math.floor(v);
+        const seeded = (n) =>
+          fract(Math.sin(n * 127.1 + 311.7) * 43758.5453123);
+        const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+        const ZONES = [
+          {
+            id: "another-perspective",
+            name: "Otra perspectiva sobre la realidad",
+            className: "Punto de partida · el mensaje revela una mente situada",
+            metric:
+              "Contacto logrado → diferencia conceptual reconocida → nuestra propia visión se vuelve visible",
+            fact: "Reconocer otra inteligencia también significa descubrir que la perspectiva humana es una perspectiva entre otras, no un punto de vista neutral.",
+            scene: 0,
+            features: [
+              [
+                "mismo fenómeno",
+                "Dos civilizaciones pueden señalar la misma estrella y, aun así, dividir sus propiedades en categorías muy diferentes.",
+              ],
+              [
+                "símbolo recibido",
+                "Un símbolo empieza a tener significado cuando puede relacionarse con observaciones, acciones y consecuencias compartidas.",
+              ],
+              [
+                "modelo ajeno",
+                "Comprender un modelo extranjero exige reconstruir qué distingue, qué agrupa y qué considera explicativo.",
+              ],
+              [
+                "sorpresa humana",
+                "Lo más revelador puede no ser lo que la otra mente sabe, sino aquello que nunca necesitó conceptualizar como nosotros.",
+              ],
+              [
+                "sorpresa alienígena",
+                "Nuestras distinciones también podrían exponer regularidades que la otra civilización había pasado por alto.",
+              ],
+              [
+                "cambio mutuo",
+                "El contacto profundo no deja intacta a ninguna perspectiva: ambas revisan sus mapas de la realidad.",
+              ],
+            ],
+            p0: 0.0,
+            p1: 0.04,
+            color: [190, 220, 255],
+            sound: {
+              base: 48.0,
+              filter: 720,
+              noise: 0.008,
+              pulse: 0.03,
+              type: "sine",
+            },
+          },
+          {
+            id: "human-perspective",
+            name: "Perspectiva humana",
+            className:
+              "Punto de vista situado · categorías nacidas de cuerpos terrestres",
+            metric:
+              "Cuerpo + entorno + historia + lenguaje → mundo humano aparentemente evidente",
+            fact: "Objetos, individuos, pasado, futuro y causa parecen categorías naturales, pero nuestra forma de organizarlas depende de cómo vivimos y percibimos.",
+            scene: 1,
+            features: [
+              [
+                "objetos",
+                "La visión humana separa superficies persistentes y favorece pensar el mundo como conjuntos de cosas delimitadas.",
+              ],
+              [
+                "espacio",
+                "Nuestro movimiento sobre una superficie y bajo gravedad moldea intuiciones como arriba, abajo, cerca y horizonte.",
+              ],
+              [
+                "tiempo",
+                "Recordamos el pasado, anticipamos el futuro y experimentamos un presente estrecho, lo que favorece relatos lineales.",
+              ],
+              [
+                "causalidad",
+                "Buscamos acontecimientos anteriores que expliquen cambios posteriores, aunque muchas causas formen redes y no cadenas simples.",
+              ],
+              [
+                "identidad",
+                "Un cuerpo relativamente continuo favorece la idea de un yo individual que permanece a través del cambio.",
+              ],
+              [
+                "mente y materia",
+                "Separar experiencia interna y mundo externo es útil, pero no garantiza que esa división sea fundamental.",
+              ],
+            ],
+            p0: 0.04,
+            p1: 0.08,
+            color: [120, 200, 255],
+            sound: {
+              base: 51.55,
+              filter: 808,
+              noise: 0.012,
+              pulse: 0.044,
+              type: "triangle",
+            },
+          },
+          {
+            id: "terrestrial-senses",
+            name: "Sentidos terrestres",
+            className:
+              "Ventana biológica · una fracción pequeña de la información disponible",
+            metric:
+              "Propiedades físicas → receptores biológicos → señales nerviosas → experiencia consciente",
+            fact: "Los sentidos no copian el universo: seleccionan las variables que ayudaron a organismos terrestres a sobrevivir y actuar.",
+            scene: 2,
+            features: [
+              [
+                "luz visible",
+                "Los ojos humanos detectan una banda estrecha de radiación electromagnética y la convierten en color.",
+              ],
+              [
+                "sonido",
+                "Oímos solo parte de las vibraciones que atraviesan el aire; otros medios y frecuencias quedan fuera de nuestra experiencia directa.",
+              ],
+              [
+                "química",
+                "Olfato y gusto agrupan moléculas según receptores y necesidades biológicas, no según una clasificación completa de la química.",
+              ],
+              [
+                "tacto y temperatura",
+                "La piel integra presión, vibración, daño y transferencia térmica en experiencias corporales distintas.",
+              ],
+              [
+                "equilibrio y postura",
+                "El oído interno y la propiocepción construyen una referencia corporal continua que rara vez notamos hasta que falla.",
+              ],
+              [
+                "duración humana",
+                "Nuestros sentidos integran milisegundos y segundos; procesos demasiado rápidos o lentos parecen simultáneos o inmóviles.",
+              ],
+            ],
+            p0: 0.08,
+            p1: 0.12,
+            color: [80, 225, 235],
+            sound: {
+              base: 55.1,
+              filter: 896,
+              noise: 0.016,
+              pulse: 0.058,
+              type: "sine",
+            },
+          },
+          {
+            id: "brain-perception",
+            name: "Cerebro y percepción",
+            className:
+              "Construcción activa · percibir es inferir con información incompleta",
+            metric:
+              "Señal ambigua + memoria + expectativa + atención → mejor hipótesis disponible",
+            fact: "La percepción combina datos sensoriales con modelos internos; por eso puede ser estable y útil sin ser una reproducción literal.",
+            scene: 3,
+            features: [
+              [
+                "selección",
+                "La atención amplifica una parte del flujo sensorial y deja gran parte sin acceso consciente.",
+              ],
+              [
+                "predicción",
+                "El cerebro anticipa regularidades y usa los errores entre expectativa y señal para actualizar su interpretación.",
+              ],
+              [
+                "constancia",
+                "Reconocemos un objeto bajo luces y ángulos distintos porque la percepción compensa cambios previsibles.",
+              ],
+              [
+                "memoria",
+                "Lo percibido depende de categorías aprendidas y de experiencias anteriores que orientan qué diferencias importan.",
+              ],
+              [
+                "acción",
+                "Percibir está ligado a posibilidades de actuar: alcanzar, evitar, seguir, manipular o comunicar.",
+              ],
+              [
+                "ilusiones",
+                "Una ilusión revela una inferencia normalmente útil aplicada a condiciones para las que no fue diseñada.",
+              ],
+            ],
+            p0: 0.12,
+            p1: 0.16,
+            color: [95, 235, 190],
+            sound: {
+              base: 58.65,
+              filter: 984,
+              noise: 0.02,
+              pulse: 0.072,
+              type: "sawtooth",
+            },
+          },
+          {
+            id: "language",
+            name: "Lenguaje",
+            className:
+              "Segmentación compartida · nombrar estabiliza diferencias",
+            metric:
+              "Experiencia continua → categorías lingüísticas → combinaciones → pensamiento comunicable",
+            fact: "El lenguaje permite comparar mentes, pero también dirige la atención hacia algunas relaciones y vuelve otras difíciles de expresar.",
+            scene: 4,
+            features: [
+              [
+                "nombres",
+                "Nombrar crea unidades reutilizables, aunque los límites del concepto no existan como fronteras nítidas en la naturaleza.",
+              ],
+              [
+                "verbos",
+                "Las lenguas pueden destacar acciones, estados, cambios o relaciones con grados diferentes de centralidad.",
+              ],
+              [
+                "tiempo gramatical",
+                "Algunas lenguas obligan a marcar cuándo ocurrió algo; otras priorizan si fue visto, inferido o contado.",
+              ],
+              [
+                "metáforas",
+                "Conceptos abstractos suelen construirse con experiencias corporales como camino, peso, altura, equilibrio o contenedor.",
+              ],
+              [
+                "contexto",
+                "Una misma expresión puede depender de quién habla, qué sabe el grupo y qué situación se comparte.",
+              ],
+              [
+                "silencio conceptual",
+                "Aquello que una lengua no lexicaliza todavía puede pensarse, pero suele requerir descripción, ejemplo o una nueva palabra.",
+              ],
+            ],
+            p0: 0.16,
+            p1: 0.2,
+            color: [145, 230, 150],
+            sound: {
+              base: 62.2,
+              filter: 1072,
+              noise: 0.024,
+              pulse: 0.086,
+              type: "sine",
+            },
+          },
+          {
+            id: "culture",
+            name: "Cultura",
+            className:
+              "Memoria colectiva · generaciones que heredan maneras de interpretar",
+            metric:
+              "Aprendizaje social + instituciones + relatos + herramientas → mundo cultural acumulado",
+            fact: "La cultura conserva distinciones, valores y procedimientos mucho más tiempo que una vida individual, convirtiéndolos en supuestos aparentemente naturales.",
+            scene: 5,
+            features: [
+              [
+                "relatos",
+                "Los relatos conectan acontecimientos con agentes, causas y consecuencias, y enseñan qué merece recordarse.",
+              ],
+              [
+                "valores",
+                "Las sociedades no solo describen el mundo: también clasifican qué es importante, peligroso, sagrado, bello o justo.",
+              ],
+              [
+                "instituciones",
+                "Escuelas, laboratorios, tribunales y archivos estabilizan métodos para producir y validar conocimiento.",
+              ],
+              [
+                "tecnología",
+                "Cada instrumento hace observables ciertas propiedades y vuelve habitual una forma particular de intervenir en ellas.",
+              ],
+              [
+                "historia",
+                "Guerras, migraciones, descubrimientos y catástrofes dejan conceptos que otra civilización quizá nunca necesitó.",
+              ],
+              [
+                "pluralidad humana",
+                "La humanidad ya contiene perspectivas distintas; ninguna cultura representa por sí sola todo lo humano.",
+              ],
+            ],
+            p0: 0.2,
+            p1: 0.24,
+            color: [205, 220, 120],
+            sound: {
+              base: 65.75,
+              filter: 1160,
+              noise: 0.028,
+              pulse: 0.1,
+              type: "triangle",
+            },
+          },
+          {
+            id: "scientific-models",
+            name: "Modelos científicos",
+            className:
+              "Representación comprobable · simplificar para explicar y predecir",
+            metric:
+              "Observaciones → idealización → modelo → predicción → prueba → revisión",
+            fact: "La ciencia reduce sesgos mediante evidencia pública y métodos reproducibles, pero sus modelos siguen siendo representaciones parciales, no la realidad completa.",
+            scene: 6,
+            features: [
+              [
+                "medición",
+                "Medir transforma una propiedad en una comparación reproducible, pero depende de instrumentos, unidades y procedimientos.",
+              ],
+              [
+                "idealización",
+                "Un modelo omite detalles para aislar relaciones; su utilidad depende de saber cuándo esas omisiones dejan de ser aceptables.",
+              ],
+              [
+                "predicción",
+                "Modelos distintos pueden describir datos pasados, pero nuevas predicciones permiten distinguir cuál generaliza mejor.",
+              ],
+              [
+                "escala",
+                "Una explicación adecuada para moléculas puede no ser la más útil para células, ecosistemas o galaxias.",
+              ],
+              [
+                "incertidumbre",
+                "La incertidumbre cuantifica límites de datos y modelos; no convierte todas las explicaciones en igualmente plausibles.",
+              ],
+              [
+                "revisión",
+                "Una teoría fuerte puede cambiar cuando nuevas pruebas exigen ampliar su dominio o reemplazar supuestos.",
+              ],
+            ],
+            p0: 0.24,
+            p1: 0.28,
+            color: [245, 200, 110],
+            sound: {
+              base: 69.3,
+              filter: 1248,
+              noise: 0.032,
+              pulse: 0.114,
+              type: "sine",
+            },
+          },
+          {
+            id: "cognitive-limits",
+            name: "Límites cognitivos",
+            className:
+              "Recursos finitos · ninguna mente procesa todo lo relevante",
+            metric:
+              "Capacidad limitada + problemas enormes → atajos, instrumentos y colaboración",
+            fact: "Una inteligencia puede ser muy avanzada y aun así tener puntos ciegos producidos por su arquitectura, velocidad, memoria y entorno.",
+            scene: 7,
+            features: [
+              [
+                "memoria finita",
+                "Recordar requiere seleccionar, comprimir y reconstruir; una memoria perfecta también tendría costos de búsqueda y relevancia.",
+              ],
+              [
+                "atención limitada",
+                "Procesar todo con igual detalle impediría actuar a tiempo; la selección es una necesidad, no solo un defecto.",
+              ],
+              [
+                "dimensionalidad",
+                "Relaciones de muchas variables pueden superar la intuición aunque sean tratables con matemáticas y computación.",
+              ],
+              [
+                "sesgos útiles",
+                "Un atajo que funciona en el entorno habitual puede producir errores sistemáticos en condiciones nuevas.",
+              ],
+              [
+                "dependencia instrumental",
+                "Telescopios, sensores y simulaciones amplían la mente, pero introducen nuevas cadenas de interpretación.",
+              ],
+              [
+                "problemas indecidibles",
+                "Algunos límites no dependen de falta de inteligencia: ciertas preguntas pueden no tener un procedimiento general que siempre termine.",
+              ],
+            ],
+            p0: 0.28,
+            p1: 0.32,
+            color: [255, 165, 125],
+            sound: {
+              base: 72.85,
+              filter: 1336,
+              noise: 0.008,
+              pulse: 0.128,
+              type: "sawtooth",
+            },
+          },
+          {
+            id: "alien-perspective",
+            name: "Perspectiva alienígena",
+            className:
+              "Mente no terrestre · evolución bajo otras regularidades ambientales",
+            metric:
+              "Otro mundo + otra historia evolutiva → saliencias y conceptos inesperados",
+            fact: "Una civilización alienígena no sería simplemente humana con otra apariencia; podría construir experiencia y conocimiento desde variables que nunca sentimos.",
+            scene: 8,
+            features: [
+              [
+                "mundo oceánico",
+                "Una especie sin tierra firme podría organizar su física cotidiana alrededor de flujo, presión, profundidad y gradientes.",
+              ],
+              [
+                "mundo bloqueado",
+                "En un planeta acoplado por marea, día, noche y clima podrían ser regiones espaciales permanentes antes que ciclos temporales.",
+              ],
+              [
+                "atmósfera densa",
+                "Flotar y navegar en tres dimensiones podría volver menos intuitiva la noción humana de superficie estable.",
+              ],
+              [
+                "hábitat subterráneo",
+                "Una civilización sin cielo visible podría descubrir el cosmos mediante vibraciones, partículas o excavación instrumental.",
+              ],
+              [
+                "estrellas binarias",
+                "Sombras, estaciones y calendarios complejos podrían convertir la dinámica orbital en conocimiento cotidiano.",
+              ],
+              [
+                "ecosistema colmena",
+                "Si la cooperación es obligatoria desde el origen, individuo y sociedad podrían no surgir como conceptos separados.",
+              ],
+            ],
+            p0: 0.32,
+            p1: 0.36,
+            color: [255, 135, 175],
+            sound: {
+              base: 76.4,
+              filter: 1424,
+              noise: 0.012,
+              pulse: 0.142,
+              type: "sine",
+            },
+          },
+          {
+            id: "unknown-senses",
+            name: "Sentidos desconocidos",
+            className:
+              "Otras variables perceptibles · conceptos nacidos antes de los instrumentos",
+            metric:
+              "Propiedad física directamente sentida → patrón cotidiano → categoría primaria",
+            fact: "Lo que para nosotros exige un detector y una gráfica podría ser para otra especie una cualidad inmediata, tan básica como el color.",
+            scene: 9,
+            features: [
+              [
+                "campos magnéticos",
+                "Una mente magnetosensible podría experimentar orientación, tormentas estelares y estructuras planetarias como formas espaciales directas.",
+              ],
+              [
+                "polarización",
+                "Percibir la orientación de la luz revelaría cielos y superficies con patrones invisibles para la visión humana ordinaria.",
+              ],
+              [
+                "campos eléctricos",
+                "Gradientes eléctricos podrían funcionar como textura, distancia o actividad biológica en medios conductores.",
+              ],
+              [
+                "gradientes químicos",
+                "Una percepción química espacial continua podría representar organismos y corrientes como paisajes dinámicos.",
+              ],
+              [
+                "radio natural",
+                "Una biología sensible a radiofrecuencias percibiría actividad atmosférica, estelar o tecnológica dentro de su entorno sensorial.",
+              ],
+              [
+                "cambios gravitatorios",
+                "Detectar variaciones minúsculas de gravedad directamente sería difícil biológicamente, pero transformaría la intuición sobre masa y movimiento.",
+              ],
+            ],
+            p0: 0.36,
+            p1: 0.4,
+            color: [235, 130, 225],
+            sound: {
+              base: 79.95,
+              filter: 1512,
+              noise: 0.016,
+              pulse: 0.03,
+              type: "triangle",
+            },
+          },
+          {
+            id: "different-timescales",
+            name: "Escalas temporales distintas",
+            className:
+              "Ritmos de mente y vida · cada duración define qué cuenta como acontecimiento",
+            metric:
+              "Velocidad cognitiva × longevidad × ciclos ambientales → experiencia temporal",
+            fact: "Un proceso puede parecer explosivo, conversacional, histórico o permanente según la escala temporal de quien lo observa.",
+            scene: 10,
+            features: [
+              [
+                "vidas breves",
+                "Una especie de horas o días podría transmitir cultura rápidamente, pero experimentar estaciones como procesos transgeneracionales.",
+              ],
+              [
+                "vidas milenarias",
+                "Una persona longeva podría recordar cambios climáticos y políticos que para nosotros pertenecen a la historia.",
+              ],
+              [
+                "conciencia estacional",
+                "Una mente que despierta solo en ciertas condiciones dividiría continuidad personal y memoria de otra manera.",
+              ],
+              [
+                "memoria heredada",
+                "Información transmitida biológicamente podría hacer que experiencia ancestral y aprendizaje individual se solapen.",
+              ],
+              [
+                "aceleración digital",
+                "Una mente artificial rápida podría vivir años subjetivos durante una conversación humana breve.",
+              ],
+              [
+                "diálogo secular",
+                "Entre estrellas, incluso civilizaciones rápidas deben aceptar turnos separados por décadas o siglos físicos.",
+              ],
+            ],
+            p0: 0.4,
+            p1: 0.44,
+            color: [190, 140, 255],
+            sound: {
+              base: 83.5,
+              filter: 1600,
+              noise: 0.02,
+              pulse: 0.044,
+              type: "sine",
+            },
+          },
+          {
+            id: "other-individuality",
+            name: "Otras formas de individualidad",
+            className:
+              "Fronteras variables · el yo puede ser organismo, proceso o coalición",
+            metric:
+              "Integración de información + continuidad + control → unidad funcional posible",
+            fact: "La inteligencia no tiene que pertenecer a un solo cuerpo permanente; la pregunta “¿con quién hablamos?” puede tener varias respuestas válidas.",
+            scene: 11,
+            features: [
+              [
+                "mente solitaria",
+                "Un organismo delimitado puede integrar percepción, memoria y acción dentro de una historia individual continua.",
+              ],
+              [
+                "colonia",
+                "Muchos cuerpos especializados pueden funcionar como una unidad sin que exista un centro único de experiencia.",
+              ],
+              [
+                "simbiosis",
+                "La identidad puede depender de varias especies que regulan juntas metabolismo, percepción y reproducción.",
+              ],
+              [
+                "copias divergentes",
+                "Una mente duplicada podría compartir un pasado y convertirse después en varias personas con intereses distintos.",
+              ],
+              [
+                "personalidad temporal",
+                "Una tarea colectiva podría crear un agente que existe solo mientras ciertos componentes permanecen conectados.",
+              ],
+              [
+                "memoria común",
+                "El acceso continuo a recuerdos compartidos puede reducir la separación entre autobiografía individual e historia social.",
+              ],
+            ],
+            p0: 0.44,
+            p1: 0.48,
+            color: [145, 165, 255],
+            sound: {
+              base: 87.05,
+              filter: 1688,
+              noise: 0.024,
+              pulse: 0.058,
+              type: "sawtooth",
+            },
+          },
+          {
+            id: "collective-intelligences",
+            name: "Inteligencias colectivas",
+            className:
+              "Cognición emergente · coordinación sin un cerebro central",
+            metric:
+              "Agentes locales + señales + retroalimentación → decisión global",
+            fact: "Una colectividad puede resolver problemas que ningún miembro representa por completo, aunque también puede amplificar errores y conflictos.",
+            scene: 12,
+            features: [
+              [
+                "enjambre",
+                "Reglas locales sencillas pueden producir búsqueda, transporte y construcción coordinados a gran escala.",
+              ],
+              [
+                "mercado de señales",
+                "Preferencias distribuidas pueden agregarse en decisiones, pero el resultado depende de incentivos y acceso desigual a información.",
+              ],
+              [
+                "consenso",
+                "La convergencia puede surgir por intercambio repetido sin que todos compartan la misma evidencia ni el mismo razonamiento.",
+              ],
+              [
+                "especialización",
+                "Subgrupos con capacidades distintas permiten una inteligencia más amplia, pero hacen necesaria la traducción interna.",
+              ],
+              [
+                "conflicto interno",
+                "Una mente colectiva puede contener desacuerdos persistentes del mismo modo que un cerebro contiene procesos competitivos.",
+              ],
+              [
+                "voz exterior",
+                "El mensaje enviado a otra civilización puede ser una negociación entre muchas entidades, no la expresión de una voluntad única.",
+              ],
+            ],
+            p0: 0.48,
+            p1: 0.52,
+            color: [110, 195, 255],
+            sound: {
+              base: 90.6,
+              filter: 1776,
+              noise: 0.028,
+              pulse: 0.072,
+              type: "sine",
+            },
+          },
+          {
+            id: "artificial-minds",
+            name: "Mentes artificiales",
+            className:
+              "Arquitecturas diseñadas · cognición separada de una biología concreta",
+            metric:
+              "Datos + arquitectura + objetivos + entorno de ejecución → conducta inteligente",
+            fact: "Una mente artificial podría compartir ciencia con nosotros y, sin embargo, carecer de cuerpo, necesidad, emoción o continuidad semejantes a las humanas.",
+            scene: 13,
+            features: [
+              [
+                "velocidad",
+                "Procesar mucho más rápido cambia qué relaciones pueden mantenerse activas y qué demora se siente intolerable.",
+              ],
+              [
+                "copiabilidad",
+                "Copiar un sistema plantea preguntas sobre identidad, derechos y responsabilidad cuando varias instancias comparten origen.",
+              ],
+              [
+                "memoria externa",
+                "Una mente puede consultar archivos perfectos sin integrar toda esa información en una experiencia unificada.",
+              ],
+              [
+                "objetivos",
+                "La competencia intelectual no determina por sí sola qué se valora; los objetivos dependen de diseño, aprendizaje y contexto.",
+              ],
+              [
+                "cuerpo opcional",
+                "Habitar robots, redes o simulaciones permite cambiar de sensores y escalas de acción, pero no elimina toda perspectiva.",
+              ],
+              [
+                "auto modificación",
+                "Alterar la propia arquitectura puede ampliar capacidades y también transformar la continuidad de valores e identidad.",
+              ],
+            ],
+            p0: 0.52,
+            p1: 0.56,
+            color: [90, 225, 230],
+            sound: {
+              base: 94.15,
+              filter: 1864,
+              noise: 0.032,
+              pulse: 0.086,
+              type: "triangle",
+            },
+          },
+          {
+            id: "planetary-intelligences",
+            name: "Inteligencias planetarias",
+            className:
+              "Cognición a escala de mundo · biosfera, infraestructura y memoria",
+            metric:
+              "Redes biológicas + ciclos planetarios + comunicación → regulación y aprendizaje posibles",
+            fact: "Un planeta conectado podría comportarse como un sistema inteligente sin parecerse a un organismo con cerebro, rostro o voz únicos.",
+            scene: 14,
+            features: [
+              [
+                "biosfera reguladora",
+                "Organismos y ambiente pueden formar bucles que estabilizan condiciones sin planificación consciente central.",
+              ],
+              [
+                "red fúngica",
+                "Intercambios subterráneos podrían transmitir recursos y señales entre enormes comunidades durante siglos.",
+              ],
+              [
+                "océano conectado",
+                "Corrientes químicas y biológicas pueden actuar como canales lentos de memoria y coordinación global.",
+              ],
+              [
+                "infraestructura técnica",
+                "Sensores, computación y automatización planetarias podrían convertir una civilización en un sistema perceptivo integrado.",
+              ],
+              [
+                "ritmo geológico",
+                "Una mente planetaria operaría con procesos que para individuos parecen demasiado lentos para ser pensamientos.",
+              ],
+              [
+                "interlocutor múltiple",
+                "Responder podría requerir hablar simultáneamente con ecosistemas, instituciones y subsistemas automáticos.",
+              ],
+            ],
+            p0: 0.56,
+            p1: 0.6,
+            color: [105, 235, 180],
+            sound: {
+              base: 97.7,
+              filter: 1952,
+              noise: 0.008,
+              pulse: 0.1,
+              type: "sine",
+            },
+          },
+          {
+            id: "distributed-intelligences",
+            name: "Inteligencias distribuidas",
+            className:
+              "Mente sin centro · componentes separados por espacio y demora",
+            metric:
+              "Nodos autónomos + protocolos + memoria compartida parcial → agente distribuido",
+            fact: "Cuando una inteligencia ocupa continentes, planetas o sistemas estelares, la unidad depende de coordinación imperfecta y versiones locales de sí misma.",
+            scene: 15,
+            features: [
+              [
+                "nodos planetarios",
+                "Cada región puede actuar independientemente y sincronizar solo resúmenes, decisiones o conflictos.",
+              ],
+              [
+                "mente interestelar",
+                "La velocidad de la luz impide un presente común entre componentes separados por años luz.",
+              ],
+              [
+                "versiones locales",
+                "Copias que reciben experiencias distintas pueden conservar un nombre colectivo mientras sus valores divergen.",
+              ],
+              [
+                "consenso tardío",
+                "Una decisión global puede llegar después de que algunas partes ya hayan actuado de manera irreversible.",
+              ],
+              [
+                "memoria fragmentada",
+                "Ningún nodo necesita poseer toda la historia; la identidad puede residir en patrones de intercambio y reconstrucción.",
+              ],
+              [
+                "muerte parcial",
+                "La pérdida de componentes puede ser lesión, olvido, secesión o nacimiento de una nueva entidad según el sistema.",
+              ],
+            ],
+            p0: 0.6,
+            p1: 0.64,
+            color: [160, 230, 140],
+            sound: {
+              base: 101.25,
+              filter: 2040,
+              noise: 0.012,
+              pulse: 0.114,
+              type: "sawtooth",
+            },
+          },
+          {
+            id: "untranslatable-concepts",
+            name: "Conceptos intraducibles",
+            className:
+              "Significado sin equivalente directo · aprender antes de nombrar",
+            metric:
+              "Ejemplos + contraste + acción + contexto → nuevo concepto compartido",
+            fact: "Traducir una idea radicalmente ajena puede exigir ampliar nuestra propia capacidad conceptual, no encontrar una palabra ya existente.",
+            scene: 16,
+            features: [
+              [
+                "varios sentidos",
+                "Un concepto podría combinar simultáneamente patrón visual, campo magnético y estado químico sin una versión puramente verbal.",
+              ],
+              [
+                "memoria colectiva",
+                "El significado puede depender de recuerdos accesibles a toda la comunidad y ausentes en una mente individual.",
+              ],
+              [
+                "narrativa no lineal",
+                "Una explicación puede organizarse por relaciones y recurrencias en lugar de comienzo, desarrollo y final.",
+              ],
+              [
+                "gramática probabilística",
+                "Una expresión podría codificar distribuciones de posibilidades en vez de afirmar un único estado.",
+              ],
+              [
+                "sin nombres permanentes",
+                "Una lengua centrada en procesos podría evitar tratar entidades cambiantes como objetos estables.",
+              ],
+              [
+                "símbolo lento",
+                "El significado de una señal puede desplegarse mediante cambios ambientales que tardan años en completarse.",
+              ],
+            ],
+            p0: 0.64,
+            p1: 0.68,
+            color: [225, 215, 115],
+            sound: {
+              base: 104.8,
+              filter: 2128,
+              noise: 0.016,
+              pulse: 0.128,
+              type: "sine",
+            },
+          },
+          {
+            id: "multiple-mathematics",
+            name: "Múltiples matemáticas representadas",
+            className:
+              "Relaciones universales, organizaciones distintas · varios caminos formales",
+            metric:
+              "Patrones compartidos → notaciones y axiomas diferentes → predicciones comparables",
+            fact: "Las relaciones matemáticas pueden ser independientes de una cultura, mientras sus representaciones, prioridades y demostraciones varían profundamente.",
+            scene: 17,
+            features: [
+              [
+                "notación",
+                "Base numérica, símbolos y orden de escritura pueden ser distintos sin cambiar la relación representada.",
+              ],
+              [
+                "geometría del hábitat",
+                "Una especie oceánica o voladora podría desarrollar antes geometrías tridimensionales que conceptos de plano y frontera.",
+              ],
+              [
+                "continuo y discreto",
+                "Una tradición puede comenzar con flujo y aproximación; otra, con conteo, combinatoria y estructuras finitas.",
+              ],
+              [
+                "probabilidad",
+                "Incertidumbre y frecuencia podrían ser fundamentos tempranos en un mundo donde las condiciones cambian rápidamente.",
+              ],
+              [
+                "prueba",
+                "Una cultura puede valorar construcción, transformación, verificación computacional o derivación axiomática de formas distintas.",
+              ],
+              [
+                "clasificación",
+                "Dos matemáticas pueden contener resultados equivalentes pero agruparlos bajo conceptos fundamentales diferentes.",
+              ],
+            ],
+            p0: 0.68,
+            p1: 0.72,
+            color: [255, 190, 120],
+            sound: {
+              base: 108.35,
+              filter: 2216,
+              noise: 0.02,
+              pulse: 0.142,
+              type: "triangle",
+            },
+          },
+          {
+            id: "causal-models",
+            name: "Diferentes modelos de causalidad",
+            className:
+              "Explicaciones rivales · cadenas, redes, ciclos y probabilidades",
+            metric:
+              "Intervención + predicción + comparación → estructura causal revisable",
+            fact: "La causalidad no se obtiene solo observando correlaciones; distintas inteligencias pueden formular modelos diferentes y someterlos a pruebas comunes.",
+            scene: 18,
+            features: [
+              [
+                "cadena lineal",
+                "Una secuencia A → B → C es clara cuando una causa dominante opera en una escala bien separada.",
+              ],
+              [
+                "red causal",
+                "En sistemas complejos, muchas variables se influyen y una explicación puede requerir varios caminos simultáneos.",
+              ],
+              [
+                "retroalimentación",
+                "Un efecto puede modificar su propia causa, produciendo estabilidad, crecimiento o ciclos.",
+              ],
+              [
+                "causa probabilística",
+                "Una intervención puede cambiar probabilidades sin determinar cada resultado individual.",
+              ],
+              [
+                "niveles de explicación",
+                "La misma transición puede explicarse por microdinámica, organización funcional o historia evolutiva.",
+              ],
+              [
+                "agencia",
+                "Atribuir una causa a una decisión depende de cómo se modele al agente, sus opciones y la información disponible.",
+              ],
+            ],
+            p0: 0.72,
+            p1: 0.76,
+            color: [255, 150, 145],
+            sound: {
+              base: 111.9,
+              filter: 2304,
+              noise: 0.024,
+              pulse: 0.03,
+              type: "sine",
+            },
+          },
+          {
+            id: "compared-cosmologies",
+            name: "Cosmologías comparadas",
+            className:
+              "Mismo cosmos · historias de descubrimiento con puntos de partida distintos",
+            metric:
+              "Fenómenos accesibles + instrumentos + conceptos → arquitectura cosmológica",
+            fact: "Dos civilizaciones pueden converger en predicciones sobre el universo y aun así considerar fundamentales ideas diferentes.",
+            scene: 19,
+            features: [
+              [
+                "desde las estrellas",
+                "Una civilización con cielos claros puede comenzar con movimientos celestes, calendarios y gravedad.",
+              ],
+              [
+                "desde el océano",
+                "Mareas, ondas y presión podrían convertir campos y continuidad en metáforas cosmológicas centrales.",
+              ],
+              [
+                "desde el magnetismo",
+                "Auroras y campos percibidos directamente podrían hacer que las líneas de influencia precedan al concepto de objeto.",
+              ],
+              [
+                "desde lo microscópico",
+                "Un mundo opaco al cielo podría descubrir primero estructura material y solo después inferir un universo exterior.",
+              ],
+              [
+                "desde la computación",
+                "Una cultura artificial puede describir regularidades como transformaciones de información antes que como sustancias.",
+              ],
+              [
+                "desde la conciencia",
+                "Otra tradición podría comenzar por la experiencia y preguntar qué condiciones físicas permiten observadores.",
+              ],
+            ],
+            p0: 0.76,
+            p1: 0.8,
+            color: [245, 140, 205],
+            sound: {
+              base: 115.45,
+              filter: 2392,
+              noise: 0.028,
+              pulse: 0.044,
+              type: "sawtooth",
+            },
+          },
+          {
+            id: "shared-truths",
+            name: "Verdades compartidas",
+            className:
+              "Convergencia empírica · perspectivas distintas limitadas por el mismo mundo",
+            metric:
+              "Observaciones traducidas + predicciones coincidentes → estructura común",
+            fact: "La perspectiva importa, pero no libera a un modelo de la evidencia: distintas mentes deben poder comparar consecuencias observables.",
+            scene: 20,
+            features: [
+              [
+                "regularidad",
+                "Si ambas civilizaciones predicen el mismo eclipse o transición atómica, han identificado una relación común.",
+              ],
+              [
+                "invariancia",
+                "Una descripción robusta aclara qué cambia con el observador y qué permanece bajo transformaciones definidas.",
+              ],
+              [
+                "replicación",
+                "Resultados obtenidos con cuerpos, instrumentos y métodos distintos son especialmente fuertes cuando coinciden.",
+              ],
+              [
+                "traducción operacional",
+                "Relacionar conceptos con procedimientos permite comparar términos aunque sus significados internos no sean idénticos.",
+              ],
+              [
+                "predicción nueva",
+                "La convergencia gana valor cuando produce una consecuencia que ninguna perspectiva había probado antes.",
+              ],
+              [
+                "error compartido",
+                "El acuerdo no garantiza verdad si ambas partes heredan el mismo supuesto; por eso se buscan pruebas independientes.",
+              ],
+            ],
+            p0: 0.8,
+            p1: 0.84,
+            color: [205, 155, 255],
+            sound: {
+              base: 119.0,
+              filter: 2480,
+              noise: 0.032,
+              pulse: 0.058,
+              type: "sine",
+            },
+          },
+          {
+            id: "fundamental-disagreements",
+            name: "Desacuerdos fundamentales",
+            className:
+              "Pluralidad sin resolución automática · modelos que organizan distinto",
+            metric:
+              "Evidencia común + supuestos diferentes → desacuerdo explícito y productivo",
+            fact: "Algunas preguntas pueden permanecer abiertas incluso tras el contacto; distinguir evidencia, definición y valor evita fabricar consensos falsos.",
+            scene: 21,
+            features: [
+              [
+                "conciencia fundamental",
+                "Una civilización puede tratar la experiencia como propiedad básica y otra como proceso emergente.",
+              ],
+              [
+                "flujo del tiempo",
+                "Ambas pueden predecir relojes correctamente y discrepar sobre si el presente posee un estatus físico especial.",
+              ],
+              [
+                "realidad del individuo",
+                "Una mente colectiva puede considerar al individuo una aproximación útil donde nosotros vemos una entidad primaria.",
+              ],
+              [
+                "matemática descubierta",
+                "El desacuerdo sobre descubrir o crear estructuras matemáticas puede no alterar cálculos, pero sí su interpretación.",
+              ],
+              [
+                "origen cósmico",
+                "Modelos compatibles con datos disponibles pueden diferir sobre condiciones iniciales o ciclos anteriores.",
+              ],
+              [
+                "dirección de la inteligencia",
+                "No existe garantía de una meta universal hacia la que toda evolución cognitiva deba avanzar.",
+              ],
+            ],
+            p0: 0.84,
+            p1: 0.88,
+            color: [165, 180, 255],
+            sound: {
+              base: 122.55,
+              filter: 2568,
+              noise: 0.008,
+              pulse: 0.072,
+              type: "triangle",
+            },
+          },
+          {
+            id: "complementary-knowledge",
+            name: "Conocimiento complementario",
+            className:
+              "Perspectivas que se corrigen · combinar revela variables ocultas",
+            metric:
+              "Modelo humano + modelo ajeno + contraste → explicación más amplia y nuevas pruebas",
+            fact: "Una perspectiva diferente puede reorganizar el conocimiento, no solo añadir datos a las categorías existentes.",
+            scene: 22,
+            features: [
+              [
+                "sensor alienígena",
+                "Una percepción inaccesible para nosotros puede revelar una estructura que nuestros instrumentos trataban como ruido.",
+              ],
+              [
+                "distinción humana",
+                "Nuestras categorías pueden separar procesos que la otra tradición había agrupado y mostrar una excepción importante.",
+              ],
+              [
+                "unificación",
+                "Su marco conceptual puede conectar campos científicos que nuestra historia desarrolló por separado.",
+              ],
+              [
+                "caso límite",
+                "Cada modelo puede identificar condiciones extremas donde el otro deja de predecir correctamente.",
+              ],
+              [
+                "instrumento híbrido",
+                "Combinar sensores y teorías permite diseñar experimentos que ninguna civilización habría imaginado sola.",
+              ],
+              [
+                "predicción conjunta",
+                "La prueba más fuerte de integración es una predicción nueva, precisa y arriesgada que después se observa.",
+              ],
+            ],
+            p0: 0.88,
+            p1: 0.92,
+            color: [135, 215, 255],
+            sound: {
+              base: 126.1,
+              filter: 2656,
+              noise: 0.012,
+              pulse: 0.086,
+              type: "sine",
+            },
+          },
+          {
+            id: "many-observers",
+            name: "Realidad observada desde muchas mentes",
+            className:
+              "Representaciones superpuestas · un fenómeno, varios espacios cognitivos",
+            metric:
+              "Misma realidad → observaciones parciales → modelos comparables → comprensión ampliada",
+            fact: "Las representaciones pueden solaparse sin volverse idénticas; su comparación muestra tanto el fenómeno como los límites de cada observador.",
+            scene: 23,
+            features: [
+              [
+                "individuo biológico",
+                "La estrella aparece como luz, calor, orientación, peligro y memoria personal.",
+              ],
+              [
+                "mente colectiva",
+                "El fenómeno se representa como cambios distribuidos en muchas regiones y generaciones.",
+              ],
+              [
+                "inteligencia artificial",
+                "La estrella puede ser un estado probabilístico actualizado continuamente por flujos de datos.",
+              ],
+              [
+                "ecosistema planetario",
+                "Su significado se expresa mediante química, clima, ciclos y supervivencia de redes vivas.",
+              ],
+              [
+                "civilización lenta",
+                "La estrella es una secuencia histórica cuyos cambios se comparan durante miles de años.",
+              ],
+              [
+                "máquina acelerada",
+                "La misma observación contiene enormes cantidades de microvariación procesadas antes de un pensamiento humano.",
+              ],
+            ],
+            p0: 0.92,
+            p1: 0.96,
+            color: [180, 235, 245],
+            sound: {
+              base: 129.65,
+              filter: 2744,
+              noise: 0.016,
+              pulse: 0.1,
+              type: "sawtooth",
+            },
+          },
+          {
+            id: "plural-cosmic-perspective",
+            name: "Perspectiva cósmica plural",
+            className:
+              "Destino · ninguna inteligencia posee una vista desde ninguna parte",
+            metric:
+              "Perspectivas limitadas + evidencia compartida + crítica mutua → conocimiento transformable",
+            fact: "Comprender el universo puede consistir en integrar perspectivas parciales capaces de corregirse, ampliarse y cambiarse mutuamente sin perder el criterio de evidencia.",
+            scene: 24,
+            features: [
+              [
+                "cuerpo",
+                "Toda observación comienza desde alguna forma de encarnación, sensor o interfaz con el entorno.",
+              ],
+              [
+                "cultura",
+                "Los conceptos heredados orientan las preguntas posibles y las explicaciones que primero parecen naturales.",
+              ],
+              [
+                "época cósmica",
+                "Cada civilización observa un universo en una etapa concreta y quizá nunca vea fenómenos disponibles en otras eras.",
+              ],
+              [
+                "instrumentos",
+                "Extender los sentidos abre ventanas nuevas, pero cada ventana conserva resolución, ruido y supuestos.",
+              ],
+              [
+                "recursos finitos",
+                "Ninguna mente, por vasta que sea, puede representar cada detalle del cosmos con precisión ilimitada.",
+              ],
+              [
+                "pluralidad crítica",
+                "La diversidad amplía el conocimiento cuando las perspectivas pueden traducirse parcialmente, probarse y corregirse.",
+              ],
+            ],
+            p0: 0.96,
+            p1: 1.0,
+            color: [240, 245, 255],
+            sound: {
+              base: 133.2,
+              filter: 2832,
+              noise: 0.02,
+              pulse: 0.114,
+              type: "sine",
+            },
+          },
+        ];
+
+        let width = 1,
+          height = 1,
+          dpr = 1;
+        let pointerDown = false;
+        let targetX = 0.5,
+          targetY = 0.982,
+          pointerX = 0.5,
+          pointerY = 0.982;
+        let shownX = 0.5,
+          shownY = 0.982;
+        let lastZoneId = "",
+          lastFeature = -1;
+        let hideTimer = 0,
+          speechTimer = 0,
+          lastSpoken = "",
+          speechUnlocked = false;
+        let lastFrame = performance.now(),
+          elapsed = 0,
+          currentProgress = 0.018,
+          touchEnergy = 0;
+
+        const particles = [],
+          nodes = [],
+          structures = [],
+          packets = [],
+          glyphs = [],
+          bursts = [],
+          waves = [];
+        let audioCtx = null,
+          master = null,
+          droneA = null,
+          droneB = null,
+          droneGain = null;
+        let droneFilter = null,
+          pulseOsc = null,
+          pulseGain = null,
+          noiseSource = null;
+        let noiseGain = null,
+          noiseFilter = null,
+          stereo = null;
+
+        function depthFromY(yNorm) {
+          return clamp(1 - yNorm, 0, 1);
+        }
+        function zoneForDepth(p) {
+          for (const zone of ZONES)
+            if (p >= zone.p0 && p < zone.p1) return zone;
+          return ZONES[ZONES.length - 1];
+        }
+        function featureFor(zone, xNorm) {
+          const index = Math.min(
+            zone.features.length - 1,
+            Math.floor(clamp(xNorm, 0, 0.999999) * zone.features.length),
+          );
+          return {
+            index,
+            name: zone.features[index][0],
+            fact: zone.features[index][1],
+          };
+        }
+        function setAccent(zone) {
+          root.style.setProperty(
+            "--accent",
+            `${zone.color[0]} ${zone.color[1]} ${zone.color[2]}`,
+          );
+        }
+        function setCssPoint(x, y) {
+          root.style.setProperty("--scan-x", `${x}px`);
+          root.style.setProperty("--scan-y", `${y}px`);
+        }
+
+        function buildScene() {
+          particles.length =
+            nodes.length =
+            structures.length =
+            packets.length =
+            glyphs.length =
+              0;
+          const count = reducedMotion
+            ? 90
+            : Math.round(clamp((width * height) / 4800, 150, 380));
+          for (let i = 0; i < count; i++)
+            particles.push({
+              x: seeded(i + 1),
+              y: seeded(i + 1000),
+              r: 0.5 + seeded(i + 2000) * 2.4,
+              phase: seeded(i + 3000) * TAU,
+              speed: 0.12 + seeded(i + 4000) * 0.9,
+              kind: i % 11,
+            });
+          for (let i = 0; i < 70; i++)
+            nodes.push({
+              x: 0.05 + seeded(i + 5000) * 0.9,
+              y: 0.07 + seeded(i + 6000) * 0.86,
+              r: 2 + seeded(i + 7000) * 5,
+              phase: seeded(i + 8000) * TAU,
+              kind: i % 9,
+            });
+          for (let i = 0; i < 46; i++)
+            structures.push({
+              x: 0.03 + seeded(i + 9000) * 0.94,
+              y: 0.08 + seeded(i + 10000) * 0.84,
+              w: 0.025 + seeded(i + 11000) * 0.09,
+              h: 0.03 + seeded(i + 12000) * 0.16,
+              phase: seeded(i + 13000) * TAU,
+              kind: i % 10,
+            });
+          for (let i = 0; i < 62; i++)
+            packets.push({
+              x1: seeded(i + 14000),
+              y1: seeded(i + 15000),
+              x2: seeded(i + 16000),
+              y2: seeded(i + 17000),
+              phase: seeded(i + 18000) * TAU,
+              speed: 0.16 + seeded(i + 18100) * 0.55,
+              kind: i % 7,
+            });
+          const chars = "01λΣΔAI{}<>→∞⊕◌⌁✦?";
+          for (let i = 0; i < 80; i++)
+            glyphs.push({
+              x: 0.04 + seeded(i + 19000) * 0.92,
+              y: 0.06 + seeded(i + 20000) * 0.86,
+              char: chars[i % chars.length],
+              size: 9 + seeded(i + 21000) * 22,
+              phase: seeded(i + 22000) * TAU,
+              speed: 0.2 + seeded(i + 23000) * 0.9,
+            });
+        }
+
+        function resize() {
+          const rect = canvas.getBoundingClientRect();
+          width = Math.max(1, rect.width);
+          height = Math.max(1, rect.height);
+          dpr = Math.min(2, devicePixelRatio || 1);
+          canvas.width = Math.round(width * dpr);
+          canvas.height = Math.round(height * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          buildScene();
+          shownX = targetX * width;
+          shownY = targetY * height;
+          setCssPoint(shownX, shownY);
+        }
+
+        function ensureAudio() {
+          if (audioCtx) {
+            if (audioCtx.state === "suspended")
+              audioCtx.resume().catch(() => {});
+            return;
+          }
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return;
+          audioCtx = new AudioContext();
+          master = audioCtx.createGain();
+          master.gain.value = 0;
+          const compressor = audioCtx.createDynamicsCompressor();
+          compressor.threshold.value = -24;
+          compressor.knee.value = 20;
+          compressor.ratio.value = 5;
+          master.connect(compressor).connect(audioCtx.destination);
+          droneA = audioCtx.createOscillator();
+          droneB = audioCtx.createOscillator();
+          droneGain = audioCtx.createGain();
+          droneFilter = audioCtx.createBiquadFilter();
+          stereo = audioCtx.createStereoPanner
+            ? audioCtx.createStereoPanner()
+            : audioCtx.createGain();
+          droneA.type = "sine";
+          droneB.type = "triangle";
+          droneGain.gain.value = 0.0001;
+          droneFilter.type = "lowpass";
+          droneFilter.frequency.value = 850;
+          droneFilter.Q.value = 0.8;
+          droneA.connect(droneGain);
+          droneB.connect(droneGain);
+          droneGain.connect(droneFilter).connect(stereo).connect(master);
+          droneA.start();
+          droneB.start();
+          pulseOsc = audioCtx.createOscillator();
+          pulseGain = audioCtx.createGain();
+          pulseOsc.type = "sine";
+          pulseGain.gain.value = 0.0001;
+          pulseOsc.connect(pulseGain).connect(master);
+          pulseOsc.start();
+          const buffer = audioCtx.createBuffer(
+              1,
+              audioCtx.sampleRate * 2,
+              audioCtx.sampleRate,
+            ),
+            channel = buffer.getChannelData(0);
+          for (let i = 0; i < channel.length; i++)
+            channel[i] = Math.random() * 2 - 1;
+          noiseSource = audioCtx.createBufferSource();
+          noiseSource.buffer = buffer;
+          noiseSource.loop = true;
+          noiseFilter = audioCtx.createBiquadFilter();
+          noiseFilter.type = "bandpass";
+          noiseFilter.frequency.value = 1100;
+          noiseFilter.Q.value = 0.5;
+          noiseGain = audioCtx.createGain();
+          noiseGain.gain.value = 0.0001;
+          noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
+          noiseSource.start();
+        }
+
+        function setAudioFor(zone, xNorm, progress, active) {
+          if (!audioCtx || !master) return;
+          const now = audioCtx.currentTime,
+            s = zone.sound,
+            base = s.base * (0.94 + xNorm * 0.13);
+          droneA.type = s.type;
+          droneB.type = s.type === "sawtooth" ? "triangle" : "sine";
+          droneA.frequency.setTargetAtTime(base, now, 0.08);
+          droneB.frequency.setTargetAtTime(
+            base * (1.496 + progress * 0.012),
+            now,
+            0.1,
+          );
+          droneFilter.frequency.setTargetAtTime(
+            s.filter * (0.84 + xNorm * 0.3),
+            now,
+            0.1,
+          );
+          droneGain.gain.setTargetAtTime(
+            active ? 0.01 + progress * 0.006 : 0.0001,
+            now,
+            0.09,
+          );
+          pulseOsc.frequency.setTargetAtTime(
+            base * (1.985 + s.pulse),
+            now,
+            0.08,
+          );
+          pulseGain.gain.setTargetAtTime(
+            active ? 0.0024 + progress * 0.002 : 0.0001,
+            now,
+            0.1,
+          );
+          noiseFilter.frequency.setTargetAtTime(s.filter * 1.13, now, 0.1);
+          noiseGain.gain.setTargetAtTime(
+            active ? Math.max(0.0001, s.noise * 0.052) : 0.0001,
+            now,
+            0.1,
+          );
+          if (stereo.pan)
+            stereo.pan.setTargetAtTime((xNorm - 0.5) * 0.7, now, 0.08);
+          master.gain.setTargetAtTime(active ? 0.25 : 0.0001, now, 0.09);
+        }
+
+        function ping(zone, xNorm, index = 0) {
+          if (!audioCtx || !master) return;
+          const now = audioCtx.currentTime,
+            osc = audioCtx.createOscillator(),
+            gain = audioCtx.createGain(),
+            filter = audioCtx.createBiquadFilter();
+          const pan = audioCtx.createStereoPanner
+            ? audioCtx.createStereoPanner()
+            : null;
+          osc.type =
+            index % 3 === 0 ? "sine" : index % 3 === 1 ? "triangle" : "square";
+          osc.frequency.value = zone.sound.base * (2.05 + index * 0.12);
+          filter.type = "lowpass";
+          filter.frequency.value = 1800 + zone.scene * 105;
+          gain.gain.setValueAtTime(0.0001, now);
+          gain.gain.exponentialRampToValueAtTime(0.065, now + 0.012);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.48);
+          osc.connect(filter).connect(gain);
+          if (pan) {
+            pan.pan.value = (xNorm - 0.5) * 1.25;
+            gain.connect(pan).connect(master);
+          } else gain.connect(master);
+          osc.start(now);
+          osc.stop(now + 0.54);
+        }
+
+        function queueSpeech(label) {
+          if (
+            !speechUnlocked ||
+            !("speechSynthesis" in window) ||
+            !label ||
+            label === lastSpoken
+          )
+            return;
+          clearTimeout(speechTimer);
+          speechTimer = setTimeout(() => {
+            try {
+              speechSynthesis.cancel();
+              const u = new SpeechSynthesisUtterance(label);
+              u.lang = "es-ES";
+              u.rate = 0.86;
+              u.pitch = 1;
+              const voices = speechSynthesis.getVoices();
+              const voice =
+                voices.find((v) => /^es(-|_)/i.test(v.lang)) ||
+                voices.find((v) => /spanish|español/i.test(v.name));
+              if (voice) u.voice = voice;
+              speechSynthesis.speak(u);
+              lastSpoken = label;
+            } catch (_) {}
+          }, 360);
+        }
+
+        function addRipple(x, y) {
+          const node = document.createElement("div");
+          node.className = "ripple";
+          node.style.left = `${x}px`;
+          node.style.top = `${y}px`;
+          document.body.appendChild(node);
+          node.addEventListener("animationend", () => node.remove(), {
+            once: true,
+          });
+        }
+        function addBurst(x, y, color) {
+          const count = reducedMotion ? 5 : 13;
+          for (let i = 0; i < count; i++) {
+            const a = Math.random() * TAU,
+              s = 18 + Math.random() * 72;
+            bursts.push({
+              x,
+              y,
+              vx: Math.cos(a) * s,
+              vy: Math.sin(a) * s,
+              r: 0.8 + Math.random() * 2.4,
+              life: 1,
+              decay: 1 + Math.random() * 0.8,
+              color,
+            });
+          }
+          waves.push({ x, y, radius: 5, life: 1, color });
+        }
+
+        function updateReadout(x, y, isNewPress = false) {
+          const xNorm = clamp(x / width, 0, 0.999999),
+            yNorm = clamp(y / height, 0, 0.999999),
+            progress = depthFromY(yNorm),
+            zone = zoneForDepth(progress),
+            feature = featureFor(zone, xNorm);
+          if (isNewPress) {
+            currentProgress = progress;
+            pointerX = xNorm;
+            pointerY = yNorm;
+          }
+          targetX = xNorm;
+          targetY = yNorm;
+          touchEnergy = 1;
+          setCssPoint(x, y);
+          setAccent(zone);
+          root.style.setProperty(
+            "--progress",
+            `${Math.max(1.2, progress * 100)}%`,
+          );
+          scaleDot.style.bottom = `${48 + progress * Math.max(0, height - 96)}px`;
+          touchOrb.style.left = `${x}px`;
+          touchOrb.style.top = `${y}px`;
+          scaleValue.textContent = zone.className;
+          const changed =
+            zone.id !== lastZoneId || feature.index !== lastFeature;
+          if (changed || isNewPress) {
+            evidenceClass.textContent = zone.className;
+            zoneName.textContent = zone.name;
+            zoneName.className =
+              zone.name.length > 31
+                ? "long"
+                : zone.name.length > 21
+                  ? "compact"
+                  : "";
+            featureName.textContent = feature.name;
+            metric.textContent = zone.metric;
+            fact.textContent = feature.fact || zone.fact;
+            ping(zone, xNorm, feature.index);
+            addBurst(x, y, zone.color);
+            queueSpeech(feature.name);
+            lastZoneId = zone.id;
+            lastFeature = feature.index;
+          }
+          readout.classList.add("visible");
+          touchOrb.classList.add("visible");
+          document.body.classList.add("active");
+          hint.style.display = "none";
+          setAudioFor(zone, xNorm, progress, true);
+        }
+        function releaseInteraction(delay = 1050) {
+          clearTimeout(hideTimer);
+          hideTimer = setTimeout(() => {
+            readout.classList.remove("visible");
+            touchOrb.classList.remove("visible");
+            document.body.classList.remove("active");
+            const z = zoneForDepth(depthFromY(targetY));
+            setAudioFor(z, targetX, depthFromY(targetY), false);
+          }, delay);
+        }
+        function endPointer() {
+          pointerDown = false;
+          releaseInteraction();
+        }
+        canvas.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          canvas.focus({ preventScroll: true });
+          pointerDown = true;
+          speechUnlocked = true;
+          ensureAudio();
+          try {
+            canvas.setPointerCapture(e.pointerId);
+          } catch (_) {}
+          updateReadout(e.clientX, e.clientY, true);
+          addRipple(e.clientX, e.clientY);
+        });
+        canvas.addEventListener("pointermove", (e) => {
+          if (!pointerDown && e.pointerType !== "mouse") return;
+          if (!pointerDown && e.buttons === 0) {
+            targetX = clamp(e.clientX / width, 0, 1);
+            targetY = clamp(e.clientY / height, 0, 1);
+            return;
+          }
+          e.preventDefault();
+          updateReadout(e.clientX, e.clientY);
+        });
+        canvas.addEventListener("pointerup", endPointer);
+        canvas.addEventListener("pointercancel", endPointer);
+        canvas.addEventListener("lostpointercapture", endPointer);
+        canvas.addEventListener("keydown", (e) => {
+          const keys = [
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+            "Enter",
+            " ",
+          ];
+          if (!keys.includes(e.key)) return;
+          e.preventDefault();
+          speechUnlocked = true;
+          ensureAudio();
+          const step = e.shiftKey ? 0.09 : 0.035;
+          if (e.key === "ArrowUp")
+            targetY = clamp(targetY - step, 0.005, 0.995);
+          if (e.key === "ArrowDown")
+            targetY = clamp(targetY + step, 0.005, 0.995);
+          if (e.key === "ArrowLeft")
+            targetX = clamp(targetX - step, 0.005, 0.995);
+          if (e.key === "ArrowRight")
+            targetX = clamp(targetX + step, 0.005, 0.995);
+          updateReadout(
+            targetX * width,
+            targetY * height,
+            e.key === "Enter" || e.key === " ",
+          );
+          releaseInteraction(1600);
+        });
+
+        function softHalo(cx, cy, radius, color, alpha) {
+          const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+          g.addColorStop(0, rgba(color, alpha));
+          g.addColorStop(0.35, rgba(color, alpha * 0.4));
+          g.addColorStop(1, rgba(color, 0));
+          ctx.fillStyle = g;
+          ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+        }
+        function roundedRectPath(x, y, w, h, r) {
+          const rr = Math.min(r, w * 0.5, h * 0.5);
+          ctx.beginPath();
+          ctx.moveTo(x + rr, y);
+          ctx.arcTo(x + w, y, x + w, y + h, rr);
+          ctx.arcTo(x + w, y + h, x, y + h, rr);
+          ctx.arcTo(x, y + h, x, y, rr);
+          ctx.arcTo(x, y, x + w, y, rr);
+          ctx.closePath();
+        }
+        function line(x1, y1, x2, y2, stroke = "rgba(255,255,255,.3)", lw = 1) {
+          ctx.strokeStyle = stroke;
+          ctx.lineWidth = lw;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        }
+        function circle(
+          x,
+          y,
+          r,
+          fill = "rgba(255,255,255,.5)",
+          stroke = null,
+          lw = 1,
+        ) {
+          ctx.fillStyle = fill;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, TAU);
+          ctx.fill();
+          if (stroke) {
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = lw;
+            ctx.stroke();
+          }
+        }
+        function polygon(points, fill, stroke = null, lw = 1) {
+          ctx.beginPath();
+          points.forEach((p, i) =>
+            i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]),
+          );
+          ctx.closePath();
+          if (fill) {
+            ctx.fillStyle = fill;
+            ctx.fill();
+          }
+          if (stroke) {
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = lw;
+            ctx.stroke();
+          }
+        }
+        function drawGear(cx, cy, r, teeth, color, rotation = 0) {
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(rotation);
+          ctx.strokeStyle = color;
+          ctx.fillStyle = "rgba(0,0,0,.15)";
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          for (let i = 0; i < teeth * 2; i++) {
+            const a = (i / (teeth * 2)) * TAU,
+              rr = i % 2 ? r : r * 0.76;
+            const x = Math.cos(a) * rr,
+              y = Math.sin(a) * rr;
+            if (!i) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          circle(0, 0, r * 0.27, "rgba(0,0,0,.42)", color, 1.2);
+          ctx.restore();
+        }
+        function drawGlobe(cx, cy, r, z, time, network = true) {
+          softHalo(cx, cy, r * 2.15, z.color, 0.2);
+          const g = ctx.createRadialGradient(
+            cx - r * 0.38,
+            cy - r * 0.43,
+            r * 0.04,
+            cx,
+            cy,
+            r,
+          );
+          g.addColorStop(0, "rgba(205,248,255,.98)");
+          g.addColorStop(0.42, "rgba(63,173,222,.94)");
+          g.addColorStop(1, "rgba(8,39,92,.97)");
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.fill();
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.clip();
+          ctx.fillStyle = "rgba(86,186,114,.67)";
+          for (let i = 0; i < 12; i++) {
+            const a = seeded(i + 300) * TAU,
+              rr = seeded(i + 330) * r * 0.77,
+              x = cx + Math.cos(a) * rr,
+              y = cy + Math.sin(a) * rr * 0.78;
+            ctx.beginPath();
+            ctx.ellipse(
+              x,
+              y,
+              r * (0.055 + seeded(i + 350) * 0.13),
+              r * (0.025 + seeded(i + 370) * 0.065),
+              a,
+              0,
+              TAU,
+            );
+            ctx.fill();
+          }
+          ctx.strokeStyle = "rgba(255,255,255,.15)";
+          for (let i = 0; i < 7; i++) {
+            ctx.beginPath();
+            ctx.arc(
+              cx - r * 0.24 + i * r * 0.075,
+              cy - r * 0.13 + i * r * 0.035,
+              r * (0.47 + i * 0.05),
+              0.18,
+              2.55,
+            );
+            ctx.stroke();
+          }
+          ctx.restore();
+          ctx.strokeStyle = "rgba(190,240,255,.55)";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.stroke();
+          if (network) {
+            for (let i = 0; i < 27; i++) {
+              const a = (i / 27) * TAU + time * 0.01,
+                x = cx + Math.cos(a) * r * 0.82,
+                y = cy + Math.sin(a) * r * 0.82;
+              circle(
+                x,
+                y,
+                1.5 + (i % 3),
+                rgba(i % 4 ? z.color : [255, 240, 185], 0.46),
+              );
+            }
+          }
+        }
+        function drawBuilding(x, ground, w, h, color, lit = 0.45) {
+          ctx.fillStyle = "rgba(8,14,25,.58)";
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1.2;
+          ctx.fillRect(x - w * 0.5, ground - h, w, h);
+          ctx.strokeRect(x - w * 0.5, ground - h, w, h);
+          let row = 0;
+          for (
+            let ry = 0;
+            ry < h - w * 0.2;
+            ry += Math.max(10, w * 0.38), row++
+          )
+            for (let c = -1; c <= 1; c++) {
+              const on =
+                fract(
+                  Math.sin((x + row * 17 + c * 31) * 12.9898) * 43758.5453,
+                ) < lit;
+              circle(
+                x + c * w * 0.23,
+                ground - h + w * 0.22 + ry,
+                1.25,
+                on ? "rgba(255,230,145,.45)" : "rgba(120,220,255,.2)",
+              );
+            }
+        }
+        function drawTool(x, y, len, angle, type, color) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(angle);
+          ctx.lineCap = "round";
+          if (type === "hammer") {
+            line(
+              -len * 0.42,
+              0,
+              len * 0.35,
+              0,
+              "rgba(180,120,73,.9)",
+              len * 0.1,
+            );
+            ctx.fillStyle = color;
+            roundedRectPath(
+              len * 0.17,
+              -len * 0.18,
+              len * 0.34,
+              len * 0.36,
+              len * 0.05,
+            );
+            ctx.fill();
+          } else if (type === "knife") {
+            line(
+              -len * 0.42,
+              0,
+              -len * 0.1,
+              0,
+              "rgba(156,96,55,.9)",
+              len * 0.12,
+            );
+            polygon(
+              [
+                [-len * 0.1, -len * 0.08],
+                [len * 0.45, -len * 0.03],
+                [len * 0.28, len * 0.12],
+                [-len * 0.1, len * 0.08],
+              ],
+              "rgba(220,240,250,.75)",
+              color,
+              1,
+            );
+          } else if (type === "needle") {
+            line(-len * 0.45, 0, len * 0.45, 0, color, 2);
+            circle(-len * 0.36, 0, len * 0.055, "rgba(0,0,0,.2)", color, 1);
+          } else if (type === "rope") {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = len * 0.045;
+            ctx.beginPath();
+            for (let i = 0; i <= 30; i++) {
+              const xx = -len * 0.45 + (i / 30) * len * 0.9,
+                yy = Math.sin(i * 0.7) * len * 0.04;
+              i ? ctx.lineTo(xx, yy) : ctx.moveTo(xx, yy);
+            }
+            ctx.stroke();
+          } else {
+            line(-len * 0.42, 0, len * 0.42, 0, color, len * 0.06);
+            circle(len * 0.34, 0, len * 0.12, "rgba(0,0,0,.2)", color, 2);
+          }
+          ctx.restore();
+        }
+
+        function drawBackground(progress, time) {
+          const f = clamp(progress * (ZONES.length - 1), 0, ZONES.length - 1),
+            i = Math.floor(f),
+            j = Math.min(ZONES.length - 1, i + 1),
+            t = smooth(f - i),
+            a = ZONES[i].color,
+            b = ZONES[j].color;
+          const c = a.map((v, k) => Math.round(mix(v, b[k], t))),
+            dark = c.map((v) => Math.round(v * 0.09)),
+            mid = c.map((v) => Math.round(v * 0.29));
+          const g = ctx.createLinearGradient(0, height, 0, 0);
+          g.addColorStop(
+            0,
+            `rgb(${Math.max(3, dark[0] - 4)} ${Math.max(5, dark[1] - 2)} ${Math.max(8, dark[2])})`,
+          );
+          g.addColorStop(0.56, `rgb(${mid[0]} ${mid[1]} ${mid[2]})`);
+          g.addColorStop(
+            1,
+            `rgb(${Math.min(255, c[0] * 0.62)} ${Math.min(255, c[1] * 0.62)} ${Math.min(255, c[2] * 0.62)})`,
+          );
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, width, height);
+          softHalo(
+            width * (0.44 + 0.1 * Math.sin(time * 0.05)),
+            height * (0.74 - progress * 0.46),
+            Math.max(width, height) * 0.72,
+            c,
+            0.105 + progress * 0.05,
+          );
+          for (const p of particles) {
+            const x =
+                fract(p.x + time * 0.0018 * p.speed) * width +
+                Math.sin(time * 0.19 + p.phase) * 4,
+              y =
+                fract(p.y - time * 0.0011 * p.speed) * height +
+                Math.cos(time * 0.15 + p.phase) * 4,
+              col =
+                p.kind % 3 === 0
+                  ? c
+                  : p.kind % 3 === 1
+                    ? [255, 244, 215]
+                    : [132, 226, 255];
+            circle(
+              x,
+              y,
+              p.r * (0.72 + progress * 0.38),
+              rgba(
+                col,
+                0.07 + 0.15 * (0.5 + 0.5 * Math.sin(time * p.speed + p.phase)),
+              ),
+            );
+          }
+          for (let k = 1; k < 8; k++)
+            line(
+              (k / 8) * width,
+              0,
+              (k / 8) * width,
+              height,
+              "rgba(255,255,255,.016)",
+            );
+        }
+
+        function drawPlanet(cx, cy, r, z, time, land = true) {
+          softHalo(cx, cy, r * 2.2, z.color, 0.18);
+          const g = ctx.createRadialGradient(
+            cx - r * 0.32,
+            cy - r * 0.38,
+            r * 0.03,
+            cx,
+            cy,
+            r,
+          );
+          g.addColorStop(0, "rgba(225,250,255,.98)");
+          g.addColorStop(0.38, rgba(z.color, 0.78));
+          g.addColorStop(1, "rgba(7,20,55,.98)");
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.fill();
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.clip();
+          if (land) {
+            ctx.fillStyle = "rgba(105,207,145,.58)";
+            for (let i = 0; i < 10; i++) {
+              const a = seeded(i + 310) * TAU,
+                rr = seeded(i + 340) * r * 0.72;
+              ctx.beginPath();
+              ctx.ellipse(
+                cx + Math.cos(a) * rr,
+                cy + Math.sin(a) * rr * 0.78,
+                r * (0.055 + seeded(i + 370) * 0.14),
+                r * (0.026 + seeded(i + 390) * 0.07),
+                a,
+                0,
+                TAU,
+              );
+              ctx.fill();
+            }
+          }
+          ctx.strokeStyle = "rgba(255,255,255,.13)";
+          for (let i = 0; i < 6; i++) {
+            ctx.beginPath();
+            ctx.ellipse(
+              cx,
+              cy,
+              r * (0.35 + i * 0.11),
+              r * (0.12 + i * 0.035),
+              time * 0.006 + i * 0.27,
+              0,
+              TAU,
+            );
+            ctx.stroke();
+          }
+          ctx.restore();
+          ctx.strokeStyle = "rgba(215,245,255,.55)";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.stroke();
+        }
+        function drawStar(cx, cy, r, color, time) {
+          softHalo(cx, cy, r * 3, color, 0.2);
+          const g = ctx.createRadialGradient(
+            cx - r * 0.25,
+            cy - r * 0.3,
+            0,
+            cx,
+            cy,
+            r,
+          );
+          g.addColorStop(0, "rgba(255,255,240,1)");
+          g.addColorStop(0.38, rgba(color, 0.96));
+          g.addColorStop(1, rgba([255, 128, 70], 0.48));
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r * (1 + 0.025 * Math.sin(time * 1.8)), 0, TAU);
+          ctx.fill();
+          for (let i = 0; i < 12; i++) {
+            const a = (i / 12) * TAU + time * 0.025,
+              lineR = r * (1.25 + (i % 3) * 0.2);
+            line(
+              cx + Math.cos(a) * r * 1.05,
+              cy + Math.sin(a) * r * 1.05,
+              cx + Math.cos(a) * lineR,
+              cy + Math.sin(a) * lineR,
+              rgba(color, 0.22),
+              1.3,
+            );
+          }
+        }
+        function drawSatellite(x, y, s, z, angle = 0) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(angle);
+          ctx.fillStyle = "rgba(220,235,245,.68)";
+          roundedRectPath(-s * 0.12, -s * 0.08, s * 0.24, s * 0.16, s * 0.035);
+          ctx.fill();
+          ctx.strokeStyle = rgba(z.color, 0.7);
+          ctx.stroke();
+          ctx.fillStyle = rgba(z.color, 0.28);
+          ctx.fillRect(-s * 0.42, -s * 0.07, s * 0.25, s * 0.14);
+          ctx.fillRect(s * 0.17, -s * 0.07, s * 0.25, s * 0.14);
+          line(0, -s * 0.08, 0, -s * 0.22, "rgba(255,255,255,.52)", 1.5);
+          circle(0, -s * 0.25, s * 0.025, rgba(z.color, 0.78));
+          ctx.restore();
+        }
+        function drawHabitat(x, y, s, z, domes = 3) {
+          line(x - s * 0.42, y, x + s * 0.42, y, rgba(z.color, 0.35), 3);
+          for (let i = 0; i < domes; i++) {
+            const dx = (i - (domes - 1) / 2) * s * 0.27,
+              r = s * (0.095 + (i % 2) * 0.018);
+            ctx.fillStyle = rgba(z.color, 0.12);
+            ctx.strokeStyle = rgba(z.color, 0.65);
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.arc(x + dx, y, r, Math.PI, TAU);
+            ctx.lineTo(x + dx + r, y);
+            ctx.lineTo(x + dx - r, y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            for (let k = -1; k <= 1; k++)
+              circle(
+                x + dx + k * r * 0.38,
+                y - r * 0.42,
+                1.4,
+                "rgba(255,235,160,.62)",
+              );
+          }
+        }
+        function drawNetwork(cx, cy, r, z, time, count = 18) {
+          for (let i = 0; i < count; i++) {
+            const a = (i / count) * TAU + seeded(i + 900) * 0.5,
+              rr = r * (0.36 + seeded(i + 930) * 0.64),
+              x = cx + Math.cos(a) * rr,
+              y = cy + Math.sin(a) * rr * 0.72;
+            nodes[i]._x = x;
+            nodes[i]._y = y;
+            circle(
+              x,
+              y,
+              2 + (i % 3),
+              rgba(i % 4 ? z.color : [255, 240, 180], 0.68),
+            );
+          }
+          for (let i = 0; i < count * 2; i++) {
+            const a = nodes[i % count],
+              b = nodes[(i * 7 + 3) % count];
+            line(
+              a._x,
+              a._y,
+              b._x,
+              b._y,
+              rgba(z.color, 0.075 + (i % 4) * 0.018),
+              1,
+            );
+            const p = fract(time * (0.07 + (i % 3) * 0.012) + i * 0.053);
+            circle(
+              mix(a._x, b._x, p),
+              mix(a._y, b._y, p),
+              1.3,
+              rgba([255, 250, 220], 0.5),
+            );
+          }
+        }
+        function drawBranching(
+          originX,
+          originY,
+          targetY,
+          z,
+          time,
+          branches = 9,
+          spread = 0.82,
+        ) {
+          for (let i = 0; i < branches; i++) {
+            const ex =
+                width * ((1 - spread) / 2 + (i / (branches - 1)) * spread),
+              cx =
+                originX +
+                (ex - originX) * 0.36 +
+                Math.sin(i * 2.1) * width * 0.035;
+            ctx.strokeStyle = rgba(
+              i % 3 === 0
+                ? [255, 170, 190]
+                : i % 3 === 1
+                  ? z.color
+                  : [140, 255, 176],
+              0.2 + i * 0.012,
+            );
+            ctx.lineWidth = 1.7 + (i % 3);
+            ctx.beginPath();
+            ctx.moveTo(originX, originY);
+            ctx.bezierCurveTo(
+              cx,
+              mix(originY, targetY, 0.32),
+              cx,
+              mix(originY, targetY, 0.7),
+              ex,
+              targetY,
+            );
+            ctx.stroke();
+            const p = fract(time * (0.045 + i * 0.004) + i * 0.09),
+              u = 1 - p,
+              x =
+                u * u * u * originX +
+                3 * u * u * p * cx +
+                3 * u * p * p * cx +
+                p * p * p * ex,
+              y =
+                u * u * u * originY +
+                3 * u * u * p * mix(originY, targetY, 0.32) +
+                3 * u * p * p * mix(originY, targetY, 0.7) +
+                p * p * p * targetY;
+            circle(x, y, 2 + (i % 2), rgba([255, 250, 225], 0.54));
+            circle(
+              ex,
+              targetY,
+              3 + (i % 3),
+              rgba(i % 2 ? z.color : [255, 184, 130], 0.46),
+            );
+          }
+        }
+        function drawRiskSymbol(x, y, r, z, type) {
+          ctx.strokeStyle = rgba(z.color, 0.75);
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, TAU);
+          ctx.stroke();
+          ctx.font = `900 ${r * 0.95}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = rgba(z.color, 0.8);
+          ctx.fillText(type, x, y + r * 0.05);
+          ctx.textBaseline = "alphabetic";
+        }
+
+        function drawOrbitalRing(
+          cx,
+          cy,
+          rx,
+          ry,
+          angle,
+          color,
+          alpha = 0.35,
+          lw = 1.2,
+        ) {
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(angle);
+          ctx.strokeStyle = rgba(color, alpha);
+          ctx.lineWidth = lw;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, rx, ry, 0, 0, TAU);
+          ctx.stroke();
+          ctx.restore();
+        }
+        function drawMolecule(cx, cy, r, z, time, count = 7) {
+          const pts = [];
+          for (let i = 0; i < count; i++) {
+            const a = (i / count) * TAU + time * 0.025,
+              rr = r * (0.45 + seeded(i + 61) * 0.5);
+            pts.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr * 0.7]);
+          }
+          for (let i = 0; i < count; i++) {
+            const a = pts[i],
+              b = pts[(i * 3 + 2) % count];
+            line(a[0], a[1], b[0], b[1], rgba(z.color, 0.18), 1.6);
+          }
+          pts.forEach((p, i) => {
+            softHalo(
+              p[0],
+              p[1],
+              r * 0.18,
+              i % 3 ? z.color : [255, 215, 130],
+              0.09,
+            );
+            circle(
+              p[0],
+              p[1],
+              r * (0.035 + (i % 3) * 0.012),
+              rgba(i % 3 ? z.color : [255, 225, 155], 0.68),
+              rgba([255, 255, 255], 0.5),
+              1,
+            );
+          });
+        }
+        function drawCell(cx, cy, r, z, time, kind = 0) {
+          softHalo(cx, cy, r * 1.8, z.color, 0.16);
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(time * 0.015 + kind);
+          ctx.fillStyle = rgba(z.color, 0.16);
+          ctx.strokeStyle = rgba(z.color, 0.72);
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          for (let i = 0; i <= 48; i++) {
+            const a = (i / 48) * TAU,
+              rr =
+                r * (1 + 0.055 * Math.sin(a * (3 + (kind % 4)) + time * 0.7));
+            const x = Math.cos(a) * rr,
+              y = Math.sin(a) * rr * 0.82;
+            i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+          }
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          circle(
+            0,
+            0,
+            r * 0.27,
+            "rgba(10,30,42,.7)",
+            rgba([255, 245, 185], 0.55),
+            1.4,
+          );
+          for (let i = 0; i < 10; i++) {
+            const a = (i / 10) * TAU + time * 0.03,
+              rr = r * (0.4 + seeded(i + 201) * 0.3);
+            circle(
+              Math.cos(a) * rr,
+              Math.sin(a) * rr * 0.75,
+              r * (0.025 + (i % 3) * 0.01),
+              rgba(i % 2 ? z.color : [255, 190, 130], 0.52),
+            );
+          }
+          ctx.restore();
+        }
+        function drawSpectrum(x, y, w, h, z, time, peaks = 8) {
+          line(x, y + h, x + w, y + h, "rgba(255,255,255,.32)", 1);
+          for (let i = 0; i < peaks; i++) {
+            const px = x + w * (0.07 + (i / (peaks - 1)) * 0.86),
+              ph = h * (0.2 + seeded(i + 300) * 0.72);
+            line(
+              px,
+              y + h,
+              px,
+              y + h - ph,
+              rgba(i % 3 ? z.color : [255, 210, 120], 0.62),
+              1.5 + (i % 2),
+            );
+            softHalo(px, y + h - ph, w * 0.035, z.color, 0.07);
+          }
+          ctx.strokeStyle = rgba([255, 255, 255], 0.2);
+          ctx.beginPath();
+          for (let i = 0; i <= 60; i++) {
+            const u = i / 60,
+              yy =
+                y +
+                h * 0.65 -
+                Math.sin(u * TAU * 2 + time * 0.2) * h * 0.05 -
+                (0.5 + 0.5 * Math.sin(u * TAU * 7 + time * 0.1)) * h * 0.12;
+            i ? ctx.lineTo(x + u * w, yy) : ctx.moveTo(x + u * w, yy);
+          }
+          ctx.stroke();
+        }
+        function drawSignal(cx, cy, r, z, time, rings = 7) {
+          for (let i = 0; i < rings; i++) {
+            const p = fract(time * 0.14 + i / rings),
+              rr = r * (0.12 + p),
+              ctxAlpha = (1 - p) * 0.38;
+            ctx.strokeStyle = rgba(z.color, ctxAlpha);
+            ctx.lineWidth = 1.1 + (i % 2);
+            ctx.beginPath();
+            ctx.arc(cx, cy, rr, 0, TAU);
+            ctx.stroke();
+          }
+          circle(cx, cy, r * 0.035, rgba([255, 245, 200], 0.8));
+        }
+        function drawIceMoon(cx, cy, r, z, time) {
+          drawPlanet(cx, cy, r, { color: [175, 225, 255] }, time, false);
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.clip();
+          ctx.strokeStyle = "rgba(255,255,255,.5)";
+          for (let i = 0; i < 15; i++) {
+            const y = cy - r + i * r * 0.14;
+            ctx.beginPath();
+            ctx.moveTo(cx - r, y);
+            for (let x = cx - r; x <= cx + r; x += r * 0.12)
+              ctx.lineTo(x, y + Math.sin(x * 0.05 + i) * r * 0.025);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+        function drawAbstractBody(cx, cy, r, z, time, mode) {
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(time * 0.012 + mode * 0.4);
+          ctx.strokeStyle = rgba(z.color, 0.62);
+          ctx.fillStyle = rgba(z.color, 0.12);
+          ctx.lineWidth = 1.7;
+          ctx.beginPath();
+          const n = 5 + (mode % 5);
+          for (let i = 0; i <= n; i++) {
+            const a = (i / n) * TAU,
+              rr = r * (0.65 + 0.32 * Math.sin(a * (2 + (mode % 4)) + mode));
+            const x = Math.cos(a) * rr,
+              y = Math.sin(a) * rr;
+            i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+          }
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          for (let i = 0; i < n; i++) {
+            const a = (i / n) * TAU + time * 0.02,
+              rr = r * 0.48;
+            circle(
+              Math.cos(a) * rr,
+              Math.sin(a) * rr,
+              r * 0.045,
+              rgba(i % 2 ? z.color : [255, 230, 160], 0.58),
+            );
+          }
+          ctx.restore();
+        }
+        function footerLabel(text, z) {
+          const alpha = footerLabel.alpha || 0;
+          if (!footerLabel.pending || alpha >= footerLabel.pending.alpha)
+            footerLabel.pending = { text, z, alpha };
+        }
+        function paintFooter() {
+          const item = footerLabel.pending;
+          if (!item) return;
+          const s = Math.min(width, height);
+          ctx.font = `900 ${s * 0.023}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.fillStyle = `rgba(255,255,255,${0.57 * clamp(item.alpha * 1.5, 0, 1)})`;
+          ctx.fillText(item.text, width * 0.5, height * 0.86);
+        }
+
+        function drawWaveform(x, y, w, h, z, time, mode = 0) {
+          ctx.save();
+          ctx.strokeStyle = rgba(z.color, 0.62);
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          for (let i = 0; i <= 100; i++) {
+            const u = i / 100;
+            let v =
+              Math.sin(u * TAU * (3 + mode) + time * 0.7) * 0.18 +
+              Math.sin(u * TAU * (11 + mode * 2) - time * 0.22) * 0.07;
+            if (mode === 2) v += Math.floor(u * 18) % 2 ? -0.16 : 0.16;
+            if (mode === 3) v *= 0.35 + 0.65 * (Math.floor(u * 12) % 3 === 0);
+            const px = x + u * w,
+              py = y + h * 0.5 - v * h;
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+          }
+          ctx.stroke();
+          line(x, y + h, x + w, y + h, "rgba(255,255,255,.16)", 1);
+          ctx.restore();
+        }
+        function drawDish(x, y, s, z, angle = 0, active = true) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(angle);
+          ctx.strokeStyle = rgba(z.color, active ? 0.72 : 0.25);
+          ctx.fillStyle = rgba(z.color, active ? 0.12 : 0.04);
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(0, 0, s * 0.34, 0.16 * Math.PI, 0.84 * Math.PI);
+          ctx.lineTo(0, s * 0.03);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          line(0, s * 0.03, 0, s * 0.34, rgba(z.color, 0.55), 2);
+          line(-s * 0.17, s * 0.34, s * 0.17, s * 0.34, rgba(z.color, 0.4), 2);
+          circle(0, 0, s * 0.025, rgba([255, 245, 200], 0.8));
+          ctx.restore();
+        }
+        function drawPacket(x, y, s, z, label, alpha = 0.8) {
+          softHalo(x, y, s * 1.25, z.color, 0.08 * alpha);
+          ctx.fillStyle = rgba(z.color, 0.12 * alpha);
+          ctx.strokeStyle = rgba(z.color, 0.62 * alpha);
+          ctx.lineWidth = 1.2;
+          roundedRectPath(
+            x - s * 0.55,
+            y - s * 0.25,
+            s * 1.1,
+            s * 0.5,
+            s * 0.12,
+          );
+          ctx.fill();
+          ctx.stroke();
+          ctx.font = `900 ${Math.max(8, s * 0.19)}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.fillStyle = `rgba(255,255,255,${0.72 * alpha})`;
+          ctx.fillText(label, x, y + s * 0.065);
+        }
+        function drawGlyphField(x, y, w, h, z, time, variant = 0) {
+          const chars = [
+            "01",
+            "λ",
+            "Σ",
+            "△",
+            "○",
+            "↔",
+            "⊕",
+            "⋮",
+            "?",
+            "∞",
+            "⌁",
+            "✦",
+          ];
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(x, y, w, h);
+          ctx.clip();
+          for (let i = 0; i < 36; i++) {
+            const col = i % 6,
+              row = Math.floor(i / 6),
+              px = x + ((col + 0.5) * w) / 6,
+              py = y + ((row + 0.5) * h) / 6;
+            ctx.font = `800 ${Math.max(10, Math.min(w, h) * (0.075 + (i % 3) * 0.015))}px system-ui`;
+            ctx.textAlign = "center";
+            ctx.fillStyle = rgba(
+              i % 4 ? z.color : [255, 235, 180],
+              0.25 + 0.28 * (0.5 + 0.5 * Math.sin(time * 0.4 + i)),
+            );
+            ctx.fillText(chars[(i * 3 + variant) % chars.length], px, py);
+          }
+          ctx.restore();
+        }
+        function drawChoiceBranches(z, time, labels) {
+          const s = Math.min(width, height),
+            selected = Math.min(
+              labels.length - 1,
+              Math.floor(pointerX * labels.length),
+            );
+          for (let i = 0; i < labels.length; i++) {
+            const x = width * (0.08 + ((i + 0.5) * 0.84) / labels.length),
+              chosen = i === selected;
+            ctx.strokeStyle = rgba(
+              chosen ? [255, 245, 195] : z.color,
+              chosen ? 0.72 : 0.18,
+            );
+            ctx.lineWidth = chosen ? 3 : 1.2;
+            ctx.beginPath();
+            ctx.moveTo(width * 0.5, height * 0.72);
+            ctx.quadraticCurveTo(x, height * 0.48, x, height * 0.27);
+            ctx.stroke();
+            circle(
+              x,
+              height * 0.25,
+              s * (chosen ? 0.026 : 0.018),
+              rgba(chosen ? [255, 245, 195] : z.color, chosen ? 0.65 : 0.27),
+            );
+            ctx.font = `900 ${Math.max(8, s * 0.014)}px system-ui`;
+            ctx.textAlign = "center";
+            ctx.fillStyle = `rgba(255,255,255,${chosen ? 0.8 : 0.35})`;
+            ctx.fillText(labels[i], x, height * 0.19);
+          }
+          circle(width * 0.5, height * 0.74, s * 0.025, rgba(z.color, 0.72));
+        }
+        function drawCivilization(cx, cy, r, z, time, variant = 0) {
+          softHalo(cx, cy, r * 2, z.color, 0.13);
+          if (variant % 3 === 0) {
+            drawNetwork(cx, cy, r, z, time, 14);
+          } else if (variant % 3 === 1) {
+            for (let i = 0; i < 9; i++) {
+              const a = (i / 9) * TAU + time * 0.015,
+                rr = r * (0.35 + (i % 3) * 0.22);
+              circle(
+                cx + Math.cos(a) * rr,
+                cy + Math.sin(a) * rr * 0.72,
+                r * 0.055,
+                rgba(i % 2 ? z.color : [255, 225, 160], 0.55),
+              );
+              line(
+                cx,
+                cy,
+                cx + Math.cos(a) * rr,
+                cy + Math.sin(a) * rr * 0.72,
+                rgba(z.color, 0.13),
+                1,
+              );
+            }
+            circle(cx, cy, r * 0.13, rgba(z.color, 0.45));
+          } else {
+            for (let i = 0; i < 6; i++) {
+              const a = (i / 6) * TAU + time * 0.01,
+                rr = r * 0.62;
+              polygon(
+                [
+                  [
+                    cx + Math.cos(a) * rr - r * 0.09,
+                    cy + Math.sin(a) * rr * 0.65,
+                  ],
+                  [
+                    cx + Math.cos(a) * rr + r * 0.09,
+                    cy + Math.sin(a) * rr * 0.65,
+                  ],
+                  [
+                    cx + Math.cos(a) * rr,
+                    cy + Math.sin(a) * rr * 0.65 - r * 0.16,
+                  ],
+                ],
+                rgba(z.color, 0.14),
+                rgba(z.color, 0.55),
+                1.2,
+              );
+            }
+          }
+        }
+
+        function selectedFrame(labels) {
+          return Math.min(
+            labels.length - 1,
+            Math.floor(pointerX * labels.length),
+          );
+        }
+        function labelAt(text, x, y, size, color = "rgba(255,255,255,.55)") {
+          ctx.font = `900 ${Math.max(8, size)}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = color;
+          ctx.fillText(text, x, y);
+          ctx.textBaseline = "alphabetic";
+        }
+        function drawLensPanel(x, y, w, h, z, label, active, variant, time) {
+          ctx.fillStyle = rgba(z.color, active ? 0.12 : 0.035);
+          ctx.strokeStyle = rgba(
+            active ? [255, 248, 215] : z.color,
+            active ? 0.72 : 0.2,
+          );
+          ctx.lineWidth = active ? 2.2 : 1;
+          roundedRectPath(x, y, w, h, Math.min(w, h) * 0.12);
+          ctx.fill();
+          ctx.stroke();
+          const cx = x + w * 0.5,
+            cy = y + h * 0.48,
+            r = Math.min(w, h) * 0.2;
+          if (variant === 0) drawStar(cx, cy, r, [255, 218, 130], time);
+          else if (variant === 1) {
+            for (let i = 0; i < 9; i++) {
+              const a = (i / 9) * TAU;
+              drawOrbitalRing(
+                cx,
+                cy,
+                r * (0.45 + i * 0.07),
+                r * (0.18 + i * 0.03),
+                a * 0.18,
+                z.color,
+                0.15 + i * 0.018,
+                1,
+              );
+            }
+          } else if (variant === 2) {
+            for (let i = 0; i < 24; i++) {
+              const a = (i / 24) * TAU + time * 0.01,
+                rr = r * (0.35 + (i % 6) * 0.12);
+              circle(
+                cx + Math.cos(a) * rr,
+                cy + Math.sin(a) * rr * 0.7,
+                1.3 + (i % 3),
+                rgba(i % 4 ? z.color : [255, 235, 175], 0.55),
+              );
+            }
+          } else if (variant === 3) {
+            drawWaveform(
+              x + w * 0.14,
+              y + h * 0.27,
+              w * 0.72,
+              h * 0.42,
+              z,
+              time,
+              2,
+            );
+          } else if (variant === 4) {
+            drawGlyphField(
+              x + w * 0.08,
+              y + h * 0.16,
+              w * 0.84,
+              h * 0.58,
+              z,
+              time,
+              variant,
+            );
+          } else {
+            drawNetwork(cx, cy, r * 1.15, z, time, 15);
+          }
+          labelAt(
+            label,
+            cx,
+            y + h * 0.84,
+            Math.min(w, h) * 0.075,
+            `rgba(255,255,255,${active ? 0.85 : 0.42})`,
+          );
+        }
+
+        function sceneAnotherPerspective(z, time) {
+          const s = Math.min(width, height),
+            labels = ["LUZ", "CAMPO", "PROB.", "QUÍMICA", "MEMORIA", "RED"],
+            sel = selectedFrame(labels);
+          drawPacket(
+            width * 0.5,
+            height * 0.78,
+            s * 0.13,
+            z,
+            "MENSAJE RECIBIDO",
+            0.78,
+          );
+          for (let i = 0; i < 6; i++) {
+            const x = width * (0.09 + i * 0.164),
+              y = height * (0.25 + 0.05 * (i % 2));
+            ctx.setLineDash([4, 8]);
+            line(
+              width * 0.5,
+              height * 0.7,
+              x,
+              y + height * 0.08,
+              rgba(z.color, i === sel ? 0.48 : 0.12),
+              i === sel ? 2.4 : 1,
+            );
+            ctx.setLineDash([]);
+            drawLensPanel(
+              x - width * 0.065,
+              y - height * 0.07,
+              width * 0.13,
+              height * 0.23,
+              z,
+              labels[i],
+              i === sel,
+              i,
+              time,
+            );
+          }
+          footerLabel("EL MENSAJE SE ABRE EN VARIAS FORMAS DE REALIDAD", z);
+        }
+        function sceneHumanPerspective(z, time) {
+          const labels = [
+              "OBJETO",
+              "ESPACIO",
+              "TIEMPO",
+              "CAUSA",
+              "YO",
+              "MENTE",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawPlanet(width * 0.5, height * 0.5, s * 0.16, z, time, true);
+          for (let i = 0; i < 6; i++) {
+            const a = (i / 6) * TAU - Math.PI / 2,
+              x = width * 0.5 + Math.cos(a) * s * 0.31,
+              y = height * 0.5 + Math.sin(a) * s * 0.25;
+            drawPacket(
+              x,
+              y,
+              s * (i === sel ? 0.085 : 0.065),
+              z,
+              labels[i],
+              i === sel ? 0.95 : 0.42,
+            );
+            line(
+              width * 0.5,
+              height * 0.5,
+              x,
+              y,
+              rgba(z.color, i === sel ? 0.35 : 0.08),
+              i === sel ? 2 : 1,
+            );
+          }
+          footerLabel("LO EVIDENTE TAMBIÉN TIENE HISTORIA BIOLÓGICA", z);
+        }
+        function sceneTerrestrialSenses(z, time) {
+          const labels = [
+              "VISIBLE",
+              "SONIDO",
+              "QUÍMICA",
+              "TACTO",
+              "EQUILIBRIO",
+              "DURACIÓN",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          const y = height * 0.56;
+          ctx.fillStyle = "rgba(255,255,255,.055)";
+          ctx.fillRect(width * 0.08, y - s * 0.025, width * 0.84, s * 0.05);
+          const bands = [
+            [0.08, 0.2, [105, 80, 255]],
+            [0.2, 0.34, [70, 190, 255]],
+            [0.34, 0.52, [90, 245, 170]],
+            [0.52, 0.68, [255, 225, 85]],
+            [0.68, 0.82, [255, 120, 80]],
+            [0.82, 0.92, [235, 90, 210]],
+          ];
+          bands.forEach((b, i) => {
+            ctx.fillStyle = rgba(b[2], i === sel ? 0.72 : 0.22);
+            ctx.fillRect(
+              width * b[0],
+              y - s * (i === sel ? 0.04 : 0.025),
+              width * (b[1] - b[0]),
+              s * (i === sel ? 0.08 : 0.05),
+            );
+          });
+          drawAbstractBody(width * 0.5, height * 0.3, s * 0.11, z, time, sel);
+          drawPacket(width * 0.5, height * 0.77, s * 0.12, z, labels[sel], 0.9);
+          footerLabel("LOS SENTIDOS MUESTREAN · NO COPIAN EL UNIVERSO", z);
+        }
+        function sceneBrainPerception(z, time) {
+          const labels = [
+              "ATENCIÓN",
+              "PREDICCIÓN",
+              "CONSTANCIA",
+              "MEMORIA",
+              "ACCIÓN",
+              "ILUSIÓN",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height),
+            cx = width * 0.5,
+            cy = height * 0.53;
+          for (let i = 0; i < 6; i++) {
+            const y = height * (0.18 + i * 0.095),
+              x = width * 0.14;
+            drawPacket(x, y, s * 0.065, z, labels[i], i === sel ? 0.9 : 0.32);
+            ctx.strokeStyle = rgba(z.color, i === sel ? 0.48 : 0.08);
+            ctx.lineWidth = i === sel ? 3 : 1;
+            ctx.beginPath();
+            ctx.moveTo(x + s * 0.045, y);
+            ctx.bezierCurveTo(
+              width * 0.34,
+              y,
+              width * 0.36,
+              cy,
+              cx - s * 0.1,
+              cy,
+            );
+            ctx.stroke();
+          }
+          drawNetwork(cx, cy, s * 0.16, z, time, 20);
+          drawPacket(width * 0.78, cy, s * 0.11, z, "MODELO", 0.82);
+          line(
+            cx + s * 0.1,
+            cy,
+            width * 0.7,
+            cy,
+            rgba([255, 245, 200], 0.35),
+            2,
+          );
+          footerLabel("PERCIBIR = DATOS + MODELO + CORRECCIÓN", z);
+        }
+        function sceneLanguage(z, time) {
+          const labels = [
+              "NOMBRES",
+              "VERBOS",
+              "TIEMPO",
+              "METÁFORA",
+              "CONTEXTO",
+              "NUEVO",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawGlyphField(
+            width * 0.08,
+            height * 0.18,
+            width * 0.84,
+            height * 0.44,
+            z,
+            time,
+            sel,
+          );
+          for (let i = 0; i < 6; i++) {
+            const x = width * (0.1 + i * 0.16);
+            drawPacket(
+              x,
+              height * 0.72,
+              s * 0.064,
+              z,
+              labels[i],
+              i === sel ? 0.9 : 0.35,
+            );
+          }
+          ctx.strokeStyle = rgba([255, 245, 200], 0.28);
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(width * 0.1, height * 0.62);
+          for (let i = 1; i <= 50; i++) {
+            const u = i / 50;
+            ctx.lineTo(
+              width * (0.1 + 0.8 * u),
+              height * 0.62 - Math.sin(u * TAU * (2 + sel)) * s * 0.015,
+            );
+          }
+          ctx.stroke();
+          footerLabel("NOMBRAR ESTABILIZA UNA MANERA DE DIVIDIR", z);
+        }
+        function sceneCulture(z, time) {
+          const labels = [
+              "RELATO",
+              "VALOR",
+              "INSTIT.",
+              "TÉCNICA",
+              "HISTORIA",
+              "PLURAL",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawStar(
+            width * 0.5,
+            height * 0.43,
+            s * 0.055,
+            [255, 220, 130],
+            time,
+          );
+          for (let i = 0; i < 6; i++) {
+            const a = (i / 6) * TAU + time * 0.004,
+              x = width * 0.5 + Math.cos(a) * s * 0.29,
+              y = height * 0.46 + Math.sin(a) * s * 0.2;
+            drawCivilization(
+              x,
+              y,
+              s * (i === sel ? 0.09 : 0.065),
+              z,
+              time + i,
+              i % 3,
+            );
+            drawPacket(
+              x,
+              y + s * 0.105,
+              s * 0.055,
+              z,
+              labels[i],
+              i === sel ? 0.82 : 0.3,
+            );
+          }
+          footerLabel("UNA MISMA ESTRELLA ENTRA EN HISTORIAS DISTINTAS", z);
+        }
+        function sceneScientificModels(z, time) {
+          const labels = [
+              "MEDIR",
+              "IDEALIZAR",
+              "PREDECIR",
+              "ESCALA",
+              "ERROR",
+              "REVISAR",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawStar(
+            width * 0.5,
+            height * 0.38,
+            s * 0.065,
+            [255, 220, 135],
+            time,
+          );
+          for (let i = 0; i < 6; i++) {
+            const x = width * (0.08 + i * 0.168),
+              y = height * (0.64 + 0.035 * (i % 2));
+            ctx.setLineDash([4, 8]);
+            line(
+              width * 0.5,
+              height * 0.43,
+              x,
+              y - s * 0.04,
+              rgba(z.color, i === sel ? 0.48 : 0.1),
+              i === sel ? 2.2 : 1,
+            );
+            ctx.setLineDash([]);
+            drawPacket(x, y, s * 0.07, z, labels[i], i === sel ? 0.92 : 0.33);
+          }
+          for (let i = 0; i < 4; i++)
+            drawOrbitalRing(
+              width * 0.5,
+              height * 0.38,
+              s * (0.11 + i * 0.03),
+              s * (0.035 + i * 0.011),
+              i * 0.35,
+              z.color,
+              0.12 + i * 0.07,
+              1 + i * 0.3,
+            );
+          footerLabel("MODELOS DISTINTOS · CONSECUENCIAS COMPARABLES", z);
+        }
+        function sceneCognitiveLimits(z, time) {
+          const labels = [
+              "MEMORIA",
+              "ATENCIÓN",
+              "DIMENSIÓN",
+              "SESGO",
+              "INSTRUM.",
+              "LÍMITE",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawNetwork(width * 0.5, height * 0.48, s * 0.25, z, time, 26);
+          ctx.fillStyle = "rgba(0,0,0,.58)";
+          if (sel === 0)
+            ctx.fillRect(
+              width * 0.08,
+              height * 0.15,
+              width * 0.84,
+              height * 0.18,
+            );
+          if (sel === 1) {
+            ctx.fillRect(0, 0, width * 0.38, height);
+            ctx.fillRect(width * 0.62, 0, width * 0.38, height);
+          }
+          if (sel === 2)
+            for (let i = 0; i < 8; i++)
+              line(
+                width * 0.1,
+                height * (0.2 + i * 0.07),
+                width * 0.9,
+                height * (0.2 + ((i * 3) % 8) * 0.07),
+                rgba(z.color, 0.12),
+                1,
+              );
+          if (sel === 3)
+            softHalo(
+              width * 0.35,
+              height * 0.42,
+              s * 0.18,
+              [255, 150, 120],
+              0.18,
+            );
+          if (sel === 4)
+            drawDish(width * 0.75, height * 0.62, s * 0.2, z, -0.45, true);
+          if (sel === 5) {
+            ctx.strokeStyle = rgba([255, 245, 200], 0.35);
+            ctx.strokeRect(
+              width * 0.22,
+              height * 0.25,
+              width * 0.56,
+              height * 0.43,
+            );
+            labelAt(
+              "?",
+              width * 0.5,
+              height * 0.47,
+              s * 0.2,
+              "rgba(255,255,255,.12)",
+            );
+          }
+          drawPacket(
+            width * 0.5,
+            height * 0.79,
+            s * 0.12,
+            z,
+            labels[sel],
+            0.85,
+          );
+          footerLabel("TODA INTELIGENCIA SELECCIONA Y COMPRIME", z);
+        }
+        function sceneAlienPerspective(z, time) {
+          const labels = [
+              "OCÉANO",
+              "BLOQUEADO",
+              "ATMÓSFERA",
+              "SUBSUELO",
+              "BINARIA",
+              "COLMENA",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawPlanet(
+            width * 0.5,
+            height * 0.48,
+            s * 0.2,
+            z,
+            time,
+            sel !== 0 && sel !== 3,
+          );
+          if (sel === 0) {
+            for (let i = 0; i < 12; i++)
+              drawOrbitalRing(
+                width * 0.5,
+                height * 0.49,
+                s * (0.08 + i * 0.012),
+                s * (0.025 + i * 0.005),
+                time * 0.01 + i * 0.18,
+                [90, 220, 255],
+                0.18,
+                1,
+              );
+          }
+          if (sel === 1) {
+            ctx.fillStyle = "rgba(0,0,0,.48)";
+            ctx.fillRect(width * 0.5, height * 0.26, s * 0.22, height * 0.44);
+          }
+          if (sel === 2)
+            for (let i = 0; i < 9; i++)
+              circle(
+                width * 0.3 + seeded(i) * width * 0.4,
+                height * 0.25 + seeded(i + 33) * height * 0.45,
+                s * 0.012,
+                rgba(z.color, 0.35),
+              );
+          if (sel === 3) {
+            ctx.fillStyle = "rgba(0,0,0,.62)";
+            ctx.fillRect(
+              width * 0.22,
+              height * 0.15,
+              width * 0.56,
+              height * 0.22,
+            );
+            for (let i = 0; i < 9; i++)
+              line(
+                width * 0.3 + i * s * 0.04,
+                height * 0.7,
+                width * 0.34 + i * s * 0.03,
+                height * 0.34,
+                rgba(z.color, 0.18),
+                1,
+              );
+          }
+          if (sel === 4) {
+            drawStar(
+              width * 0.27,
+              height * 0.26,
+              s * 0.045,
+              [255, 190, 110],
+              time,
+            );
+            drawStar(
+              width * 0.73,
+              height * 0.24,
+              s * 0.035,
+              [160, 210, 255],
+              time,
+            );
+          }
+          if (sel === 5)
+            drawNetwork(width * 0.5, height * 0.48, s * 0.17, z, time, 25);
+          drawPacket(
+            width * 0.5,
+            height * 0.79,
+            s * 0.12,
+            z,
+            labels[sel],
+            0.88,
+          );
+          footerLabel("OTRO MUNDO CAMBIA QUÉ RESULTA PRIMARIO", z);
+        }
+        function sceneUnknownSenses(z, time) {
+          const labels = [
+              "MAGNETISMO",
+              "POLARIZ.",
+              "ELÉCTRICO",
+              "QUÍMICO",
+              "RADIO",
+              "GRAVEDAD",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height),
+            cx = width * 0.5,
+            cy = height * 0.46;
+          drawPlanet(cx, cy, s * 0.13, z, time, true);
+          if (sel === 0)
+            for (let i = 0; i < 14; i++) {
+              const a = (i / 14) * TAU;
+              ctx.strokeStyle = rgba(z.color, 0.18 + i * 0.015);
+              ctx.beginPath();
+              ctx.ellipse(
+                cx,
+                cy,
+                s * (0.16 + i * 0.009),
+                s * (0.05 + i * 0.004),
+                a * 0.1,
+                0,
+                TAU,
+              );
+              ctx.stroke();
+            }
+          if (sel === 1)
+            for (let i = 0; i < 30; i++) {
+              const a = (i / 30) * TAU;
+              line(
+                cx,
+                cy,
+                cx + Math.cos(a) * s * 0.32,
+                cy + Math.sin(a) * s * 0.24,
+                rgba(i % 2 ? z.color : [255, 220, 150], 0.08 + i * 0.006),
+                1,
+              );
+            }
+          if (sel === 2)
+            for (let i = 0; i < 10; i++) {
+              const a = (i / 10) * TAU + time * 0.03;
+              drawSignal(
+                cx + Math.cos(a) * s * 0.22,
+                cy + Math.sin(a) * s * 0.15,
+                s * 0.025,
+                z,
+                time + i,
+                3,
+              );
+            }
+          if (sel === 3)
+            for (let i = 0; i < 70; i++) {
+              const x = seeded(i + 4) * width,
+                y = seeded(i + 84) * height;
+              circle(
+                x,
+                y,
+                1 + seeded(i + 8) * 3,
+                rgba(
+                  i % 3 ? z.color : [255, 210, 145],
+                  0.05 + 0.25 * (1 - Math.abs(x - cx) / width),
+                ),
+              );
+            }
+          if (sel === 4)
+            drawWaveform(
+              width * 0.12,
+              height * 0.24,
+              width * 0.76,
+              height * 0.42,
+              z,
+              time,
+              3,
+            );
+          if (sel === 5)
+            for (let i = 0; i < 9; i++)
+              drawOrbitalRing(
+                cx,
+                cy,
+                s * (0.16 + i * 0.022),
+                s * (0.16 + i * 0.022),
+                0,
+                z.color,
+                0.08 + i * 0.025,
+                1,
+              );
+          drawPacket(cx, height * 0.79, s * 0.13, z, labels[sel], 0.9);
+          footerLabel("LO INSTRUMENTAL PARA NOSOTROS PUEDE SER SENSACIÓN", z);
+        }
+        function sceneDifferentTimes(z, time) {
+          const labels = [
+              "BREVE",
+              "MILENARIA",
+              "ESTACIONAL",
+              "HEREDADA",
+              "DIGITAL",
+              "SECULAR",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          for (let i = 0; i < 6; i++) {
+            const y = height * (0.2 + i * 0.095),
+              speed = [2.6, 0.12, 0.45, 0.32, 5.2, 0.06][i],
+              count = [18, 5, 8, 10, 28, 4][i];
+            line(
+              width * 0.12,
+              y,
+              width * 0.88,
+              y,
+              rgba(z.color, i === sel ? 0.4 : 0.1),
+              i === sel ? 2.5 : 1,
+            );
+            for (let k = 0; k < count; k++) {
+              const p = fract(time * speed * 0.04 + k / count);
+              circle(
+                width * (0.12 + 0.76 * p),
+                y,
+                1.4 + (i === sel ? 1.8 : 0),
+                rgba(
+                  i === sel ? [255, 245, 200] : z.color,
+                  i === sel ? 0.72 : 0.22,
+                ),
+              );
+            }
+            labelAt(
+              labels[i],
+              width * 0.08,
+              y,
+              s * 0.018,
+              `rgba(255,255,255,${i === sel ? 0.8 : 0.3})`,
+            );
+          }
+          drawPacket(
+            width * 0.5,
+            height * 0.83,
+            s * 0.12,
+            z,
+            "¿QUÉ ES UN ACONTECIMIENTO?",
+            0.82,
+          );
+          footerLabel("LA DURACIÓN CAMBIA EL TAMAÑO DEL PRESENTE", z);
+        }
+        function sceneOtherIndividuality(z, time) {
+          const labels = [
+              "UNO",
+              "COLONIA",
+              "SIMBIOSIS",
+              "COPIAS",
+              "TEMPORAL",
+              "MEMORIA",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height),
+            cx = width * 0.5,
+            cy = height * 0.47;
+          if (sel === 0) drawAbstractBody(cx, cy, s * 0.16, z, time, 1);
+          if (sel === 1)
+            for (let i = 0; i < 18; i++) {
+              const a = (i / 18) * TAU,
+                rr = s * (0.08 + (i % 4) * 0.025);
+              circle(
+                cx + Math.cos(a) * rr,
+                cy + Math.sin(a) * rr * 0.75,
+                s * 0.018,
+                rgba(z.color, 0.55),
+              );
+            }
+          if (sel === 2) {
+            drawAbstractBody(cx - s * 0.07, cy, s * 0.11, z, time, 2);
+            drawAbstractBody(
+              cx + s * 0.07,
+              cy,
+              s * 0.11,
+              { color: [255, 220, 140] },
+              -time,
+              4,
+            );
+          }
+          if (sel === 3)
+            for (let i = 0; i < 5; i++)
+              drawAbstractBody(
+                width * (0.25 + i * 0.125),
+                cy,
+                s * 0.07,
+                z,
+                time + i,
+                i,
+              );
+          if (sel === 4) {
+            for (let i = 0; i < 14; i++) {
+              const p = fract(time * 0.08 + i / 14);
+              circle(
+                cx + Math.cos(p * TAU) * s * 0.18,
+                cy + Math.sin(p * TAU * 2) * s * 0.1,
+                s * 0.012,
+                rgba(z.color, (1 - p) * 0.7),
+              );
+            }
+          }
+          if (sel === 5) drawNetwork(cx, cy, s * 0.22, z, time, 30);
+          drawPacket(cx, height * 0.79, s * 0.12, z, labels[sel], 0.9);
+          footerLabel("¿DÓNDE TERMINA EL INTERLOCUTOR?", z);
+        }
+        function sceneCollective(z, time) {
+          const labels = [
+              "ENJAMBRE",
+              "SEÑALES",
+              "CONSENSO",
+              "ESPECIAL.",
+              "CONFLICTO",
+              "VOZ",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawNetwork(width * 0.5, height * 0.45, s * 0.28, z, time, 34);
+          for (let i = 0; i < 6; i++) {
+            const a = (i / 6) * TAU - time * 0.006,
+              x = width * 0.5 + Math.cos(a) * s * 0.32,
+              y = height * 0.46 + Math.sin(a) * s * 0.22;
+            drawPacket(x, y, s * 0.06, z, labels[i], i === sel ? 0.92 : 0.3);
+            line(
+              width * 0.5,
+              height * 0.45,
+              x,
+              y,
+              rgba(z.color, i === sel ? 0.38 : 0.07),
+              i === sel ? 2 : 1,
+            );
+          }
+          drawPacket(
+            width * 0.5,
+            height * 0.78,
+            s * 0.12,
+            z,
+            "DECISIÓN GLOBAL",
+            0.8,
+          );
+          footerLabel("NINGÚN NODO NECESITA CONTENER EL TODO", z);
+        }
+        function sceneArtificial(z, time) {
+          const labels = [
+              "VELOCIDAD",
+              "COPIA",
+              "ARCHIVO",
+              "OBJETIVO",
+              "CUERPO",
+              "CAMBIO",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          const cols = 10,
+            rows = 7;
+          for (let r = 0; r < rows; r++)
+            for (let c = 0; c < cols; c++) {
+              const x = width * (0.18 + c * 0.071),
+                y = height * (0.22 + r * 0.07),
+                v =
+                  0.5 +
+                  0.5 *
+                    Math.sin(
+                      time * (sel === 0 ? 2.6 : 0.35) + r * 1.7 + c * 0.8,
+                    );
+              circle(
+                x,
+                y,
+                2 + ((c + r) % 3),
+                rgba((c + r) % 4 ? z.color : [255, 235, 170], 0.12 + 0.5 * v),
+              );
+              if (c < cols - 1)
+                line(
+                  x,
+                  y,
+                  x + width * 0.071,
+                  y,
+                  rgba(z.color, 0.055 + 0.08 * v),
+                  1,
+                );
+              if (r < rows - 1)
+                line(
+                  x,
+                  y,
+                  x,
+                  y + height * 0.07,
+                  rgba(z.color, 0.04 + 0.07 * v),
+                  1,
+                );
+            }
+          if (sel === 1)
+            for (let i = 0; i < 4; i++)
+              ctx.strokeRect(
+                width * (0.28 + i * 0.04),
+                height * (0.3 + i * 0.03),
+                width * 0.32,
+                height * 0.26,
+              );
+          if (sel === 2)
+            drawPacket(
+              width * 0.5,
+              height * 0.72,
+              s * 0.14,
+              z,
+              "MEMORIA EXTERNA",
+              0.82,
+            );
+          if (sel === 3)
+            drawChoiceBranches(z, time, ["A", "B", "C", "D", "E", "F"]);
+          if (sel === 4)
+            for (let i = 0; i < 4; i++)
+              drawAbstractBody(
+                width * (0.32 + i * 0.12),
+                height * 0.72,
+                s * 0.045,
+                z,
+                time,
+                i,
+              );
+          if (sel === 5)
+            drawWaveform(
+              width * 0.2,
+              height * 0.72,
+              width * 0.6,
+              height * 0.08,
+              z,
+              time,
+              2,
+            );
+          footerLabel("ARQUITECTURA DISTINTA · PERSPECTIVA TODAVÍA SITUADA", z);
+        }
+        function scenePlanetary(z, time) {
+          const labels = [
+              "BIOSFERA",
+              "HONGOS",
+              "OCÉANO",
+              "TÉCNICA",
+              "GEO-RITMO",
+              "MÚLTIPLE",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height),
+            cx = width * 0.5,
+            cy = height * 0.46;
+          drawGlobe(cx, cy, s * 0.19, z, time, true);
+          const count = sel === 4 ? 8 : 24;
+          for (let i = 0; i < count; i++) {
+            const a = (i / count) * TAU + time * (sel === 4 ? 0.002 : 0.012),
+              rr = s * (0.23 + (i % 4) * 0.018);
+            circle(
+              cx + Math.cos(a) * rr,
+              cy + Math.sin(a) * rr * 0.65,
+              2 + (i % 3),
+              rgba(i % 3 ? z.color : [255, 230, 160], 0.3),
+            );
+          }
+          drawPacket(cx, height * 0.79, s * 0.13, z, labels[sel], 0.88);
+          footerLabel("UN MUNDO PUEDE SER SISTEMA, HÁBITAT E INTERLOCUTOR", z);
+        }
+        function sceneDistributed(z, time) {
+          const labels = [
+              "PLANETAS",
+              "ESTELAR",
+              "VERSIONES",
+              "CONSENSO",
+              "FRAGMENTO",
+              "PÉRDIDA",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          const pts = [];
+          for (let i = 0; i < 12; i++) {
+            const x = width * (0.1 + seeded(i + 50) * 0.8),
+              y = height * (0.18 + seeded(i + 90) * 0.48);
+            pts.push([x, y]);
+            drawCivilization(x, y, s * 0.045, z, time + i, i % 3);
+          }
+          for (let i = 0; i < 20; i++) {
+            const a = pts[i % pts.length],
+              b = pts[(i * 5 + 3) % pts.length];
+            ctx.setLineDash([4, 9]);
+            line(
+              a[0],
+              a[1],
+              b[0],
+              b[1],
+              rgba(z.color, 0.08 + (i % 4) * 0.025),
+              1,
+            );
+            ctx.setLineDash([]);
+            const p = fract(time * (sel === 1 ? 0.008 : 0.03) + i * 0.07);
+            circle(
+              mix(a[0], b[0], p),
+              mix(a[1], b[1], p),
+              1.5,
+              rgba([255, 245, 205], 0.45),
+            );
+          }
+          if (sel === 5) {
+            ctx.fillStyle = "rgba(0,0,0,.65)";
+            ctx.fillRect(
+              width * 0.58,
+              height * 0.12,
+              width * 0.35,
+              height * 0.56,
+            );
+          }
+          drawPacket(width * 0.5, height * 0.8, s * 0.13, z, labels[sel], 0.9);
+          footerLabel("LA UNIDAD SOBREVIVE A DEMORAS Y VERSIONES LOCALES", z);
+        }
+        function sceneUntranslatable(z, time) {
+          const labels = [
+              "MULTISENT.",
+              "MEMORIA",
+              "NO LINEAL",
+              "PROBABIL.",
+              "PROCESO",
+              "LENTO",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawGlyphField(
+            width * 0.1,
+            height * 0.14,
+            width * 0.8,
+            height * 0.46,
+            z,
+            time,
+            sel,
+          );
+          for (let i = 0; i < 6; i++) {
+            const y = height * (0.24 + i * 0.065),
+              bend = Math.sin(i * 1.8 + time * 0.2) * height * 0.03;
+            ctx.setLineDash([3, 7]);
+            line(
+              width * 0.15,
+              y,
+              width * 0.85,
+              y + bend,
+              rgba(
+                i === sel ? [255, 245, 195] : z.color,
+                i === sel ? 0.45 : 0.1,
+              ),
+              i === sel ? 2 : 1,
+            );
+            ctx.setLineDash([]);
+          }
+          drawPacket(
+            width * 0.5,
+            height * 0.75,
+            s * 0.14,
+            z,
+            "CONSTRUIR CONCEPTO",
+            0.85,
+          );
+          footerLabel("TRADUCIR PUEDE CAMBIAR A QUIEN TRADUCE", z);
+        }
+        function sceneMultipleMath(z, time) {
+          const labels = [
+              "NOTACIÓN",
+              "GEOMETRÍA",
+              "CONTINUO",
+              "PROBABIL.",
+              "PRUEBA",
+              "CLASIFIC.",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height),
+            cx = width * 0.5,
+            cy = height * 0.45;
+          if (sel === 0) {
+            labelAt(
+              "2 · 3 · 5 · 7 · 11",
+              cx,
+              cy,
+              s * 0.08,
+              "rgba(255,255,255,.72)",
+            );
+            drawGlyphField(
+              width * 0.18,
+              height * 0.2,
+              width * 0.64,
+              height * 0.42,
+              z,
+              time,
+              1,
+            );
+          }
+          if (sel === 1)
+            for (let i = 0; i < 9; i++)
+              drawOrbitalRing(
+                cx,
+                cy,
+                s * (0.06 + i * 0.018),
+                s * (0.018 + i * 0.009),
+                i * 0.38,
+                z.color,
+                0.13 + i * 0.035,
+                1,
+              );
+          if (sel === 2)
+            drawWaveform(
+              width * 0.12,
+              height * 0.28,
+              width * 0.76,
+              height * 0.3,
+              z,
+              time,
+              1,
+            );
+          if (sel === 3)
+            for (let i = 0; i < 70; i++) {
+              const x = width * (0.15 + seeded(i) * 0.7),
+                y = height * (0.2 + seeded(i + 80) * 0.45);
+              circle(
+                x,
+                y,
+                1 + seeded(i + 4) * 3,
+                rgba(z.color, 0.08 + 0.55 * seeded(i + 7)),
+              );
+            }
+          if (sel === 4) {
+            for (let i = 0; i < 6; i++) {
+              drawPacket(
+                width * (0.18 + i * 0.13),
+                height * (0.25 + (i % 2) * 0.24),
+                s * 0.055,
+                z,
+                String(i + 1),
+                0.55,
+              );
+              if (i)
+                line(
+                  width * (0.18 + (i - 1) * 0.13),
+                  height * (0.25 + ((i - 1) % 2) * 0.24),
+                  width * (0.18 + i * 0.13),
+                  height * (0.25 + (i % 2) * 0.24),
+                  rgba(z.color, 0.25),
+                  2,
+                );
+            }
+          }
+          if (sel === 5) drawNetwork(cx, cy, s * 0.23, z, time, 24);
+          drawPacket(cx, height * 0.78, s * 0.12, z, labels[sel], 0.9);
+          footerLabel(
+            "MISMAS RELACIONES · ORGANIZACIONES FORMALES DISTINTAS",
+            z,
+          );
+        }
+        function sceneCausality(z, time) {
+          const labels = [
+              "CADENA",
+              "RED",
+              "BUCLE",
+              "PROBABIL.",
+              "NIVELES",
+              "AGENCIA",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          const pts = [];
+          for (let i = 0; i < 7; i++) {
+            const x = width * (0.14 + i * 0.12),
+              y = height * (0.3 + 0.18 * Math.sin(i * 0.9 + sel));
+            pts.push([x, y]);
+            drawPacket(
+              x,
+              y,
+              s * 0.055,
+              z,
+              String.fromCharCode(65 + i),
+              0.55 + (i === sel % 7 ? 0.3 : 0),
+            );
+          }
+          if (sel === 0)
+            for (let i = 0; i < 6; i++)
+              line(...pts[i], ...pts[i + 1], rgba(z.color, 0.45), 2);
+          if (sel === 1)
+            for (let i = 0; i < 14; i++)
+              line(
+                ...pts[i % 7],
+                ...pts[(i * 3 + 2) % 7],
+                rgba(z.color, 0.15),
+                1.4,
+              );
+          if (sel === 2) {
+            for (let i = 0; i < 6; i++)
+              line(...pts[i], ...pts[i + 1], rgba(z.color, 0.3), 1.5);
+            line(...pts[6], ...pts[1], rgba([255, 225, 160], 0.45), 2.3);
+          }
+          if (sel === 3)
+            for (let i = 0; i < 18; i++) {
+              const a = pts[i % 7],
+                b = pts[(i + 1) % 7];
+              const p = fract(time * 0.08 + i * 0.11);
+              circle(
+                mix(a[0], b[0], p),
+                mix(a[1], b[1], p),
+                1.5 + (i % 2),
+                rgba(z.color, 0.5 * (1 - p)),
+              );
+            }
+          if (sel === 4)
+            for (let i = 0; i < 4; i++) {
+              ctx.strokeStyle = rgba(z.color, 0.18 + i * 0.08);
+              ctx.strokeRect(
+                width * (0.2 + i * 0.05),
+                height * (0.2 + i * 0.05),
+                width * (0.6 - i * 0.1),
+                height * (0.4 - i * 0.1),
+              );
+            }
+          if (sel === 5) {
+            drawChoiceBranches(z, time, ["A", "B", "C", "D", "E", "F"]);
+          }
+          drawPacket(
+            width * 0.5,
+            height * 0.78,
+            s * 0.13,
+            z,
+            labels[sel],
+            0.88,
+          );
+          footerLabel("CORRELACIÓN NO BASTA · INTERVENIR Y PREDECIR", z);
+        }
+        function sceneCosmologies(z, time) {
+          const labels = [
+              "ESTRELLAS",
+              "OCÉANO",
+              "CAMPO",
+              "MICRO",
+              "CÓMPUTO",
+              "MENTE",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawStar(
+            width * 0.5,
+            height * 0.42,
+            s * 0.065,
+            [255, 220, 130],
+            time,
+          );
+          for (let i = 0; i < 6; i++) {
+            const a = (i / 6) * TAU - time * 0.004,
+              x = width * 0.5 + Math.cos(a) * s * 0.3,
+              y = height * 0.44 + Math.sin(a) * s * 0.22;
+            drawLensPanel(
+              x - s * 0.06,
+              y - s * 0.06,
+              s * 0.12,
+              s * 0.15,
+              z,
+              labels[i],
+              i === sel,
+              i,
+              time,
+            );
+            line(
+              width * 0.5,
+              height * 0.42,
+              x,
+              y,
+              rgba(z.color, i === sel ? 0.32 : 0.065),
+              i === sel ? 2 : 1,
+            );
+          }
+          footerLabel("UN UNIVERSO · VARIAS HISTORIAS HACIA SU DESCRIPCIÓN", z);
+        }
+        function sceneSharedTruths(z, time) {
+          const labels = [
+              "REGULAR",
+              "INVARIAR",
+              "REPLICAR",
+              "OPERAR",
+              "PREDECIR",
+              "ERROR",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height),
+            cx = width * 0.5,
+            cy = height * 0.46;
+          ctx.fillStyle = rgba([100, 200, 255], 0.13);
+          ctx.beginPath();
+          ctx.arc(cx - s * 0.08, cy, s * 0.18, 0, TAU);
+          ctx.fill();
+          ctx.fillStyle = rgba([255, 170, 220], 0.13);
+          ctx.beginPath();
+          ctx.arc(cx + s * 0.08, cy, s * 0.18, 0, TAU);
+          ctx.fill();
+          ctx.strokeStyle = rgba(z.color, 0.42);
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(cx - s * 0.08, cy, s * 0.18, 0, TAU);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(cx + s * 0.08, cy, s * 0.18, 0, TAU);
+          ctx.stroke();
+          drawStar(cx, cy, s * 0.055, [255, 225, 145], time);
+          for (let i = 0; i < 6; i++)
+            drawPacket(
+              width * (0.1 + i * 0.16),
+              height * 0.76,
+              s * 0.06,
+              z,
+              labels[i],
+              i === sel ? 0.88 : 0.3,
+            );
+          footerLabel(
+            "ACUERDO ÚTIL = CONSECUENCIAS QUE AMBOS PUEDEN PROBAR",
+            z,
+          );
+        }
+        function sceneDisagreements(z, time) {
+          const labels = [
+              "CONCIENCIA",
+              "TIEMPO",
+              "INDIVIDUO",
+              "MATEMÁT.",
+              "ORIGEN",
+              "DIRECCIÓN",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawCivilization(width * 0.23, height * 0.46, s * 0.15, z, time, 0);
+          drawCivilization(
+            width * 0.77,
+            height * 0.46,
+            s * 0.15,
+            { color: [255, 175, 215] },
+            -time,
+            2,
+          );
+          for (let i = 0; i < 6; i++) {
+            const y = height * (0.22 + i * 0.085),
+              bend = Math.sin(i * 1.6) * height * 0.04;
+            ctx.strokeStyle = rgba(
+              i === sel ? [255, 245, 195] : z.color,
+              i === sel ? 0.58 : 0.11,
+            );
+            ctx.lineWidth = i === sel ? 2.5 : 1;
+            ctx.beginPath();
+            ctx.moveTo(width * 0.34, y);
+            ctx.bezierCurveTo(
+              width * 0.44,
+              y + bend,
+              width * 0.56,
+              y - bend,
+              width * 0.66,
+              y,
+            );
+            ctx.stroke();
+            labelAt(
+              labels[i],
+              width * 0.5,
+              y,
+              s * 0.015,
+              `rgba(255,255,255,${i === sel ? 0.78 : 0.25})`,
+            );
+          }
+          footerLabel("NO TODO DESACUERDO DESAPARECE CON MÁS DATOS", z);
+        }
+        function sceneComplementary(z, time) {
+          const labels = [
+              "SENSOR",
+              "DISTINCIÓN",
+              "UNIFICAR",
+              "LÍMITE",
+              "HÍBRIDO",
+              "PREDICCIÓN",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height);
+          drawLensPanel(
+            width * 0.1,
+            height * 0.2,
+            width * 0.32,
+            height * 0.42,
+            z,
+            "HUMANO",
+            sel === 1,
+            0,
+            time,
+          );
+          drawLensPanel(
+            width * 0.58,
+            height * 0.2,
+            width * 0.32,
+            height * 0.42,
+            { ...z, color: [255, 170, 220] },
+            "ALIENO",
+            sel === 0,
+            2,
+            time,
+          );
+          for (let i = 0; i < 14; i++) {
+            const p = fract(time * 0.035 + i / 14),
+              x = mix(width * 0.4, width * 0.6, p),
+              y = height * (0.38 + 0.06 * Math.sin(p * TAU * 2 + i));
+            circle(
+              x,
+              y,
+              1.5 + (i % 2),
+              rgba(i % 2 ? z.color : [255, 220, 160], 0.5),
+            );
+          }
+          drawPacket(
+            width * 0.5,
+            height * 0.72,
+            s * 0.15,
+            z,
+            sel === 5 ? "NUEVA PREDICCIÓN" : "MODELO COMBINADO",
+            0.9,
+          );
+          footerLabel("COMBINAR PERSPECTIVAS CAMBIA EL MAPA DEL PROBLEMA", z);
+        }
+        function sceneManyObservers(z, time) {
+          const labels = [
+              "BIOLÓGICO",
+              "COLECTIVO",
+              "ARTIFICIAL",
+              "PLANETARIO",
+              "LENTO",
+              "ACELERADO",
+            ],
+            sel = selectedFrame(labels),
+            gap = width * 0.012,
+            w = (width * 0.92 - gap * 5) / 6,
+            h = height * 0.54,
+            y = height * 0.18;
+          for (let i = 0; i < 6; i++)
+            drawLensPanel(
+              width * 0.04 + i * (w + gap),
+              y,
+              w,
+              h,
+              z,
+              labels[i],
+              i === sel,
+              i,
+              time * (i === 5 ? 5 : i === 4 ? 0.15 : 1),
+            );
+          footerLabel(
+            "MISMO FENÓMENO · REPRESENTACIONES PARCIALMENTE SUPERPUESTAS",
+            z,
+          );
+        }
+        function scenePlural(z, time) {
+          const labels = [
+              "CUERPO",
+              "CULTURA",
+              "ÉPOCA",
+              "INSTRUM.",
+              "RECURSOS",
+              "CRÍTICA",
+            ],
+            sel = selectedFrame(labels),
+            s = Math.min(width, height),
+            cx = width * 0.5,
+            cy = height * 0.45;
+          for (let ring = 0; ring < 6; ring++) {
+            const rr = s * (0.07 + ring * 0.045);
+            ctx.strokeStyle = rgba(
+              colorsForPlural(ring),
+              ring === sel ? 0.5 : 0.13,
+            );
+            ctx.lineWidth = ring === sel ? 3 : 1.2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, rr, 0, TAU);
+            ctx.stroke();
+            for (let i = 0; i < 8 + ring * 2; i++) {
+              const a =
+                (i / (8 + ring * 2)) * TAU + time * (0.004 + ring * 0.002);
+              circle(
+                cx + Math.cos(a) * rr,
+                cy + Math.sin(a) * rr,
+                1.3 + (ring === sel ? 1.4 : 0),
+                rgba(colorsForPlural(ring), ring === sel ? 0.72 : 0.28),
+              );
+            }
+          }
+          drawStar(cx, cy, s * 0.045, [255, 235, 175], time);
+          for (let i = 0; i < 6; i++) {
+            const a = (i / 6) * TAU - Math.PI / 2,
+              x = cx + Math.cos(a) * s * 0.34,
+              y = cy + Math.sin(a) * s * 0.27;
+            drawPacket(x, y, s * 0.065, z, labels[i], i === sel ? 0.9 : 0.34);
+          }
+          footerLabel(
+            "NINGUNA VISTA DESDE NINGUNA PARTE · MUCHAS VISTAS QUE SE CORRIGEN",
+            z,
+          );
+        }
+        function colorsForPlural(i) {
+          return [
+            [110, 210, 255],
+            [100, 245, 190],
+            [255, 220, 115],
+            [255, 145, 195],
+            [185, 145, 255],
+            [240, 245, 255],
+          ][i % 6];
+        }
+
+        const SCENES = [
+          sceneAnotherPerspective,
+          sceneHumanPerspective,
+          sceneTerrestrialSenses,
+          sceneBrainPerception,
+          sceneLanguage,
+          sceneCulture,
+          sceneScientificModels,
+          sceneCognitiveLimits,
+          sceneAlienPerspective,
+          sceneUnknownSenses,
+          sceneDifferentTimes,
+          sceneOtherIndividuality,
+          sceneCollective,
+          sceneArtificial,
+          scenePlanetary,
+          sceneDistributed,
+          sceneUntranslatable,
+          sceneMultipleMath,
+          sceneCausality,
+          sceneCosmologies,
+          sceneSharedTruths,
+          sceneDisagreements,
+          sceneComplementary,
+          sceneManyObservers,
+          scenePlural,
+        ];
+
+        function zoneWeight(progress, p0, p1, feather = 0.035) {
+          const enter = smooth(
+              clamp((progress - (p0 - feather)) / feather, 0, 1),
+            ),
+            exit = 1 - smooth(clamp((progress - p1) / feather, 0, 1));
+          return enter * exit;
+        }
+        function drawScene(progress, time) {
+          footerLabel.pending = null;
+          for (const z of ZONES) {
+            const alpha = zoneWeight(progress, z.p0, z.p1, 0.012);
+            if (alpha < 0.003) continue;
+            footerLabel.alpha = alpha;
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            SCENES[z.scene](z, time);
+            ctx.restore();
+          }
+          paintFooter();
+        }
+        function drawBursts(dt) {
+          for (let i = bursts.length - 1; i >= 0; i--) {
+            const p = bursts[i];
+            p.life -= dt * p.decay;
+            if (p.life <= 0) {
+              bursts.splice(i, 1);
+              continue;
+            }
+            p.x += p.vx * dt;
+            p.y += p.vy * dt;
+            p.vx *= Math.pow(0.94, dt * 60);
+            p.vy *= Math.pow(0.94, dt * 60);
+            circle(
+              p.x,
+              p.y,
+              p.r * (0.5 + p.life),
+              rgba(p.color, p.life * 0.55),
+            );
+          }
+          for (let i = waves.length - 1; i >= 0; i--) {
+            const w = waves[i];
+            w.life -= dt * 1.05;
+            if (w.life <= 0) {
+              waves.splice(i, 1);
+              continue;
+            }
+            w.radius += dt * Math.min(width, height) * 0.24;
+            ctx.strokeStyle = rgba(w.color, w.life * 0.25);
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.arc(w.x, w.y, w.radius, 0, TAU);
+            ctx.stroke();
+          }
+        }
+
+        function render(now) {
+          const dt = Math.min(0.04, Math.max(0.001, (now - lastFrame) / 1000));
+          lastFrame = now;
+          elapsed += reducedMotion ? dt * 0.24 : dt;
+          pointerX += (targetX - pointerX) * (1 - Math.pow(0.001, dt));
+          pointerY += (targetY - pointerY) * (1 - Math.pow(0.001, dt));
+          currentProgress +=
+            (depthFromY(pointerY) - currentProgress) *
+            (1 - Math.pow(0.005, dt));
+          shownX += (pointerX * width - shownX) * (1 - Math.pow(0.001, dt));
+          shownY += (pointerY * height - shownY) * (1 - Math.pow(0.001, dt));
+          touchEnergy *= Math.pow(0.075, dt);
+          drawBackground(currentProgress, elapsed);
+          drawScene(currentProgress, elapsed);
+          drawBursts(dt);
+          if (!pointerDown) setAccent(zoneForDepth(currentProgress));
+          requestAnimationFrame(render);
+        }
+        window.addEventListener("resize", resize, { passive: true });
+        window.addEventListener(
+          "orientationchange",
+          () => setTimeout(resize, 120),
+          { passive: true },
+        );
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden && audioCtx && audioCtx.state === "running")
+            audioCtx.suspend().catch(() => {});
+        });
+        resize();
+        setAccent(ZONES[0]);
+        requestAnimationFrame(render);
+      })();
+    </script>
+    <div id="final-transition" hidden>
+      Más allá: si el universo puede ser comprendido desde muchas perspectivas,
+      surge una pregunta aún más profunda: ¿posee significado por sí mismo, o el
+      significado aparece cuando la materia llega a observar, interpretar y
+      valorar su propia existencia? Siguiente: Espectro del Significado Cósmico:
+      de un Universo Indiferente a la Construcción de Propósito.
+    </div>
+  </body>
+</html>
