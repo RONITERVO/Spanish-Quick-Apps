@@ -1,0 +1,1944 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#030611">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora del espacio-tiempo: de la relatividad comprobada a la gravedad cuántica y el origen desconocido de la geometría.">
+  <meta name="application-name" content="Espectro del Espacio-Tiempo: de la Relatividad a la Gravedad Cuántica">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro del Espacio-Tiempo">
+  <meta property="og:description" content="Toca y atraviesa la geometría de la realidad: espacio y tiempo cotidianos, relatividad, agujeros negros, ondas gravitacionales, escala de Planck y espacio-tiempo emergente.">
+  <title>Espectro del Espacio-Tiempo: de la Relatividad a la Gravedad Cuántica</title>
+  <style>
+    :root {
+      --accent: rgb(183 222 255);
+      --accent-soft: rgb(183 222 255 / .34);
+      --ink: rgb(255 255 255);
+      --panel: rgb(5 9 18 / .62);
+      --scan-x: 50vw;
+      --scan-y: 93vh;
+      --progress: 4%;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #02040a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: white;
+      font-family:
+        Inter, ui-rounded, "SF Pro Rounded", "Segoe UI",
+        system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #spacetime-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background:
+        radial-gradient(circle at var(--scan-x) var(--scan-y),
+          color-mix(in srgb, var(--accent) 72%, transparent) 0%,
+          color-mix(in srgb, var(--accent) 22%, transparent) 11%,
+          transparent 34%);
+      mix-blend-mode: screen;
+    }
+
+    body.active #light-field { opacity: .88; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg,
+          transparent calc(var(--scan-x) - 1px),
+          color-mix(in srgb, var(--accent) 74%, transparent) var(--scan-x),
+          transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg,
+          transparent calc(var(--scan-y) - 1px),
+          color-mix(in srgb, var(--accent) 46%, transparent) var(--scan-y),
+          transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+
+    body.active #scan-line { opacity: .24; }
+
+    #grain {
+      z-index: 4;
+      opacity: .046;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 39%, rgb(0 0 0 / .22) 72%, rgb(0 0 0 / .8) 125%),
+        linear-gradient(90deg, rgb(0 0 0 / .43), transparent 13%, transparent 87%, rgb(0 0 0 / .42));
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 49%;
+      width: min(92vw, 840px);
+      padding: clamp(16px, 3.3vw, 28px) clamp(20px, 5vw, 52px) clamp(18px, 3.8vw, 34px);
+      border: 1px solid rgb(255 255 255 / .23);
+      border-radius: clamp(26px, 6vw, 52px);
+      color: var(--ink);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        var(--panel);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .52),
+        0 0 82px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .27),
+        inset 0 -1px 0 rgb(0 0 0 / .22);
+      backdrop-filter: blur(23px) saturate(1.38);
+      -webkit-backdrop-filter: blur(23px) saturate(1.38);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear,
+        background 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #certainty-class {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 27px;
+      margin-bottom: clamp(10px, 2vw, 16px);
+      padding: 6px 13px 7px;
+      border: 1px solid color-mix(in srgb, var(--accent) 66%, transparent);
+      border-radius: 999px;
+      color: color-mix(in srgb, var(--accent) 78%, white);
+      font-size: clamp(.64rem, 2.15vw, .88rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: color-mix(in srgb, var(--accent) 10%, rgb(0 0 0 / .34));
+      box-shadow: 0 0 25px var(--accent-soft), inset 0 1px 0 rgb(255 255 255 / .11);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.5vw, 6.7rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow:
+        0 0 30px var(--accent-soft),
+        0 5px 24px rgb(0 0 0 / .5);
+    }
+
+    #zone-name.compact {
+      font-size: clamp(1.72rem, 7.2vw, 5.6rem);
+      letter-spacing: -.047em;
+      line-height: .89;
+    }
+
+    #zone-name.long {
+      font-size: clamp(1.42rem, 6.1vw, 4.55rem);
+      letter-spacing: -.035em;
+      line-height: .93;
+    }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 880;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+      opacity: .98;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(11px, 2vw, 18px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.69rem, 2.25vw, .94rem);
+      font-weight: 820;
+      line-height: 1.12;
+      letter-spacing: .045em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .19);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .12);
+    }
+
+    #fact {
+      display: block;
+      max-width: 680px;
+      margin: clamp(11px, 2.3vw, 18px) auto 0;
+      font-size: clamp(.84rem, 2.68vw, 1.12rem);
+      font-weight: 630;
+      line-height: 1.3;
+      letter-spacing: -.011em;
+      text-wrap: balance;
+      opacity: .87;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.35);
+      background: radial-gradient(circle, rgb(255 255 255 / .18), transparent 67%);
+      box-shadow:
+        0 0 0 1px rgb(0 0 0 / .24),
+        0 0 21px var(--accent),
+        0 0 54px var(--accent-soft),
+        inset 0 0 18px rgb(255 255 255 / .25);
+      transition:
+        opacity 120ms ease,
+        transform 280ms cubic-bezier(.16, 1, .3, 1),
+        border-color 110ms linear,
+        box-shadow 110ms linear;
+      will-change: transform, opacity;
+    }
+
+    #touch-orb.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(11px, env(safe-area-inset-right));
+      top: max(20px, env(safe-area-inset-top));
+      bottom: max(20px, env(safe-area-inset-bottom));
+      width: 21px;
+      pointer-events: none;
+      opacity: .72;
+      transition: opacity 180ms ease;
+    }
+
+    body.active #journey-scale { opacity: 1; }
+
+    #scale-track {
+      position: absolute;
+      right: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgb(255 255 255 / .15);
+      box-shadow: 0 0 10px rgb(255 255 255 / .08);
+    }
+
+    #scale-fill {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: var(--progress);
+      border-radius: 99px;
+      background: linear-gradient(0deg, rgb(178 225 255 / .9), var(--accent));
+      box-shadow: 0 0 18px var(--accent);
+    }
+
+    #scale-dot {
+      position: absolute;
+      right: 3px;
+      bottom: calc(var(--progress) - 7px);
+      width: 12px;
+      height: 12px;
+      border: 2px solid white;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 14px var(--accent), 0 0 2px black;
+      transition: bottom 80ms linear, background 110ms linear;
+    }
+
+    #scale-bottom,
+    #scale-top,
+    #scale-value {
+      position: absolute;
+      right: 28px;
+      width: min(66vw, 380px);
+      color: rgb(255 255 255 / .57);
+      font-size: clamp(.52rem, 1.9vw, .72rem);
+      font-weight: 820;
+      line-height: 1;
+      letter-spacing: .08em;
+      text-align: right;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-shadow: 0 1px 7px black;
+    }
+
+    #scale-bottom { bottom: -1px; }
+    #scale-top { top: -1px; }
+
+    #scale-value {
+      top: clamp(10%, calc(100% - var(--progress)), 90%);
+      margin-top: -4px;
+      color: rgb(255 255 255 / .79);
+      opacity: 0;
+      transform: translateY(-50%);
+      transition: opacity 150ms ease;
+    }
+
+    body.active #scale-value { opacity: 1; }
+
+    #hint {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 81%;
+      display: grid;
+      justify-items: center;
+      gap: 7px;
+      width: min(86vw, 540px);
+      color: rgb(225 244 255 / .82);
+      text-align: center;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: hint-life 8s ease forwards;
+      text-shadow: 0 2px 12px #000;
+    }
+
+    #hint-ring {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgb(202 236 255 / .65);
+      border-radius: 50%;
+      box-shadow: 0 0 24px rgb(121 203 255 / .25);
+      animation: hint-pulse 2.2s ease-in-out infinite;
+    }
+
+    #hint-ring::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgb(234 248 255 / .96);
+      box-shadow: 0 0 14px rgb(111 204 255 / .85);
+      animation: hint-climb 2.2s ease-in-out infinite;
+    }
+
+    #hint-text {
+      font-size: clamp(.74rem, 2.9vw, 1.02rem);
+      font-weight: 920;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #hint-subtext {
+      font-size: clamp(.62rem, 2.25vw, .79rem);
+      font-weight: 720;
+      letter-spacing: .045em;
+      opacity: .77;
+    }
+
+    .ripple {
+      position: fixed;
+      z-index: 6;
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: ripple-out .8s cubic-bezier(.12, .68, .2, 1) forwards;
+      box-shadow: 0 0 24px var(--accent-soft);
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    @keyframes hint-life {
+      0%, 58% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    @keyframes hint-pulse {
+      0%, 100% { transform: scale(.88); opacity: .6; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    @keyframes hint-climb {
+      0%, 100% { transform: translate(-50%, 8px); }
+      50% { transform: translate(-50%, -14px); }
+    }
+
+    @keyframes ripple-out {
+      from { opacity: .9; transform: translate(-50%, -50%) scale(.6); }
+      to { opacity: 0; transform: translate(-50%, -50%) scale(8); }
+    }
+
+    @media (max-width: 620px) {
+      #journey-scale { right: max(7px, env(safe-area-inset-right)); }
+      #scale-bottom,
+      #scale-top,
+      #scale-value { right: 23px; }
+      #scale-bottom,
+      #scale-top { display: none; }
+    }
+
+    @media (max-height: 570px) and (orientation: landscape) {
+      #readout {
+        width: min(84vw, 780px);
+        padding: 10px 28px 12px;
+        border-radius: 25px;
+      }
+      #certainty-class { margin-bottom: 7px; min-height: 22px; padding: 4px 10px 5px; font-size: clamp(.56rem, 2.2vh, .72rem); }
+      #zone-name { font-size: clamp(1.55rem, 7.3vh, 3.25rem); line-height: .9; }
+      #zone-name.compact { font-size: clamp(1.36rem, 6.8vh, 2.95rem); }
+      #zone-name.long { font-size: clamp(1.15rem, 6.1vh, 2.55rem); }
+      #feature-name { margin-top: 5px; font-size: clamp(.76rem, 4vh, 1.15rem); }
+      #metric { min-height: 24px; margin-top: 7px; padding: 5px 10px 6px; font-size: clamp(.6rem, 2.5vh, .76rem); }
+      #fact { max-width: 680px; margin-top: 7px; font-size: clamp(.7rem, 3vh, .88rem); line-height: 1.16; }
+      #journey-scale { top: max(8px, env(safe-area-inset-top)); bottom: max(8px, env(safe-area-inset-bottom)); }
+      #hint { top: 78%; gap: 4px; }
+      #hint-ring { width: 38px; height: 38px; }
+      #hint-subtext { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #readout,
+      #touch-orb,
+      #journey-scale,
+      #light-field,
+      #scan-line { transition-duration: 70ms; }
+      #hint,
+      .ripple,
+      #hint-ring::after { animation: none; }
+      #hint { opacity: .75; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="spacetime-spectrum" role="application" tabindex="0" aria-describedby="instructions" aria-label="Mapa táctil del espacio-tiempo, desde la relatividad cotidiana hasta la gravedad cuántica y el origen desconocido del espacio y del tiempo"></canvas>
+  <p id="instructions" class="sr-only">La aventura comienza exactamente donde termina la aplicación de materia y energía: en la frontera de la física fundamental. Desde allí pregunta dónde existen los campos y las partículas y si el propio espacio-tiempo posee una estructura cuántica. La altura recorre espacio y tiempo cotidianos, relatividad especial, causalidad, espacio-tiempo, equivalencia, curvatura, agujeros negros, ondas gravitacionales, cosmología, horizontes, escala de Planck, gravedad cuántica, emergencia y el origen desconocido del espacio y del tiempo. Arrastra horizontalmente para descubrir vocabulario y conceptos dentro de cada región. También puedes usar las flechas del teclado.</p>
+
+  <div id="light-field" aria-hidden="true"></div>
+  <div id="scan-line" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <div id="hint" aria-hidden="true">
+    <div id="hint-ring"></div>
+    <div id="hint-text">La física necesita un escenario</div>
+    <div id="hint-subtext">Asciende · descubre que el escenario también cambia</div>
+  </div>
+
+  <div id="readout" aria-live="polite" aria-atomic="true">
+    <span id="certainty-class"></span>
+    <span id="zone-name"></span>
+    <span id="feature-name"></span>
+    <span id="metric"></span>
+    <span id="fact"></span>
+  </div>
+
+  <div id="touch-orb" aria-hidden="true"></div>
+
+  <div id="journey-scale" aria-hidden="true">
+    <div id="scale-track"><div id="scale-fill"></div></div>
+    <div id="scale-dot"></div>
+    <span id="scale-bottom">Física fundamental</span>
+    <span id="scale-value">Geometría comprobada</span>
+    <span id="scale-top">Origen del espacio-tiempo</span>
+  </div>
+
+  <!--
+    Visualización educativa conceptual y sin dependencias externas.
+
+    Los diagramas representan relaciones físicas, no fotografías literales. Las rejillas son ayudas
+    visuales: la relatividad general no exige que el espacio-tiempo sea una lámina material. Un horizonte
+    de sucesos no es una superficie sólida. La singularidad es una predicción de la teoría clásica y
+    señala un límite de esa descripción, no una región experimentalmente observada. Las ondas
+    gravitacionales son perturbaciones de la geometría, no ondas en un medio material. La expansión
+    cosmológica no se representa como materia explotando hacia un exterior preexistente.
+
+    La radiación de Hawking y la termodinámica de horizontes son resultados teóricos profundos, pero la
+    radiación de Hawking de agujeros negros astrofísicos no ha sido detectada directamente. Ningún
+    experimento ha revelado una estructura microscópica confirmada del espacio-tiempo. Teoría de cuerdas,
+    gravedad cuántica de bucles, conjuntos causales, triangulaciones dinámicas causales, seguridad
+    asintótica, holografía y propuestas emergentes se presentan como caminos de investigación, sin rango
+    de ganador ni afirmaciones de confirmación experimental.
+  -->
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.getElementById("spacetime-spectrum");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const root = document.documentElement;
+      const readout = document.getElementById("readout");
+      const certaintyClass = document.getElementById("certainty-class");
+      const zoneName = document.getElementById("zone-name");
+      const featureName = document.getElementById("feature-name");
+      const metric = document.getElementById("metric");
+      const fact = document.getElementById("fact");
+      const touchOrb = document.getElementById("touch-orb");
+      const scaleValue = document.getElementById("scale-value");
+      const hint = document.getElementById("hint");
+
+      const TAU = Math.PI * 2;
+      const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const ZONES = [
+        {
+          id: "frontier", name: "Frontera de la física fundamental", className: "Continuidad con Materia y Energía", p0: 0, p1: .055,
+          color: [190, 222, 255], metric: "Punto de partida · campos cuánticos + gravedad clásica",
+          fact: "El Modelo Estándar describe partículas y campos; la relatividad general describe la gravedad. El recorrido comienza en la pregunta que todavía los separa: ¿qué clase de realidad es el espacio-tiempo?",
+          sound: { base: 43, filter: 460, noise: .075, pulse: .02, type: "sine" },
+          features: [
+            ["frontera", "Aquí termina la descripción anterior y comienza una nueva pregunta: no solo qué existe, sino dónde y cómo pueden existir campos, partículas y acontecimientos."],
+            ["campo", "Los campos cuánticos se describen sobre el espacio-tiempo, pero una teoría completa también debería explicar el comportamiento cuántico de la propia geometría."],
+            ["gravedad", "La gravedad se manifiesta como geometría dinámica en relatividad general, una descripción clásica de enorme precisión."],
+            ["geometría", "Distancias, duraciones y relaciones causales forman parte de la estructura física, no de un fondo necesariamente rígido."],
+            ["pregunta", "¿Es el espacio-tiempo fundamental, continuo y suave, o surge de relaciones más profundas?"],
+            ["continuidad", "La materia y la energía del universo anterior se convierten aquí en fuentes y habitantes de una geometría dinámica."]
+          ]
+        },
+        {
+          id: "everyday", name: "Espacio y tiempo cotidianos", className: "Aproximación cotidiana", p0: .055, p1: .12,
+          color: [111, 208, 230], metric: "Bajas velocidades · gravedad débil · intuición casi newtoniana",
+          fact: "En la vida diaria, una rejilla estable y un reloj universal parecen suficientes. Esa imagen funciona muy bien como aproximación, pero deja de ser exacta a velocidades extremas o en gravedad intensa.",
+          sound: { base: 52, filter: 720, noise: .045, pulse: .045, type: "triangle" },
+          features: [
+            ["espacio", "El espacio cotidiano permite describir posiciones, direcciones y separaciones mediante coordenadas prácticas."],
+            ["tiempo", "Los relojes cercanos y lentos parecen compartir un ritmo universal, aunque la relatividad revela que esa coincidencia es aproximada."],
+            ["distancia", "Una distancia es la separación espacial medida según un procedimiento y un sistema de referencia."],
+            ["duración", "Una duración compara dos acontecimientos mediante un reloj; observadores distintos no siempre asignan el mismo intervalo temporal."],
+            ["movimiento", "El movimiento describe cómo cambia una posición respecto de un sistema de referencia."],
+            ["dirección", "Las direcciones organizan el espacio local, pero la geometría global puede ser curva y no admitir una única orientación universal."],
+            ["simultaneidad", "En la experiencia común tratamos muchos sucesos como simultáneos; a gran distancia y alta velocidad, esa relación depende del observador."]
+          ]
+        },
+        {
+          id: "special", name: "Relatividad especial", className: "Comprobación experimental extraordinaria", p0: .12, p1: .19,
+          color: [86, 176, 255], metric: "Sistemas inerciales · velocidad de la luz invariante",
+          fact: "Observadores inerciales pueden discrepar sobre longitudes, duraciones y simultaneidad, pero concuerdan en las leyes físicas y en la estructura causal del espacio-tiempo.",
+          sound: { base: 63, filter: 980, noise: .035, pulse: .08, type: "sine" },
+          features: [
+            ["observador", "Un observador representa un sistema de referencia con reglas para asignar coordenadas a acontecimientos; no necesita ser una persona."],
+            ["referencia", "La velocidad solo tiene significado respecto de un sistema de referencia. Ningún sistema inercial es privilegiado por las leyes físicas."],
+            ["velocidad de la luz", "Todos los observadores inerciales miden la misma velocidad invariante para la luz en el vacío, independientemente del movimiento de la fuente."],
+            ["dilatación temporal", "Entre dos acontecimientos, diferentes trayectorias pueden acumular distintas cantidades de tiempo propio. No es una ilusión óptica."],
+            ["contracción", "La longitud de un objeto en movimiento depende de cómo un observador define eventos simultáneos en sus extremos."],
+            ["simultaneidad relativa", "Dos sucesos separados que son simultáneos para un observador pueden no serlo para otro en movimiento relativo."],
+            ["masa y energía", "La equivalencia E = mc² muestra que la masa en reposo contribuye al contenido energético; no significa que todo objeto acelerado adquiera una nueva masa fundamental."]
+          ]
+        },
+        {
+          id: "causality", name: "Luz y causalidad", className: "Estructura causal comprobada", p0: .19, p1: .255,
+          color: [95, 226, 255], metric: "Conos de luz · límite universal de propagación causal",
+          fact: "Cada acontecimiento posee un pasado que puede influirlo y un futuro al que puede influir. Fuera de esos conos, una conexión causal exigiría superar el límite relativista.",
+          sound: { base: 73, filter: 1260, noise: .03, pulse: .11, type: "triangle" },
+          features: [
+            ["evento", "Un evento es algo localizado en espacio y tiempo: una emisión, una colisión, una medición o cualquier acontecimiento físico."],
+            ["causa", "Las posibles causas de un evento se encuentran dentro o sobre su cono de luz pasado."],
+            ["efecto", "Los posibles efectos se encuentran dentro o sobre el cono de luz futuro."],
+            ["pasado", "El cono de luz pasado reúne los eventos capaces de enviar señales hasta el evento seleccionado."],
+            ["futuro", "El cono de luz futuro reúne los eventos que podrían recibir una señal causal desde el evento seleccionado."],
+            ["cono de luz", "La frontera del cono corresponde a trayectorias luminosas; separa conexiones causales posibles de separaciones espaciales."],
+            ["separación espacial", "Eventos separados espacialmente no pueden influirse sin una señal superlumínica; su orden temporal puede depender del observador."],
+            ["límite causal", "La velocidad invariante c limita la propagación de información y preserva una estructura causal coherente."]
+          ]
+        },
+        {
+          id: "spacetime", name: "El espacio-tiempo", className: "Marco geométrico de la relatividad", p0: .255, p1: .325,
+          color: [110, 156, 255], metric: "Tres dimensiones espaciales + una dimensión temporal",
+          fact: "Un objeto no es solo un punto que cambia de posición: traza una línea de universo. Distintos observadores usan coordenadas diferentes para la misma historia física.",
+          sound: { base: 82, filter: 1460, noise: .026, pulse: .14, type: "sine" },
+          features: [
+            ["dimensión", "El espacio-tiempo combina tres dimensiones espaciales y una temporal, aunque el tiempo no se comporta idénticamente a una dirección espacial."],
+            ["línea de universo", "La línea de universo reúne todos los eventos recorridos por un objeto a lo largo de su existencia."],
+            ["intervalo", "El intervalo espacio-temporal combina separaciones espaciales y temporales de una manera que todos los observadores inerciales comparten."],
+            ["tiempo propio", "El tiempo propio es el que marca un reloj que acompaña una trayectoria entre eventos."],
+            ["coordenadas", "Las coordenadas dependen del observador; los acontecimientos y las relaciones invariantes no dependen de una elección particular."],
+            ["trayectoria", "Una trayectoria físicamente posible permanece dentro del cono de luz y conecta eventos causalmente relacionados."],
+            ["historia", "La física relativista describe historias completas en espacio-tiempo, no una sucesión universal de instantáneas compartidas por todo el cosmos."]
+          ]
+        },
+        {
+          id: "equivalence", name: "Principio de equivalencia", className: "Fundamento experimental de la relatividad general", p0: .325, p1: .395,
+          color: [118, 231, 211], metric: "Caída libre local · gravedad y aceleración",
+          fact: "En una región suficientemente pequeña, un laboratorio en caída libre se comporta como un sistema inercial. Esa equivalencia local conecta aceleración y gravedad.",
+          sound: { base: 91, filter: 1660, noise: .034, pulse: .17, type: "triangle" },
+          features: [
+            ["aceleración", "La aceleración cambia la velocidad. Dentro de una cabina cerrada, una aceleración constante puede imitar localmente un campo gravitatorio uniforme."],
+            ["caída libre", "Un objeto en caída libre sigue una trayectoria natural de la geometría y localmente no siente su propio peso."],
+            ["peso aparente", "Lo que sentimos como peso suele ser la fuerza del suelo o del asiento impidiendo la caída libre."],
+            ["campo gravitatorio", "En una región pequeña, sus efectos uniformes pueden eliminarse escogiendo un sistema en caída libre; los efectos de marea permanecen."],
+            ["laboratorio", "Experimentos realizados dentro de un laboratorio local en caída libre reproducen, aproximadamente, las leyes de la relatividad especial."],
+            ["local", "La equivalencia es local: en regiones extensas, diferencias de gravedad revelan curvatura y fuerzas de marea."],
+            ["inercia", "Una trayectoria inercial en espacio-tiempo curvo es una geodésica, no necesariamente una línea recta en coordenadas ordinarias."]
+          ]
+        },
+        {
+          id: "curvature", name: "Curvatura gravitatoria", className: "Relatividad general ampliamente comprobada", p0: .395, p1: .475,
+          color: [247, 198, 116], metric: "Materia–energía ↔ geometría dinámica",
+          fact: "La materia y la energía afectan la geometría; esa geometría guía el movimiento. La gravedad aparece en relojes desincronizados, rayos de luz desviados, geodésicas convergentes y fuerzas de marea.",
+          sound: { base: 101, filter: 1820, noise: .045, pulse: .2, type: "sine" },
+          features: [
+            ["curvatura", "La curvatura describe cómo cambian las relaciones geométricas de una región respecto de la geometría plana."],
+            ["geodésica", "Una geodésica es la trayectoria más natural permitida por la geometría; los objetos en caída libre siguen geodésicas."],
+            ["tiempo gravitatorio", "Los relojes situados en potenciales gravitatorios diferentes pueden acumular tiempos distintos, un efecto medido y usado en sistemas de navegación."],
+            ["lente gravitatoria", "La geometría curva desvía la luz y puede magnificar, distorsionar o multiplicar imágenes de objetos lejanos."],
+            ["órbita", "Una órbita relativista es una trayectoria de caída libre en una geometría curvada por masa y energía."],
+            ["marea", "Las fuerzas de marea reflejan diferencias de gravedad entre puntos cercanos y no desaparecen en un laboratorio de tamaño finito."],
+            ["energía", "No solo la masa: presión, flujo de energía y otras formas de tensión también contribuyen a la fuente gravitatoria."],
+            ["lámina elástica", "La analogía de la lámina hundida puede sugerir trayectorias curvadas, pero usa gravedad externa, elimina dimensiones y no representa la curvatura temporal."]
+          ]
+        },
+        {
+          id: "blackholes", name: "Agujeros negros", className: "Horizontes observados indirectamente · interiores desconocidos", p0: .475, p1: .55,
+          color: [255, 137, 102], metric: "Curvatura extrema · horizonte sin superficie material",
+          fact: "Un agujero negro contiene una región causal separada por un horizonte. Las observaciones apoyan con fuerza la existencia de objetos compactos con horizontes, pero su interior profundo permanece fuera del acceso directo.",
+          sound: { base: 111, filter: 1980, noise: .065, pulse: .24, type: "sawtooth" },
+          features: [
+            ["horizonte", "El horizonte de sucesos es una frontera causal: desde dentro, ninguna señal futura puede alcanzar el exterior. No es una pared sólida."],
+            ["caída", "Un observador que cae libremente puede cruzar un horizonte grande sin encontrar una superficie local especial, aunque ya no pueda regresar."],
+            ["observador distante", "La luz emitida cerca del horizonte llega cada vez más enrojecida y retrasada al observador lejano."],
+            ["esfera de fotones", "En torno a un agujero negro existen órbitas luminosas inestables que ayudan a formar la sombra observada."],
+            ["disco de acreción", "Gas caliente en órbita puede emitir intensamente antes de cruzar el horizonte; el disco no es parte del agujero negro."],
+            ["rotación", "Un agujero negro en rotación arrastra la geometría circundante y posee una ergosfera donde ningún observador puede permanecer estático."],
+            ["marea", "La diferencia de gravedad puede estirar y comprimir objetos; su intensidad en el horizonte depende de la masa del agujero negro."],
+            ["singularidad", "Las ecuaciones clásicas predicen una singularidad bajo ciertas condiciones. Esto señala un límite de la relatividad clásica, no una estructura interior confirmada."]
+          ]
+        },
+        {
+          id: "waves", name: "Ondas gravitacionales", className: "Detectadas directamente", p0: .55, p1: .62,
+          color: [183, 122, 255], metric: "Geometría oscilante · propagación a la velocidad de la luz",
+          fact: "Sistemas compactos acelerados producen perturbaciones que alternan estiramiento y compresión de distancias. No viajan a través de un éter: son cambios propagantes de la geometría.",
+          sound: { base: 122, filter: 2200, noise: .035, pulse: .28, type: "sine" },
+          features: [
+            ["onda", "Una onda gravitacional transporta energía y modifica temporalmente las separaciones entre objetos en caída libre."],
+            ["binaria", "Dos objetos compactos en órbita pierden energía mediante radiación gravitacional y se aproximan gradualmente."],
+            ["inspiral", "Durante la espiral de aproximación, la frecuencia y amplitud de la señal aumentan siguiendo una forma característica."],
+            ["fusión", "La unión produce la parte más intensa de la señal y forma un objeto compacto final."],
+            ["ringdown", "El remanente vibra y se estabiliza emitiendo modos amortiguados determinados por su masa y rotación."],
+            ["estiramiento", "Una polarización estira una dirección transversal mientras comprime la perpendicular, alternando después."],
+            ["interferómetro", "Detectores láser comparan longitudes perpendiculares y pueden medir cambios muchísimo menores que un protón respecto de brazos kilométricos."],
+            ["mensajería", "Las ondas gravitacionales abren una forma de astronomía distinta de la luz y permiten estudiar colisiones invisibles."]
+          ]
+        },
+        {
+          id: "cosmos", name: "Un universo dinámico", className: "Cosmología relativista respaldada por observaciones", p0: .62, p1: .69,
+          color: [110, 145, 255], metric: "La escala del espacio cambia con el tiempo cósmico",
+          fact: "En cosmología, las galaxias lejanas no necesitan desplazarse por un vacío exterior. La métrica que asigna distancias puede evolucionar y producir expansión cosmológica.",
+          sound: { base: 132, filter: 2380, noise: .04, pulse: .3, type: "triangle" },
+          features: [
+            ["expansión", "A gran escala, las distancias entre regiones comóviles aumentan porque cambia el factor de escala del universo."],
+            ["corrimiento al rojo", "La expansión estira la longitud de onda de la luz mientras viaja por el espacio-tiempo cosmológico."],
+            ["homogeneidad", "Los modelos cosmológicos básicos aproximan el universo como homogéneo e isótropo cuando se promedia sobre escalas enormes."],
+            ["estructura", "Pequeñas irregularidades crecen por gravedad y forman la red cósmica sin eliminar la expansión de fondo."],
+            ["aceleración", "Las observaciones indican que la expansión reciente se acelera; la naturaleza física de la energía oscura continúa abierta."],
+            ["horizonte cosmológico", "La expansión y la edad finita limitan qué regiones pueden haber estado o llegar a estar en contacto causal."],
+            ["geometría cósmica", "La curvatura espacial global puede ser positiva, negativa o aproximadamente plana; las observaciones favorecen una geometría muy cercana a plana."],
+            ["sin exterior", "La teoría no requiere que el universo se expanda dentro de un espacio externo de mayor dimensión."]
+          ]
+        },
+        {
+          id: "horizons", name: "Horizontes, temperatura e información", className: "Teoría semiclásica sólida · preguntas abiertas", p0: .69, p1: .76,
+          color: [255, 198, 99], metric: "Gravedad + campos cuánticos + termodinámica + información",
+          fact: "Los horizontes poseen temperatura y entropía en la descripción semiclásica. Esta unión inesperada sugiere que la geometría puede codificar información de una manera aún no comprendida por completo.",
+          sound: { base: 143, filter: 2580, noise: .055, pulse: .33, type: "sine" },
+          features: [
+            ["temperatura", "La teoría cuántica de campos en un espacio-tiempo con horizonte asigna una temperatura a los agujeros negros."],
+            ["radiación de Hawking", "La radiación de Hawking implica que un agujero negro puede perder masa. Aún no se ha detectado directamente en agujeros negros astrofísicos."],
+            ["entropía", "La entropía del agujero negro es proporcional al área de su horizonte, no al volumen interior clásico."],
+            ["área", "La relación entre área y entropía inspira la idea de que la información de una región gravitatoria puede describirse desde su frontera."],
+            ["evaporación", "Un agujero negro aislado emitiría radiación y se evaporaría durante un tiempo enorme; la fase final exige física cuántica gravitatoria."],
+            ["información", "La evolución cuántica parece preservar información, pero una evaporación puramente térmica plantea cómo recuperarla."],
+            ["paradoja", "El problema de la información enfrenta principios de relatividad, mecánica cuántica y termodinámica sin una solución experimentalmente confirmada."],
+            ["termodinámica generalizada", "La suma de entropía exterior y entropía de horizonte obedece una ley generalizada en la descripción semiclásica."]
+          ]
+        },
+        {
+          id: "planck", name: "La escala de Planck", className: "Régimen no accesible experimentalmente", p0: .76, p1: .835,
+          color: [231, 238, 255], metric: "Geometría clásica posiblemente insuficiente",
+          fact: "A escalas de Planck, combinar gravedad y incertidumbre cuántica indica que la imagen de un espacio-tiempo suave puede dejar de ser válida. No sabemos qué estructura la reemplaza.",
+          sound: { base: 154, filter: 2880, noise: .075, pulse: .36, type: "square" },
+          features: [
+            ["longitud de Planck", "Es una escala construida con constantes fundamentales. No está confirmado que sea un píxel mínimo del espacio."],
+            ["tiempo de Planck", "Es una escala temporal natural para efectos de gravedad cuántica, no un fotograma universal demostrado."],
+            ["energía de Planck", "Concentrar energía suficiente para sondear esas distancias está muy lejos de las capacidades experimentales actuales."],
+            ["fluctuación geométrica", "La geometría podría participar en superposiciones o fluctuaciones cuánticas, pero su forma microscópica no ha sido observada."],
+            ["incertidumbre", "Medir distancias extremas requiere energía y puede perturbar fuertemente la geometría que se intenta medir."],
+            ["continuidad", "El espacio-tiempo podría seguir siendo continuo, hacerse discreto o perder por completo esas categorías en la descripción fundamental."],
+            ["topología", "Algunas ideas permiten cambios o indeterminación en conectividad y topología; esto continúa siendo especulativo."],
+            ["límite clásico", "La relatividad general trata la geometría como clásica y suave. En este régimen, esa aproximación probablemente deja de ser suficiente."]
+          ]
+        },
+        {
+          id: "quantumgravity", name: "Caminos hacia la gravedad cuántica", className: "Modelos candidatos · ninguno confirmado", p0: .835, p1: .905,
+          color: [213, 147, 255], metric: "Continuidad · discreción · unificación · causalidad · holografía",
+          fact: "Las propuestas exploran respuestas distintas y a veces complementarias. La aplicación no las clasifica como ganadoras: la evidencia todavía no identifica una teoría microscópica correcta del espacio-tiempo.",
+          sound: { base: 164, filter: 3160, noise: .065, pulse: .39, type: "triangle" },
+          features: [
+            ["teoría de cuerdas", "Modela objetos extendidos y contiene un modo con propiedades gravitatorias; suele requerir dimensiones y estructuras adicionales."],
+            ["gravedad de bucles", "Busca cuantizar directamente variables geométricas y produce espectros discretos para ciertas áreas y volúmenes en su formulación."],
+            ["triangulaciones causales", "Construye geometrías mediante bloques discretos respetando una estructura causal y estudia qué espacio-tiempo emerge colectivamente."],
+            ["seguridad asintótica", "Propone que la gravedad cuántica puede permanecer predictiva gracias a un punto fijo a energías muy altas."],
+            ["conjuntos causales", "Considera que el orden causal discreto puede ser más fundamental que una variedad continua."],
+            ["holografía", "En ciertos modelos, una teoría gravitatoria puede ser equivalente a una teoría cuántica sin gravedad definida en una frontera."],
+            ["gravedad emergente", "Explora si la dinámica gravitatoria puede aparecer como fenómeno colectivo, informacional o termodinámico."],
+            ["gravedad semiclásica", "Mantiene una geometría clásica interactuando con campos cuánticos; funciona en ciertos regímenes, pero no es una teoría cuántica completa de la geometría."]
+          ]
+        },
+        {
+          id: "emergent", name: "Espacio-tiempo emergente", className: "Frontera activa de investigación", p0: .905, p1: .97,
+          color: [124, 239, 255], metric: "Relaciones cuánticas → distancia, geometría y quizá tiempo",
+          fact: "Quizá el espacio no sea el escenario fundamental de la realidad. Algunas líneas de investigación preguntan si distancia, conectividad y geometría emergen de entrelazamiento, información o relaciones cuánticas más profundas.",
+          sound: { base: 174, filter: 3440, noise: .038, pulse: .42, type: "sine" },
+          features: [
+            ["entrelazamiento", "Correlaciones cuánticas no clásicas pueden organizar la conectividad de ciertos modelos geométricos, aunque la relación completa con nuestro universo no está establecida."],
+            ["información", "La información cuántica ofrece herramientas para describir qué puede conocerse, codificarse y recuperarse en sistemas gravitatorios."],
+            ["holografía", "Dualidades holográficas muestran ejemplos concretos donde una geometría gravitatoria emerge de una teoría cuántica descrita de otra manera."],
+            ["geometría relacional", "Las distancias podrían no existir por sí solas, sino resumir relaciones entre subsistemas físicos."],
+            ["termodinámica", "Algunas derivaciones recuperan ecuaciones gravitatorias a partir de principios de entropía y equilibrio, sugiriendo una dinámica colectiva."],
+            ["distancia emergente", "En modelos de redes cuánticas, patrones de correlación pueden comportarse como cercanía o separación geométrica."],
+            ["tiempo emergente", "El tiempo podría surgir de relaciones, cambios o estados termodinámicos; no existe una explicación única ni confirmada."],
+            ["observador", "Distintas descripciones pueden asignar geometrías aparentes diferentes sin contradecir las predicciones físicas compartidas."]
+          ]
+        },
+        {
+          id: "origin", name: "El origen del espacio y del tiempo", className: "Origen desconocido", p0: .97, p1: 1.001,
+          color: [247, 249, 255], metric: "Más allá de la geometría confirmada",
+          fact: "La relatividad describe con enorme precisión cómo evoluciona el espacio-tiempo. La física cuántica describe partículas y campos. Todavía no poseemos una teoría confirmada que explique completamente cómo ambas descripciones forman una sola realidad.",
+          sound: { base: 184, filter: 3800, noise: .025, pulse: .46, type: "sine" },
+          features: [
+            ["origen", "No sabemos si el espacio y el tiempo comenzaron, emergieron, cambiaron de fase o requieren una descripción sin una noción temporal previa."],
+            ["ley física", "Las leyes podrían ser fundamentales, seleccionadas por condiciones cosmológicas o emergentes de una estructura más profunda."],
+            ["realidad", "Una teoría final debería conectar geometría, materia, información, medición y cosmología sin perder las comprobaciones existentes."],
+            ["antes", "Preguntar qué ocurrió ‘antes’ del tiempo puede ser físicamente mal planteado si el propio tiempo surge con el universo."],
+            ["fundamental", "Algo fundamental no se explica mediante componentes más básicos dentro de una teoría; todavía ignoramos qué merece ese nombre."],
+            ["emergencia", "Una propiedad emergente puede ser real y precisa aunque no sea elemental, como la temperatura en relación con moléculas."],
+            ["más allá", "La siguiente exploración pregunta si información, estados cuánticos, entrelazamiento y decoherencia pueden originar geometría y leyes."],
+            ["pregunta abierta", "¿Pueden el espacio, el tiempo y las leyes físicas surgir de algo más fundamental?"]
+          ]
+        }
+      ];
+
+      const stars = [];
+      const clocks = [];
+      const events = [];
+      const worldlines = [];
+      const masses = [];
+      const testParticles = [];
+      const galaxies = [];
+      const planckCells = [];
+      const quantumNodes = [];
+      const approachBranches = [];
+      const particles = [];
+      const waves = [];
+
+      let width = 1;
+      let height = 1;
+      let dpr = 1;
+      let activePointer = null;
+      let pointerX = .5;
+      let pointerY = .94;
+      let targetX = .5;
+      let targetY = .94;
+      let lastZoneId = "";
+      let lastFeature = -1;
+      let hideTimer = 0;
+      let lastTime = performance.now();
+      let speechUnlocked = false;
+      let speechTimer = 0;
+      let lastSpoken = "";
+
+      let audioCtx = null;
+      let master = null;
+      let droneA = null;
+      let droneB = null;
+      let droneGain = null;
+      let droneFilter = null;
+      let pulseOsc = null;
+      let pulseGain = null;
+      let noiseSource = null;
+      let noiseGain = null;
+      let noiseFilter = null;
+      let stereo = null;
+
+      function clamp(value, min = 0, max = 1) { return Math.min(max, Math.max(min, value)); }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function smoothstep(a, b, x) {
+        const t = clamp((x - a) / (b - a));
+        return t * t * (3 - 2 * t);
+      }
+      function seeded(seed) {
+        const x = Math.sin(seed * 91.733 + 13.17) * 43758.5453123;
+        return x - Math.floor(x);
+      }
+      function depthFromY(yNorm) { return clamp(1 - yNorm); }
+      function zoneForDepth(progress) {
+        return ZONES.find(zone => progress >= zone.p0 && progress < zone.p1) || ZONES[ZONES.length - 1];
+      }
+      function featureFor(zone, xNorm) {
+        const index = Math.min(zone.features.length - 1, Math.floor(xNorm * zone.features.length));
+        return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+      }
+      function sceneScale() { return Math.sqrt(Math.min(width, height) / 720); }
+      function bandY(progress) { return (1 - progress) * height; }
+      function bandCenter(id) {
+        const zone = ZONES.find(z => z.id === id);
+        return bandY((zone.p0 + zone.p1) * .5);
+      }
+      function zoneAlpha(id, progress) {
+        const z = ZONES.find(v => v.id === id);
+        const feather = Math.min(.02, (z.p1 - z.p0) * .28);
+        return smoothstep(z.p0 - feather, z.p0 + feather, progress) * (1 - smoothstep(z.p1 - feather, z.p1 + feather, progress));
+      }
+
+      function setCssPoint(x, y) {
+        root.style.setProperty("--scan-x", `${x}px`);
+        root.style.setProperty("--scan-y", `${y}px`);
+      }
+      function setAccent(zone) {
+        const [r, g, b] = zone.color;
+        root.style.setProperty("--accent", `rgb(${r} ${g} ${b})`);
+        root.style.setProperty("--accent-soft", `rgb(${r} ${g} ${b} / .34)`);
+      }
+
+      function buildStaticScene() {
+        stars.length = clocks.length = events.length = worldlines.length = masses.length = 0;
+        testParticles.length = galaxies.length = planckCells.length = quantumNodes.length = 0;
+        approachBranches.length = 0;
+
+        for (let i = 0; i < 150; i++) {
+          stars.push({
+            x: seeded(i + 5), y: seeded(i + 105), r: .25 + seeded(i + 205) * 1.25,
+            a: .025 + seeded(i + 305) * .18, phase: seeded(i + 405) * TAU
+          });
+        }
+        for (let i = 0; i < 15; i++) {
+          clocks.push({
+            x: .05 + seeded(i + 600) * .9, y: .89 + seeded(i + 700) * .045,
+            r: 7 + seeded(i + 800) * 8, phase: seeded(i + 900) * TAU,
+            speed: .6 + seeded(i + 1000) * .9, a: .2 + seeded(i + 1100) * .4
+          });
+        }
+        for (let i = 0; i < 22; i++) {
+          events.push({
+            x: .04 + seeded(i + 1200) * .92, y: .765 + seeded(i + 1300) * .045,
+            r: 1.2 + seeded(i + 1400) * 2.6, phase: seeded(i + 1500) * TAU,
+            a: .22 + seeded(i + 1600) * .45
+          });
+        }
+        for (let i = 0; i < 13; i++) {
+          worldlines.push({
+            x: .06 + seeded(i + 1700) * .88, y: .705 + seeded(i + 1800) * .04,
+            tilt: (seeded(i + 1900) - .5) * .16, bend: (seeded(i + 2000) - .5) * .06,
+            phase: seeded(i + 2100) * TAU, a: .14 + seeded(i + 2200) * .32
+          });
+        }
+        for (let i = 0; i < 8; i++) {
+          masses.push({
+            x: .1 + seeded(i + 2300) * .8, y: .565 + seeded(i + 2400) * .055,
+            r: 7 + seeded(i + 2500) * 16, strength: .5 + seeded(i + 2600) * 1.2,
+            phase: seeded(i + 2700) * TAU, a: .25 + seeded(i + 2800) * .45
+          });
+        }
+        for (let i = 0; i < 20; i++) {
+          const angle = (i / 20) * TAU;
+          testParticles.push({ angle, phase: seeded(i + 2900) * TAU, r: 18 + seeded(i + 3000) * 24 });
+        }
+        for (let i = 0; i < 34; i++) {
+          galaxies.push({
+            x: .04 + seeded(i + 3100) * .92, y: .335 + seeded(i + 3200) * .045,
+            r: 1.5 + seeded(i + 3300) * 4.5, phase: seeded(i + 3400) * TAU,
+            arms: 2 + Math.floor(seeded(i + 3500) * 3), a: .18 + seeded(i + 3600) * .46
+          });
+        }
+        for (let i = 0; i < 112; i++) {
+          planckCells.push({
+            x: seeded(i + 3700), y: .17 + seeded(i + 3800) * .07,
+            s: 2 + seeded(i + 3900) * 8, phase: seeded(i + 4000) * TAU,
+            rot: seeded(i + 4100) * TAU, a: .035 + seeded(i + 4200) * .14,
+            mode: i % 5
+          });
+        }
+        for (let i = 0; i < 36; i++) {
+          quantumNodes.push({
+            x: .035 + seeded(i + 4300) * .93, y: .045 + seeded(i + 4400) * .075,
+            r: 1.3 + seeded(i + 4500) * 4.2, phase: seeded(i + 4600) * TAU,
+            a: .16 + seeded(i + 4700) * .48, group: i % 6
+          });
+        }
+        const branchNames = ["CUERDAS", "BUCLES", "TRIANGULACIONES", "SEGURIDAD", "CAUSALIDAD", "HOLOGRAFÍA", "EMERGENCIA", "SEMICLÁSICA"];
+        branchNames.forEach((name, i) => approachBranches.push({
+          name, x0: .5, y0: .145, x1: .04 + i * (.92 / (branchNames.length - 1)), y1: .102 + (i % 2) * .016,
+          bend: (i - 3.5) * .012, phase: seeded(i + 4800) * TAU
+        }));
+      }
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
+        dpr = Math.min(2, devicePixelRatio || 1);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildStaticScene();
+      }
+
+      function ensureAudio() {
+        if (audioCtx) {
+          if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+          return;
+        }
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        audioCtx = new AudioContext();
+        master = audioCtx.createGain();
+        master.gain.value = 0;
+        const compressor = audioCtx.createDynamicsCompressor();
+        compressor.threshold.value = -25;
+        compressor.knee.value = 20;
+        compressor.ratio.value = 5;
+        master.connect(compressor).connect(audioCtx.destination);
+
+        droneA = audioCtx.createOscillator();
+        droneB = audioCtx.createOscillator();
+        droneA.type = "sine";
+        droneB.type = "triangle";
+        droneGain = audioCtx.createGain();
+        droneGain.gain.value = .0001;
+        droneFilter = audioCtx.createBiquadFilter();
+        droneFilter.type = "lowpass";
+        droneFilter.frequency.value = 900;
+        droneFilter.Q.value = .75;
+        stereo = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : audioCtx.createGain();
+        droneA.connect(droneGain);
+        droneB.connect(droneGain);
+        droneGain.connect(droneFilter).connect(stereo).connect(master);
+        droneA.start();
+        droneB.start();
+
+        pulseOsc = audioCtx.createOscillator();
+        pulseOsc.type = "sine";
+        pulseGain = audioCtx.createGain();
+        pulseGain.gain.value = .0001;
+        pulseOsc.connect(pulseGain).connect(master);
+        pulseOsc.start();
+
+        const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+        const channel = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < channel.length; i++) channel[i] = Math.random() * 2 - 1;
+        noiseSource = audioCtx.createBufferSource();
+        noiseSource.buffer = noiseBuffer;
+        noiseSource.loop = true;
+        noiseGain = audioCtx.createGain();
+        noiseGain.gain.value = .0001;
+        noiseFilter = audioCtx.createBiquadFilter();
+        noiseFilter.type = "bandpass";
+        noiseFilter.frequency.value = 950;
+        noiseFilter.Q.value = .45;
+        noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
+        noiseSource.start();
+      }
+
+      function setAudioFor(zone, xNorm, yNorm, active) {
+        if (!audioCtx || !master) return;
+        const now = audioCtx.currentTime;
+        const s = zone.sound;
+        const depth = depthFromY(yNorm);
+        const base = s.base * (.92 + xNorm * .16);
+        droneA.type = s.type;
+        droneB.type = s.type === "sawtooth" || s.type === "square" ? "triangle" : "sine";
+        droneA.frequency.setTargetAtTime(base, now, .08);
+        droneB.frequency.setTargetAtTime(base * (1.495 + depth * .008), now, .1);
+        droneFilter.frequency.setTargetAtTime(s.filter * (.82 + xNorm * .28), now, .1);
+        droneGain.gain.setTargetAtTime(active ? .013 + depth * .006 : .0001, now, .09);
+        pulseOsc.frequency.setTargetAtTime(base * (1.99 + s.pulse), now, .07);
+        pulseGain.gain.setTargetAtTime(active ? .0032 + depth * .0018 : .0001, now, .1);
+        noiseFilter.frequency.setTargetAtTime(s.filter * 1.1, now, .1);
+        noiseGain.gain.setTargetAtTime(active ? Math.max(.0001, s.noise * .07) : .0001, now, .1);
+        if (stereo.pan) stereo.pan.setTargetAtTime((xNorm - .5) * .72, now, .07);
+        master.gain.setTargetAtTime(active ? .29 : .0001, now, .09);
+      }
+
+      function ping(zone, xNorm, featureIndex = 0) {
+        if (!audioCtx || !master) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+        const pan = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+        const scale = [1, 1.125, 1.25, 1.5, 1.667, 2, 2.25, 2.5][featureIndex % 8];
+        osc.type = zone.sound.type;
+        osc.frequency.setValueAtTime(Math.max(34, zone.sound.base * 2.7 * scale), now);
+        osc.frequency.exponentialRampToValueAtTime(Math.max(32, zone.sound.base * 1.17), now + .5);
+        filter.type = "lowpass";
+        filter.frequency.value = Math.max(300, zone.sound.filter * 1.5);
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(.028, now + .012);
+        gain.gain.exponentialRampToValueAtTime(.0001, now + .57);
+        osc.connect(filter).connect(gain);
+        if (pan) {
+          pan.pan.value = (xNorm - .5) * 1.4;
+          gain.connect(pan).connect(master);
+        } else gain.connect(master);
+        osc.start(now);
+        osc.stop(now + .62);
+      }
+
+      function queueSpeech(label) {
+        if (!speechUnlocked || !("speechSynthesis" in window) || !label || label === lastSpoken) return;
+        clearTimeout(speechTimer);
+        speechTimer = setTimeout(() => {
+          try {
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(label);
+            utterance.lang = "es-ES";
+            utterance.rate = .86;
+            utterance.pitch = 1;
+            const voices = speechSynthesis.getVoices();
+            const voice = voices.find(v => /^es(-|_)/i.test(v.lang)) || voices.find(v => /spanish|español/i.test(v.name));
+            if (voice) utterance.voice = voice;
+            speechSynthesis.speak(utterance);
+            lastSpoken = label;
+          } catch (_) {}
+        }, 360);
+      }
+
+      function addRipple(x, y) {
+        const node = document.createElement("div");
+        node.className = "ripple";
+        node.style.left = `${x}px`;
+        node.style.top = `${y}px`;
+        document.body.appendChild(node);
+        node.addEventListener("animationend", () => node.remove(), { once: true });
+      }
+
+      function addBurst(x, y, zone) {
+        const count = reducedMotion ? 5 : 12;
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * TAU;
+          const speed = 18 + Math.random() * 72;
+          particles.push({
+            x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+            r: .8 + Math.random() * 2.3, life: 1, decay: 1 + Math.random() * .75,
+            color: zone.color
+          });
+        }
+        waves.push({ x, y, radius: 5, life: 1, color: zone.color });
+      }
+
+      function updateReadout(x, y, isNewPress = false) {
+        const xNorm = clamp(x / width, 0, .999999);
+        const yNorm = clamp(y / height, 0, .999999);
+        const progress = depthFromY(yNorm);
+        const zone = zoneForDepth(progress);
+        const feature = featureFor(zone, xNorm);
+
+        targetX = xNorm;
+        targetY = yNorm;
+        setCssPoint(x, y);
+        setAccent(zone);
+        root.style.setProperty("--progress", `${Math.max(1.2, progress * 100)}%`);
+
+        touchOrb.style.left = `${x}px`;
+        touchOrb.style.top = `${y}px`;
+        scaleValue.textContent = zone.className;
+
+        const changed = zone.id !== lastZoneId || feature.index !== lastFeature;
+        if (changed || isNewPress) {
+          certaintyClass.textContent = zone.className;
+          zoneName.textContent = zone.name;
+          zoneName.className = zone.name.length > 31 ? "long" : zone.name.length > 21 ? "compact" : "";
+          featureName.textContent = feature.name;
+          metric.textContent = zone.metric;
+          fact.textContent = feature.fact || zone.fact;
+          ping(zone, xNorm, feature.index);
+          addBurst(x, y, zone);
+          queueSpeech(feature.name);
+          lastZoneId = zone.id;
+          lastFeature = feature.index;
+        }
+
+        readout.classList.add("visible");
+        touchOrb.classList.add("visible");
+        document.body.classList.add("active");
+        hint.style.display = "none";
+        setAudioFor(zone, xNorm, yNorm, true);
+      }
+
+      function releaseInteraction(delay = 1000) {
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          readout.classList.remove("visible");
+          touchOrb.classList.remove("visible");
+          document.body.classList.remove("active");
+          const zone = zoneForDepth(depthFromY(targetY));
+          setAudioFor(zone, targetX, targetY, false);
+        }, delay);
+      }
+
+      function pointerPosition(event) {
+        const rect = canvas.getBoundingClientRect();
+        return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+      }
+
+      canvas.addEventListener("pointerdown", event => {
+        event.preventDefault();
+        activePointer = event.pointerId;
+        canvas.setPointerCapture?.(event.pointerId);
+        speechUnlocked = true;
+        ensureAudio();
+        const point = pointerPosition(event);
+        addRipple(point.x, point.y);
+        updateReadout(point.x, point.y, true);
+      });
+      canvas.addEventListener("pointermove", event => {
+        if (activePointer !== event.pointerId) return;
+        const point = pointerPosition(event);
+        updateReadout(point.x, point.y, false);
+      });
+      function endPointer(event) {
+        if (activePointer !== event.pointerId) return;
+        activePointer = null;
+        canvas.releasePointerCapture?.(event.pointerId);
+        releaseInteraction();
+      }
+      canvas.addEventListener("pointerup", endPointer);
+      canvas.addEventListener("pointercancel", endPointer);
+      canvas.addEventListener("lostpointercapture", () => {
+        activePointer = null;
+        releaseInteraction();
+      });
+      canvas.addEventListener("contextmenu", event => event.preventDefault());
+      canvas.addEventListener("keydown", event => {
+        const step = event.shiftKey ? .09 : .035;
+        if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) return;
+        event.preventDefault();
+        speechUnlocked = true;
+        ensureAudio();
+        if (event.key === "ArrowUp") targetY = clamp(targetY - step);
+        if (event.key === "ArrowDown") targetY = clamp(targetY + step);
+        if (event.key === "ArrowLeft") targetX = clamp(targetX - step);
+        if (event.key === "ArrowRight") targetX = clamp(targetX + step);
+        updateReadout(targetX * width, targetY * height, event.key === "Enter" || event.key === " ");
+        releaseInteraction(1600);
+      });
+
+      function glow(x, y, radius, core, mid, edge = "rgba(0,0,0,0)") {
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, Math.max(1, radius));
+        gradient.addColorStop(0, core);
+        gradient.addColorStop(.38, mid);
+        gradient.addColorStop(1, edge);
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(x, y, Math.max(1, radius), 0, TAU);
+        ctx.fill();
+      }
+
+      function line(x1, y1, x2, y2, color, widthValue = 1) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = widthValue;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
+
+      function drawBackground(time) {
+        const gradient = ctx.createLinearGradient(0, 0, 0, height);
+        gradient.addColorStop(0, "#02030a");
+        gradient.addColorStop(.035, "#080a18");
+        gradient.addColorStop(.09, "#071423");
+        gradient.addColorStop(.16, "#111229");
+        gradient.addColorStop(.24, "#24132f");
+        gradient.addColorStop(.34, "#171d42");
+        gradient.addColorStop(.45, "#2e2336");
+        gradient.addColorStop(.56, "#1d3441");
+        gradient.addColorStop(.68, "#111d3b");
+        gradient.addColorStop(.79, "#0b2438");
+        gradient.addColorStop(.89, "#0b2830");
+        gradient.addColorStop(.955, "#081723");
+        gradient.addColorStop(1, "#02050b");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const star of stars) {
+          const twinkle = .65 + Math.sin(time * .0007 + star.phase) * .35;
+          ctx.globalAlpha = star.a * twinkle * (.45 + star.y * .55);
+          ctx.fillStyle = star.y < .25 ? "#d9e5ff" : "#9ed7ff";
+          ctx.beginPath();
+          ctx.arc(star.x * width, star.y * height, star.r, 0, TAU);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        const haloX = pointerX * width;
+        const haloY = pointerY * height;
+        glow(haloX, haloY, Math.max(width, height) * .32, "rgba(101,168,255,.035)", "rgba(32,68,124,.008)");
+      }
+
+      function drawBands() {
+        ctx.save();
+        ctx.setLineDash([2, 8]);
+        for (let i = 1; i < ZONES.length; i++) {
+          const y = bandY(ZONES[i].p0);
+          ctx.strokeStyle = i >= 12 ? "rgba(230,236,255,.065)" : "rgba(255,255,255,.043)";
+          ctx.lineWidth = .55;
+          ctx.beginPath();
+          ctx.moveTo(width * .045, y);
+          ctx.lineTo(width * .955, y);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+        ctx.restore();
+      }
+
+      function drawInheritedFrontier(time) {
+        const y0 = bandY(.055);
+        const y1 = height;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const g = ctx.createLinearGradient(0, y0, 0, y1);
+        g.addColorStop(0, "rgba(150,205,255,.01)");
+        g.addColorStop(1, "rgba(103,178,225,.15)");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, y0, width, y1 - y0);
+        for (let i = 0; i < 34; i++) {
+          const x = seeded(i + 5100) * width;
+          const y = y0 + seeded(i + 5200) * (y1 - y0);
+          const pulse = .35 + .65 * Math.sin(time * .001 + i);
+          glow(x, y, 3 + seeded(i + 5300) * 11, `rgba(160,222,255,${.025 + pulse * .045})`, "rgba(79,154,230,.004)");
+        }
+        ctx.strokeStyle = "rgba(190,225,255,.28)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(width * .06, y0 + 1);
+        for (let x = width * .06; x <= width * .94; x += 9) {
+          ctx.lineTo(x, y0 + Math.sin(x * .027 + time * .00035) * 2.5);
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawEveryday(time) {
+        const zone = ZONES.find(z => z.id === "everyday");
+        const top = bandY(zone.p1), bottom = bandY(zone.p0);
+        ctx.save();
+        ctx.globalAlpha = .24;
+        ctx.strokeStyle = "rgba(154,231,240,.42)";
+        ctx.lineWidth = .65;
+        const spacing = Math.max(23, width / 16);
+        for (let x = -spacing; x < width + spacing; x += spacing) line(x, top, x, bottom, ctx.strokeStyle, .65);
+        for (let y = top + 8; y < bottom; y += 18) line(0, y, width, y, ctx.strokeStyle, .65);
+        ctx.globalCompositeOperation = "screen";
+        for (const clock of clocks) {
+          const x = clock.x * width;
+          const y = clock.y * height;
+          const r = clock.r * sceneScale();
+          ctx.globalAlpha = clock.a;
+          ctx.strokeStyle = "rgba(214,250,255,.7)";
+          ctx.lineWidth = .8;
+          ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.stroke();
+          const angle = time * .0012 * clock.speed + clock.phase;
+          line(x, y, x + Math.cos(angle) * r * .62, y + Math.sin(angle) * r * .62, "rgba(235,255,255,.78)", 1);
+          glow(x, y, r * 1.8, "rgba(130,229,241,.08)", "rgba(70,170,220,.005)");
+        }
+        ctx.restore();
+      }
+
+      function drawSpecialRelativity(time) {
+        const yTop = bandY(.19), yBottom = bandY(.12);
+        const cy = (yTop + yBottom) * .5;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const observerX = [width * .22, width * .5, width * .78];
+        const velocities = [-.55, 0, .55];
+        observerX.forEach((x, i) => {
+          const tilt = velocities[i] * (yBottom - yTop) * .28;
+          line(x - tilt, yBottom, x + tilt, yTop, i === 1 ? "rgba(245,251,255,.62)" : "rgba(115,188,255,.56)", 1.3);
+          const yy = cy + Math.sin(time * .001 + i) * 2;
+          glow(x, yy, 13, "rgba(191,229,255,.19)", "rgba(70,140,255,.006)");
+          ctx.strokeStyle = "rgba(225,245,255,.52)";
+          ctx.lineWidth = .8;
+          ctx.beginPath(); ctx.arc(x, yy, 6.5, 0, TAU); ctx.stroke();
+          const contracted = 34 * (1 - Math.abs(velocities[i]) * .32);
+          line(x - contracted, yy + 12, x + contracted, yy + 12, "rgba(137,213,255,.45)", 2);
+        });
+        for (let i = 0; i < 7; i++) {
+          const y = yTop + (i + .6) / 7.2 * (yBottom - yTop);
+          const skew = (y - cy) * .28;
+          line(width * .08 + skew, y, width * .92 + skew, y, "rgba(138,196,255,.11)", .7);
+        }
+        ctx.setLineDash([4, 7]);
+        line(width * .08, cy, width * .92, cy, "rgba(240,251,255,.22)", .8);
+        ctx.setLineDash([]);
+        ctx.restore();
+      }
+
+      function drawCausality(time) {
+        const yTop = bandY(.255), yBottom = bandY(.19);
+        const cx = width * .5;
+        const cy = (yTop + yBottom) * .5;
+        const coneW = Math.min(width * .29, (yBottom - yTop) * 1.65);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const future = ctx.createLinearGradient(0, cy, 0, yTop);
+        future.addColorStop(0, "rgba(113,232,255,.2)");
+        future.addColorStop(1, "rgba(70,150,255,.015)");
+        ctx.fillStyle = future;
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx - coneW, yTop); ctx.lineTo(cx + coneW, yTop); ctx.closePath(); ctx.fill();
+        const past = ctx.createLinearGradient(0, cy, 0, yBottom);
+        past.addColorStop(0, "rgba(113,232,255,.16)");
+        past.addColorStop(1, "rgba(70,150,255,.008)");
+        ctx.fillStyle = past;
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx - coneW, yBottom); ctx.lineTo(cx + coneW, yBottom); ctx.closePath(); ctx.fill();
+        line(cx, cy, cx - coneW, yTop, "rgba(191,250,255,.55)", 1);
+        line(cx, cy, cx + coneW, yTop, "rgba(191,250,255,.55)", 1);
+        line(cx, cy, cx - coneW, yBottom, "rgba(191,250,255,.4)", 1);
+        line(cx, cy, cx + coneW, yBottom, "rgba(191,250,255,.4)", 1);
+        glow(cx, cy, 14, "rgba(230,255,255,.42)", "rgba(90,220,255,.02)");
+        for (const ev of events) {
+          const pulse = .65 + Math.sin(time * .002 + ev.phase) * .35;
+          ctx.globalAlpha = ev.a * pulse;
+          glow(ev.x * width, ev.y * height, ev.r * 4, "rgba(144,235,255,.22)", "rgba(50,150,255,.002)");
+        }
+        ctx.restore();
+      }
+
+      function drawSpacetime(time) {
+        const yTop = bandY(.325), yBottom = bandY(.255);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.strokeStyle = "rgba(140,178,255,.12)";
+        ctx.lineWidth = .65;
+        for (let i = 0; i < 12; i++) {
+          const x = width * (i + .5) / 12;
+          ctx.beginPath();
+          ctx.moveTo(x, yBottom);
+          ctx.bezierCurveTo(x - 10, lerp(yBottom, yTop, .35), x + 10, lerp(yBottom, yTop, .65), x, yTop);
+          ctx.stroke();
+        }
+        for (let j = 0; j < 7; j++) {
+          const y = lerp(yBottom, yTop, (j + .5) / 7);
+          line(width * .03, y, width * .97, y, "rgba(150,189,255,.09)", .65);
+        }
+        for (const w of worldlines) {
+          const x = w.x * width;
+          const y = w.y * height;
+          const h = yBottom - yTop;
+          const drift = w.tilt * width;
+          ctx.globalAlpha = w.a;
+          ctx.strokeStyle = "rgba(198,219,255,.75)";
+          ctx.lineWidth = 1.1;
+          ctx.beginPath();
+          ctx.moveTo(x - drift * .5, yBottom);
+          ctx.bezierCurveTo(x - drift * .2 + Math.sin(time * .0004 + w.phase) * 4, y + h * .15, x + drift * .2, y - h * .15, x + drift * .5, yTop);
+          ctx.stroke();
+          const t = (time * .00008 + w.phase / TAU) % 1;
+          const py = lerp(yBottom, yTop, t);
+          const px = lerp(x - drift * .5, x + drift * .5, t) + Math.sin(t * Math.PI) * w.bend * width;
+          glow(px, py, 7, "rgba(226,238,255,.3)", "rgba(90,140,255,.006)");
+        }
+        ctx.restore();
+      }
+
+      function drawEquivalence(time) {
+        const yTop = bandY(.395), yBottom = bandY(.325);
+        const cy = (yTop + yBottom) * .5;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const centers = [width * .2, width * .5, width * .8];
+        centers.forEach((cx, i) => {
+          const w = Math.min(width * .18, 90);
+          const h = (yBottom - yTop) * .72;
+          ctx.strokeStyle = "rgba(175,242,228,.35)";
+          ctx.lineWidth = .8;
+          ctx.strokeRect(cx - w * .5, cy - h * .5, w, h);
+          const ballY = i === 0
+            ? cy + h * .18
+            : i === 1
+              ? cy - h * .18 + ((time * .025) % (h * .36))
+              : cy + Math.sin(time * .0012) * h * .19;
+          glow(cx, ballY, 7, "rgba(208,255,241,.36)", "rgba(91,217,190,.008)");
+          if (i === 0) {
+            line(cx - w * .34, cy + h * .28, cx + w * .34, cy + h * .28, "rgba(216,255,244,.38)", 1.4);
+            for (let a = -1; a <= 1; a++) line(cx + a * 12, cy - h * .25, cx + a * 12, cy - h * .05, "rgba(122,242,210,.22)", .8);
+          } else if (i === 1) {
+            for (let a = -1; a <= 1; a++) line(cx + a * 12, cy - h * .25, cx + a * 12, cy - h * .05, "rgba(122,242,210,.22)", .8);
+          } else {
+            ctx.setLineDash([3, 5]);
+            line(cx - w * .4, cy, cx + w * .4, cy, "rgba(205,255,244,.24)", .8);
+            ctx.setLineDash([]);
+          }
+        });
+        ctx.restore();
+      }
+
+      function warpedPoint(x, y, sources, scale = 1) {
+        let dx = 0, dy = 0;
+        for (const m of sources) {
+          const mx = m.x * width, my = m.y * height;
+          const vx = mx - x, vy = my - y;
+          const d2 = vx * vx + vy * vy + 500;
+          const strength = m.strength * 980 * scale / d2;
+          dx += vx * strength;
+          dy += vy * strength;
+        }
+        return [x + dx, y + dy];
+      }
+
+      function drawCurvature(time) {
+        const zone = ZONES.find(z => z.id === "curvature");
+        const yTop = bandY(zone.p1), yBottom = bandY(zone.p0);
+        const sources = masses.filter(m => m.y * height >= yTop - 20 && m.y * height <= yBottom + 20);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.strokeStyle = "rgba(255,209,137,.15)";
+        ctx.lineWidth = .65;
+        for (let i = 0; i <= 14; i++) {
+          const x0 = width * i / 14;
+          ctx.beginPath();
+          for (let s = 0; s <= 36; s++) {
+            const y = lerp(yTop, yBottom, s / 36);
+            const [xw, yw] = warpedPoint(x0, y, sources, 1.35);
+            if (s === 0) ctx.moveTo(xw, yw); else ctx.lineTo(xw, yw);
+          }
+          ctx.stroke();
+        }
+        for (let j = 0; j <= 7; j++) {
+          const y0 = lerp(yTop, yBottom, j / 7);
+          ctx.beginPath();
+          for (let s = 0; s <= 48; s++) {
+            const x = width * s / 48;
+            const [xw, yw] = warpedPoint(x, y0, sources, 1.35);
+            if (s === 0) ctx.moveTo(xw, yw); else ctx.lineTo(xw, yw);
+          }
+          ctx.stroke();
+        }
+        for (const m of sources) {
+          const x = m.x * width, y = m.y * height;
+          const pulse = .9 + Math.sin(time * .001 + m.phase) * .1;
+          glow(x, y, m.r * 3.2 * pulse, "rgba(255,211,145,.22)", "rgba(255,109,56,.006)");
+          ctx.fillStyle = "rgba(255,231,187,.75)";
+          ctx.beginPath(); ctx.arc(x, y, m.r * .3, 0, TAU); ctx.fill();
+          ctx.strokeStyle = "rgba(191,226,255,.22)";
+          ctx.lineWidth = .75;
+          ctx.beginPath(); ctx.arc(x, y, m.r * 1.5, 0, TAU); ctx.stroke();
+          ctx.beginPath(); ctx.arc(x, y, m.r * 2.25, 0, TAU); ctx.stroke();
+        }
+        const lensX = width * .67, lensY = (yTop + yBottom) * .5;
+        ctx.strokeStyle = "rgba(210,239,255,.4)";
+        ctx.lineWidth = 1;
+        for (let k = -1; k <= 1; k++) {
+          ctx.beginPath();
+          ctx.moveTo(width * .08, lensY + k * 12);
+          ctx.quadraticCurveTo(lensX, lensY + k * 6 + (k === 0 ? -18 : k * -5), width * .93, lensY + k * 12);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawBlackHoles(time) {
+        const yTop = bandY(.55), yBottom = bandY(.475);
+        const cy = (yTop + yBottom) * .5;
+        const holes = [
+          { x: width * .23, r: Math.min(width, height) * .028, spin: 1 },
+          { x: width * .54, r: Math.min(width, height) * .038, spin: -1 },
+          { x: width * .81, r: Math.min(width, height) * .023, spin: 1 }
+        ];
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const h of holes) {
+          const x = h.x;
+          const r = Math.max(11, h.r);
+          glow(x, cy, r * 4.2, "rgba(255,109,70,.13)", "rgba(109,34,50,.004)");
+          ctx.save();
+          ctx.translate(x, cy);
+          ctx.rotate(time * .00012 * h.spin);
+          ctx.scale(1.8, .42);
+          const ring = ctx.createLinearGradient(-r * 2.8, 0, r * 2.8, 0);
+          ring.addColorStop(0, "rgba(255,81,37,.04)");
+          ring.addColorStop(.24, "rgba(255,185,72,.58)");
+          ring.addColorStop(.51, "rgba(255,248,214,.82)");
+          ring.addColorStop(.76, "rgba(255,112,45,.4)");
+          ring.addColorStop(1, "rgba(91,27,56,.02)");
+          ctx.strokeStyle = ring;
+          ctx.lineWidth = Math.max(2, r * .18);
+          ctx.beginPath(); ctx.arc(0, 0, r * 2.15, 0, TAU); ctx.stroke();
+          ctx.restore();
+          ctx.globalCompositeOperation = "source-over";
+          const shadow = ctx.createRadialGradient(x - r * .25, cy - r * .25, 0, x, cy, r * 1.18);
+          shadow.addColorStop(0, "#000"); shadow.addColorStop(.78, "#000"); shadow.addColorStop(1, "rgba(0,0,0,.1)");
+          ctx.fillStyle = shadow;
+          ctx.beginPath(); ctx.arc(x, cy, r * 1.18, 0, TAU); ctx.fill();
+          ctx.globalCompositeOperation = "screen";
+          ctx.strokeStyle = "rgba(236,239,255,.22)";
+          ctx.lineWidth = .8;
+          ctx.beginPath(); ctx.arc(x, cy, r * 1.2, 0, TAU); ctx.stroke();
+          if (h.spin < 0) {
+            ctx.strokeStyle = "rgba(255,151,99,.17)";
+            ctx.beginPath(); ctx.ellipse(x, cy, r * 1.75, r * 1.32, 0, 0, TAU); ctx.stroke();
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawGravitationalWaves(time) {
+        const yTop = bandY(.62), yBottom = bandY(.55);
+        const cy = (yTop + yBottom) * .5;
+        const cx = width * .5;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const orbit = Math.min(width, height) * .038;
+        const a = time * .0018;
+        const x1 = cx + Math.cos(a) * orbit, y1 = cy + Math.sin(a) * orbit * .35;
+        const x2 = cx - Math.cos(a) * orbit, y2 = cy - Math.sin(a) * orbit * .35;
+        glow(x1, y1, 15, "rgba(218,178,255,.34)", "rgba(131,78,255,.007)");
+        glow(x2, y2, 13, "rgba(198,132,255,.3)", "rgba(93,54,255,.006)");
+        for (let i = 0; i < 10; i++) {
+          const phase = (time * .00022 + i / 10) % 1;
+          const rx = 22 + phase * width * .48;
+          const alpha = (1 - phase) * .19;
+          ctx.strokeStyle = `rgba(197,157,255,${alpha})`;
+          ctx.lineWidth = .7;
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, rx, rx * .18, 0, 0, TAU);
+          ctx.stroke();
+        }
+        const ringR = Math.min(width * .22, (yBottom - yTop) * .44);
+        const strain = .14 * Math.sin(time * .0025);
+        for (const p of testParticles) {
+          const ex = ringR * (1 + strain);
+          const ey = ringR * .34 * (1 - strain);
+          const x = cx + Math.cos(p.angle) * ex;
+          const y = cy + Math.sin(p.angle) * ey;
+          glow(x, y, 4.5, "rgba(230,209,255,.28)", "rgba(160,115,255,.003)");
+        }
+        ctx.restore();
+      }
+
+      function drawDynamicUniverse(time) {
+        const yTop = bandY(.69), yBottom = bandY(.62);
+        const cy = (yTop + yBottom) * .5;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const expansion = 1 + .035 * Math.sin(time * .00035);
+        ctx.strokeStyle = "rgba(120,157,255,.12)";
+        ctx.lineWidth = .6;
+        for (let i = 0; i < 9; i++) {
+          const x = width * (i + .5) / 9;
+          const offset = (x - width * .5) * (expansion - 1);
+          line(x + offset, yTop, x + offset, yBottom, ctx.strokeStyle, .6);
+        }
+        for (let j = 0; j < 5; j++) {
+          const y = lerp(yTop, yBottom, (j + .5) / 5);
+          line(width * .02, y, width * .98, y, ctx.strokeStyle, .6);
+        }
+        for (const g of galaxies) {
+          const x = width * .5 + (g.x * width - width * .5) * expansion;
+          const y = cy + (g.y * height - cy) * expansion;
+          ctx.globalAlpha = g.a;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(g.phase + time * .00004);
+          ctx.scale(1.6, .55);
+          ctx.strokeStyle = "rgba(181,203,255,.65)";
+          ctx.lineWidth = .7;
+          ctx.beginPath(); ctx.arc(0, 0, g.r * 2.5, 0, TAU); ctx.stroke();
+          ctx.restore();
+          glow(x, y, g.r * 4, "rgba(154,184,255,.16)", "rgba(60,90,255,.002)");
+        }
+        ctx.restore();
+      }
+
+      function drawHorizonThermo(time) {
+        const yTop = bandY(.76), yBottom = bandY(.69);
+        const cy = (yTop + yBottom) * .5;
+        const cx = width * .5;
+        const r = Math.min(width * .11, (yBottom - yTop) * .36);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        glow(cx, cy, r * 4, "rgba(255,180,68,.1)", "rgba(77,32,44,.002)");
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = "#000";
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, TAU); ctx.fill();
+        ctx.globalCompositeOperation = "screen";
+        const segments = 36;
+        for (let i = 0; i < segments; i++) {
+          const a0 = i / segments * TAU;
+          const a1 = (i + .72) / segments * TAU;
+          const pulse = .3 + .7 * Math.sin(time * .001 + i * 1.7) ** 2;
+          ctx.strokeStyle = `rgba(255,213,121,${.08 + pulse * .26})`;
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.arc(cx, cy, r * 1.08, a0, a1); ctx.stroke();
+        }
+        for (let i = 0; i < 18; i++) {
+          const a = i / 18 * TAU + time * .00015;
+          const rr = r * (1.4 + ((time * .00008 + seeded(i + 5400)) % 1) * 2.2);
+          const x = cx + Math.cos(a) * rr;
+          const y = cy + Math.sin(a) * rr * .38;
+          glow(x, y, 3.5, "rgba(255,226,154,.25)", "rgba(255,128,50,.002)");
+        }
+        for (let i = 0; i < 7; i++) {
+          const x = width * (.08 + i * .14);
+          const y = cy + Math.sin(i * 1.7) * (yBottom - yTop) * .27;
+          ctx.strokeStyle = "rgba(255,218,142,.13)";
+          ctx.lineWidth = .7;
+          ctx.strokeRect(x - 5, y - 5, 10, 10);
+        }
+        ctx.restore();
+      }
+
+      function drawPlanck(time) {
+        const yTop = bandY(.835), yBottom = bandY(.76);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const intensity = reducedMotion ? 0 : 1;
+        for (const cell of planckCells) {
+          const baseX = cell.x * width;
+          const baseY = cell.y * height;
+          const jitter = Math.sin(time * .004 + cell.phase) * cell.s * .28 * intensity;
+          const x = baseX + jitter;
+          const y = baseY + Math.cos(time * .0032 + cell.phase) * cell.s * .2 * intensity;
+          ctx.globalAlpha = cell.a * (.55 + .45 * Math.sin(time * .002 + cell.phase) ** 2);
+          ctx.strokeStyle = cell.mode % 2 ? "rgba(231,239,255,.75)" : "rgba(185,207,255,.58)";
+          ctx.lineWidth = .55;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(cell.rot + time * .0002 * (cell.mode - 2));
+          if (cell.mode === 0) {
+            ctx.strokeRect(-cell.s * .5, -cell.s * .5, cell.s, cell.s);
+          } else if (cell.mode === 1) {
+            ctx.beginPath(); ctx.moveTo(0, -cell.s); ctx.lineTo(cell.s, cell.s); ctx.lineTo(-cell.s, cell.s); ctx.closePath(); ctx.stroke();
+          } else if (cell.mode === 2) {
+            ctx.beginPath(); ctx.arc(0, 0, cell.s * .65, 0, TAU); ctx.stroke();
+          } else {
+            ctx.beginPath(); ctx.moveTo(-cell.s, 0); ctx.quadraticCurveTo(0, Math.sin(time * .004 + cell.phase) * cell.s, cell.s, 0); ctx.stroke();
+          }
+          ctx.restore();
+        }
+        ctx.strokeStyle = "rgba(236,242,255,.15)";
+        ctx.lineWidth = .7;
+        for (let i = 0; i < 7; i++) {
+          const y = lerp(yTop, yBottom, (i + .5) / 7);
+          ctx.beginPath();
+          for (let x = 0; x <= width; x += 9) {
+            const yy = y + Math.sin(x * .038 + i + time * .002) * (2 + i * .5);
+            if (x === 0) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function curvedBranch(branch, time) {
+        const x0 = branch.x0 * width, y0 = branch.y0 * height;
+        const x1 = branch.x1 * width, y1 = branch.y1 * height;
+        const cx = (x0 + x1) * .5 + branch.bend * width;
+        const cy = (y0 + y1) * .5 - Math.abs(x1 - x0) * .08;
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        ctx.quadraticCurveTo(cx, cy, x1, y1);
+        ctx.stroke();
+        const t = (time * .00009 + branch.phase / TAU) % 1;
+        const omt = 1 - t;
+        const px = omt * omt * x0 + 2 * omt * t * cx + t * t * x1;
+        const py = omt * omt * y0 + 2 * omt * t * cy + t * t * y1;
+        glow(px, py, 5, "rgba(229,195,255,.28)", "rgba(144,83,255,.003)");
+      }
+
+      function drawApproaches(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        glow(width * .5, height * .145, 22, "rgba(225,194,255,.18)", "rgba(113,61,255,.004)");
+        ctx.strokeStyle = "rgba(216,164,255,.28)";
+        ctx.lineWidth = .85;
+        for (const branch of approachBranches) curvedBranch(branch, time);
+        ctx.fillStyle = "rgba(232,218,255,.26)";
+        ctx.font = `${Math.max(6, Math.min(9, width * .012))}px system-ui, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        for (const branch of approachBranches) {
+          if (width > 620 || branch.name.length < 9) ctx.fillText(branch.name, branch.x1 * width, branch.y1 * height - 5);
+        }
+        ctx.restore();
+      }
+
+      function drawEmergent(time) {
+        const nodes = quantumNodes;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i];
+          const ax = a.x * width, ay = a.y * height;
+          for (let j = i + 1; j < nodes.length; j++) {
+            const b = nodes[j];
+            const dx = (a.x - b.x) * width;
+            const dy = (a.y - b.y) * height;
+            const dist = Math.hypot(dx, dy);
+            const linked = a.group === b.group || dist < Math.min(width, height) * .105;
+            if (!linked) continue;
+            const strength = a.group === b.group ? .13 : .045;
+            const pulse = .55 + .45 * Math.sin(time * .0012 + a.phase - b.phase);
+            line(ax, ay, b.x * width, b.y * height, `rgba(120,234,255,${strength * pulse})`, .55);
+          }
+        }
+        for (const n of nodes) {
+          const pulse = .7 + .3 * Math.sin(time * .0018 + n.phase);
+          glow(n.x * width, n.y * height, n.r * 3.2 * pulse, `rgba(155,245,255,${n.a * .38})`, "rgba(73,199,255,.002)");
+          ctx.globalAlpha = n.a;
+          ctx.fillStyle = "rgba(232,255,255,.72)";
+          ctx.beginPath(); ctx.arc(n.x * width, n.y * height, n.r * .42, 0, TAU); ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function drawOrigin(time) {
+        const yTop = 0, yBottom = bandY(.97);
+        const cx = width * .5;
+        const cy = Math.max(14, (yTop + yBottom) * .48);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const pulse = .88 + Math.sin(time * .0008) * .12;
+        glow(cx, cy, Math.max(width, height) * .18 * pulse, "rgba(243,247,255,.11)", "rgba(146,170,255,.004)");
+        ctx.strokeStyle = "rgba(239,244,255,.23)";
+        ctx.lineWidth = .7;
+        for (let i = 0; i < 11; i++) {
+          const a = i / 11 * TAU + time * .00003;
+          const r = 8 + i * 3.2;
+          ctx.beginPath();
+          ctx.arc(cx + Math.cos(a) * r * .18, cy + Math.sin(a) * r * .08, r, a, a + Math.PI * 1.35);
+          ctx.stroke();
+        }
+        ctx.fillStyle = "rgba(249,251,255,.74)";
+        ctx.font = `900 ${Math.max(15, Math.min(28, width * .045))}px system-ui, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("?", cx, cy);
+        ctx.restore();
+      }
+
+      function drawContinuity(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const x = width * .5;
+        const gradient = ctx.createLinearGradient(0, height, 0, 0);
+        gradient.addColorStop(0, "rgba(120,202,240,.18)");
+        gradient.addColorStop(.35, "rgba(255,194,113,.16)");
+        gradient.addColorStop(.65, "rgba(195,143,255,.13)");
+        gradient.addColorStop(1, "rgba(241,247,255,.2)");
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = .75;
+        ctx.setLineDash([1.5, 10]);
+        ctx.beginPath();
+        ctx.moveTo(x, height);
+        for (let y = height; y >= 0; y -= 10) {
+          const amp = 2 + (1 - y / height) * 8;
+          ctx.lineTo(x + Math.sin(y * .025 + time * .00025) * amp, y);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+      }
+
+      function drawScientificCues() {
+        if (width < 680) return;
+        const cues = [
+          ["APROXIMACIÓN", .91, .1],
+          ["RELATIVIDAD COMPROBADA", .64, .08],
+          ["HORIZONTES Y CUÁNTICA", .285, .08],
+          ["RÉGIMEN INACCESIBLE", .205, .08],
+          ["MODELOS CANDIDATOS", .135, .08],
+          ["ORIGEN DESCONOCIDO", .024, .08]
+        ];
+        ctx.save();
+        ctx.fillStyle = "rgba(228,239,255,.16)";
+        ctx.font = `800 ${Math.max(7, Math.min(10, width * .009))}px system-ui, sans-serif`;
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+        ctx.letterSpacing = "0.08em";
+        for (const [label, y, x] of cues) ctx.fillText(label, width * x, height * y);
+        ctx.restore();
+      }
+
+      function drawTopMessage() {
+        if (height < 520) return;
+        const maxW = Math.min(width * .78, 760);
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.fillStyle = "rgba(239,246,255,.38)";
+        ctx.font = `800 ${Math.max(8, Math.min(12, width * .015))}px system-ui, sans-serif`;
+        ctx.fillText("EL ORIGEN DEL ESPACIO Y DEL TIEMPO", width * .5, Math.max(5, height * .006), maxW);
+        ctx.fillStyle = "rgba(216,231,255,.24)";
+        ctx.font = `650 ${Math.max(7, Math.min(10, width * .012))}px system-ui, sans-serif`;
+        ctx.fillText("Más allá: información cuántica, leyes emergentes y naturaleza de la realidad", width * .5, Math.max(19, height * .026), maxW);
+        ctx.restore();
+      }
+
+      function drawParticles(dt) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life -= p.decay * dt;
+          if (p.life <= 0) { particles.splice(i, 1); continue; }
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.vx *= .985;
+          p.vy *= .985;
+          const [r, g, b] = p.color;
+          ctx.fillStyle = `rgba(${r},${g},${b},${p.life * .68})`;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r * p.life, 0, TAU); ctx.fill();
+        }
+        for (let i = waves.length - 1; i >= 0; i--) {
+          const w = waves[i];
+          w.life -= dt * 1.3;
+          w.radius += dt * 86;
+          if (w.life <= 0) { waves.splice(i, 1); continue; }
+          const [r, g, b] = w.color;
+          ctx.strokeStyle = `rgba(${r},${g},${b},${w.life * .34})`;
+          ctx.lineWidth = .8;
+          ctx.beginPath(); ctx.arc(w.x, w.y, w.radius, 0, TAU); ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function draw(time) {
+        const dt = Math.min(.034, (time - lastTime) / 1000 || 0);
+        lastTime = time;
+        if (!reducedMotion) {
+          pointerX += (targetX - pointerX) * .08;
+          pointerY += (targetY - pointerY) * .08;
+        } else {
+          pointerX = targetX;
+          pointerY = targetY;
+        }
+
+        drawBackground(time);
+        drawBands();
+        drawInheritedFrontier(time);
+        drawEveryday(time);
+        drawSpecialRelativity(time);
+        drawCausality(time);
+        drawSpacetime(time);
+        drawEquivalence(time);
+        drawCurvature(time);
+        drawBlackHoles(time);
+        drawGravitationalWaves(time);
+        drawDynamicUniverse(time);
+        drawHorizonThermo(time);
+        drawPlanck(time);
+        drawApproaches(time);
+        drawEmergent(time);
+        drawOrigin(time);
+        drawContinuity(time);
+        drawScientificCues();
+        drawTopMessage();
+        drawParticles(dt);
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener("resize", resize, { passive: true });
+      window.addEventListener("orientationchange", () => setTimeout(resize, 120), { passive: true });
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden && audioCtx && master) master.gain.setTargetAtTime(.0001, audioCtx.currentTime, .05);
+      });
+
+      resize();
+      setAccent(ZONES[0]);
+      setCssPoint(width * targetX, height * targetY);
+      root.style.setProperty("--progress", "4%");
+      requestAnimationFrame(draw);
+    })();
+  </script>
+</body>
+</html>
