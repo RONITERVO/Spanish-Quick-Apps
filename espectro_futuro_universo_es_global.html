@@ -1,0 +1,1640 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#05070d">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora del futuro cósmico: del universo actual a la era oscura y la física desconocida.">
+  <meta name="application-name" content="Espectro del Futuro del Universo: de la Era Estelar a la Oscuridad Cósmica">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro del Futuro del Universo">
+  <meta property="og:description" content="Toca y recorre el futuro del universo, distinguiendo el presente observado, la evolución modelada y los escenarios condicionados por física aún desconocida.">
+  <title>Espectro del Futuro del Universo: de la Era Estelar a la Oscuridad Cósmica</title>
+  <style>
+    :root {
+      --accent: rgb(183 222 255);
+      --accent-soft: rgb(183 222 255 / .34);
+      --ink: rgb(255 255 255);
+      --panel: rgb(5 9 18 / .62);
+      --scan-x: 50vw;
+      --scan-y: 93vh;
+      --progress: 4%;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #02040a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: white;
+      font-family:
+        Inter, ui-rounded, "SF Pro Rounded", "Segoe UI",
+        system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #cosmic-future-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background:
+        radial-gradient(circle at var(--scan-x) var(--scan-y),
+          color-mix(in srgb, var(--accent) 72%, transparent) 0%,
+          color-mix(in srgb, var(--accent) 22%, transparent) 11%,
+          transparent 34%);
+      mix-blend-mode: screen;
+    }
+
+    body.active #light-field { opacity: .88; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg,
+          transparent calc(var(--scan-x) - 1px),
+          color-mix(in srgb, var(--accent) 74%, transparent) var(--scan-x),
+          transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg,
+          transparent calc(var(--scan-y) - 1px),
+          color-mix(in srgb, var(--accent) 46%, transparent) var(--scan-y),
+          transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+
+    body.active #scan-line { opacity: .24; }
+
+    #grain {
+      z-index: 4;
+      opacity: .046;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 39%, rgb(0 0 0 / .22) 72%, rgb(0 0 0 / .8) 125%),
+        linear-gradient(90deg, rgb(0 0 0 / .43), transparent 13%, transparent 87%, rgb(0 0 0 / .42));
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 49%;
+      width: min(92vw, 840px);
+      padding: clamp(16px, 3.3vw, 28px) clamp(20px, 5vw, 52px) clamp(18px, 3.8vw, 34px);
+      border: 1px solid rgb(255 255 255 / .23);
+      border-radius: clamp(26px, 6vw, 52px);
+      color: var(--ink);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        var(--panel);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .52),
+        0 0 82px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .27),
+        inset 0 -1px 0 rgb(0 0 0 / .22);
+      backdrop-filter: blur(23px) saturate(1.38);
+      -webkit-backdrop-filter: blur(23px) saturate(1.38);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear,
+        background 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #certainty-class {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 27px;
+      margin-bottom: clamp(10px, 2vw, 16px);
+      padding: 6px 13px 7px;
+      border: 1px solid color-mix(in srgb, var(--accent) 66%, transparent);
+      border-radius: 999px;
+      color: color-mix(in srgb, var(--accent) 78%, white);
+      font-size: clamp(.64rem, 2.15vw, .88rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: color-mix(in srgb, var(--accent) 10%, rgb(0 0 0 / .34));
+      box-shadow: 0 0 25px var(--accent-soft), inset 0 1px 0 rgb(255 255 255 / .11);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.5vw, 6.7rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow:
+        0 0 30px var(--accent-soft),
+        0 5px 24px rgb(0 0 0 / .5);
+    }
+
+    #zone-name.compact {
+      font-size: clamp(1.72rem, 7.2vw, 5.6rem);
+      letter-spacing: -.047em;
+      line-height: .89;
+    }
+
+    #zone-name.long {
+      font-size: clamp(1.42rem, 6.1vw, 4.55rem);
+      letter-spacing: -.035em;
+      line-height: .93;
+    }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 880;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+      opacity: .98;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(11px, 2vw, 18px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.69rem, 2.25vw, .94rem);
+      font-weight: 820;
+      line-height: 1.12;
+      letter-spacing: .045em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .19);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .12);
+    }
+
+    #fact {
+      display: block;
+      max-width: 680px;
+      margin: clamp(11px, 2.3vw, 18px) auto 0;
+      font-size: clamp(.84rem, 2.68vw, 1.12rem);
+      font-weight: 630;
+      line-height: 1.3;
+      letter-spacing: -.011em;
+      text-wrap: balance;
+      opacity: .87;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.35);
+      background: radial-gradient(circle, rgb(255 255 255 / .18), transparent 67%);
+      box-shadow:
+        0 0 0 1px rgb(0 0 0 / .24),
+        0 0 21px var(--accent),
+        0 0 54px var(--accent-soft),
+        inset 0 0 18px rgb(255 255 255 / .25);
+      transition:
+        opacity 120ms ease,
+        transform 280ms cubic-bezier(.16, 1, .3, 1),
+        border-color 110ms linear,
+        box-shadow 110ms linear;
+      will-change: transform, opacity;
+    }
+
+    #touch-orb.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(11px, env(safe-area-inset-right));
+      top: max(20px, env(safe-area-inset-top));
+      bottom: max(20px, env(safe-area-inset-bottom));
+      width: 21px;
+      pointer-events: none;
+      opacity: .72;
+      transition: opacity 180ms ease;
+    }
+
+    body.active #journey-scale { opacity: 1; }
+
+    #scale-track {
+      position: absolute;
+      right: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgb(255 255 255 / .15);
+      box-shadow: 0 0 10px rgb(255 255 255 / .08);
+    }
+
+    #scale-fill {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: var(--progress);
+      border-radius: 99px;
+      background: linear-gradient(0deg, rgb(178 225 255 / .9), var(--accent));
+      box-shadow: 0 0 18px var(--accent);
+    }
+
+    #scale-dot {
+      position: absolute;
+      right: 3px;
+      bottom: calc(var(--progress) - 7px);
+      width: 12px;
+      height: 12px;
+      border: 2px solid white;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 14px var(--accent), 0 0 2px black;
+      transition: bottom 80ms linear, background 110ms linear;
+    }
+
+    #scale-bottom,
+    #scale-top,
+    #scale-value {
+      position: absolute;
+      right: 28px;
+      width: min(66vw, 380px);
+      color: rgb(255 255 255 / .57);
+      font-size: clamp(.52rem, 1.9vw, .72rem);
+      font-weight: 820;
+      line-height: 1;
+      letter-spacing: .08em;
+      text-align: right;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-shadow: 0 1px 7px black;
+    }
+
+    #scale-bottom { bottom: -1px; }
+    #scale-top { top: -1px; }
+
+    #scale-value {
+      top: clamp(10%, calc(100% - var(--progress)), 90%);
+      margin-top: -4px;
+      color: rgb(255 255 255 / .79);
+      opacity: 0;
+      transform: translateY(-50%);
+      transition: opacity 150ms ease;
+    }
+
+    body.active #scale-value { opacity: 1; }
+
+    #hint {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 81%;
+      display: grid;
+      justify-items: center;
+      gap: 7px;
+      width: min(86vw, 540px);
+      color: rgb(225 244 255 / .82);
+      text-align: center;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: hint-life 8s ease forwards;
+      text-shadow: 0 2px 12px #000;
+    }
+
+    #hint-ring {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgb(202 236 255 / .65);
+      border-radius: 50%;
+      box-shadow: 0 0 24px rgb(121 203 255 / .25);
+      animation: hint-pulse 2.2s ease-in-out infinite;
+    }
+
+    #hint-ring::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgb(234 248 255 / .96);
+      box-shadow: 0 0 14px rgb(111 204 255 / .85);
+      animation: hint-climb 2.2s ease-in-out infinite;
+    }
+
+    #hint-text {
+      font-size: clamp(.74rem, 2.9vw, 1.02rem);
+      font-weight: 920;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #hint-subtext {
+      font-size: clamp(.62rem, 2.25vw, .79rem);
+      font-weight: 720;
+      letter-spacing: .045em;
+      opacity: .77;
+    }
+
+    .ripple {
+      position: fixed;
+      z-index: 6;
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: ripple-out .8s cubic-bezier(.12, .68, .2, 1) forwards;
+      box-shadow: 0 0 24px var(--accent-soft);
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    @keyframes hint-life {
+      0%, 58% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    @keyframes hint-pulse {
+      0%, 100% { transform: scale(.88); opacity: .6; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    @keyframes hint-climb {
+      0%, 100% { transform: translate(-50%, 8px); }
+      50% { transform: translate(-50%, -14px); }
+    }
+
+    @keyframes ripple-out {
+      from { opacity: .9; transform: translate(-50%, -50%) scale(.6); }
+      to { opacity: 0; transform: translate(-50%, -50%) scale(8); }
+    }
+
+    @media (max-width: 620px) {
+      #journey-scale { right: max(7px, env(safe-area-inset-right)); }
+      #scale-bottom,
+      #scale-top,
+      #scale-value { right: 23px; }
+      #scale-bottom,
+      #scale-top { display: none; }
+    }
+
+    @media (max-height: 570px) and (orientation: landscape) {
+      #readout {
+        width: min(84vw, 780px);
+        padding: 10px 28px 12px;
+        border-radius: 25px;
+      }
+      #certainty-class { margin-bottom: 7px; min-height: 22px; padding: 4px 10px 5px; font-size: clamp(.56rem, 2.2vh, .72rem); }
+      #zone-name { font-size: clamp(1.55rem, 7.3vh, 3.25rem); line-height: .9; }
+      #zone-name.compact { font-size: clamp(1.36rem, 6.8vh, 2.95rem); }
+      #zone-name.long { font-size: clamp(1.15rem, 6.1vh, 2.55rem); }
+      #feature-name { margin-top: 5px; font-size: clamp(.76rem, 4vh, 1.15rem); }
+      #metric { min-height: 24px; margin-top: 7px; padding: 5px 10px 6px; font-size: clamp(.6rem, 2.5vh, .76rem); }
+      #fact { max-width: 680px; margin-top: 7px; font-size: clamp(.7rem, 3vh, .88rem); line-height: 1.16; }
+      #journey-scale { top: max(8px, env(safe-area-inset-top)); bottom: max(8px, env(safe-area-inset-bottom)); }
+      #hint { top: 78%; gap: 4px; }
+      #hint-ring { width: 38px; height: 38px; }
+      #hint-subtext { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #readout,
+      #touch-orb,
+      #journey-scale,
+      #light-field,
+      #scan-line { transition-duration: 70ms; }
+      #hint,
+      .ripple,
+      #hint-ring::after { animation: none; }
+      #hint { opacity: .75; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="cosmic-future-spectrum" role="application" tabindex="0" aria-describedby="instructions" aria-label="Mapa táctil del futuro del universo, desde el presente observado hasta la oscuridad cósmica y la física desconocida"></canvas>
+  <p id="instructions" class="sr-only">La aventura comienza exactamente donde termina la aplicación de evidencia cósmica: en la frontera de lo conocible. Desde allí regresa al universo actual y avanza hacia el futuro por el ocaso de la formación estelar, la era de las enanas rojas, las últimas estrellas, la era degenerada, la era de los agujeros negros, la evaporación de Hawking, la era oscura y un futuro indeterminado. La altura ordena etapas futuras, pero no representa una escala temporal lineal. Arrastra horizontalmente para descubrir conceptos distintos dentro de cada región. También puedes usar las flechas del teclado.</p>
+
+  <div id="light-field" aria-hidden="true"></div>
+  <div id="scan-line" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <div id="hint" aria-hidden="true">
+    <div id="hint-ring"></div>
+    <div id="hint-text">El presente vuelve a comenzar</div>
+    <div id="hint-subtext">Asciende · proyecta el tiempo cósmico</div>
+  </div>
+
+  <div id="readout" aria-live="polite" aria-atomic="true">
+    <span id="certainty-class"></span>
+    <span id="zone-name"></span>
+    <span id="feature-name"></span>
+    <span id="metric"></span>
+    <span id="fact"></span>
+  </div>
+
+  <div id="touch-orb" aria-hidden="true"></div>
+
+  <div id="journey-scale" aria-hidden="true">
+    <div id="scale-track"><div id="scale-fill"></div></div>
+    <div id="scale-dot"></div>
+    <span id="scale-bottom">Frontera → universo actual</span>
+    <span id="scale-value">Tiempo proyectado</span>
+    <span id="scale-top">Futuro indeterminado</span>
+  </div>
+
+  <!--
+    Visualización educativa sin dependencias externas.
+    La altura ordena una secuencia hacia el futuro, pero no es una escala temporal lineal: cada franja
+    puede abarcar órdenes de magnitud más tiempo que la anterior. La certeza visual disminuye al subir.
+
+    La aplicación no presenta como observados el decaimiento del protón ni la radiación de Hawking de
+    un agujero negro astrofísico; tampoco garantiza que la energía oscura sea constante, que exista una
+    cronología única, que la muerte térmica sea súbita o que Big Rip, Big Crunch y decaimiento del vacío
+    sean finales confirmados. La habitabilidad, la vida y la computación no reciben un límite exacto.
+  -->
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.getElementById("cosmic-future-spectrum");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const root = document.documentElement;
+      const readout = document.getElementById("readout");
+      const certaintyClass = document.getElementById("certainty-class");
+      const zoneName = document.getElementById("zone-name");
+      const featureName = document.getElementById("feature-name");
+      const metric = document.getElementById("metric");
+      const fact = document.getElementById("fact");
+      const touchOrb = document.getElementById("touch-orb");
+      const scaleValue = document.getElementById("scale-value");
+      const hint = document.getElementById("hint");
+
+      const TAU = Math.PI * 2;
+      const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const ZONES = [
+        {
+          id: "handoff", name: "Frontera de lo conocible", className: "Continuidad", p0: 0, p1: .045,
+          color: [211, 222, 255], metric: "La ruta del origen termina · el eje temporal vuelve a empezar",
+          fact: "La aplicación anterior terminó separando evidencia y desconocimiento. Aquí giramos la mirada: regresamos al universo observable de hoy y proyectamos su evolución hacia delante.",
+          sound: { base: 76, filter: 820, noise: .045, pulse: .12, type: "sine" },
+          features: [
+            ["cambio de dirección", "Subir vuelve a significar avanzar en el tiempo, no alejarse de la evidencia del origen."],
+            ["presente como ancla", "Toda proyección comienza en el universo que medimos hoy: galaxias, estrellas, expansión y materia en evolución."],
+            ["tiempo no lineal", "La altura ordena etapas, pero no representa una escala temporal uniforme: cada región puede durar muchísimo más que la anterior."],
+            ["certeza decreciente", "Cuanto más remoto es el futuro, más depende de que las leyes y constantes actuales sigan funcionando como esperamos."],
+            ["ningún guion cerrado", "El recorrido muestra una extrapolación científica, no una película confirmada del destino cósmico."]
+          ]
+        },
+        {
+          id: "present", name: "Universo actual", className: "Observado hoy", p0: .045, p1: .17,
+          color: [119, 207, 255], metric: "Presente cosmológico · ≈13,8 mil millones de años desde el Big Bang",
+          fact: "El universo actual contiene galaxias activas, estrellas de muchas edades, planetas, agujeros negros, formación estelar y una expansión cuya aceleración se mide, aunque la naturaleza de la energía oscura sigue abierta.",
+          sound: { base: 96, filter: 1700, noise: .035, pulse: .18, type: "sine" },
+          features: [
+            ["red cósmica", "Galaxias y cúmulos forman filamentos y nodos separados por vacíos inmensos."],
+            ["formación estelar", "Nubes frías de gas todavía colapsan y producen nuevas generaciones de estrellas."],
+            ["sistemas planetarios", "Los planetas son resultados comunes de la formación estelar, con historias muy distintas."],
+            ["agujeros negros", "Agujeros negros estelares y supermasivos crecen, se fusionan y afectan a sus entornos."],
+            ["expansión acelerada", "Las observaciones favorecen una expansión acelerada; su comportamiento futuro no está garantizado."],
+            ["materia reciclada", "Las estrellas devuelven elementos al medio interestelar y alimentan nuevas estrellas, planetas y química compleja."]
+          ]
+        },
+        {
+          id: "decline", name: "Ocaso de la formación estelar", className: "Evolución modelada", p0: .17, p1: .305,
+          color: [255, 177, 116], metric: "10¹⁰–10¹⁴ años · menos gas frío disponible",
+          fact: "La formación estelar no se apaga de golpe. Desciende gradualmente a medida que el gas se consume, se calienta, queda encerrado en remanentes o deja de poder enfriarse con eficacia.",
+          sound: { base: 88, filter: 1320, noise: .05, pulse: .12, type: "triangle" },
+          features: [
+            ["galaxias más rojas", "Al nacer menos estrellas azules masivas, domina la luz de poblaciones estelares más viejas y frías."],
+            ["viveros que se apagan", "Las nebulosas brillantes se vuelven menos frecuentes conforme disminuye el gas capaz de colapsar."],
+            ["fusiones galácticas", "Las galaxias ligadas pueden fusionarse y reorganizar sus estrellas, gas y agujeros negros."],
+            ["islas observables", "Con expansión acelerada persistente, sistemas no ligados pueden cruzar horizontes cosmológicos y dejar de ser observables entre sí."],
+            ["reciclaje insuficiente", "La materia expulsada por estrellas prolonga la actividad, pero no mantiene indefinidamente el ritmo actual."],
+            ["incertidumbre oscura", "Cambios futuros en la energía oscura alterarían profundamente esta historia."]
+          ]
+        },
+        {
+          id: "red-dwarfs", name: "Era de las enanas rojas", className: "Futuro probable", p0: .305, p1: .445,
+          color: [255, 104, 86], metric: "Hasta ~10¹³–10¹⁴ años · las estrellas pequeñas dominan",
+          fact: "Las enanas rojas consumen su combustible lentamente. Si la física estelar actual sigue siendo válida, muchas continuarán brillando cuando las estrellas semejantes al Sol hayan desaparecido hace muchísimo tiempo.",
+          sound: { base: 72, filter: 920, noise: .025, pulse: .07, type: "sine" },
+          features: [
+            ["combustión lenta", "Su baja masa y mezcla interna permiten aprovechar el hidrógeno durante tiempos enormemente largos."],
+            ["luz tenue", "El cielo pierde brillo global aunque sistemas individuales continúen emitiendo una luz roja estable."],
+            ["últimos planetas cálidos", "Algunos entornos planetarios podrían conservar fuentes de energía, pero su habitabilidad remota no puede darse por sentada."],
+            ["espacio más aislado", "Las distancias efectivamente accesibles crecen mientras la actividad luminosa se concentra en menos sistemas ligados."],
+            ["ritmo casi inmóvil", "La escena cambia tan lentamente que una vida estelar humana resulta inconcebiblemente breve en comparación."],
+            ["sin privilegio biológico", "La aplicación no asigna un límite exacto a la vida ni a la computación en esta era."]
+          ]
+        },
+        {
+          id: "last-stars", name: "Las últimas estrellas", className: "Proyección robusta", p0: .445, p1: .555,
+          color: [255, 215, 145], metric: "Orden de 10¹⁴ años · termina la formación estelar ordinaria",
+          fact: "La última luz estelar no desaparece en un instante. Nacen cada vez menos estrellas; después quedan puntos aislados y raros episodios producidos por encuentros o fusiones de objetos subestelares.",
+          sound: { base: 64, filter: 780, noise: .018, pulse: .055, type: "triangle" },
+          features: [
+            ["último nacimiento natural", "Llega una época en que las nubes ya no forman estrellas de manera ordinaria."],
+            ["colisiones excepcionales", "Encuentros entre enanas marrones u otros objetos podrían encender estrellas nuevas de forma esporádica."],
+            ["puntos aislados", "Las estrellas supervivientes aparecen como faros solitarios en una oscuridad creciente."],
+            ["enanas blancas", "Núcleos estelares agotados conservan calor residual y se enfrían durante tiempos enormes."],
+            ["estrellas de neutrones", "Remanentes compactos sobreviven después de explosiones estelares y pierden gradualmente su energía accesible."],
+            ["materia ordinaria tenue", "La mayor parte de la materia bariónica luminosa deja de estar en estrellas activas."]
+          ]
+        },
+        {
+          id: "degenerate", name: "Era degenerada", className: "Escenario condicional", p0: .555, p1: .695,
+          color: [179, 205, 232], metric: "Después de ~10¹⁴ años · remanentes fríos y física no confirmada",
+          fact: "Predominan enanas blancas, estrellas de neutrones, enanas marrones, planetas congelados y objetos compactos. Su destino depende de procesos extremadamente lentos y de si partículas como el protón son realmente estables.",
+          sound: { base: 54, filter: 610, noise: .035, pulse: .04, type: "sine" },
+          features: [
+            ["enanas negras", "Una enana blanca suficientemente enfriada sería casi invisible; ninguna puede existir todavía porque el universo no es lo bastante antiguo."],
+            ["protones: pregunta abierta", "El decaimiento del protón no se ha observado. Si ocurre, los remanentes bariónicos evolucionan de una forma; si no, pueden persistir muchísimo más."],
+            ["planetas congelados", "Mundos expulsados o alejados de fuentes estelares pierden calor y vagan como cuerpos oscuros."],
+            ["encuentros rarísimos", "La gravedad puede expulsar, capturar o fusionar objetos, pero los intervalos entre sucesos crecen enormemente."],
+            ["túnel y reacciones lentas", "Algunos modelos permiten transformaciones nucleares o cuánticas a escalas de tiempo extremas, sin una cronología observada."],
+            ["dos rutas", "La estabilidad o inestabilidad de la materia ordinaria divide el futuro en escenarios físicamente distintos."]
+          ]
+        },
+        {
+          id: "black-holes", name: "Era de los agujeros negros", className: "Modelo teórico", p0: .695, p1: .81,
+          color: [142, 126, 226], metric: "Remoto · los agujeros negros concentran la energía restante",
+          fact: "Cuando casi toda luz estelar ha terminado, los agujeros negros pueden ser algunos de los últimos depósitos compactos de masa y energía. Aun así, no deben representarse como eternos.",
+          sound: { base: 44, filter: 430, noise: .07, pulse: .028, type: "sine" },
+          features: [
+            ["agujeros negros estelares", "Los remanentes de estrellas masivas persisten mucho después de que sus galaxias dejen de brillar."],
+            ["agujeros negros supermasivos", "Los objetos centrales de antiguas galaxias dominan escalas enormes y pueden tardar muchísimo más en evaporarse."],
+            ["fusiones aisladas", "Sistemas ligados pueden producir encuentros tardíos, aunque cada vez quedan menos objetos próximos."],
+            ["radiación mínima", "Los agujeros negros astrofísicos grandes serían hoy más fríos que su entorno y su emisión de Hawking sería extraordinariamente débil."],
+            ["energía concentrada", "La mayor parte de la actividad disponible puede quedar encerrada en horizontes y liberarse sólo muy lentamente."],
+            ["no son eternos", "La teoría cuántica de campos en espacio-tiempo curvo predice que pierden masa mediante radiación de Hawking."]
+          ]
+        },
+        {
+          id: "hawking", name: "Evaporación de Hawking", className: "Predicción teórica fuerte", p0: .81, p1: .895,
+          color: [214, 173, 255], metric: "Hasta ~10¹⁰⁰ años para los mayores · no observada directamente en agujeros negros astrofísicos",
+          fact: "Según la predicción de Hawking, un agujero negro aislado pierde masa, se calienta al hacerse más pequeño y termina con una fase final rápida. La conclusión es teóricamente sólida, pero no se ha medido directamente en un agujero negro astrofísico.",
+          sound: { base: 50, filter: 980, noise: .095, pulse: .11, type: "triangle" },
+          features: [
+            ["pérdida lentísima", "Durante casi toda su vida, un agujero negro grande cambia de forma imperceptible."],
+            ["más pequeño, más caliente", "La temperatura de Hawking aumenta cuando disminuye la masa del agujero negro."],
+            ["radiación creciente", "La emisión se intensifica al acercarse la fase final, dentro del marco teórico estándar."],
+            ["final breve", "Después de una espera descomunal, la última etapa sería rápida comparada con la vida total del agujero negro."],
+            ["sin detección directa", "Experimentos análogos estudian fenómenos relacionados, pero no sustituyen una detección astrofísica de Hawking."],
+            ["gravedad cuántica pendiente", "El detalle último de la evaporación y la información sigue conectado a preguntas abiertas de gravedad cuántica."]
+          ]
+        },
+        {
+          id: "dark-era", name: "Era oscura", className: "Futuro condicional", p0: .895, p1: .965,
+          color: [129, 161, 213], metric: "Tras los últimos agujeros negros · expansión, partículas y campos residuales",
+          fact: "Si la expansión continúa y los agujeros negros se evaporan como se espera, quedarían radiación de energía bajísima, neutrinos y partículas estables dispersas en un espacio cada vez más diluido.",
+          sound: { base: 34, filter: 280, noise: .09, pulse: .018, type: "sine" },
+          features: [
+            ["fotones fríos", "La longitud de onda de la radiación aumenta con la expansión y su energía accesible disminuye."],
+            ["neutrinos relictos", "Neutrinos extremadamente diluidos pueden permanecer como parte del fondo cósmico remoto."],
+            ["electrones y positrones", "Su presencia final depende de la estabilidad de la materia y de procesos de aniquilación o captura."],
+            ["materia oscura estable", "Si las partículas de materia oscura son estables, podrían persistir; aún no conocemos su identidad microscópica."],
+            ["interacciones raras", "El universo no se vuelve una pantalla vacía: quedan campos, fluctuaciones y sucesos de probabilidad diminuta."],
+            ["equilibrio aproximado", "La muerte térmica describe la pérdida gradual de energía libre utilizable, no un apagado súbito de toda física."]
+          ]
+        },
+        {
+          id: "unknown", name: "Futuro indeterminado", className: "Física desconocida", p0: .965, p1: 1.001,
+          color: [228, 231, 255], metric: "Sin una cronología única · las posibilidades se ramifican",
+          fact: "El futuro más lejano no es una película ya conocida. Es una extrapolación basada en las leyes que podemos medir hoy, y esas leyes pueden resultar incompletas en escalas nunca observadas.",
+          sound: { base: 30, filter: 240, noise: .115, pulse: .014, type: "sine" },
+          features: [
+            ["expansión eterna", "Una energía oscura aproximadamente constante conduce hacia expansión continuada y equilibrio térmico, pero su constancia eterna no está demostrada."],
+            ["energía oscura cambiante", "Datos futuros podrían mostrar que la componente responsable de la aceleración evoluciona y cambia el destino global."],
+            ["vacío metaestable", "Algunos modelos permiten una transición del vacío, pero no existe evidencia de que ocurra ni un calendario verificable."],
+            ["materia estable o inestable", "La estabilidad del protón y de otras partículas determina qué estructuras pueden sobrevivir."],
+            ["Big Rip o colapso", "Estos finales requieren comportamientos cosmológicos específicos; no son destinos confirmados."],
+            ["leyes aún desconocidas", "Nueva física puede modificar por completo las proyecciones realizadas desde el presente."]
+          ]
+        }
+      ];
+
+      const galaxies = [];
+      const webNodes = [];
+      const nebulae = [];
+      const fieldStars = [];
+      const redDwarfs = [];
+      const lastStars = [];
+      const remnants = [];
+      const blackHoles = [];
+      const darkQuanta = [];
+      const uncertaintyBranches = [];
+      const particles = [];
+      const waves = [];
+
+      let width = 1;
+      let height = 1;
+      let dpr = 1;
+      let activePointer = null;
+      let pointerX = .5;
+      let pointerY = .94;
+      let targetX = .5;
+      let targetY = .94;
+      let lastZoneId = "";
+      let lastFeature = -1;
+      let hideTimer = 0;
+      let lastTime = performance.now();
+
+      let audioCtx = null;
+      let master = null;
+      let droneA = null;
+      let droneB = null;
+      let droneGain = null;
+      let droneFilter = null;
+      let pulseOsc = null;
+      let pulseGain = null;
+      let noiseSource = null;
+      let noiseGain = null;
+      let noiseFilter = null;
+      let stereo = null;
+
+      function clamp(value, min = 0, max = 1) { return Math.min(max, Math.max(min, value)); }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function smoothstep(a, b, x) {
+        const t = clamp((x - a) / (b - a));
+        return t * t * (3 - 2 * t);
+      }
+      function seeded(seed) {
+        let x = Math.sin(seed * 91.733 + 13.17) * 43758.5453123;
+        return x - Math.floor(x);
+      }
+      function futureFromY(yNorm) { return clamp(1 - yNorm); }
+      function zoneForFuture(progress) {
+        return ZONES.find(zone => progress >= zone.p0 && progress < zone.p1) || ZONES[ZONES.length - 1];
+      }
+      function featureFor(zone, xNorm) {
+        const index = Math.min(zone.features.length - 1, Math.floor(xNorm * zone.features.length));
+        return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+      }
+      function sceneScale() { return Math.sqrt(Math.min(width, height) / 720); }
+
+      function setCssPoint(x, y) {
+        root.style.setProperty("--scan-x", `${x}px`);
+        root.style.setProperty("--scan-y", `${y}px`);
+      }
+      function setAccent(zone) {
+        const [r, g, b] = zone.color;
+        root.style.setProperty("--accent", `rgb(${r} ${g} ${b})`);
+        root.style.setProperty("--accent-soft", `rgb(${r} ${g} ${b} / .34)`);
+      }
+
+      function buildStaticScene() {
+        galaxies.length = webNodes.length = nebulae.length = fieldStars.length = 0;
+        redDwarfs.length = lastStars.length = remnants.length = blackHoles.length = 0;
+        darkQuanta.length = uncertaintyBranches.length = 0;
+
+        for (let i = 0; i < 22; i++) {
+          webNodes.push({
+            x: .035 + seeded(i + 1) * .93,
+            y: .845 + seeded(i + 41) * .125,
+            r: 1.4 + seeded(i + 81) * 3.7,
+            a: .16 + seeded(i + 121) * .3
+          });
+        }
+        for (let i = 0; i < 14; i++) {
+          galaxies.push({
+            x: .04 + seeded(i + 201) * .92,
+            y: .755 + seeded(i + 251) * .205,
+            r: 7 + seeded(i + 301) * 22,
+            tilt: (seeded(i + 351) - .5) * 1.25,
+            arms: 2 + Math.floor(seeded(i + 401) * 3),
+            phase: seeded(i + 451) * TAU,
+            warmth: seeded(i + 501)
+          });
+        }
+        for (let i = 0; i < 18; i++) {
+          nebulae.push({
+            x: .03 + seeded(i + 601) * .94,
+            y: .67 + seeded(i + 651) * .2,
+            r: 18 + seeded(i + 701) * 42,
+            a: .025 + seeded(i + 751) * .045,
+            phase: seeded(i + 801) * TAU
+          });
+        }
+        for (let i = 0; i < 460; i++) {
+          const y = seeded(i + 901);
+          const density = Math.pow(y, .72);
+          fieldStars.push({
+            x: seeded(i + 951),
+            y: .08 + density * .88,
+            r: .25 + seeded(i + 1001) * 1.25,
+            a: .06 + seeded(i + 1051) * .38,
+            phase: seeded(i + 1101) * TAU,
+            temp: seeded(i + 1151)
+          });
+        }
+        for (let i = 0; i < 105; i++) {
+          redDwarfs.push({
+            x: .025 + seeded(i + 1201) * .95,
+            y: .555 + seeded(i + 1301) * .16,
+            r: .7 + seeded(i + 1401) * 2.6,
+            a: .12 + seeded(i + 1501) * .48,
+            phase: seeded(i + 1601) * TAU
+          });
+        }
+        for (let i = 0; i < 18; i++) {
+          lastStars.push({
+            x: .03 + seeded(i + 1701) * .94,
+            y: .445 + seeded(i + 1801) * .13,
+            r: 1.1 + seeded(i + 1901) * 3.5,
+            a: .34 + seeded(i + 2001) * .5,
+            phase: seeded(i + 2101) * TAU
+          });
+        }
+        const types = ["white", "neutron", "brown", "planet"];
+        for (let i = 0; i < 82; i++) {
+          remnants.push({
+            x: .025 + seeded(i + 2201) * .95,
+            y: .29 + seeded(i + 2301) * .205,
+            r: .5 + seeded(i + 2401) * 2.8,
+            a: .12 + seeded(i + 2501) * .36,
+            type: types[Math.floor(seeded(i + 2601) * types.length)],
+            phase: seeded(i + 2701) * TAU
+          });
+        }
+        for (let i = 0; i < 13; i++) {
+          blackHoles.push({
+            x: .055 + seeded(i + 2801) * .89,
+            y: .14 + seeded(i + 2901) * .205,
+            r: 6 + seeded(i + 3001) * 18,
+            a: .22 + seeded(i + 3101) * .38,
+            spin: seeded(i + 3201) * TAU,
+            supermassive: seeded(i + 3301) > .72,
+            phase: seeded(i + 3401) * TAU
+          });
+        }
+        for (let i = 0; i < 66; i++) {
+          darkQuanta.push({
+            x: seeded(i + 3501),
+            y: .035 + seeded(i + 3601) * .13,
+            r: .3 + seeded(i + 3701) * 1.5,
+            a: .025 + seeded(i + 3801) * .13,
+            drift: (seeded(i + 3901) - .5) * .008,
+            phase: seeded(i + 4001) * TAU,
+            kind: i % 3
+          });
+        }
+        const branchNames = ["EXPANSIÓN", "ENERGÍA OSCURA", "VACÍO", "MATERIA", "NUEVA FÍSICA"];
+        for (let i = 0; i < branchNames.length; i++) {
+          uncertaintyBranches.push({
+            name: branchNames[i],
+            x0: .5,
+            y0: .045,
+            x1: .08 + i * .21,
+            y1: .006 + (i % 2) * .012,
+            bend: (i - 2) * .025,
+            phase: seeded(i + 4101) * TAU
+          });
+        }
+      }
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
+        dpr = Math.min(2, devicePixelRatio || 1);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildStaticScene();
+      }
+
+      function ensureAudio() {
+        if (audioCtx) {
+          if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+          return;
+        }
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        audioCtx = new AudioContext();
+        master = audioCtx.createGain();
+        master.gain.value = 0;
+        const compressor = audioCtx.createDynamicsCompressor();
+        compressor.threshold.value = -25;
+        compressor.knee.value = 20;
+        compressor.ratio.value = 5;
+        master.connect(compressor).connect(audioCtx.destination);
+
+        droneA = audioCtx.createOscillator();
+        droneB = audioCtx.createOscillator();
+        droneA.type = "sine";
+        droneB.type = "triangle";
+        droneGain = audioCtx.createGain();
+        droneGain.gain.value = .0001;
+        droneFilter = audioCtx.createBiquadFilter();
+        droneFilter.type = "lowpass";
+        droneFilter.frequency.value = 900;
+        droneFilter.Q.value = .75;
+        stereo = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : audioCtx.createGain();
+        droneA.connect(droneGain);
+        droneB.connect(droneGain);
+        droneGain.connect(droneFilter).connect(stereo).connect(master);
+        droneA.start();
+        droneB.start();
+
+        pulseOsc = audioCtx.createOscillator();
+        pulseOsc.type = "sine";
+        pulseGain = audioCtx.createGain();
+        pulseGain.gain.value = .0001;
+        pulseOsc.connect(pulseGain).connect(master);
+        pulseOsc.start();
+
+        const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+        const channel = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < channel.length; i++) channel[i] = Math.random() * 2 - 1;
+        noiseSource = audioCtx.createBufferSource();
+        noiseSource.buffer = noiseBuffer;
+        noiseSource.loop = true;
+        noiseGain = audioCtx.createGain();
+        noiseGain.gain.value = .0001;
+        noiseFilter = audioCtx.createBiquadFilter();
+        noiseFilter.type = "bandpass";
+        noiseFilter.frequency.value = 950;
+        noiseFilter.Q.value = .45;
+        noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
+        noiseSource.start();
+      }
+
+      function setAudioFor(zone, xNorm, yNorm, active) {
+        if (!audioCtx || !master) return;
+        const now = audioCtx.currentTime;
+        const s = zone.sound;
+        const future = futureFromY(yNorm);
+        const quieting = 1 - future * .62;
+        const base = s.base * (.93 + xNorm * .12);
+        droneA.type = s.type;
+        droneB.type = s.type === "sawtooth" ? "triangle" : "sine";
+        droneA.frequency.setTargetAtTime(base, now, .08);
+        droneB.frequency.setTargetAtTime(base * 1.497, now, .1);
+        droneFilter.frequency.setTargetAtTime(s.filter * (.82 + xNorm * .26), now, .1);
+        droneGain.gain.setTargetAtTime(active ? .018 * quieting : .0001, now, .09);
+        pulseOsc.frequency.setTargetAtTime(base * (1.99 + s.pulse), now, .07);
+        pulseGain.gain.setTargetAtTime(active ? .0042 * quieting : .0001, now, .1);
+        noiseFilter.frequency.setTargetAtTime(s.filter * 1.15, now, .1);
+        noiseGain.gain.setTargetAtTime(active ? Math.max(.0001, s.noise * .085 * quieting) : .0001, now, .1);
+        if (stereo.pan) stereo.pan.setTargetAtTime((xNorm - .5) * .72, now, .07);
+        master.gain.setTargetAtTime(active ? .34 : .0001, now, .09);
+      }
+
+      function ping(zone, xNorm, featureIndex = 0) {
+        if (!audioCtx || !master) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+        const pan = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+        const scale = [1, 1.125, 1.25, 1.5, 1.667, 2][featureIndex % 6];
+        osc.type = zone.sound.type;
+        osc.frequency.setValueAtTime(Math.max(30, zone.sound.base * 3.3 * scale), now);
+        osc.frequency.exponentialRampToValueAtTime(Math.max(28, zone.sound.base * 1.25), now + .58);
+        filter.type = "lowpass";
+        filter.frequency.value = Math.max(240, zone.sound.filter * 1.7);
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(.035, now + .014);
+        gain.gain.exponentialRampToValueAtTime(.0001, now + .64);
+        osc.connect(filter).connect(gain);
+        if (pan) {
+          pan.pan.value = (xNorm - .5) * 1.4;
+          gain.connect(pan).connect(master);
+        } else gain.connect(master);
+        osc.start(now);
+        osc.stop(now + .7);
+      }
+
+      function addRipple(x, y) {
+        const node = document.createElement("div");
+        node.className = "ripple";
+        node.style.left = `${x}px`;
+        node.style.top = `${y}px`;
+        document.body.appendChild(node);
+        node.addEventListener("animationend", () => node.remove(), { once: true });
+      }
+
+      function addBurst(x, y, zone) {
+        const count = reducedMotion ? 5 : 12;
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * TAU;
+          const speed = 18 + Math.random() * 72;
+          particles.push({
+            x, y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            r: .8 + Math.random() * 2.3,
+            life: 1,
+            decay: 1 + Math.random() * .75,
+            color: zone.color
+          });
+        }
+        waves.push({ x, y, radius: 5, life: 1, color: zone.color });
+      }
+
+      function updateReadout(x, y, isNewPress = false) {
+        const xNorm = clamp(x / width, 0, .999999);
+        const yNorm = clamp(y / height, 0, .999999);
+        const progress = futureFromY(yNorm);
+        const zone = zoneForFuture(progress);
+        const feature = featureFor(zone, xNorm);
+
+        targetX = xNorm;
+        targetY = yNorm;
+        setCssPoint(x, y);
+        setAccent(zone);
+        root.style.setProperty("--progress", `${Math.max(1.2, progress * 100)}%`);
+
+        touchOrb.style.left = `${x}px`;
+        touchOrb.style.top = `${y}px`;
+        scaleValue.textContent = zone.className;
+
+        const changed = zone.id !== lastZoneId || feature.index !== lastFeature;
+        if (changed || isNewPress) {
+          certaintyClass.textContent = zone.className;
+          zoneName.textContent = zone.name;
+          zoneName.className = zone.name.length > 28 ? "long" : zone.name.length > 19 ? "compact" : "";
+          featureName.textContent = feature.name;
+          metric.textContent = zone.metric;
+          fact.textContent = feature.fact || zone.fact;
+          ping(zone, xNorm, feature.index);
+          addBurst(x, y, zone);
+          lastZoneId = zone.id;
+          lastFeature = feature.index;
+        }
+
+        readout.classList.add("visible");
+        touchOrb.classList.add("visible");
+        document.body.classList.add("active");
+        hint.style.display = "none";
+        setAudioFor(zone, xNorm, yNorm, true);
+      }
+
+      function releaseInteraction(delay = 900) {
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          readout.classList.remove("visible");
+          touchOrb.classList.remove("visible");
+          document.body.classList.remove("active");
+          const zone = zoneForFuture(futureFromY(targetY));
+          setAudioFor(zone, targetX, targetY, false);
+        }, delay);
+      }
+
+      function pointerPosition(event) {
+        const rect = canvas.getBoundingClientRect();
+        return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+      }
+
+      canvas.addEventListener("pointerdown", event => {
+        event.preventDefault();
+        activePointer = event.pointerId;
+        canvas.setPointerCapture?.(event.pointerId);
+        ensureAudio();
+        const point = pointerPosition(event);
+        addRipple(point.x, point.y);
+        updateReadout(point.x, point.y, true);
+      });
+      canvas.addEventListener("pointermove", event => {
+        if (activePointer !== event.pointerId) return;
+        const point = pointerPosition(event);
+        updateReadout(point.x, point.y, false);
+      });
+      function endPointer(event) {
+        if (activePointer !== event.pointerId) return;
+        activePointer = null;
+        canvas.releasePointerCapture?.(event.pointerId);
+        releaseInteraction();
+      }
+      canvas.addEventListener("pointerup", endPointer);
+      canvas.addEventListener("pointercancel", endPointer);
+      canvas.addEventListener("lostpointercapture", () => {
+        activePointer = null;
+        releaseInteraction();
+      });
+      canvas.addEventListener("contextmenu", event => event.preventDefault());
+      canvas.addEventListener("keydown", event => {
+        const step = event.shiftKey ? .09 : .035;
+        if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) return;
+        event.preventDefault();
+        ensureAudio();
+        if (event.key === "ArrowUp") targetY = clamp(targetY - step);
+        if (event.key === "ArrowDown") targetY = clamp(targetY + step);
+        if (event.key === "ArrowLeft") targetX = clamp(targetX - step);
+        if (event.key === "ArrowRight") targetX = clamp(targetX + step);
+        updateReadout(targetX * width, targetY * height, event.key === "Enter" || event.key === " ");
+        releaseInteraction(1500);
+      });
+
+      function glow(x, y, radius, core, mid, edge = "rgba(0,0,0,0)") {
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, Math.max(1, radius));
+        gradient.addColorStop(0, core);
+        gradient.addColorStop(.38, mid);
+        gradient.addColorStop(1, edge);
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(x, y, Math.max(1, radius), 0, TAU);
+        ctx.fill();
+      }
+
+      function drawBackground(time) {
+        const gradient = ctx.createLinearGradient(0, 0, 0, height);
+        gradient.addColorStop(0, "#010207");
+        gradient.addColorStop(.055, "#060914");
+        gradient.addColorStop(.12, "#090b19");
+        gradient.addColorStop(.2, "#100d21");
+        gradient.addColorStop(.31, "#171126");
+        gradient.addColorStop(.43, "#1d1422");
+        gradient.addColorStop(.56, "#21161f");
+        gradient.addColorStop(.69, "#241723");
+        gradient.addColorStop(.82, "#15203a");
+        gradient.addColorStop(.94, "#09162b");
+        gradient.addColorStop(1, "#03060d");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+
+        const px = pointerX * width;
+        const py = pointerY * height;
+        const local = ctx.createRadialGradient(px, py, 0, px, py, Math.max(width, height) * .48);
+        local.addColorStop(0, "rgba(138,174,255,.055)");
+        local.addColorStop(.45, "rgba(116,83,166,.018)");
+        local.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = local;
+        ctx.fillRect(0, 0, width, height);
+
+        if (!reducedMotion) {
+          const haze = .012 + Math.sin(time * .00009) * .004;
+          ctx.fillStyle = `rgba(93,74,128,${haze})`;
+          ctx.fillRect(0, height * .1, width, height * .62);
+        }
+      }
+
+      function drawEpochBands() {
+        ctx.save();
+        for (let i = 1; i < ZONES.length; i++) {
+          const y = (1 - ZONES[i].p0) * height;
+          const [r, g, b] = ZONES[i].color;
+          const gradient = ctx.createLinearGradient(0, y - 14, 0, y + 14);
+          gradient.addColorStop(0, `rgba(${r},${g},${b},0)`);
+          gradient.addColorStop(.5, `rgba(${r},${g},${b},.045)`);
+          gradient.addColorStop(1, `rgba(${r},${g},${b},0)`);
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, y - 14, width, 28);
+          ctx.strokeStyle = `rgba(${r},${g},${b},.045)`;
+          ctx.lineWidth = .5;
+          ctx.setLineDash([2, 7]);
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+        ctx.restore();
+      }
+
+      function drawFieldStars(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const star of fieldStars) {
+          const fade = clamp((star.y - .12) / .8) * (1 - smoothstep(.61, .86, 1 - star.y));
+          const twinkle = reducedMotion ? 1 : .68 + Math.sin(time * .0011 + star.phase) * .23;
+          const yProgress = 1 - star.y;
+          const survival = 1 - smoothstep(.18, .62, yProgress);
+          const alpha = star.a * twinkle * Math.max(.05, survival) * (.45 + fade * .55);
+          const rgb = star.temp > .72 ? "173,213,255" : star.temp < .25 ? "255,184,126" : "244,239,222";
+          ctx.fillStyle = `rgba(${rgb},${alpha})`;
+          ctx.beginPath();
+          ctx.arc(star.x * width, star.y * height, star.r * sceneScale(), 0, TAU);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function drawSpiralGalaxy(galaxy, time, age = 0) {
+        const x = galaxy.x * width;
+        const y = galaxy.y * height;
+        const radius = galaxy.r * sceneScale();
+        const warm = clamp(galaxy.warmth + age * .7);
+        const blue = Math.round(220 - warm * 90);
+        const green = Math.round(205 - warm * 60);
+        const red = 210 + Math.round(warm * 42);
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(galaxy.tilt);
+        ctx.scale(1, .38);
+        ctx.globalCompositeOperation = "screen";
+        glow(0, 0, radius * .92, `rgba(${red},${green},${blue},.22)`, `rgba(${red},${green},${blue},.06)`);
+        ctx.strokeStyle = `rgba(${red},${green},${blue},${.13 - age * .035})`;
+        ctx.lineWidth = .7;
+        for (let arm = 0; arm < galaxy.arms; arm++) {
+          ctx.beginPath();
+          for (let step = 0; step < 40; step++) {
+            const t = step / 39;
+            const angle = galaxy.phase + arm * TAU / galaxy.arms + t * 4.8 + (reducedMotion ? 0 : time * .000025);
+            const r = radius * (.08 + t * .84);
+            const sx = Math.cos(angle) * r;
+            const sy = Math.sin(angle) * r;
+            if (step === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+          }
+          ctx.stroke();
+        }
+        glow(0, 0, radius * .22, "rgba(255,246,220,.55)", "rgba(255,184,122,.11)");
+        ctx.restore();
+      }
+
+      function drawCurrentUniverse(time) {
+        const top = height * .80;
+        const bottom = height * .975;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.strokeStyle = "rgba(101,189,255,.075)";
+        ctx.lineWidth = .55;
+        for (let i = 0; i < webNodes.length; i++) {
+          const a = webNodes[i];
+          for (let j = i + 1; j < webNodes.length; j++) {
+            const b = webNodes[j];
+            const dx = (a.x - b.x) * width;
+            const dy = (a.y - b.y) * height;
+            const dist = Math.hypot(dx, dy);
+            if (dist < width * .22) {
+              ctx.globalAlpha = clamp(1 - dist / (width * .22)) * .65;
+              ctx.beginPath();
+              ctx.moveTo(a.x * width, a.y * height);
+              ctx.quadraticCurveTo((a.x + b.x) * width * .5 + Math.sin(i * 3.1) * 7, (a.y + b.y) * height * .5, b.x * width, b.y * height);
+              ctx.stroke();
+            }
+          }
+        }
+        ctx.globalAlpha = 1;
+        for (const node of webNodes) glow(node.x * width, node.y * height, node.r * 4 * sceneScale(), `rgba(132,211,255,${node.a})`, "rgba(66,127,255,.018)");
+        ctx.restore();
+
+        for (const nebula of nebulae) {
+          const pulse = reducedMotion ? 1 : .86 + Math.sin(time * .00035 + nebula.phase) * .14;
+          glow(nebula.x * width, nebula.y * height, nebula.r * sceneScale(), `rgba(111,190,255,${nebula.a * pulse})`, `rgba(205,79,173,${nebula.a * .35})`);
+        }
+        for (const galaxy of galaxies) {
+          const age = clamp((top - galaxy.y * height) / (bottom - top) + .55);
+          drawSpiralGalaxy(galaxy, time, age * .48);
+        }
+      }
+
+      function drawStellarDecline(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const top = height * .685;
+        const bottom = height * .83;
+        const gradient = ctx.createLinearGradient(0, top, 0, bottom);
+        gradient.addColorStop(0, "rgba(255,99,70,.008)");
+        gradient.addColorStop(.55, "rgba(255,125,70,.04)");
+        gradient.addColorStop(1, "rgba(86,153,255,.015)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, top, width, bottom - top);
+
+        for (let i = 0; i < galaxies.length; i += 2) {
+          const g = galaxies[i];
+          const shifted = { ...g, y: .69 + seeded(i + 4201) * .12, r: g.r * .8, warmth: .72 + seeded(i + 4251) * .28 };
+          drawSpiralGalaxy(shifted, time, .75);
+        }
+        for (const nebula of nebulae) {
+          if (nebula.y < .7 || nebula.y > .82) continue;
+          const pulse = reducedMotion ? 1 : .45 + Math.sin(time * .00023 + nebula.phase) * .14;
+          glow(nebula.x * width, nebula.y * height, nebula.r * .65 * sceneScale(), `rgba(255,125,82,${nebula.a * pulse})`, "rgba(255,70,50,.004)");
+        }
+        ctx.restore();
+      }
+
+      function drawRedDwarfEra(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const star of redDwarfs) {
+          const pulse = reducedMotion ? 1 : .78 + Math.sin(time * .00055 + star.phase) * .16;
+          const x = star.x * width;
+          const y = star.y * height;
+          glow(x, y, star.r * 6.5 * sceneScale(), `rgba(255,88,68,${star.a * .19 * pulse})`, "rgba(255,45,31,.008)");
+          ctx.fillStyle = `rgba(255,139,106,${star.a * pulse})`;
+          ctx.beginPath();
+          ctx.arc(x, y, star.r * sceneScale(), 0, TAU);
+          ctx.fill();
+        }
+        ctx.fillStyle = "rgba(255,114,90,.12)";
+        ctx.font = `850 ${Math.max(7, Math.min(10, width * .02))}px Inter,system-ui,sans-serif`;
+        ctx.textAlign = "center";
+        ctx.fillText("LA LUZ DURA MUCHO MÁS QUE EL RITMO DE CAMBIO", width * .5, height * .64);
+        ctx.restore();
+      }
+
+      function drawLastStars(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const star of lastStars) {
+          const pulse = reducedMotion ? 1 : .7 + Math.abs(Math.sin(time * .00032 + star.phase)) * .3;
+          const x = star.x * width;
+          const y = star.y * height;
+          glow(x, y, star.r * 10 * sceneScale(), `rgba(255,229,169,${star.a * .22 * pulse})`, "rgba(255,149,84,.007)");
+          ctx.fillStyle = `rgba(255,241,199,${star.a * pulse})`;
+          ctx.beginPath();
+          ctx.arc(x, y, star.r * sceneScale(), 0, TAU);
+          ctx.fill();
+          if (star.r > 3.6) {
+            ctx.strokeStyle = `rgba(255,218,150,${star.a * .17})`;
+            ctx.lineWidth = .55;
+            ctx.beginPath();
+            ctx.moveTo(x - star.r * 4, y);
+            ctx.lineTo(x + star.r * 4, y);
+            ctx.stroke();
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawRemnants(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const remnant of remnants) {
+          const x = remnant.x * width;
+          const y = remnant.y * height;
+          const pulse = reducedMotion ? 1 : .72 + Math.sin(time * .00022 + remnant.phase) * .14;
+          if (remnant.type === "white") {
+            glow(x, y, remnant.r * 6 * sceneScale(), `rgba(205,226,255,${remnant.a * .18 * pulse})`, "rgba(123,166,255,.005)");
+            ctx.fillStyle = `rgba(221,237,255,${remnant.a * pulse})`;
+          } else if (remnant.type === "neutron") {
+            ctx.fillStyle = `rgba(156,202,255,${remnant.a * pulse})`;
+            ctx.strokeStyle = `rgba(137,190,255,${remnant.a * .32})`;
+            ctx.lineWidth = .5;
+            ctx.beginPath();
+            ctx.moveTo(x, y - remnant.r * 6);
+            ctx.lineTo(x, y + remnant.r * 6);
+            ctx.stroke();
+          } else if (remnant.type === "brown") {
+            ctx.fillStyle = `rgba(151,86,64,${remnant.a * .55})`;
+          } else {
+            ctx.fillStyle = `rgba(94,113,137,${remnant.a * .42})`;
+          }
+          ctx.beginPath();
+          ctx.arc(x, y, remnant.r * sceneScale(), 0, TAU);
+          ctx.fill();
+        }
+        ctx.setLineDash([3, 8]);
+        ctx.strokeStyle = "rgba(191,211,239,.055)";
+        ctx.lineWidth = .55;
+        ctx.beginPath();
+        ctx.moveTo(width * .5, height * .49);
+        ctx.lineTo(width * .5, height * .30);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = "rgba(209,222,242,.12)";
+        ctx.font = `800 ${Math.max(7, Math.min(9, width * .019))}px Inter,system-ui,sans-serif`;
+        ctx.textAlign = "center";
+        ctx.fillText("¿PROTÓN ESTABLE?", width * .39, height * .392);
+        ctx.fillText("¿PROTÓN INESTABLE?", width * .62, height * .355);
+        ctx.restore();
+      }
+
+      function drawOneBlackHole(hole, time) {
+        const x = hole.x * width;
+        const y = hole.y * height;
+        const radius = hole.r * sceneScale() * (hole.supermassive ? 1.35 : 1);
+        const progress = 1 - hole.y;
+        const evaporation = smoothstep(.79, .92, progress);
+        const visualRadius = radius * (1 - evaporation * .58);
+        const pulse = reducedMotion ? 1 : .88 + Math.sin(time * .00017 + hole.phase) * .08;
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(hole.spin + (reducedMotion ? 0 : time * .000015));
+        ctx.globalCompositeOperation = "screen";
+        const ringAlpha = hole.a * (.24 + evaporation * .32) * pulse;
+        ctx.strokeStyle = `rgba(${Math.round(154 + evaporation * 88)},${Math.round(118 + evaporation * 92)},255,${ringAlpha})`;
+        ctx.lineWidth = Math.max(.55, visualRadius * .085);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, visualRadius * 1.7, visualRadius * .46, 0, 0, TAU);
+        ctx.stroke();
+        glow(0, 0, visualRadius * 2.2, `rgba(117,89,220,${hole.a * .12})`, "rgba(78,48,168,.008)");
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = "rgba(0,0,2,.98)";
+        ctx.beginPath();
+        ctx.arc(0, 0, visualRadius, 0, TAU);
+        ctx.fill();
+        ctx.strokeStyle = `rgba(211,183,255,${hole.a * (.15 + evaporation * .3)})`;
+        ctx.lineWidth = .65;
+        ctx.beginPath();
+        ctx.arc(0, 0, visualRadius * 1.05, 0, TAU);
+        ctx.stroke();
+        ctx.restore();
+
+        if (evaporation > .02) {
+          const count = 2 + Math.floor(evaporation * 8);
+          ctx.save();
+          ctx.globalCompositeOperation = "screen";
+          for (let i = 0; i < count; i++) {
+            const angle = hole.phase + i * 2.399 + (reducedMotion ? 0 : time * .00018);
+            const distance = visualRadius * (1.5 + i * .28);
+            const px = x + Math.cos(angle) * distance;
+            const py = y + Math.sin(angle) * distance;
+            ctx.fillStyle = `rgba(235,203,255,${.07 + evaporation * .22})`;
+            ctx.beginPath();
+            ctx.arc(px, py, .45 + evaporation * 1.15, 0, TAU);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+      }
+
+      function drawBlackHoleEra(time) {
+        for (const hole of blackHoles) drawOneBlackHole(hole, time);
+      }
+
+      function drawDarkEra(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const q of darkQuanta) {
+          const drift = reducedMotion ? 0 : Math.sin(time * .00008 + q.phase) * q.drift;
+          const x = (q.x + drift + 1) % 1 * width;
+          const y = q.y * height;
+          const pulse = reducedMotion ? .7 : .32 + Math.abs(Math.sin(time * .00019 + q.phase)) * .68;
+          const rgb = q.kind === 0 ? "137,181,255" : q.kind === 1 ? "194,164,255" : "174,220,229";
+          ctx.fillStyle = `rgba(${rgb},${q.a * pulse})`;
+          ctx.beginPath();
+          ctx.arc(x, y, q.r * sceneScale(), 0, TAU);
+          ctx.fill();
+          if (q.kind === 1 && q.r > 1.1) {
+            ctx.strokeStyle = `rgba(${rgb},${q.a * .3 * pulse})`;
+            ctx.lineWidth = .45;
+            ctx.beginPath();
+            ctx.moveTo(x - q.r * 4, y);
+            ctx.lineTo(x + q.r * 4, y);
+            ctx.stroke();
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawUncertainFuture(time) {
+        const bottom = height * .058;
+        const veil = ctx.createLinearGradient(0, 0, 0, bottom * 1.25);
+        veil.addColorStop(0, "rgba(1,2,7,.98)");
+        veil.addColorStop(.62, "rgba(13,16,28,.72)");
+        veil.addColorStop(1, "rgba(15,17,30,0)");
+        ctx.fillStyle = veil;
+        ctx.fillRect(0, 0, width, bottom * 1.35);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const branch of uncertaintyBranches) {
+          const x0 = branch.x0 * width;
+          const y0 = branch.y0 * height;
+          const x1 = branch.x1 * width;
+          const y1 = branch.y1 * height;
+          const pulse = reducedMotion ? 1 : .68 + Math.sin(time * .00031 + branch.phase) * .22;
+          const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
+          gradient.addColorStop(0, `rgba(220,224,255,${.2 * pulse})`);
+          gradient.addColorStop(1, "rgba(220,224,255,0)");
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = .65;
+          ctx.beginPath();
+          ctx.moveTo(x0, y0);
+          ctx.quadraticCurveTo((x0 + x1) * .5 + branch.bend * width, (y0 + y1) * .5, x1, y1);
+          ctx.stroke();
+          glow(x1, y1, 5 * sceneScale(), `rgba(232,235,255,${.15 * pulse})`, "rgba(150,154,255,.008)");
+        }
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.fillStyle = "rgba(231,234,255,.15)";
+        ctx.font = `800 ${Math.max(5.5, Math.min(8.5, width * .016))}px Inter,system-ui,sans-serif`;
+        uncertaintyBranches.forEach(branch => ctx.fillText(branch.name, branch.x1 * width, Math.max(3, branch.y1 * height + 4)));
+        ctx.restore();
+      }
+
+      function drawContinuity() {
+        const top = height * .955;
+        const gradient = ctx.createLinearGradient(0, top, 0, height);
+        gradient.addColorStop(0, "rgba(208,218,255,0)");
+        gradient.addColorStop(.48, "rgba(208,218,255,.055)");
+        gradient.addColorStop(1, "rgba(222,228,255,.11)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, top, width, height - top);
+        ctx.save();
+        ctx.setLineDash([2, 5]);
+        ctx.strokeStyle = "rgba(224,229,255,.12)";
+        ctx.lineWidth = .55;
+        ctx.beginPath();
+        ctx.moveTo(0, height * .968);
+        ctx.lineTo(width, height * .968);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        ctx.fillStyle = "rgba(234,239,255,.56)";
+        ctx.font = `850 ${Math.max(7, Math.min(10, width * .021))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("LA FRONTERA DE LO CONOCIBLE CONTINÚA DEBAJO", width * .5, height - Math.max(8, height * .011));
+        ctx.restore();
+      }
+
+      function drawScientificCues() {
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = `850 ${Math.max(6.5, Math.min(9.5, width * .019))}px Inter,system-ui,sans-serif`;
+        ctx.fillStyle = "rgba(153,216,255,.145)";
+        ctx.fillText("PRESENTE OBSERVADO", width * .5, height * .895);
+        ctx.fillStyle = "rgba(255,180,120,.13)";
+        ctx.fillText("EVOLUCIÓN MODELADA", width * .5, height * .742);
+        ctx.fillStyle = "rgba(255,128,104,.13)";
+        ctx.fillText("FUTURO PROBABLE", width * .5, height * .625);
+        ctx.fillStyle = "rgba(193,208,235,.13)";
+        ctx.fillText("FUTURO CONDICIONAL", width * .5, height * .38);
+        ctx.fillStyle = "rgba(218,198,255,.13)";
+        ctx.fillText("PREDICCIÓN TEÓRICA", width * .5, height * .155);
+        ctx.restore();
+      }
+
+      function drawTopMessage() {
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = "rgba(182,191,255,.28)";
+        ctx.fillStyle = "rgba(242,244,255,.76)";
+        ctx.font = `930 ${Math.max(7, Math.min(10.5, width * .021))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("NO HAY UN FINAL ÚNICO CONFIRMADO", width * .5, Math.max(22, height * .028));
+        ctx.fillStyle = "rgba(221,226,245,.49)";
+        ctx.font = `760 ${Math.max(6.5, Math.min(8.5, width * .017))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("EL FUTURO SE RAMIFICA DONDE TERMINA LA EVIDENCIA", width * .5, Math.max(38, height * .049));
+        ctx.restore();
+      }
+
+      function drawParticles(dt) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life -= p.decay * dt;
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.vx *= Math.pow(.09, dt);
+          p.vy *= Math.pow(.09, dt);
+          const [r, g, b] = p.color;
+          ctx.fillStyle = `rgba(${r},${g},${b},${p.life * .66})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * (.4 + p.life), 0, TAU);
+          ctx.fill();
+        }
+        for (let i = waves.length - 1; i >= 0; i--) {
+          const w = waves[i];
+          w.life -= dt * 1.18;
+          if (w.life <= 0) {
+            waves.splice(i, 1);
+            continue;
+          }
+          w.radius += dt * 116;
+          const [r, g, b] = w.color;
+          ctx.strokeStyle = `rgba(${r},${g},${b},${w.life * .36})`;
+          ctx.lineWidth = 1.1;
+          ctx.beginPath();
+          ctx.arc(w.x, w.y, w.radius, 0, TAU);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function draw(time) {
+        const dt = Math.min(.05, Math.max(0, (time - lastTime) / 1000));
+        lastTime = time;
+        if (!reducedMotion) {
+          pointerX += (targetX - pointerX) * .08;
+          pointerY += (targetY - pointerY) * .08;
+        } else {
+          pointerX = targetX;
+          pointerY = targetY;
+        }
+
+        drawBackground(time);
+        drawEpochBands();
+        drawFieldStars(time);
+        drawCurrentUniverse(time);
+        drawStellarDecline(time);
+        drawRedDwarfEra(time);
+        drawLastStars(time);
+        drawRemnants(time);
+        drawBlackHoleEra(time);
+        drawDarkEra(time);
+        drawUncertainFuture(time);
+        drawContinuity();
+        drawScientificCues();
+        drawTopMessage();
+        drawParticles(dt);
+        requestAnimationFrame(draw);
+      }
+
+      function init() {
+        resize();
+        addEventListener("resize", resize, { passive: true });
+        addEventListener("orientationchange", () => setTimeout(resize, 120), { passive: true });
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden && audioCtx?.state === "running") audioCtx.suspend().catch(() => {});
+        });
+        canvas.focus({ preventScroll: true });
+        requestAnimationFrame(draw);
+      }
+
+      init();
+    })();
+
+  </script>
+</body>
+</html>
