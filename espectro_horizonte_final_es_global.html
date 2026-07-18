@@ -1,0 +1,3635 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+    />
+    <meta name="theme-color" content="#070915" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="Exploración táctil, visual y sonora de los límites de la existencia: transformación, postbiología, horizontes cognitivos y futuro cósmico."
+    />
+    <meta
+      name="application-name"
+      content="Espectro del Horizonte Final: del Propósito Cósmico a los Límites de la Existencia"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:title" content="Espectro del Horizonte Final" />
+    <meta
+      property="og:description"
+      content="Toca y asciende desde una sola historia incompleta hasta los límites físicos, cognitivos y temporales de la existencia."
+    />
+    <title>Espectro del Horizonte Final: del Propósito Cósmico a los Límites de la Existencia</title>
+    <style>
+      :root {
+        --accent: 180 235 245;
+        --accent-soft: rgb(var(--accent) / 0.34);
+        --ink: 255 255 255;
+        --panel: 8 9 14;
+        --scan-x: 50vw;
+        --scan-y: 96vh;
+        --progress: 2%;
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        overscroll-behavior: none;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+        background: #05070a;
+      }
+
+      body {
+        position: fixed;
+        inset: 0;
+        color: rgb(var(--ink));
+        font-family:
+          Inter,
+          ui-rounded,
+          "SF Pro Rounded",
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+      }
+
+      #final-horizon-spectrum {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: crosshair;
+        outline: none;
+      }
+
+      #light-field,
+      #scan-line,
+      #grain,
+      #vignette,
+      #top-bloom,
+      #bottom-glow {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      #light-field {
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 180ms ease;
+        background: radial-gradient(
+          circle at var(--scan-x) var(--scan-y),
+          rgb(var(--accent) / 0.56) 0,
+          rgb(var(--accent) / 0.15) 11%,
+          transparent 35%
+        );
+        mix-blend-mode: screen;
+      }
+      body.active #light-field {
+        opacity: 0.82;
+      }
+
+      #scan-line {
+        z-index: 3;
+        opacity: 0;
+        transition: opacity 150ms ease;
+        background:
+          linear-gradient(
+            90deg,
+            transparent calc(var(--scan-x) - 1px),
+            rgb(var(--accent) / 0.52) var(--scan-x),
+            transparent calc(var(--scan-x) + 1px)
+          ),
+          linear-gradient(
+            180deg,
+            transparent calc(var(--scan-y) - 1px),
+            rgb(var(--accent) / 0.32) var(--scan-y),
+            transparent calc(var(--scan-y) + 1px)
+          );
+        mix-blend-mode: screen;
+      }
+      body.active #scan-line {
+        opacity: 0.17;
+      }
+
+      #grain {
+        z-index: 4;
+        opacity: 0.042;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+        mix-blend-mode: overlay;
+      }
+
+      #vignette {
+        z-index: 5;
+        background:
+          radial-gradient(
+            ellipse at center,
+            transparent 38%,
+            rgb(0 0 0 / 0.22) 72%,
+            rgb(0 0 0 / 0.84) 128%
+          ),
+          linear-gradient(
+            90deg,
+            rgb(0 0 0 / 0.47),
+            transparent 13%,
+            transparent 87%,
+            rgb(0 0 0 / 0.45)
+          );
+      }
+
+      #top-bloom {
+        z-index: 1;
+        opacity: 0.5;
+        background: radial-gradient(
+          ellipse at 50% -10%,
+          rgb(225 241 255 / 0.38),
+          transparent 52%
+        );
+        mix-blend-mode: screen;
+      }
+
+      #bottom-glow {
+        z-index: 1;
+        opacity: 0.46;
+        background: radial-gradient(
+          ellipse at 50% 110%,
+          rgb(190 210 255 / 0.18),
+          transparent 50%
+        );
+        mix-blend-mode: screen;
+      }
+
+      #readout {
+        position: fixed;
+        z-index: 9;
+        left: 50%;
+        top: 49%;
+        width: min(92vw, 860px);
+        padding: clamp(15px, 3.2vw, 27px) clamp(19px, 5vw, 52px)
+          clamp(18px, 3.7vw, 33px);
+        border: 1px solid rgb(255 255 255 / 0.22);
+        border-radius: clamp(25px, 6vw, 52px);
+        color: white;
+        text-align: center;
+        pointer-events: none;
+        opacity: 0;
+        filter: blur(14px);
+        transform: translate(-50%, -50%) scale(0.7);
+        background:
+          linear-gradient(145deg, rgb(255 255 255 / 0.12), transparent 56%),
+          rgb(var(--panel) / 0.66);
+        box-shadow:
+          0 24px 80px rgb(0 0 0 / 0.58),
+          0 0 86px var(--accent-soft),
+          inset 0 1px 0 rgb(255 255 255 / 0.26),
+          inset 0 -1px 0 rgb(0 0 0 / 0.25);
+        backdrop-filter: blur(23px) saturate(1.36);
+        -webkit-backdrop-filter: blur(23px) saturate(1.36);
+        transition:
+          opacity 170ms ease,
+          filter 240ms ease,
+          transform 410ms cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 140ms linear;
+        will-change: opacity, filter, transform;
+      }
+
+      #readout.visible {
+        opacity: 1;
+        filter: blur(0);
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      #evidence-class {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 27px;
+        margin-bottom: clamp(9px, 2vw, 15px);
+        padding: 6px 13px 7px;
+        border: 1px solid rgb(var(--accent) / 0.62);
+        border-radius: 999px;
+        color: rgb(var(--accent));
+        font-size: clamp(0.62rem, 2.1vw, 0.87rem);
+        font-weight: 950;
+        line-height: 1;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        background: rgb(var(--accent) / 0.09);
+        box-shadow:
+          0 0 25px var(--accent-soft),
+          inset 0 1px 0 rgb(255 255 255 / 0.1);
+      }
+
+      #zone-name {
+        display: block;
+        margin: 0;
+        font-size: clamp(2rem, 8.5vw, 6.8rem);
+        font-weight: 950;
+        line-height: 0.86;
+        letter-spacing: -0.058em;
+        word-spacing: 0.1em;
+        text-transform: uppercase;
+        text-wrap: balance;
+        text-shadow:
+          0 0 30px var(--accent-soft),
+          0 5px 24px rgb(0 0 0 / 0.5);
+      }
+      #zone-name.compact {
+        font-size: clamp(1.7rem, 7.15vw, 5.55rem);
+        letter-spacing: -0.046em;
+        line-height: 0.9;
+      }
+      #zone-name.long {
+        font-size: clamp(1.38rem, 5.9vw, 4.45rem);
+        letter-spacing: -0.034em;
+        line-height: 0.94;
+      }
+
+      #feature-name {
+        display: block;
+        margin-top: clamp(8px, 1.8vw, 14px);
+        font-size: clamp(0.9rem, 3.2vw, 1.62rem);
+        font-weight: 880;
+        line-height: 1.08;
+        letter-spacing: 0.105em;
+        text-transform: uppercase;
+      }
+
+      #metric {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 29px;
+        margin-top: clamp(10px, 2vw, 17px);
+        padding: 7px 13px 8px;
+        border: 1px solid rgb(255 255 255 / 0.18);
+        border-radius: 999px;
+        font-size: clamp(0.67rem, 2.2vw, 0.92rem);
+        font-weight: 820;
+        line-height: 1.12;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        background: rgb(0 0 0 / 0.2);
+        box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11);
+      }
+
+      #fact {
+        display: block;
+        max-width: 700px;
+        margin: clamp(10px, 2.25vw, 17px) auto 0;
+        font-size: clamp(0.82rem, 2.63vw, 1.1rem);
+        font-weight: 600;
+        line-height: 1.42;
+        letter-spacing: 0.005em;
+        color: rgb(255 255 255 / 0.91);
+        text-wrap: pretty;
+      }
+
+      #touch-orb {
+        position: fixed;
+        z-index: 8;
+        left: 50%;
+        top: 93%;
+        width: clamp(58px, 15vw, 104px);
+        aspect-ratio: 1;
+        border: 1px solid rgb(var(--accent) / 0.82);
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -50%) scale(0.4);
+        background: radial-gradient(
+          circle,
+          rgb(255 255 255 / 0.82) 0 2%,
+          rgb(var(--accent) / 0.34) 7%,
+          rgb(var(--accent) / 0.09) 36%,
+          transparent 70%
+        );
+        box-shadow:
+          0 0 18px rgb(var(--accent) / 0.58),
+          0 0 62px rgb(var(--accent) / 0.42),
+          inset 0 0 26px rgb(var(--accent) / 0.19);
+        transition:
+          opacity 150ms ease,
+          transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      #touch-orb.visible {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      #journey-scale {
+        position: fixed;
+        z-index: 7;
+        right: max(10px, env(safe-area-inset-right));
+        top: max(19px, env(safe-area-inset-top));
+        bottom: max(18px, env(safe-area-inset-bottom));
+        width: clamp(50px, 10vw, 78px);
+        pointer-events: none;
+        opacity: 0.58;
+        transition: opacity 180ms ease;
+      }
+      body.active #journey-scale {
+        opacity: 0.9;
+      }
+
+      #scale-track {
+        position: absolute;
+        right: 11px;
+        top: 48px;
+        bottom: 48px;
+        width: 3px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgb(255 255 255 / 0.14);
+        box-shadow: 0 0 12px rgb(0 0 0 / 0.5);
+      }
+      #scale-fill {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--progress);
+        border-radius: inherit;
+        background: linear-gradient(
+          to top,
+          rgb(94 214 164 / 0.68),
+          rgb(var(--accent))
+        );
+        box-shadow: 0 0 14px rgb(var(--accent) / 0.72);
+      }
+      #scale-dot {
+        position: absolute;
+        right: 6px;
+        bottom: 48px;
+        width: 13px;
+        height: 13px;
+        border: 2px solid rgb(255 255 255 / 0.84);
+        border-radius: 50%;
+        transform: translateY(50%);
+        background: rgb(var(--accent));
+        box-shadow: 0 0 17px rgb(var(--accent) / 0.85);
+      }
+      #scale-bottom,
+      #scale-top {
+        position: absolute;
+        right: 0;
+        width: 74px;
+        font-size: clamp(0.49rem, 1.6vw, 0.61rem);
+        font-weight: 900;
+        line-height: 1.06;
+        letter-spacing: 0.11em;
+        text-align: right;
+        text-transform: uppercase;
+        color: rgb(255 255 255 / 0.65);
+      }
+      #scale-top {
+        top: 0;
+      }
+      #scale-bottom {
+        bottom: 0;
+      }
+      #scale-value {
+        position: absolute;
+        right: 25px;
+        top: 50%;
+        width: min(34vh, 250px);
+        transform: translateY(-50%) rotate(-90deg);
+        transform-origin: right center;
+        font-size: clamp(0.54rem, 1.7vw, 0.66rem);
+        font-weight: 950;
+        line-height: 1;
+        letter-spacing: 0.14em;
+        text-align: center;
+        text-transform: uppercase;
+        color: rgb(var(--accent));
+        text-shadow: 0 0 14px rgb(var(--accent) / 0.6);
+        white-space: nowrap;
+      }
+
+      #hint {
+        position: fixed;
+        z-index: 6;
+        left: 50%;
+        bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+        width: min(78vw, 530px);
+        transform: translateX(-50%);
+        color: rgb(255 255 255 / 0.78);
+        text-align: center;
+        pointer-events: none;
+        font-size: clamp(0.7rem, 2.4vw, 0.94rem);
+        font-weight: 800;
+        line-height: 1.34;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-shadow: 0 2px 16px rgb(0 0 0 / 0.8);
+        animation: breathe 3.2s ease-in-out infinite;
+      }
+      #hint strong {
+        color: rgb(var(--accent));
+      }
+
+      .ripple {
+        position: fixed;
+        z-index: 7;
+        width: 20px;
+        height: 20px;
+        border: 1px solid rgb(var(--accent) / 0.78);
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        box-shadow:
+          0 0 22px rgb(var(--accent) / 0.52),
+          inset 0 0 15px rgb(var(--accent) / 0.2);
+        animation: ripple 920ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes ripple {
+        to {
+          width: min(72vw, 560px);
+          height: min(72vw, 560px);
+          opacity: 0;
+        }
+      }
+      @keyframes breathe {
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          opacity: 0.95;
+          transform: translateX(-50%) translateY(-3px);
+        }
+      }
+
+      @media (max-height: 620px) {
+        #readout {
+          width: min(88vw, 760px);
+          padding-top: 12px;
+          padding-bottom: 14px;
+        }
+        #evidence-class {
+          margin-bottom: 7px;
+        }
+        #fact {
+          margin-top: 8px;
+          line-height: 1.32;
+        }
+        #metric {
+          margin-top: 7px;
+        }
+        #journey-scale {
+          opacity: 0.46;
+        }
+      }
+
+      @media (max-height: 360px) {
+        #readout {
+          top: 50%;
+          width: min(88vw, 760px);
+          padding: 8px 18px 10px;
+          border-radius: 24px;
+        }
+        #evidence-class {
+          min-height: 20px;
+          margin-bottom: 4px;
+          padding: 4px 10px 5px;
+          font-size: 0.52rem;
+        }
+        #zone-name {
+          font-size: clamp(1.35rem, 6.2vw, 3.15rem);
+          line-height: 0.87;
+        }
+        #zone-name.compact {
+          font-size: clamp(1.22rem, 5.45vw, 2.75rem);
+        }
+        #zone-name.long {
+          font-size: clamp(1.06rem, 4.75vw, 2.35rem);
+        }
+        #feature-name {
+          margin-top: 4px;
+          font-size: clamp(0.62rem, 2.25vw, 0.83rem);
+        }
+        #metric {
+          min-height: 21px;
+          margin-top: 5px;
+          padding: 4px 10px 5px;
+          font-size: clamp(0.49rem, 1.8vw, 0.66rem);
+        }
+        #fact {
+          margin-top: 5px;
+          font-size: clamp(0.58rem, 1.9vw, 0.72rem);
+          line-height: 1.22;
+        }
+      }
+
+      @media (max-width: 460px) {
+        #readout {
+          width: 91vw;
+        }
+        #journey-scale {
+          right: 6px;
+        }
+        #scale-value {
+          display: none;
+        }
+        #scale-bottom,
+        #scale-top {
+          width: 68px;
+          font-size: 0.42rem;
+        }
+        #hint {
+          width: 72vw;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #hint {
+          animation: none;
+        }
+        .ripple {
+          animation-duration: 1ms;
+        }
+        #readout,
+        #touch-orb,
+        #light-field,
+        #scan-line {
+          transition-duration: 1ms;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas
+      id="final-horizon-spectrum"
+      tabindex="0"
+      role="application"
+      aria-label="Exploración táctil del horizonte final, desde una sola historia incompleta en la parte inferior hasta los límites de observación y existencia en la parte superior. La posición horizontal cambia entre alternativas, transformaciones y límites. Toca, arrastra o usa las flechas del teclado."
+    ></canvas>
+    <div id="top-bloom" aria-hidden="true"></div>
+    <div id="bottom-glow" aria-hidden="true"></div>
+    <div id="light-field" aria-hidden="true"></div>
+    <div id="scan-line" aria-hidden="true"></div>
+    <div id="grain" aria-hidden="true"></div>
+    <div id="vignette" aria-hidden="true"></div>
+    <div id="hint" aria-hidden="true">
+      <strong>Toca y asciende</strong> · del propósito a los límites de la existencia
+    </div>
+    <div id="readout" aria-live="polite" aria-atomic="true">
+      <span id="evidence-class"></span><strong id="zone-name"></strong
+      ><span id="feature-name"></span><span id="metric"></span
+      ><span id="fact"></span>
+    </div>
+    <div id="touch-orb" aria-hidden="true"></div>
+    <div id="journey-scale" aria-hidden="true">
+      <span id="scale-top">Horizonte final</span>
+      <div id="scale-track"><div id="scale-fill"></div></div>
+      <div id="scale-dot"></div>
+      <span id="scale-value">Una sola historia incompleta</span
+      ><span id="scale-bottom">Historia incompleta</span>
+    </div>
+
+    <!--
+    Visualización educativa conceptual, táctil y sin dependencias externas.
+
+    La escala vertical representa una distancia creciente respecto de la existencia humana actual:
+    futuro elegido, transformación biológica y mental, postbiología, civilización galáctica,
+    realidad construida, límites cognitivos, horizontes cosmológicos, universo tardío y frontera final.
+
+    La dimensión horizontal contrasta alternativas abiertas: continuidad o transformación,
+    identidad individual o copiada, realidad física o construida, expansión o conservación,
+    supervivencia o conclusión, legado duradero o impermanencia significativa y explicación última
+    o incertidumbre permanente.
+
+    Ninguna escena promete trascendencia. Las posibilidades especulativas se muestran como tales;
+    los límites físicos, lógicos y observacionales permanecen visibles incluso para civilizaciones extremas.
+  -->
+
+    <script>
+      (() => {
+        "use strict";
+
+        const canvas = document.getElementById("final-horizon-spectrum");
+        const ctx = canvas.getContext("2d", { alpha: false });
+        const root = document.documentElement;
+        const readout = document.getElementById("readout");
+        const evidenceClass = document.getElementById("evidence-class");
+        const zoneName = document.getElementById("zone-name");
+        const featureName = document.getElementById("feature-name");
+        const metric = document.getElementById("metric");
+        const fact = document.getElementById("fact");
+        const touchOrb = document.getElementById("touch-orb");
+        const scaleValue = document.getElementById("scale-value");
+        const scaleDot = document.getElementById("scale-dot");
+        const hint = document.getElementById("hint");
+
+        const TAU = Math.PI * 2;
+        const reducedMotion = matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+        const mix = (a, b, t) => a + (b - a) * t;
+        const smooth = (t) => t * t * (3 - 2 * t);
+        const fract = (v) => v - Math.floor(v);
+        const seeded = (n) =>
+          fract(Math.sin(n * 127.1 + 311.7) * 43758.5453123);
+        const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+        const ZONES = [
+          {
+                    "id": "incomplete-history",
+                    "name": "Una sola historia incompleta",
+                    "className": "Continuidad · muchas inteligencias heredan un futuro todavía no decidido",
+                    "metric": "Propósito elegido + capacidad física + incertidumbre → varios futuros realmente posibles",
+                    "fact": "Preservar, expandirse, transformarse, coexistir, retirarse o terminar son trayectorias posibles; ninguna está garantizada ni es inevitable.",
+                    "features": [
+                              [
+                                        "preservación",
+                                        "Conservar vida, memoria y diversidad puede orientar una civilización sin exigir que permanezca idéntica para siempre."
+                              ],
+                              [
+                                        "expansión",
+                                        "Extenderse a nuevos hábitats aumenta oportunidades y también multiplica distancias, riesgos y responsabilidades."
+                              ],
+                              [
+                                        "transformación",
+                                        "Rediseñar cuerpos, mentes y entornos puede abrir capacidades que alteren aquello que la civilización entiende por continuar."
+                              ],
+                              [
+                                        "coexistencia",
+                                        "Coordinar futuros con otras formas de vida o inteligencia exige límites compartidos, traducción y renuncias mutuas."
+                              ],
+                              [
+                                        "retiro",
+                                        "Una civilización puede elegir menor escala, baja actividad o aislamiento en vez de expansión continua."
+                              ],
+                              [
+                                        "extinción e investigación",
+                                        "Terminar sigue siendo posible; continuar preguntando también, aunque ninguna respuesta final esté asegurada."
+                              ]
+                    ],
+                    "scene": 0,
+                    "p0": 0.0,
+                    "p1": 0.04,
+                    "color": [
+                              246,
+                              232,
+                              205
+                    ],
+                    "sound": {
+                              "base": 76.0,
+                              "filter": 1850,
+                              "noise": 0.024,
+                              "pulse": 0.09,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "biological-limits",
+                    "name": "Los límites biológicos",
+                    "className": "Herencia evolutiva · cuerpos finitos adaptados a una franja estrecha del universo",
+                    "metric": "Envejecimiento + enfermedad + fragilidad + entorno estrecho → presión para modificar la vida",
+                    "fact": "Superar una limitación biológica puede resolver un problema mientras crea nuevas dependencias y nuevas formas de vulnerabilidad.",
+                    "features": [
+                              [
+                                        "envejecimiento",
+                                        "Reparar daños celulares podría prolongar la vida, pero una duración mayor no elimina accidentes, conflictos ni pérdida de sentido."
+                              ],
+                              [
+                                        "enfermedad",
+                                        "La ingeniería genética y los órganos artificiales pueden reducir enfermedades mientras introducen fallos técnicos y desigualdad de acceso."
+                              ],
+                              [
+                                        "cuerpo frágil",
+                                        "Exoesqueletos, prótesis y rediseño corporal amplían capacidades, aunque también vuelven la vida dependiente de mantenimiento e infraestructura."
+                              ],
+                              [
+                                        "memoria limitada",
+                                        "Interfaces neurales pueden externalizar recuerdos, pero almacenar información no garantiza integrarla en una identidad coherente."
+                              ],
+                              [
+                                        "entorno estrecho",
+                                        "Organismos sintéticos podrían vivir en frío, vacío o radiación, a costa de alejarse de las condiciones que formaron su experiencia."
+                              ],
+                              [
+                                        "muerte",
+                                        "Animación suspendida o reparación avanzada pueden aplazar la muerte sin demostrar que toda vida pueda sostenerse indefinidamente."
+                              ]
+                    ],
+                    "scene": 1,
+                    "p0": 0.04,
+                    "p1": 0.08,
+                    "color": [
+                              215,
+                              226,
+                              208
+                    ],
+                    "sound": {
+                              "base": 73.95,
+                              "filter": 1793,
+                              "noise": 0.023,
+                              "pulse": 0.087,
+                              "type": "sine"
+                    }
+          },
+          {
+                    "id": "mind-transformation",
+                    "name": "La transformación de la mente",
+                    "className": "Cognición rediseñable · memoria, atención, emoción y velocidad dejan de ser constantes",
+                    "metric": "Módulos artificiales + plasticidad + interfaces → nuevas arquitecturas de experiencia y decisión",
+                    "fact": "Modificar la mente no solo cambia lo que puede hacer; puede cambiar qué desea, qué recuerda y qué considera valioso.",
+                    "features": [
+                              [
+                                        "memoria expandida",
+                                        "Una mente puede recordar con enorme detalle y aun así necesitar olvidar, resumir y reinterpretar para pensar con claridad."
+                              ],
+                              [
+                                        "pensamiento acelerado",
+                                        "Procesar más rápido aumenta la vida subjetiva dentro del mismo tiempo externo, pero puede separar a la mente de ritmos sociales y físicos."
+                              ],
+                              [
+                                        "sentidos compartidos",
+                                        "Varias mentes podrían percibir mediante una red común sin experimentar exactamente la misma perspectiva."
+                              ],
+                              [
+                                        "emociones alteradas",
+                                        "Regular miedo, deseo o apego puede reducir sufrimiento y también transformar motivaciones que sostenían vínculos e identidad."
+                              ],
+                              [
+                                        "atención controlada",
+                                        "Una atención programable mejora concentración, aunque quien controla sus prioridades puede influir profundamente en su autonomía."
+                              ],
+                              [
+                                        "conciencia paralela",
+                                        "Procesos simultáneos podrían cooperar, competir o divergir hasta que ya no resulte claro si constituyen una sola mente."
+                              ]
+                    ],
+                    "scene": 2,
+                    "p0": 0.08,
+                    "p1": 0.12,
+                    "color": [
+                              168,
+                              226,
+                              198
+                    ],
+                    "sound": {
+                              "base": 71.9,
+                              "filter": 1736,
+                              "noise": 0.023,
+                              "pulse": 0.085,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "identity-continuity",
+                    "name": "Identidad y continuidad",
+                    "className": "Problema abierto · conservar funciones no demuestra conservar la misma perspectiva subjetiva",
+                    "metric": "Cuerpo + memoria + patrón + continuidad causal → criterios distintos de seguir siendo alguien",
+                    "fact": "Una copia perfecta puede creer que es el original sin demostrar que la perspectiva original continuó en ella.",
+                    "features": [
+                              [
+                                        "reemplazo gradual",
+                                        "Sustituir neuronas una a una preservaría cambios continuos, pero no resuelve por consenso qué propiedad sostiene la identidad subjetiva."
+                              ],
+                              [
+                                        "copia digital",
+                                        "Una copia puede compartir todos los recuerdos hasta el momento de creación y convertirse inmediatamente en una persona divergente."
+                              ],
+                              [
+                                        "carga destructiva",
+                                        "Destruir el cerebro al copiarlo evita dos versiones corporales, pero no demuestra que la experiencia haya sido transferida en vez de terminada."
+                              ],
+                              [
+                                        "copias simultáneas",
+                                        "Varias continuaciones igualmente fieles vuelven insuficiente la idea de un único futuro personal."
+                              ],
+                              [
+                                        "interrupción y restauración",
+                                        "Una mente detenida y reiniciada puede conservar patrón y memoria mientras deja abierta la cuestión de continuidad subjetiva."
+                              ],
+                              [
+                                        "memorias fusionadas",
+                                        "Combinar historias personales puede producir una identidad nueva que hereda a varias anteriores sin ser idéntica a ninguna."
+                              ]
+                    ],
+                    "scene": 3,
+                    "p0": 0.12,
+                    "p1": 0.16,
+                    "color": [
+                              130,
+                              222,
+                              214
+                    ],
+                    "sound": {
+                              "base": 69.85,
+                              "filter": 1679,
+                              "noise": 0.022,
+                              "pulse": 0.082,
+                              "type": "sawtooth"
+                    }
+          },
+          {
+                    "id": "postbiological-life",
+                    "name": "Vida postbiológica",
+                    "className": "Transición posible · la continuidad de la vida abandona algunos rasgos de su origen orgánico",
+                    "metric": "Mentes máquina + ecosistemas sintéticos + autorreparación → existencia en entornos antes inhabitables",
+                    "fact": "La postbiología puede aumentar duración y adaptabilidad sin constituir automáticamente progreso moral, continuidad personal o una experiencia mejor.",
+                    "features": [
+                              [
+                                        "mentes máquina",
+                                        "Un sustrato artificial podría repararse y copiarse, aunque la posibilidad de conciencia en él continúa siendo una cuestión no demostrada."
+                              ],
+                              [
+                                        "ecosistemas sintéticos",
+                                        "Sistemas artificiales pueden reciclar materia y energía sin reproducir la diversidad, historia y vulnerabilidad de una biosfera natural."
+                              ],
+                              [
+                                        "computación distribuida",
+                                        "Una mente extendida entre muchos nodos resiste fallos locales, pero depende de sincronización, seguridad y continuidad de la red."
+                              ],
+                              [
+                                        "naves autorreparables",
+                                        "Máquinas capaces de mantenerse durante milenios podrían explorar lejos de sus creadores y evolucionar hacia objetivos propios."
+                              ],
+                              [
+                                        "formas híbridas",
+                                        "Componentes biológicos y digitales pueden coexistir sin que exista una frontera única entre organismo, herramienta y entorno."
+                              ],
+                              [
+                                        "pérdidas posibles",
+                                        "Durabilidad y velocidad pueden obtenerse a cambio de corporalidad, diversidad biológica y continuidad con la vida ancestral."
+                              ]
+                    ],
+                    "scene": 4,
+                    "p0": 0.16,
+                    "p1": 0.2,
+                    "color": [
+                              130,
+                              196,
+                              234
+                    ],
+                    "sound": {
+                              "base": 67.8,
+                              "filter": 1622,
+                              "noise": 0.021,
+                              "pulse": 0.08,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "long-duration-intelligences",
+                    "name": "Inteligencias de larga duración",
+                    "className": "Escalas temporales nuevas · una vida ya no sigue necesariamente el ritmo de un organismo",
+                    "metric": "Velocidad cognitiva × duración externa × pausas → tiempos subjetivos radicalmente distintos",
+                    "fact": "El significado cambia cuando una mente puede vivir milenios subjetivos en un año o esperar siglos entre dos pensamientos.",
+                    "features": [
+                              [
+                                        "mente acelerada",
+                                        "Una mente rápida puede experimentar generaciones internas antes de que cambie apreciablemente su entorno físico."
+                              ],
+                              [
+                                        "vida secular",
+                                        "Una persona de siglos afrontaría memoria acumulada, transformación cultural y relaciones con seres de ritmos muy diferentes."
+                              ],
+                              [
+                                        "mente geológica",
+                                        "Una inteligencia lenta podría percibir montañas, océanos y civilizaciones como procesos breves dentro de una sola experiencia."
+                              ],
+                              [
+                                        "vida estelar",
+                                        "Proyectos ligados a la evolución de estrellas requieren instituciones o mentes capaces de conservar objetivos durante eras."
+                              ],
+                              [
+                                        "hibernación",
+                                        "Dormir entre eventos raros reduce gasto energético, pero convierte la continuidad en una secuencia de intervalos enormes."
+                              ],
+                              [
+                                        "desfase temporal",
+                                        "Seres con velocidades incompatibles pueden compartir causalidad sin compartir conversación, urgencia ni una escala común de valor."
+                              ]
+                    ],
+                    "scene": 5,
+                    "p0": 0.2,
+                    "p1": 0.24,
+                    "color": [
+                              142,
+                              176,
+                              242
+                    ],
+                    "sound": {
+                              "base": 65.75,
+                              "filter": 1565,
+                              "noise": 0.021,
+                              "pulse": 0.077,
+                              "type": "sine"
+                    }
+          },
+          {
+                    "id": "galactic-civilizations",
+                    "name": "Civilizaciones galácticas",
+                    "className": "Expansión fragmentada · parentesco sin sincronización ni centro único",
+                    "metric": "Asentamientos + sondas + retraso de la luz + evolución local → familia de civilizaciones divergentes",
+                    "fact": "Una civilización galáctica sería probablemente una red de descendientes parcialmente independientes, no un imperio sincronizado.",
+                    "features": [
+                              [
+                                        "asentamientos",
+                                        "Cada sistema estelar desarrolla soluciones locales porque la ayuda, la autoridad y la información tardan años o milenios en llegar."
+                              ],
+                              [
+                                        "sondas autónomas",
+                                        "Exploradores autorreplicantes pueden cartografiar y construir infraestructura, pero sus objetivos deben sobrevivir a errores y evolución."
+                              ],
+                              [
+                                        "culturas descendientes",
+                                        "Lenguas, cuerpos, valores y tecnologías divergen cuando poblaciones permanecen separadas durante muchas generaciones."
+                              ],
+                              [
+                                        "mensajes lentos",
+                                        "Una decisión enviada a través de la galaxia puede llegar cuando quienes la originaron ya no existen o han cambiado por completo."
+                              ],
+                              [
+                                        "archivos galácticos",
+                                        "Memorias redundantes preservan una historia común sin impedir que cada región interprete esa historia de forma distinta."
+                              ],
+                              [
+                                        "sin centro único",
+                                        "La coordinación puede basarse en protocolos y parentesco histórico, pero ninguna capital puede gobernar en tiempo real toda la galaxia."
+                              ]
+                    ],
+                    "scene": 6,
+                    "p0": 0.24,
+                    "p1": 0.28,
+                    "color": [
+                              155,
+                              160,
+                              244
+                    ],
+                    "sound": {
+                              "base": 63.7,
+                              "filter": 1508,
+                              "noise": 0.02,
+                              "pulse": 0.074,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "cosmic-engineering",
+                    "name": "Ingeniería cósmica",
+                    "className": "Capacidad extrema · reorganizar materia y energía sin abolir las leyes físicas",
+                    "metric": "Tiempo profundo + automatización + energía estelar → proyectos mayores que planetas",
+                    "fact": "Una tecnología suficientemente avanzada puede transformar estrellas y hábitats, pero no convierte todas las ideas imaginables en posibilidades físicas.",
+                    "features": [
+                              [
+                                        "enjambres Dyson",
+                                        "Millones de colectores orbitales pueden capturar gran parte de la luz de una estrella sin exigir una esfera sólida imposible."
+                              ],
+                              [
+                                        "extracción estelar",
+                                        "Retirar materia de una estrella modifica su vida útil y proporciona combustible, aunque requiere control durante escalas enormes."
+                              ],
+                              [
+                                        "hábitats artificiales",
+                                        "Mundos rotatorios pueden ofrecer superficies habitables sin depender de planetas naturales."
+                              ],
+                              [
+                                        "estabilización planetaria",
+                                        "Controlar impactos, clima y órbita reduce riesgos mientras exige mantenimiento y decisiones sobre qué ecosistemas preservar."
+                              ],
+                              [
+                                        "energía de agujeros negros",
+                                        "Acreción y rotación permiten extraer energía, pero acercan infraestructura a entornos extremos y no ilimitados."
+                              ],
+                              [
+                                        "movimiento de estrellas",
+                                        "Impulsos minúsculos sostenidos durante millones de años pueden alterar trayectorias estelares sin permitir movimientos instantáneos."
+                              ]
+                    ],
+                    "scene": 7,
+                    "p0": 0.28,
+                    "p1": 0.32,
+                    "color": [
+                              180,
+                              158,
+                              236
+                    ],
+                    "sound": {
+                              "base": 61.65,
+                              "filter": 1451,
+                              "noise": 0.019,
+                              "pulse": 0.072,
+                              "type": "sawtooth"
+                    }
+          },
+          {
+                    "id": "constructed-reality",
+                    "name": "Computación y realidad construida",
+                    "className": "Dos capas · un sustrato físico sostiene mundos cuya experiencia puede obedecer otras reglas",
+                    "metric": "Materia computacional + modelos + habitantes posibles → historias y entornos artificiales",
+                    "fact": "Una experiencia dentro de una realidad construida no sería menos real para quien la vive, aunque la conciencia simulada no está demostrada.",
+                    "features": [
+                              [
+                                        "computación cósmica",
+                                        "Planetas, estrellas o agujeros negros podrían formar parte de infraestructuras de cálculo limitadas por energía, calor y causalidad."
+                              ],
+                              [
+                                        "mundos simulados",
+                                        "Un entorno digital puede contener geografía, historia y leyes efectivas distintas de las del hardware que lo sostiene."
+                              ],
+                              [
+                                        "física artificial",
+                                        "Las reglas internas pueden diseñarse, pero toda simulación continúa limitada por los recursos y errores de su sustrato."
+                              ],
+                              [
+                                        "historias aceleradas",
+                                        "Procesos internos podrían ejecutarse más rápido o más lento que el mundo exterior, alterando duración y responsabilidad."
+                              ],
+                              [
+                                        "habitantes conscientes",
+                                        "Crear posibles sujetos digitales introduciría obligaciones éticas incluso si sus cuerpos y cielos fueran construidos."
+                              ],
+                              [
+                                        "simulaciones anidadas",
+                                        "Cada capa adicional consume recursos de otra y no ofrece una vía demostrada para escapar de la física del nivel sustentador."
+                              ]
+                    ],
+                    "scene": 8,
+                    "p0": 0.32,
+                    "p1": 0.36,
+                    "color": [
+                              196,
+                              145,
+                              226
+                    ],
+                    "sound": {
+                              "base": 59.6,
+                              "filter": 1394,
+                              "noise": 0.019,
+                              "pulse": 0.069,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "plural-worlds",
+                    "name": "La multiplicación de mundos",
+                    "className": "Civilización plural · planeta, hábitat y entorno virtual dejan de compartir una sola realidad cotidiana",
+                    "metric": "Múltiples sustratos + sentidos + reglas locales → muchas formas simultáneas de habitar",
+                    "fact": "Cuando “el mundo” se vuelve plural, mantener una civilización común exige traducir experiencias que pueden no tener equivalentes directos.",
+                    "features": [
+                              [
+                                        "planetas físicos",
+                                        "Gravedad, clima y ecología continúan organizando vidas corporales dentro de límites materiales locales."
+                              ],
+                              [
+                                        "hábitats orbitales",
+                                        "Entornos construidos permiten elegir gravedad, ciclo temporal y paisaje, pero dependen de infraestructura activa."
+                              ],
+                              [
+                                        "espacios virtuales",
+                                        "La identidad puede moverse entre escenarios sin que desaparezcan los costes físicos del cálculo."
+                              ],
+                              [
+                                        "mundos sensoriales",
+                                        "Mentes máquina pueden habitar campos de datos o dimensiones perceptivas sin analogía humana directa."
+                              ],
+                              [
+                                        "pasados reconstruidos",
+                                        "Simulaciones históricas preservan perspectivas parciales, no recuperan automáticamente cada hecho o experiencia perdida."
+                              ],
+                              [
+                                        "entornos matemáticos",
+                                        "Una mente podría operar en espacios abstractos donde relación y estructura importan más que objetos parecidos a cuerpos."
+                              ]
+                    ],
+                    "scene": 9,
+                    "p0": 0.36,
+                    "p1": 0.4,
+                    "color": [
+                              211,
+                              143,
+                              222
+                    ],
+                    "sound": {
+                              "base": 57.55,
+                              "filter": 1337,
+                              "noise": 0.018,
+                              "pulse": 0.067,
+                              "type": "sine"
+                    }
+          },
+          {
+                    "id": "merged-divided-minds",
+                    "name": "Mentes fusionadas y divididas",
+                    "className": "Identidad distribuida · individuo, relación y grupo dejan de ser categorías estables",
+                    "metric": "Memoria compartida + enlaces temporales + separación posterior → nuevos sujetos y nuevas responsabilidades",
+                    "fact": "Fusionar o dividir mentes obliga a redefinir privacidad, consentimiento, muerte y responsabilidad sin asumir que toda unión es deseable.",
+                    "features": [
+                              [
+                                        "enlace temporal",
+                                        "Dos mentes pueden compartir una tarea o sensación durante un intervalo sin perder necesariamente toda separación."
+                              ],
+                              [
+                                        "memoria común",
+                                        "Acceder a recuerdos ajenos crea conocimiento íntimo y riesgos de manipulación, exposición o apropiación."
+                              ],
+                              [
+                                        "razonamiento colectivo",
+                                        "Varias perspectivas pueden formar una decisión conjunta sin eliminar desacuerdo interno."
+                              ],
+                              [
+                                        "fusión parcial",
+                                        "Solo algunos procesos pueden unirse, produciendo un sistema que es simultáneamente individuo y relación."
+                              ],
+                              [
+                                        "división descendente",
+                                        "Una mente puede separarse en continuaciones que comparten pasado y reclaman futuros independientes."
+                              ],
+                              [
+                                        "reconexión",
+                                        "Copias divergentes pueden intercambiar memorias, pero una integración completa podría destruir diferencias adquiridas."
+                              ]
+                    ],
+                    "scene": 10,
+                    "p0": 0.4,
+                    "p1": 0.44,
+                    "color": [
+                              188,
+                              149,
+                              232
+                    ],
+                    "sound": {
+                              "base": 55.5,
+                              "filter": 1280,
+                              "noise": 0.018,
+                              "pulse": 0.064,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "experience-limits",
+                    "name": "Los límites de la experiencia",
+                    "className": "Intraducibilidad posible · detectar un estado no equivale a poder vivirlo o comunicarlo",
+                    "metric": "Sustrato + sentidos + memoria de trabajo + conceptos → espacio limitado de experiencias representables",
+                    "fact": "Aumentar inteligencia y sensores no garantiza eliminar todas las barreras entre experiencias.",
+                    "features": [
+                              [
+                                        "dimensiones sensoriales",
+                                        "Un sistema puede medir variables que una conciencia no logra organizar como una experiencia unificada."
+                              ],
+                              [
+                                        "memoria de trabajo",
+                                        "Comprender simultáneamente demasiadas relaciones puede superar incluso una mente ampliada y exigir simplificación."
+                              ],
+                              [
+                                        "complejidad conceptual",
+                                        "Algunas estructuras quizá solo puedan manipularse mediante herramientas sin convertirse en intuiciones vividas."
+                              ],
+                              [
+                                        "estados incompatibles",
+                                        "Dos formas de conciencia pueden carecer de una escala común para comparar intensidad, calidad o significado."
+                              ],
+                              [
+                                        "traducción entre sustratos",
+                                        "La misma señal física puede integrarse de manera distinta en cuerpos biológicos, máquinas o colectivos."
+                              ],
+                              [
+                                        "experiencia privada",
+                                        "Una descripción perfecta del comportamiento no demuestra acceso directo a cómo se siente otra perspectiva."
+                              ]
+                    ],
+                    "scene": 11,
+                    "p0": 0.44,
+                    "p1": 0.48,
+                    "color": [
+                              160,
+                              154,
+                              234
+                    ],
+                    "sound": {
+                              "base": 53.45,
+                              "filter": 1223,
+                              "noise": 0.017,
+                              "pulse": 0.061,
+                              "type": "sawtooth"
+                    }
+          },
+          {
+                    "id": "intelligence-limits",
+                    "name": "Los límites de la inteligencia",
+                    "className": "Capacidad finita · más poder cognitivo no produce omnisciencia ni cálculo instantáneo",
+                    "metric": "Memoria finita + energía finita + tiempo finito + complejidad → problemas resistentes o insolubles",
+                    "fact": "Una civilización puede ser inmensamente capaz y seguir encontrando preguntas que no puede responder eficientemente, o en absoluto.",
+                    "features": [
+                              [
+                                        "memoria finita",
+                                        "Toda mente física debe seleccionar qué conservar, comprimir o olvidar cuando la información supera su capacidad."
+                              ],
+                              [
+                                        "coste energético",
+                                        "Pensar, medir y comunicar requieren energía y generan calor; la inteligencia no está separada de la termodinámica."
+                              ],
+                              [
+                                        "irreducibilidad",
+                                        "Algunos sistemas solo revelan su comportamiento al ejecutarse paso a paso, sin atajo predictivo conocido."
+                              ],
+                              [
+                                        "caos",
+                                        "Errores mínimos en condiciones iniciales pueden crecer hasta destruir predicciones detalladas a largo plazo."
+                              ],
+                              [
+                                        "indecidibilidad",
+                                        "Existen clases de problemas para las que ningún procedimiento general puede garantizar una respuesta correcta."
+                              ],
+                              [
+                                        "autorreferencia",
+                                        "Una mente que intenta modelarse completamente puede alterar el sistema que estudia y encontrar límites lógicos internos."
+                              ]
+                    ],
+                    "scene": 12,
+                    "p0": 0.48,
+                    "p1": 0.52,
+                    "color": [
+                              132,
+                              165,
+                              232
+                    ],
+                    "sound": {
+                              "base": 51.4,
+                              "filter": 1166,
+                              "noise": 0.016,
+                              "pulse": 0.059,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "knowledge-limits",
+                    "name": "Los límites del conocimiento",
+                    "className": "Grados de ignorancia · lo no sabido hoy no es igual a lo inaccesible en principio",
+                    "metric": "Evidencia + causalidad + medición + cómputo + conceptos → frontera cambiante de lo conocible",
+                    "fact": "La app distingue lo desconocido temporalmente de aquello que podría permanecer desconocido para cualquier observador físicamente posible.",
+                    "features": [
+                              [
+                                        "aún no observado",
+                                        "Nueva instrumentación o exploración puede convertir una ausencia de datos en conocimiento futuro."
+                              ],
+                              [
+                                        "información destruida",
+                                        "Registros perdidos pueden dejar solo trazas insuficientes para reconstruir una historia única."
+                              ],
+                              [
+                                        "fuera de contacto",
+                                        "Acontecimientos más allá de un horizonte causal no pueden enviar información hasta nosotros."
+                              ],
+                              [
+                                        "medición limitada",
+                                        "Todo instrumento posee resolución, ruido y una interacción física con aquello que intenta medir."
+                              ],
+                              [
+                                        "cálculo imposible",
+                                        "Una respuesta puede estar definida y aun exigir más tiempo, memoria o energía de la que existe disponible."
+                              ],
+                              [
+                                        "concepto inaccesible",
+                                        "Una arquitectura mental puede carecer de representaciones necesarias para formular una pregunta que otra mente sí comprende."
+                              ]
+                    ],
+                    "scene": 13,
+                    "p0": 0.52,
+                    "p1": 0.56,
+                    "color": [
+                              112,
+                              176,
+                              224
+                    ],
+                    "sound": {
+                              "base": 49.35,
+                              "filter": 1109,
+                              "noise": 0.016,
+                              "pulse": 0.056,
+                              "type": "sine"
+                    }
+          },
+          {
+                    "id": "cosmological-horizon",
+                    "name": "El horizonte cosmológico",
+                    "className": "Pérdida de acceso · la expansión puede reducir el universo observable del futuro",
+                    "metric": "Expansión acelerada + velocidad finita de la luz → regiones que dejan de ser causalmente alcanzables",
+                    "fact": "El universo disponible para observación puede disminuir incluso mientras el conocimiento y la tecnología aumentan localmente.",
+                    "features": [
+                              [
+                                        "galaxias que se alejan",
+                                        "La luz emitida hoy por regiones muy distantes puede no alcanzar nunca a observadores ligados gravitacionalmente aquí."
+                              ],
+                              [
+                                        "región accesible",
+                                        "Solo una parte del cosmos puede intercambiar materia, señales o influencia con una civilización dada."
+                              ],
+                              [
+                                        "cielo empobrecido",
+                                        "Futuras civilizaciones aisladas podrían ver pocas galaxias y deducir con mayor dificultad la antigua expansión cósmica."
+                              ],
+                              [
+                                        "evidencia antigua",
+                                        "Archivos del fondo cósmico y de galaxias lejanas pueden volverse esenciales cuando las señales naturales se debiliten."
+                              ],
+                              [
+                                        "horizonte causal",
+                                        "No es una pared material, sino un límite de qué acontecimientos pueden conectarse mediante señales."
+                              ],
+                              [
+                                        "conocimiento local",
+                                        "Comprender mejor una región no recupera automáticamente información de regiones que han abandonado contacto causal."
+                              ]
+                    ],
+                    "scene": 14,
+                    "p0": 0.56,
+                    "p1": 0.6,
+                    "color": [
+                              96,
+                              184,
+                              214
+                    ],
+                    "sound": {
+                              "base": 47.3,
+                              "filter": 1052,
+                              "noise": 0.015,
+                              "pulse": 0.054,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "isolated-civilizations",
+                    "name": "Civilizaciones aisladas",
+                    "className": "Separación irreversible · culturas relacionadas dejan de poder confirmar su supervivencia mutua",
+                    "metric": "Horizontes + retrasos + extinción posible → historias comunes convertidas en archivos incompletos",
+                    "fact": "Un universo una vez compartido puede convertirse en muchos universos observables aislados.",
+                    "features": [
+                              [
+                                        "mensajes sin llegada",
+                                        "Una señal puede viajar indefinidamente hacia una región que se aleja demasiado rápido para recibirla."
+                              ],
+                              [
+                                        "culturas perdidas",
+                                        "Una civilización conserva relatos de otras sin poder saber si continuaron, cambiaron o desaparecieron."
+                              ],
+                              [
+                                        "archivos parciales",
+                                        "Copias antiguas preservan voces y decisiones, pero no sustituyen una relación causal todavía activa."
+                              ],
+                              [
+                                        "supervivencia incierta",
+                                        "La ausencia de nuevas señales ya no permite distinguir silencio, transformación, extinción o separación cosmológica."
+                              ],
+                              [
+                                        "memoria del cosmos",
+                                        "Mapas y observaciones tempranas pueden conservar evidencia de una época en que el cielo contenía muchas galaxias."
+                              ],
+                              [
+                                        "pluralidad desconectada",
+                                        "Cada región puede construir una historia verdadera pero incompleta a partir de su propio horizonte observable."
+                              ]
+                    ],
+                    "scene": 15,
+                    "p0": 0.6,
+                    "p1": 0.64,
+                    "color": [
+                              88,
+                              172,
+                              202
+                    ],
+                    "sound": {
+                              "base": 45.25,
+                              "filter": 995,
+                              "noise": 0.014,
+                              "pulse": 0.051,
+                              "type": "sawtooth"
+                    }
+          },
+          {
+                    "id": "energy-budget",
+                    "name": "El presupuesto energético",
+                    "className": "Termodinámica práctica · energía total no equivale a energía disponible para realizar trabajo",
+                    "metric": "Gradientes aprovechables ÷ coste por proceso → duración y ritmo posibles de una civilización",
+                    "fact": "Continuar exige diferencias de energía, disipación de calor y recursos capaces de sostener organización.",
+                    "features": [
+                              [
+                                        "energía estelar",
+                                        "Las estrellas ofrecen gradientes abundantes durante tiempos finitos y con tasas que cambian según su masa."
+                              ],
+                              [
+                                        "enanas rojas",
+                                        "Estrellas pequeñas pueden durar billones de años, aunque sus entornos y actividad presentan desafíos propios."
+                              ],
+                              [
+                                        "remanentes",
+                                        "Enanas blancas, estrellas de neutrones y acreción tardía ofrecen fuentes más raras y difíciles de utilizar."
+                              ],
+                              [
+                                        "agujeros negros",
+                                        "Rotación, acreción y evaporación pueden proporcionar energía en eras distintas sin constituir reservas infinitas."
+                              ],
+                              [
+                                        "cálculo eficiente",
+                                        "Reducir operaciones, temperatura y errores extiende recursos, pero no elimina todos los costes físicos."
+                              ],
+                              [
+                                        "hibernación lenta",
+                                        "Esperar entre eventos raros puede prolongar tiempo externo mientras reduce la continuidad de experiencia activa."
+                              ]
+                    ],
+                    "scene": 16,
+                    "p0": 0.64,
+                    "p1": 0.68,
+                    "color": [
+                              82,
+                              151,
+                              184
+                    ],
+                    "sound": {
+                              "base": 43.2,
+                              "filter": 938,
+                              "noise": 0.014,
+                              "pulse": 0.048,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "late-universe",
+                    "name": "El universo tardío",
+                    "className": "Supervivencia en declive · inteligencia dentro de un cosmos con menos estrellas y menos encuentros",
+                    "metric": "Formación estelar decreciente → remanentes → agujeros negros → interacciones cada vez más escasas",
+                    "fact": "La pregunta ya no es solo qué ocurre físicamente, sino qué estrategias permanecen disponibles para seres que intentan continuar.",
+                    "features": [
+                              [
+                                        "últimas estrellas",
+                                        "Enanas rojas prolongan la era estelar mientras la creación de nuevas estrellas se vuelve cada vez menos frecuente."
+                              ],
+                              [
+                                        "mundos remanentes",
+                                        "Planetas y hábitats deben adaptarse a fuentes débiles, encuentros raros y ambientes progresivamente fríos."
+                              ],
+                              [
+                                        "desintegración incierta",
+                                        "La posible desintegración del protón cambiaría profundamente el futuro de la materia, pero todavía no está confirmada."
+                              ],
+                              [
+                                        "era degenerada",
+                                        "Enanas blancas y estrellas de neutrones dominan un universo donde la materia luminosa pierde actividad."
+                              ],
+                              [
+                                        "era de agujeros negros",
+                                        "Durante tiempos inmensos, los agujeros negros pueden convertirse en las estructuras compactas principales."
+                              ],
+                              [
+                                        "intervalos vacíos",
+                                        "Acontecimientos útiles aparecen separados por duraciones que superan cualquier escala biológica familiar."
+                              ]
+                    ],
+                    "scene": 17,
+                    "p0": 0.68,
+                    "p1": 0.72,
+                    "color": [
+                              93,
+                              139,
+                              165
+                    ],
+                    "sound": {
+                              "base": 41.15,
+                              "filter": 881,
+                              "noise": 0.013,
+                              "pulse": 0.046,
+                              "type": "sine"
+                    }
+          },
+          {
+                    "id": "information-destiny",
+                    "name": "El destino de la información",
+                    "className": "Frontera física y conceptual · preservar un patrón exige que alguna diferencia siga siendo recuperable",
+                    "metric": "Registro + soporte + mantenimiento + acceso → posibilidad de reconstruir un pasado",
+                    "fact": "La física moderna sugiere restricciones profundas sobre la información, pero la recuperación práctica y la interpretación continúan siendo problemas distintos.",
+                    "features": [
+                              [
+                                        "preservación fundamental",
+                                        "Que la evolución física conserve información en algún sentido no implica que una civilización pueda localizarla o reconstruirla."
+                              ],
+                              [
+                                        "agujeros negros",
+                                        "La relación entre evaporación, horizontes e información es un problema central de la gravedad cuántica."
+                              ],
+                              [
+                                        "archivos duraderos",
+                                        "Todo soporte enfrenta errores, radiación, colisiones y cambios de contexto; preservar requiere redundancia y mantenimiento."
+                              ],
+                              [
+                                        "pasado incompleto",
+                                        "Trazas parciales pueden permitir varias historias compatibles sin señalar cuál ocurrió realmente."
+                              ],
+                              [
+                                        "patrón inaccesible",
+                                        "Una estructura puede persistir físicamente y carecer de cualquier proceso capaz de leerla."
+                              ],
+                              [
+                                        "significado perdido",
+                                        "Bits intactos no garantizan conservar el idioma, la referencia o la experiencia que alguna vez expresaron."
+                              ]
+                    ],
+                    "scene": 18,
+                    "p0": 0.72,
+                    "p1": 0.76,
+                    "color": [
+                              109,
+                              130,
+                              150
+                    ],
+                    "sound": {
+                              "base": 39.1,
+                              "filter": 824,
+                              "noise": 0.012,
+                              "pulse": 0.043,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "heat-death",
+                    "name": "La muerte térmica",
+                    "className": "Máxima dispersión práctica · disminuyen los gradientes que sostienen procesos complejos",
+                    "metric": "Entropía creciente + expansión + equilibrio local → capacidad decreciente de realizar trabajo",
+                    "fact": "La muerte térmica no es una desaparición instantánea, sino un futuro donde mantener organización resulta progresivamente más difícil.",
+                    "features": [
+                              [
+                                        "gradientes menores",
+                                        "Diferencias de temperatura y densidad se reducen, limitando motores, metabolismo y cálculo."
+                              ],
+                              [
+                                        "trabajo escaso",
+                                        "Puede existir energía total mientras casi ninguna transformación útil pueda extraerse de ella."
+                              ],
+                              [
+                                        "procesos lentos",
+                                        "Las interacciones continúan, pero ocurren con tasas extremadamente bajas y largas pausas."
+                              ],
+                              [
+                                        "fluctuaciones",
+                                        "A escalas enormes pueden aparecer fluctuaciones raras sin proporcionar una estrategia segura de supervivencia."
+                              ],
+                              [
+                                        "estructura disuelta",
+                                        "Sistemas ligados pueden decaer o separarse hasta que casi no queden configuraciones complejas activas."
+                              ],
+                              [
+                                        "experiencia límite",
+                                        "Sostener una secuencia indefinida de estados conscientes puede encontrar un límite termodinámico real."
+                              ]
+                    ],
+                    "scene": 19,
+                    "p0": 0.76,
+                    "p1": 0.8,
+                    "color": [
+                              126,
+                              123,
+                              139
+                    ],
+                    "sound": {
+                              "base": 37.05,
+                              "filter": 767,
+                              "noise": 0.012,
+                              "pulse": 0.041,
+                              "type": "sawtooth"
+                    }
+          },
+          {
+                    "id": "unknown-possibilities",
+                    "name": "Posibilidades desconocidas",
+                    "className": "Incertidumbre responsable · nuestros modelos no son promesas de escape ni descripciones finales garantizadas",
+                    "metric": "Extrapolación actual + física incompleta → futuros posibles con grados muy distintos de evidencia",
+                    "fact": "La incertidumbre no demuestra que exista una salida, pero impide tratar nuestros modelos presentes como la última descripción posible.",
+                    "features": [
+                              [
+                                        "decaimiento del vacío",
+                                        "Una transición a otro estado del vacío cambiaría las leyes efectivas localmente y no ofrece una vía controlable conocida."
+                              ],
+                              [
+                                        "energía oscura cambiante",
+                                        "Si su comportamiento evoluciona, el destino de la expansión podría diferir de las proyecciones actuales."
+                              ],
+                              [
+                                        "física no descubierta",
+                                        "Nuevas partículas, campos o principios pueden modificar detalles sin garantizar supervivencia eterna."
+                              ],
+                              [
+                                        "cosmologías cíclicas",
+                                        "Algunos modelos proponen ciclos o rebotes, pero no existe evidencia concluyente de continuidad de información o identidad entre ellos."
+                              ],
+                              [
+                                        "transiciones cuánticas",
+                                        "La cosmología cuántica explora posibilidades más allá de la descripción clásica con importantes incertidumbres."
+                              ],
+                              [
+                                        "error de extrapolación",
+                                        "Leyes comprobadas en escalas accesibles pueden requerir revisión cuando se extienden a tiempos inconcebiblemente mayores."
+                              ]
+                    ],
+                    "scene": 20,
+                    "p0": 0.8,
+                    "p1": 0.84,
+                    "color": [
+                              140,
+                              113,
+                              125
+                    ],
+                    "sound": {
+                              "base": 35.0,
+                              "filter": 710,
+                              "noise": 0.011,
+                              "pulse": 0.038,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "observerless-existence",
+                    "name": "Existencia sin observadores",
+                    "className": "Retorno final · los procesos físicos continúan aunque ninguna experiencia permanezca",
+                    "metric": "Fin de las mentes + rastros temporales + causalidad física → historia sin recuerdo activo",
+                    "fact": "La app no impone una respuesta a si una historia cambia de significado porque finalmente nadie quede para recordarla.",
+                    "features": [
+                              [
+                                        "civilizaciones terminadas",
+                                        "Toda perspectiva puede desaparecer aunque sus acciones hayan alterado durante mucho tiempo las condiciones posteriores."
+                              ],
+                              [
+                                        "ninguna experiencia",
+                                        "Sin sujetos, ya no existen dolor, esperanza, sorpresa ni memoria vivida, aunque continúe la evolución física."
+                              ],
+                              [
+                                        "registros restantes",
+                                        "Ruinas y archivos pueden persistir durante un intervalo sin ser leídos ni comprendidos."
+                              ],
+                              [
+                                        "procesos continuos",
+                                        "Partículas, campos y expansión no necesitan observadores para producir consecuencias."
+                              ],
+                              [
+                                        "olvido total",
+                                        "Puede llegar un momento en que ninguna estructura contenga una representación recuperable de lo que ocurrió."
+                              ],
+                              [
+                                        "pregunta abierta",
+                                        "La desaparición futura de todo recuerdo no retroactúa físicamente para borrar que seres conscientes vivieron y eligieron."
+                              ]
+                    ],
+                    "scene": 21,
+                    "p0": 0.84,
+                    "p1": 0.88,
+                    "color": [
+                              151,
+                              106,
+                              116
+                    ],
+                    "sound": {
+                              "base": 32.95,
+                              "filter": 653,
+                              "noise": 0.01,
+                              "pulse": 0.035,
+                              "type": "sine"
+                    }
+          },
+          {
+                    "id": "cosmic-legacy",
+                    "name": "El legado cósmico",
+                    "className": "Consecuencia finita · transformar el futuro no exige durar para siempre",
+                    "metric": "Descendientes + archivos + ecosistemas + conocimiento + obras → efectos que continúan más allá de sus autores",
+                    "fact": "La duración infinita no es una condición necesaria para que una acción transforme realmente el futuro.",
+                    "features": [
+                              [
+                                        "descendientes",
+                                        "Nuevas formas de vida o mente pueden heredar capacidades sin conservar exactamente la identidad de sus creadores."
+                              ],
+                              [
+                                        "archivos",
+                                        "Registros distribuidos amplían la memoria histórica aunque cada soporte tenga una vida finita."
+                              ],
+                              [
+                                        "ecosistemas protegidos",
+                                        "Conservar diversidad crea futuros posibles para seres que todavía no existen."
+                              ],
+                              [
+                                        "estrellas transformadas",
+                                        "Ingeniería de largo plazo puede dejar huellas físicas que sobrevivan a culturas y lenguas."
+                              ],
+                              [
+                                        "arte y conocimiento",
+                                        "Una obra o explicación puede cambiar experiencias y decisiones aun cuando finalmente se pierda."
+                              ],
+                              [
+                                        "vida sembrada",
+                                        "Introducir vida en nuevos entornos prolonga una historia biológica y exige considerar daños, autonomía y contaminación."
+                              ]
+                    ],
+                    "scene": 22,
+                    "p0": 0.88,
+                    "p1": 0.92,
+                    "color": [
+                              136,
+                              118,
+                              132
+                    ],
+                    "sound": {
+                              "base": 30.9,
+                              "filter": 596,
+                              "noise": 0.01,
+                              "pulse": 0.033,
+                              "type": "triangle"
+                    }
+          },
+          {
+                    "id": "common-history",
+                    "name": "La existencia como historia común",
+                    "className": "Síntesis · cosmos, vida, mente y civilización son niveles de un mismo proceso desplegado",
+                    "metric": "Materia → vida → experiencia → memoria → comprensión → elección → transformación → pregunta",
+                    "fact": "Las aplicaciones no narran historias separadas, sino una secuencia en la que el universo produce regiones capaces de examinar sus propios límites.",
+                    "features": [
+                              [
+                                        "cosmos y estrellas",
+                                        "La expansión, la gravedad y la nucleosíntesis construyen los escenarios y elementos de toda historia posterior."
+                              ],
+                              [
+                                        "planetas y materia",
+                                        "Estructuras físicas concentran energía y química hasta permitir entornos estables y complejos."
+                              ],
+                              [
+                                        "vida",
+                                        "Sistemas capaces de mantenerse y evolucionar convierten condiciones físicas en oportunidades y amenazas funcionales."
+                              ],
+                              [
+                                        "mente",
+                                        "La experiencia, la memoria y la representación producen perspectivas para las que algo puede importar."
+                              ],
+                              [
+                                        "cultura y tecnología",
+                                        "Conocimiento compartido permite que decisiones acumuladas transformen cuerpos, sociedades y mundos."
+                              ],
+                              [
+                                        "límites",
+                                        "La capacidad de comprender crece dentro de fronteras físicas, lógicas, temporales y conceptuales que nunca observamos desde fuera."
+                              ]
+                    ],
+                    "scene": 23,
+                    "p0": 0.92,
+                    "p1": 0.96,
+                    "color": [
+                              172,
+                              164,
+                              158
+                    ],
+                    "sound": {
+                              "base": 28.85,
+                              "filter": 539,
+                              "noise": 0.009,
+                              "pulse": 0.03,
+                              "type": "sawtooth"
+                    }
+          },
+          {
+                    "id": "final-horizon",
+                    "name": "No vemos más allá del horizonte final.",
+                    "className": "El horizonte final · límite simultáneo de observación, predicción, cómputo, identidad, supervivencia, lenguaje y física",
+                    "metric": "Evidencia disponible → afirmación responsable | más allá → posibilidad, especulación o inconcebible",
+                    "fact": "Esto no demuestra que no exista nada más. Solo marca el límite entre aquello que podemos describir con evidencia y aquello que todavía pertenece a la posibilidad, la especulación o lo inconcebible.",
+                    "features": [
+                              [
+                                        "observación",
+                                        "No podemos describir con evidencia acontecimientos de los que ninguna señal puede llegar a una perspectiva posible."
+                              ],
+                              [
+                                        "predicción",
+                                        "Modelos finitos pierden precisión cuando dependen de condiciones inaccesibles, caos o física todavía desconocida."
+                              ],
+                              [
+                                        "computación",
+                                        "Algunas respuestas requieren recursos mayores que los disponibles en el universo accesible o no admiten un procedimiento general."
+                              ],
+                              [
+                                        "identidad",
+                                        "No poseemos un criterio externo definitivo que resuelva toda copia, fusión, interrupción o transformación de una mente."
+                              ],
+                              [
+                                        "supervivencia",
+                                        "Una civilización puede prolongar su historia enormemente sin demostrar que toda experiencia pueda continuar para siempre."
+                              ],
+                              [
+                                        "perspectiva interior",
+                                        "La existencia permanece incompleta para toda perspectiva que intenta comprenderla desde dentro."
+                              ]
+                    ],
+                    "scene": 24,
+                    "p0": 0.96,
+                    "p1": 1.0,
+                    "color": [
+                              232,
+                              228,
+                              214
+                    ],
+                    "sound": {
+                              "base": 26.8,
+                              "filter": 482,
+                              "noise": 0.008,
+                              "pulse": 0.028,
+                              "type": "triangle"
+                    }
+          }
+];
+
+        let width = 1,
+          height = 1,
+          dpr = 1;
+        let pointerDown = false;
+        let targetX = 0.5,
+          targetY = 0.982,
+          pointerX = 0.5,
+          pointerY = 0.982;
+        let shownX = 0.5,
+          shownY = 0.982;
+        let lastZoneId = "",
+          lastFeature = -1;
+        let hideTimer = 0,
+          speechTimer = 0,
+          lastSpoken = "",
+          speechUnlocked = false;
+        let lastFrame = performance.now(),
+          elapsed = 0,
+          currentProgress = 0.018,
+          touchEnergy = 0;
+
+        const particles = [],
+          nodes = [],
+          structures = [],
+          packets = [],
+          glyphs = [],
+          bursts = [],
+          waves = [];
+        let audioCtx = null,
+          master = null,
+          droneA = null,
+          droneB = null,
+          droneGain = null;
+        let droneFilter = null,
+          pulseOsc = null,
+          pulseGain = null,
+          noiseSource = null;
+        let noiseGain = null,
+          noiseFilter = null,
+          stereo = null;
+
+        function depthFromY(yNorm) {
+          return clamp(1 - yNorm, 0, 1);
+        }
+        function zoneForDepth(p) {
+          for (const zone of ZONES)
+            if (p >= zone.p0 && p < zone.p1) return zone;
+          return ZONES[ZONES.length - 1];
+        }
+        function featureFor(zone, xNorm) {
+          const index = Math.min(
+            zone.features.length - 1,
+            Math.floor(clamp(xNorm, 0, 0.999999) * zone.features.length),
+          );
+          return {
+            index,
+            name: zone.features[index][0],
+            fact: zone.features[index][1],
+          };
+        }
+        function setAccent(zone) {
+          root.style.setProperty(
+            "--accent",
+            `${zone.color[0]} ${zone.color[1]} ${zone.color[2]}`,
+          );
+        }
+        function setCssPoint(x, y) {
+          root.style.setProperty("--scan-x", `${x}px`);
+          root.style.setProperty("--scan-y", `${y}px`);
+        }
+
+        function buildScene() {
+          particles.length =
+            nodes.length =
+            structures.length =
+            packets.length =
+            glyphs.length =
+              0;
+          const count = reducedMotion
+            ? 90
+            : Math.round(clamp((width * height) / 4800, 150, 380));
+          for (let i = 0; i < count; i++)
+            particles.push({
+              x: seeded(i + 1),
+              y: seeded(i + 1000),
+              r: 0.5 + seeded(i + 2000) * 2.4,
+              phase: seeded(i + 3000) * TAU,
+              speed: 0.12 + seeded(i + 4000) * 0.9,
+              kind: i % 11,
+            });
+          for (let i = 0; i < 70; i++)
+            nodes.push({
+              x: 0.05 + seeded(i + 5000) * 0.9,
+              y: 0.07 + seeded(i + 6000) * 0.86,
+              r: 2 + seeded(i + 7000) * 5,
+              phase: seeded(i + 8000) * TAU,
+              kind: i % 9,
+            });
+          for (let i = 0; i < 46; i++)
+            structures.push({
+              x: 0.03 + seeded(i + 9000) * 0.94,
+              y: 0.08 + seeded(i + 10000) * 0.84,
+              w: 0.025 + seeded(i + 11000) * 0.09,
+              h: 0.03 + seeded(i + 12000) * 0.16,
+              phase: seeded(i + 13000) * TAU,
+              kind: i % 10,
+            });
+          for (let i = 0; i < 62; i++)
+            packets.push({
+              x1: seeded(i + 14000),
+              y1: seeded(i + 15000),
+              x2: seeded(i + 16000),
+              y2: seeded(i + 17000),
+              phase: seeded(i + 18000) * TAU,
+              speed: 0.16 + seeded(i + 18100) * 0.55,
+              kind: i % 7,
+            });
+          const chars = "01λΣΔAI{}<>→∞⊕◌⌁✦?";
+          for (let i = 0; i < 80; i++)
+            glyphs.push({
+              x: 0.04 + seeded(i + 19000) * 0.92,
+              y: 0.06 + seeded(i + 20000) * 0.86,
+              char: chars[i % chars.length],
+              size: 9 + seeded(i + 21000) * 22,
+              phase: seeded(i + 22000) * TAU,
+              speed: 0.2 + seeded(i + 23000) * 0.9,
+            });
+        }
+
+        function resize() {
+          const rect = canvas.getBoundingClientRect();
+          width = Math.max(1, rect.width);
+          height = Math.max(1, rect.height);
+          dpr = Math.min(2, devicePixelRatio || 1);
+          canvas.width = Math.round(width * dpr);
+          canvas.height = Math.round(height * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          buildScene();
+          shownX = targetX * width;
+          shownY = targetY * height;
+          setCssPoint(shownX, shownY);
+        }
+
+        function ensureAudio() {
+          if (audioCtx) {
+            if (audioCtx.state === "suspended")
+              audioCtx.resume().catch(() => {});
+            return;
+          }
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return;
+          audioCtx = new AudioContext();
+          master = audioCtx.createGain();
+          master.gain.value = 0;
+          const compressor = audioCtx.createDynamicsCompressor();
+          compressor.threshold.value = -24;
+          compressor.knee.value = 20;
+          compressor.ratio.value = 5;
+          master.connect(compressor).connect(audioCtx.destination);
+          droneA = audioCtx.createOscillator();
+          droneB = audioCtx.createOscillator();
+          droneGain = audioCtx.createGain();
+          droneFilter = audioCtx.createBiquadFilter();
+          stereo = audioCtx.createStereoPanner
+            ? audioCtx.createStereoPanner()
+            : audioCtx.createGain();
+          droneA.type = "sine";
+          droneB.type = "triangle";
+          droneGain.gain.value = 0.0001;
+          droneFilter.type = "lowpass";
+          droneFilter.frequency.value = 850;
+          droneFilter.Q.value = 0.8;
+          droneA.connect(droneGain);
+          droneB.connect(droneGain);
+          droneGain.connect(droneFilter).connect(stereo).connect(master);
+          droneA.start();
+          droneB.start();
+          pulseOsc = audioCtx.createOscillator();
+          pulseGain = audioCtx.createGain();
+          pulseOsc.type = "sine";
+          pulseGain.gain.value = 0.0001;
+          pulseOsc.connect(pulseGain).connect(master);
+          pulseOsc.start();
+          const buffer = audioCtx.createBuffer(
+              1,
+              audioCtx.sampleRate * 2,
+              audioCtx.sampleRate,
+            ),
+            channel = buffer.getChannelData(0);
+          for (let i = 0; i < channel.length; i++)
+            channel[i] = Math.random() * 2 - 1;
+          noiseSource = audioCtx.createBufferSource();
+          noiseSource.buffer = buffer;
+          noiseSource.loop = true;
+          noiseFilter = audioCtx.createBiquadFilter();
+          noiseFilter.type = "bandpass";
+          noiseFilter.frequency.value = 1100;
+          noiseFilter.Q.value = 0.5;
+          noiseGain = audioCtx.createGain();
+          noiseGain.gain.value = 0.0001;
+          noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
+          noiseSource.start();
+        }
+
+        function setAudioFor(zone, xNorm, progress, active) {
+          if (!audioCtx || !master) return;
+          const now = audioCtx.currentTime,
+            s = zone.sound,
+            base = s.base * (0.94 + xNorm * 0.13);
+          droneA.type = s.type;
+          droneB.type = s.type === "sawtooth" ? "triangle" : "sine";
+          droneA.frequency.setTargetAtTime(base, now, 0.08);
+          droneB.frequency.setTargetAtTime(
+            base * (1.496 + progress * 0.012),
+            now,
+            0.1,
+          );
+          droneFilter.frequency.setTargetAtTime(
+            s.filter * (0.84 + xNorm * 0.3),
+            now,
+            0.1,
+          );
+          droneGain.gain.setTargetAtTime(
+            active ? 0.012 - progress * 0.005 : 0.0001,
+            now,
+            0.09,
+          );
+          pulseOsc.frequency.setTargetAtTime(
+            base * (1.985 + s.pulse),
+            now,
+            0.08,
+          );
+          pulseGain.gain.setTargetAtTime(
+            active ? 0.003 - progress * 0.0018 : 0.0001,
+            now,
+            0.1,
+          );
+          noiseFilter.frequency.setTargetAtTime(s.filter * 1.13, now, 0.1);
+          noiseGain.gain.setTargetAtTime(
+            active ? Math.max(0.0001, s.noise * 0.052) : 0.0001,
+            now,
+            0.1,
+          );
+          if (stereo.pan)
+            stereo.pan.setTargetAtTime((xNorm - 0.5) * 0.7, now, 0.08);
+          master.gain.setTargetAtTime(active ? 0.25 - progress * 0.08 : 0.0001, now, 0.09);
+        }
+
+        function ping(zone, xNorm, index = 0) {
+          if (!audioCtx || !master) return;
+          const now = audioCtx.currentTime,
+            osc = audioCtx.createOscillator(),
+            gain = audioCtx.createGain(),
+            filter = audioCtx.createBiquadFilter();
+          const pan = audioCtx.createStereoPanner
+            ? audioCtx.createStereoPanner()
+            : null;
+          osc.type =
+            index % 3 === 0 ? "sine" : index % 3 === 1 ? "triangle" : "square";
+          osc.frequency.value = zone.sound.base * (2.05 + index * 0.12);
+          filter.type = "lowpass";
+          filter.frequency.value = Math.max(520, 1800 - zone.scene * 48);
+          gain.gain.setValueAtTime(0.0001, now);
+          gain.gain.exponentialRampToValueAtTime(0.065, now + 0.012);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.48);
+          osc.connect(filter).connect(gain);
+          if (pan) {
+            pan.pan.value = (xNorm - 0.5) * 1.25;
+            gain.connect(pan).connect(master);
+          } else gain.connect(master);
+          osc.start(now);
+          osc.stop(now + 0.54);
+        }
+
+        function queueSpeech(label) {
+          if (
+            !speechUnlocked ||
+            !("speechSynthesis" in window) ||
+            !label ||
+            label === lastSpoken
+          )
+            return;
+          clearTimeout(speechTimer);
+          speechTimer = setTimeout(() => {
+            try {
+              speechSynthesis.cancel();
+              const u = new SpeechSynthesisUtterance(label);
+              u.lang = "es-ES";
+              u.rate = 0.86;
+              u.pitch = 1;
+              const voices = speechSynthesis.getVoices();
+              const voice =
+                voices.find((v) => /^es(-|_)/i.test(v.lang)) ||
+                voices.find((v) => /spanish|español/i.test(v.name));
+              if (voice) u.voice = voice;
+              speechSynthesis.speak(u);
+              lastSpoken = label;
+            } catch (_) {}
+          }, 360);
+        }
+
+        function addRipple(x, y) {
+          const node = document.createElement("div");
+          node.className = "ripple";
+          node.style.left = `${x}px`;
+          node.style.top = `${y}px`;
+          document.body.appendChild(node);
+          node.addEventListener("animationend", () => node.remove(), {
+            once: true,
+          });
+        }
+        function addBurst(x, y, color) {
+          const count = reducedMotion ? 5 : 13;
+          for (let i = 0; i < count; i++) {
+            const a = Math.random() * TAU,
+              s = 18 + Math.random() * 72;
+            bursts.push({
+              x,
+              y,
+              vx: Math.cos(a) * s,
+              vy: Math.sin(a) * s,
+              r: 0.8 + Math.random() * 2.4,
+              life: 1,
+              decay: 1 + Math.random() * 0.8,
+              color,
+            });
+          }
+          waves.push({ x, y, radius: 5, life: 1, color });
+        }
+
+        function updateReadout(x, y, isNewPress = false) {
+          const xNorm = clamp(x / width, 0, 0.999999),
+            yNorm = clamp(y / height, 0, 0.999999),
+            progress = depthFromY(yNorm),
+            zone = zoneForDepth(progress),
+            feature = featureFor(zone, xNorm);
+          if (isNewPress) {
+            currentProgress = progress;
+            pointerX = xNorm;
+            pointerY = yNorm;
+          }
+          targetX = xNorm;
+          targetY = yNorm;
+          touchEnergy = 1;
+          setCssPoint(x, y);
+          setAccent(zone);
+          root.style.setProperty(
+            "--progress",
+            `${Math.max(1.2, progress * 100)}%`,
+          );
+          scaleDot.style.bottom = `${48 + progress * Math.max(0, height - 96)}px`;
+          touchOrb.style.left = `${x}px`;
+          touchOrb.style.top = `${y}px`;
+          scaleValue.textContent = zone.className;
+          const changed =
+            zone.id !== lastZoneId || feature.index !== lastFeature;
+          if (changed || isNewPress) {
+            evidenceClass.textContent = zone.className;
+            zoneName.textContent = zone.name;
+            zoneName.className =
+              zone.name.length > 31
+                ? "long"
+                : zone.name.length > 21
+                  ? "compact"
+                  : "";
+            featureName.textContent = feature.name;
+            metric.textContent = zone.metric;
+            fact.textContent = feature.fact || zone.fact;
+            ping(zone, xNorm, feature.index);
+            addBurst(x, y, zone.color);
+            queueSpeech(feature.name);
+            lastZoneId = zone.id;
+            lastFeature = feature.index;
+          }
+          readout.classList.add("visible");
+          touchOrb.classList.add("visible");
+          document.body.classList.add("active");
+          hint.style.display = "none";
+          setAudioFor(zone, xNorm, progress, true);
+        }
+        function releaseInteraction(delay = 1050) {
+          clearTimeout(hideTimer);
+          hideTimer = setTimeout(() => {
+            readout.classList.remove("visible");
+            touchOrb.classList.remove("visible");
+            document.body.classList.remove("active");
+            const z = zoneForDepth(depthFromY(targetY));
+            setAudioFor(z, targetX, depthFromY(targetY), false);
+          }, delay);
+        }
+        function endPointer() {
+          pointerDown = false;
+          releaseInteraction();
+        }
+        canvas.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          canvas.focus({ preventScroll: true });
+          pointerDown = true;
+          speechUnlocked = true;
+          ensureAudio();
+          try {
+            canvas.setPointerCapture(e.pointerId);
+          } catch (_) {}
+          updateReadout(e.clientX, e.clientY, true);
+          addRipple(e.clientX, e.clientY);
+        });
+        canvas.addEventListener("pointermove", (e) => {
+          if (!pointerDown && e.pointerType !== "mouse") return;
+          if (!pointerDown && e.buttons === 0) {
+            targetX = clamp(e.clientX / width, 0, 1);
+            targetY = clamp(e.clientY / height, 0, 1);
+            return;
+          }
+          e.preventDefault();
+          updateReadout(e.clientX, e.clientY);
+        });
+        canvas.addEventListener("pointerup", endPointer);
+        canvas.addEventListener("pointercancel", endPointer);
+        canvas.addEventListener("lostpointercapture", endPointer);
+        canvas.addEventListener("keydown", (e) => {
+          const keys = [
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+            "Enter",
+            " ",
+          ];
+          if (!keys.includes(e.key)) return;
+          e.preventDefault();
+          speechUnlocked = true;
+          ensureAudio();
+          const step = e.shiftKey ? 0.09 : 0.035;
+          if (e.key === "ArrowUp")
+            targetY = clamp(targetY - step, 0.005, 0.995);
+          if (e.key === "ArrowDown")
+            targetY = clamp(targetY + step, 0.005, 0.995);
+          if (e.key === "ArrowLeft")
+            targetX = clamp(targetX - step, 0.005, 0.995);
+          if (e.key === "ArrowRight")
+            targetX = clamp(targetX + step, 0.005, 0.995);
+          updateReadout(
+            targetX * width,
+            targetY * height,
+            e.key === "Enter" || e.key === " ",
+          );
+          releaseInteraction(1600);
+        });
+
+        function softHalo(cx, cy, radius, color, alpha) {
+          const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+          g.addColorStop(0, rgba(color, alpha));
+          g.addColorStop(0.35, rgba(color, alpha * 0.4));
+          g.addColorStop(1, rgba(color, 0));
+          ctx.fillStyle = g;
+          ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+        }
+        function roundedRectPath(x, y, w, h, r) {
+          const rr = Math.min(r, w * 0.5, h * 0.5);
+          ctx.beginPath();
+          ctx.moveTo(x + rr, y);
+          ctx.arcTo(x + w, y, x + w, y + h, rr);
+          ctx.arcTo(x + w, y + h, x, y + h, rr);
+          ctx.arcTo(x, y + h, x, y, rr);
+          ctx.arcTo(x, y, x + w, y, rr);
+          ctx.closePath();
+        }
+        function line(x1, y1, x2, y2, stroke = "rgba(255,255,255,.3)", lw = 1) {
+          ctx.strokeStyle = stroke;
+          ctx.lineWidth = lw;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        }
+        function circle(
+          x,
+          y,
+          r,
+          fill = "rgba(255,255,255,.5)",
+          stroke = null,
+          lw = 1,
+        ) {
+          ctx.fillStyle = fill;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, TAU);
+          ctx.fill();
+          if (stroke) {
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = lw;
+            ctx.stroke();
+          }
+        }
+        function polygon(points, fill, stroke = null, lw = 1) {
+          ctx.beginPath();
+          points.forEach((p, i) =>
+            i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]),
+          );
+          ctx.closePath();
+          if (fill) {
+            ctx.fillStyle = fill;
+            ctx.fill();
+          }
+          if (stroke) {
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = lw;
+            ctx.stroke();
+          }
+        }
+        function drawGear(cx, cy, r, teeth, color, rotation = 0) {
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(rotation);
+          ctx.strokeStyle = color;
+          ctx.fillStyle = "rgba(0,0,0,.15)";
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          for (let i = 0; i < teeth * 2; i++) {
+            const a = (i / (teeth * 2)) * TAU,
+              rr = i % 2 ? r : r * 0.76;
+            const x = Math.cos(a) * rr,
+              y = Math.sin(a) * rr;
+            if (!i) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          circle(0, 0, r * 0.27, "rgba(0,0,0,.42)", color, 1.2);
+          ctx.restore();
+        }
+        function drawGlobe(cx, cy, r, z, time, network = true) {
+          softHalo(cx, cy, r * 2.15, z.color, 0.2);
+          const g = ctx.createRadialGradient(
+            cx - r * 0.38,
+            cy - r * 0.43,
+            r * 0.04,
+            cx,
+            cy,
+            r,
+          );
+          g.addColorStop(0, "rgba(205,248,255,.98)");
+          g.addColorStop(0.42, "rgba(63,173,222,.94)");
+          g.addColorStop(1, "rgba(8,39,92,.97)");
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.fill();
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.clip();
+          ctx.fillStyle = "rgba(86,186,114,.67)";
+          for (let i = 0; i < 12; i++) {
+            const a = seeded(i + 300) * TAU,
+              rr = seeded(i + 330) * r * 0.77,
+              x = cx + Math.cos(a) * rr,
+              y = cy + Math.sin(a) * rr * 0.78;
+            ctx.beginPath();
+            ctx.ellipse(
+              x,
+              y,
+              r * (0.055 + seeded(i + 350) * 0.13),
+              r * (0.025 + seeded(i + 370) * 0.065),
+              a,
+              0,
+              TAU,
+            );
+            ctx.fill();
+          }
+          ctx.strokeStyle = "rgba(255,255,255,.15)";
+          for (let i = 0; i < 7; i++) {
+            ctx.beginPath();
+            ctx.arc(
+              cx - r * 0.24 + i * r * 0.075,
+              cy - r * 0.13 + i * r * 0.035,
+              r * (0.47 + i * 0.05),
+              0.18,
+              2.55,
+            );
+            ctx.stroke();
+          }
+          ctx.restore();
+          ctx.strokeStyle = "rgba(190,240,255,.55)";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.stroke();
+          if (network) {
+            for (let i = 0; i < 27; i++) {
+              const a = (i / 27) * TAU + time * 0.01,
+                x = cx + Math.cos(a) * r * 0.82,
+                y = cy + Math.sin(a) * r * 0.82;
+              circle(
+                x,
+                y,
+                1.5 + (i % 3),
+                rgba(i % 4 ? z.color : [255, 240, 185], 0.46),
+              );
+            }
+          }
+        }
+        function drawBuilding(x, ground, w, h, color, lit = 0.45) {
+          ctx.fillStyle = "rgba(8,14,25,.58)";
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1.2;
+          ctx.fillRect(x - w * 0.5, ground - h, w, h);
+          ctx.strokeRect(x - w * 0.5, ground - h, w, h);
+          let row = 0;
+          for (
+            let ry = 0;
+            ry < h - w * 0.2;
+            ry += Math.max(10, w * 0.38), row++
+          )
+            for (let c = -1; c <= 1; c++) {
+              const on =
+                fract(
+                  Math.sin((x + row * 17 + c * 31) * 12.9898) * 43758.5453,
+                ) < lit;
+              circle(
+                x + c * w * 0.23,
+                ground - h + w * 0.22 + ry,
+                1.25,
+                on ? "rgba(255,230,145,.45)" : "rgba(120,220,255,.2)",
+              );
+            }
+        }
+        function drawTool(x, y, len, angle, type, color) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(angle);
+          ctx.lineCap = "round";
+          if (type === "hammer") {
+            line(
+              -len * 0.42,
+              0,
+              len * 0.35,
+              0,
+              "rgba(180,120,73,.9)",
+              len * 0.1,
+            );
+            ctx.fillStyle = color;
+            roundedRectPath(
+              len * 0.17,
+              -len * 0.18,
+              len * 0.34,
+              len * 0.36,
+              len * 0.05,
+            );
+            ctx.fill();
+          } else if (type === "knife") {
+            line(
+              -len * 0.42,
+              0,
+              -len * 0.1,
+              0,
+              "rgba(156,96,55,.9)",
+              len * 0.12,
+            );
+            polygon(
+              [
+                [-len * 0.1, -len * 0.08],
+                [len * 0.45, -len * 0.03],
+                [len * 0.28, len * 0.12],
+                [-len * 0.1, len * 0.08],
+              ],
+              "rgba(220,240,250,.75)",
+              color,
+              1,
+            );
+          } else if (type === "needle") {
+            line(-len * 0.45, 0, len * 0.45, 0, color, 2);
+            circle(-len * 0.36, 0, len * 0.055, "rgba(0,0,0,.2)", color, 1);
+          } else if (type === "rope") {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = len * 0.045;
+            ctx.beginPath();
+            for (let i = 0; i <= 30; i++) {
+              const xx = -len * 0.45 + (i / 30) * len * 0.9,
+                yy = Math.sin(i * 0.7) * len * 0.04;
+              i ? ctx.lineTo(xx, yy) : ctx.moveTo(xx, yy);
+            }
+            ctx.stroke();
+          } else {
+            line(-len * 0.42, 0, len * 0.42, 0, color, len * 0.06);
+            circle(len * 0.34, 0, len * 0.12, "rgba(0,0,0,.2)", color, 2);
+          }
+          ctx.restore();
+        }
+
+        function drawBackground(progress, time) {
+          const f = clamp(progress * (ZONES.length - 1), 0, ZONES.length - 1),
+            i = Math.floor(f),
+            j = Math.min(ZONES.length - 1, i + 1),
+            t = smooth(f - i),
+            a = ZONES[i].color,
+            b = ZONES[j].color;
+          const c = a.map((v, k) => Math.round(mix(v, b[k], t))),
+            dim = 1 - progress * 0.72,
+            motion = 1 - progress * 0.87,
+            dark = c.map((v) => Math.round(v * (0.055 + dim * 0.035))),
+            mid = c.map((v) => Math.round(v * (0.14 + dim * 0.14)));
+          const g = ctx.createLinearGradient(0, height, 0, 0);
+          g.addColorStop(0, `rgb(${Math.max(2,dark[0]-5)} ${Math.max(3,dark[1]-4)} ${Math.max(5,dark[2]-2)})`);
+          g.addColorStop(0.56, `rgb(${mid[0]} ${mid[1]} ${mid[2]})`);
+          g.addColorStop(1, `rgb(${Math.round(c[0]*(0.35+dim*.2))} ${Math.round(c[1]*(0.35+dim*.2))} ${Math.round(c[2]*(0.35+dim*.2))})`);
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, width, height);
+          softHalo(
+            width * (0.48 + 0.06 * Math.sin(time * 0.035 * motion)),
+            height * (0.74 - progress * 0.53),
+            Math.max(width, height) * (0.76 - progress * 0.18),
+            c,
+            0.11 * dim,
+          );
+          const visibleFraction = 1 - progress * 0.82;
+          for (let index = 0; index < particles.length; index++) {
+            if (index / particles.length > visibleFraction + 0.08) continue;
+            const p = particles[index],
+              x = fract(p.x + time * 0.0017 * p.speed * motion) * width + Math.sin(time * 0.13 * motion + p.phase) * 3,
+              y = fract(p.y - time * 0.001 * p.speed * motion) * height + Math.cos(time * 0.11 * motion + p.phase) * 3,
+              col = p.kind % 3 === 0 ? c : p.kind % 3 === 1 ? [255,244,215] : [132,226,255],
+              flicker = 0.5 + 0.5 * Math.sin(time * p.speed * motion + p.phase);
+            circle(x, y, p.r * (0.72 + (1-progress) * 0.28), rgba(col, (0.035 + 0.15 * flicker) * dim));
+          }
+          for (let k = 1; k < 8; k++)
+            line((k / 8) * width, 0, (k / 8) * width, height, `rgba(255,255,255,${0.014 * dim})`);
+          if (progress > 0.58) {
+            const hp = smooth((progress - 0.58) / 0.42), y = height * (0.19 + hp * 0.08);
+            ctx.setLineDash([2, 8 + hp * 18]);
+            line(width * 0.06, y, width * 0.94, y, rgba([235,232,218], 0.08 + hp * 0.14), 1);
+            ctx.setLineDash([]);
+          }
+        }
+
+        function drawPlanet(cx, cy, r, z, time, land = true) {
+          softHalo(cx, cy, r * 2.2, z.color, 0.18);
+          const g = ctx.createRadialGradient(
+            cx - r * 0.32,
+            cy - r * 0.38,
+            r * 0.03,
+            cx,
+            cy,
+            r,
+          );
+          g.addColorStop(0, "rgba(225,250,255,.98)");
+          g.addColorStop(0.38, rgba(z.color, 0.78));
+          g.addColorStop(1, "rgba(7,20,55,.98)");
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.fill();
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.clip();
+          if (land) {
+            ctx.fillStyle = "rgba(105,207,145,.58)";
+            for (let i = 0; i < 10; i++) {
+              const a = seeded(i + 310) * TAU,
+                rr = seeded(i + 340) * r * 0.72;
+              ctx.beginPath();
+              ctx.ellipse(
+                cx + Math.cos(a) * rr,
+                cy + Math.sin(a) * rr * 0.78,
+                r * (0.055 + seeded(i + 370) * 0.14),
+                r * (0.026 + seeded(i + 390) * 0.07),
+                a,
+                0,
+                TAU,
+              );
+              ctx.fill();
+            }
+          }
+          ctx.strokeStyle = "rgba(255,255,255,.13)";
+          for (let i = 0; i < 6; i++) {
+            ctx.beginPath();
+            ctx.ellipse(
+              cx,
+              cy,
+              r * (0.35 + i * 0.11),
+              r * (0.12 + i * 0.035),
+              time * 0.006 + i * 0.27,
+              0,
+              TAU,
+            );
+            ctx.stroke();
+          }
+          ctx.restore();
+          ctx.strokeStyle = "rgba(215,245,255,.55)";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.stroke();
+        }
+        function drawStar(cx, cy, r, color, time) {
+          softHalo(cx, cy, r * 3, color, 0.2);
+          const g = ctx.createRadialGradient(
+            cx - r * 0.25,
+            cy - r * 0.3,
+            0,
+            cx,
+            cy,
+            r,
+          );
+          g.addColorStop(0, "rgba(255,255,240,1)");
+          g.addColorStop(0.38, rgba(color, 0.96));
+          g.addColorStop(1, rgba([255, 128, 70], 0.48));
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r * (1 + 0.025 * Math.sin(time * 1.8)), 0, TAU);
+          ctx.fill();
+          for (let i = 0; i < 12; i++) {
+            const a = (i / 12) * TAU + time * 0.025,
+              lineR = r * (1.25 + (i % 3) * 0.2);
+            line(
+              cx + Math.cos(a) * r * 1.05,
+              cy + Math.sin(a) * r * 1.05,
+              cx + Math.cos(a) * lineR,
+              cy + Math.sin(a) * lineR,
+              rgba(color, 0.22),
+              1.3,
+            );
+          }
+        }
+        function drawSatellite(x, y, s, z, angle = 0) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(angle);
+          ctx.fillStyle = "rgba(220,235,245,.68)";
+          roundedRectPath(-s * 0.12, -s * 0.08, s * 0.24, s * 0.16, s * 0.035);
+          ctx.fill();
+          ctx.strokeStyle = rgba(z.color, 0.7);
+          ctx.stroke();
+          ctx.fillStyle = rgba(z.color, 0.28);
+          ctx.fillRect(-s * 0.42, -s * 0.07, s * 0.25, s * 0.14);
+          ctx.fillRect(s * 0.17, -s * 0.07, s * 0.25, s * 0.14);
+          line(0, -s * 0.08, 0, -s * 0.22, "rgba(255,255,255,.52)", 1.5);
+          circle(0, -s * 0.25, s * 0.025, rgba(z.color, 0.78));
+          ctx.restore();
+        }
+        function drawHabitat(x, y, s, z, domes = 3) {
+          line(x - s * 0.42, y, x + s * 0.42, y, rgba(z.color, 0.35), 3);
+          for (let i = 0; i < domes; i++) {
+            const dx = (i - (domes - 1) / 2) * s * 0.27,
+              r = s * (0.095 + (i % 2) * 0.018);
+            ctx.fillStyle = rgba(z.color, 0.12);
+            ctx.strokeStyle = rgba(z.color, 0.65);
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.arc(x + dx, y, r, Math.PI, TAU);
+            ctx.lineTo(x + dx + r, y);
+            ctx.lineTo(x + dx - r, y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            for (let k = -1; k <= 1; k++)
+              circle(
+                x + dx + k * r * 0.38,
+                y - r * 0.42,
+                1.4,
+                "rgba(255,235,160,.62)",
+              );
+          }
+        }
+        function drawNetwork(cx, cy, r, z, time, count = 18) {
+          for (let i = 0; i < count; i++) {
+            const a = (i / count) * TAU + seeded(i + 900) * 0.5,
+              rr = r * (0.36 + seeded(i + 930) * 0.64),
+              x = cx + Math.cos(a) * rr,
+              y = cy + Math.sin(a) * rr * 0.72;
+            nodes[i]._x = x;
+            nodes[i]._y = y;
+            circle(
+              x,
+              y,
+              2 + (i % 3),
+              rgba(i % 4 ? z.color : [255, 240, 180], 0.68),
+            );
+          }
+          for (let i = 0; i < count * 2; i++) {
+            const a = nodes[i % count],
+              b = nodes[(i * 7 + 3) % count];
+            line(
+              a._x,
+              a._y,
+              b._x,
+              b._y,
+              rgba(z.color, 0.075 + (i % 4) * 0.018),
+              1,
+            );
+            const p = fract(time * (0.07 + (i % 3) * 0.012) + i * 0.053);
+            circle(
+              mix(a._x, b._x, p),
+              mix(a._y, b._y, p),
+              1.3,
+              rgba([255, 250, 220], 0.5),
+            );
+          }
+        }
+        function drawBranching(
+          originX,
+          originY,
+          targetY,
+          z,
+          time,
+          branches = 9,
+          spread = 0.82,
+        ) {
+          for (let i = 0; i < branches; i++) {
+            const ex =
+                width * ((1 - spread) / 2 + (i / (branches - 1)) * spread),
+              cx =
+                originX +
+                (ex - originX) * 0.36 +
+                Math.sin(i * 2.1) * width * 0.035;
+            ctx.strokeStyle = rgba(
+              i % 3 === 0
+                ? [255, 170, 190]
+                : i % 3 === 1
+                  ? z.color
+                  : [140, 255, 176],
+              0.2 + i * 0.012,
+            );
+            ctx.lineWidth = 1.7 + (i % 3);
+            ctx.beginPath();
+            ctx.moveTo(originX, originY);
+            ctx.bezierCurveTo(
+              cx,
+              mix(originY, targetY, 0.32),
+              cx,
+              mix(originY, targetY, 0.7),
+              ex,
+              targetY,
+            );
+            ctx.stroke();
+            const p = fract(time * (0.045 + i * 0.004) + i * 0.09),
+              u = 1 - p,
+              x =
+                u * u * u * originX +
+                3 * u * u * p * cx +
+                3 * u * p * p * cx +
+                p * p * p * ex,
+              y =
+                u * u * u * originY +
+                3 * u * u * p * mix(originY, targetY, 0.32) +
+                3 * u * p * p * mix(originY, targetY, 0.7) +
+                p * p * p * targetY;
+            circle(x, y, 2 + (i % 2), rgba([255, 250, 225], 0.54));
+            circle(
+              ex,
+              targetY,
+              3 + (i % 3),
+              rgba(i % 2 ? z.color : [255, 184, 130], 0.46),
+            );
+          }
+        }
+        function drawRiskSymbol(x, y, r, z, type) {
+          ctx.strokeStyle = rgba(z.color, 0.75);
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, TAU);
+          ctx.stroke();
+          ctx.font = `900 ${r * 0.95}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = rgba(z.color, 0.8);
+          ctx.fillText(type, x, y + r * 0.05);
+          ctx.textBaseline = "alphabetic";
+        }
+
+        function drawOrbitalRing(
+          cx,
+          cy,
+          rx,
+          ry,
+          angle,
+          color,
+          alpha = 0.35,
+          lw = 1.2,
+        ) {
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(angle);
+          ctx.strokeStyle = rgba(color, alpha);
+          ctx.lineWidth = lw;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, rx, ry, 0, 0, TAU);
+          ctx.stroke();
+          ctx.restore();
+        }
+        function drawMolecule(cx, cy, r, z, time, count = 7) {
+          const pts = [];
+          for (let i = 0; i < count; i++) {
+            const a = (i / count) * TAU + time * 0.025,
+              rr = r * (0.45 + seeded(i + 61) * 0.5);
+            pts.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr * 0.7]);
+          }
+          for (let i = 0; i < count; i++) {
+            const a = pts[i],
+              b = pts[(i * 3 + 2) % count];
+            line(a[0], a[1], b[0], b[1], rgba(z.color, 0.18), 1.6);
+          }
+          pts.forEach((p, i) => {
+            softHalo(
+              p[0],
+              p[1],
+              r * 0.18,
+              i % 3 ? z.color : [255, 215, 130],
+              0.09,
+            );
+            circle(
+              p[0],
+              p[1],
+              r * (0.035 + (i % 3) * 0.012),
+              rgba(i % 3 ? z.color : [255, 225, 155], 0.68),
+              rgba([255, 255, 255], 0.5),
+              1,
+            );
+          });
+        }
+        function drawCell(cx, cy, r, z, time, kind = 0) {
+          softHalo(cx, cy, r * 1.8, z.color, 0.16);
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(time * 0.015 + kind);
+          ctx.fillStyle = rgba(z.color, 0.16);
+          ctx.strokeStyle = rgba(z.color, 0.72);
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          for (let i = 0; i <= 48; i++) {
+            const a = (i / 48) * TAU,
+              rr =
+                r * (1 + 0.055 * Math.sin(a * (3 + (kind % 4)) + time * 0.7));
+            const x = Math.cos(a) * rr,
+              y = Math.sin(a) * rr * 0.82;
+            i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+          }
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          circle(
+            0,
+            0,
+            r * 0.27,
+            "rgba(10,30,42,.7)",
+            rgba([255, 245, 185], 0.55),
+            1.4,
+          );
+          for (let i = 0; i < 10; i++) {
+            const a = (i / 10) * TAU + time * 0.03,
+              rr = r * (0.4 + seeded(i + 201) * 0.3);
+            circle(
+              Math.cos(a) * rr,
+              Math.sin(a) * rr * 0.75,
+              r * (0.025 + (i % 3) * 0.01),
+              rgba(i % 2 ? z.color : [255, 190, 130], 0.52),
+            );
+          }
+          ctx.restore();
+        }
+        function drawSpectrum(x, y, w, h, z, time, peaks = 8) {
+          line(x, y + h, x + w, y + h, "rgba(255,255,255,.32)", 1);
+          for (let i = 0; i < peaks; i++) {
+            const px = x + w * (0.07 + (i / (peaks - 1)) * 0.86),
+              ph = h * (0.2 + seeded(i + 300) * 0.72);
+            line(
+              px,
+              y + h,
+              px,
+              y + h - ph,
+              rgba(i % 3 ? z.color : [255, 210, 120], 0.62),
+              1.5 + (i % 2),
+            );
+            softHalo(px, y + h - ph, w * 0.035, z.color, 0.07);
+          }
+          ctx.strokeStyle = rgba([255, 255, 255], 0.2);
+          ctx.beginPath();
+          for (let i = 0; i <= 60; i++) {
+            const u = i / 60,
+              yy =
+                y +
+                h * 0.65 -
+                Math.sin(u * TAU * 2 + time * 0.2) * h * 0.05 -
+                (0.5 + 0.5 * Math.sin(u * TAU * 7 + time * 0.1)) * h * 0.12;
+            i ? ctx.lineTo(x + u * w, yy) : ctx.moveTo(x + u * w, yy);
+          }
+          ctx.stroke();
+        }
+        function drawSignal(cx, cy, r, z, time, rings = 7) {
+          for (let i = 0; i < rings; i++) {
+            const p = fract(time * 0.14 + i / rings),
+              rr = r * (0.12 + p),
+              ctxAlpha = (1 - p) * 0.38;
+            ctx.strokeStyle = rgba(z.color, ctxAlpha);
+            ctx.lineWidth = 1.1 + (i % 2);
+            ctx.beginPath();
+            ctx.arc(cx, cy, rr, 0, TAU);
+            ctx.stroke();
+          }
+          circle(cx, cy, r * 0.035, rgba([255, 245, 200], 0.8));
+        }
+        function drawIceMoon(cx, cy, r, z, time) {
+          drawPlanet(cx, cy, r, { color: [175, 225, 255] }, time, false);
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.clip();
+          ctx.strokeStyle = "rgba(255,255,255,.5)";
+          for (let i = 0; i < 15; i++) {
+            const y = cy - r + i * r * 0.14;
+            ctx.beginPath();
+            ctx.moveTo(cx - r, y);
+            for (let x = cx - r; x <= cx + r; x += r * 0.12)
+              ctx.lineTo(x, y + Math.sin(x * 0.05 + i) * r * 0.025);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+        function drawAbstractBody(cx, cy, r, z, time, mode) {
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(time * 0.012 + mode * 0.4);
+          ctx.strokeStyle = rgba(z.color, 0.62);
+          ctx.fillStyle = rgba(z.color, 0.12);
+          ctx.lineWidth = 1.7;
+          ctx.beginPath();
+          const n = 5 + (mode % 5);
+          for (let i = 0; i <= n; i++) {
+            const a = (i / n) * TAU,
+              rr = r * (0.65 + 0.32 * Math.sin(a * (2 + (mode % 4)) + mode));
+            const x = Math.cos(a) * rr,
+              y = Math.sin(a) * rr;
+            i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+          }
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          for (let i = 0; i < n; i++) {
+            const a = (i / n) * TAU + time * 0.02,
+              rr = r * 0.48;
+            circle(
+              Math.cos(a) * rr,
+              Math.sin(a) * rr,
+              r * 0.045,
+              rgba(i % 2 ? z.color : [255, 230, 160], 0.58),
+            );
+          }
+          ctx.restore();
+        }
+        function footerLabel(text, z) {
+          const alpha = footerLabel.alpha || 0;
+          if (!footerLabel.pending || alpha >= footerLabel.pending.alpha)
+            footerLabel.pending = { text, z, alpha };
+        }
+        function paintFooter() {
+          const item = footerLabel.pending;
+          if (!item) return;
+          const s = Math.min(width, height);
+          ctx.font = `900 ${s * 0.023}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.fillStyle = `rgba(255,255,255,${0.57 * clamp(item.alpha * 1.5, 0, 1)})`;
+          ctx.fillText(item.text, width * 0.5, height * 0.86);
+        }
+
+        function drawWaveform(x, y, w, h, z, time, mode = 0) {
+          ctx.save();
+          ctx.strokeStyle = rgba(z.color, 0.62);
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          for (let i = 0; i <= 100; i++) {
+            const u = i / 100;
+            let v =
+              Math.sin(u * TAU * (3 + mode) + time * 0.7) * 0.18 +
+              Math.sin(u * TAU * (11 + mode * 2) - time * 0.22) * 0.07;
+            if (mode === 2) v += Math.floor(u * 18) % 2 ? -0.16 : 0.16;
+            if (mode === 3) v *= 0.35 + 0.65 * (Math.floor(u * 12) % 3 === 0);
+            const px = x + u * w,
+              py = y + h * 0.5 - v * h;
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+          }
+          ctx.stroke();
+          line(x, y + h, x + w, y + h, "rgba(255,255,255,.16)", 1);
+          ctx.restore();
+        }
+        function drawDish(x, y, s, z, angle = 0, active = true) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(angle);
+          ctx.strokeStyle = rgba(z.color, active ? 0.72 : 0.25);
+          ctx.fillStyle = rgba(z.color, active ? 0.12 : 0.04);
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(0, 0, s * 0.34, 0.16 * Math.PI, 0.84 * Math.PI);
+          ctx.lineTo(0, s * 0.03);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          line(0, s * 0.03, 0, s * 0.34, rgba(z.color, 0.55), 2);
+          line(-s * 0.17, s * 0.34, s * 0.17, s * 0.34, rgba(z.color, 0.4), 2);
+          circle(0, 0, s * 0.025, rgba([255, 245, 200], 0.8));
+          ctx.restore();
+        }
+        function drawPacket(x, y, s, z, label, alpha = 0.8) {
+          softHalo(x, y, s * 1.25, z.color, 0.08 * alpha);
+          ctx.fillStyle = rgba(z.color, 0.12 * alpha);
+          ctx.strokeStyle = rgba(z.color, 0.62 * alpha);
+          ctx.lineWidth = 1.2;
+          roundedRectPath(
+            x - s * 0.55,
+            y - s * 0.25,
+            s * 1.1,
+            s * 0.5,
+            s * 0.12,
+          );
+          ctx.fill();
+          ctx.stroke();
+          ctx.font = `900 ${Math.max(8, s * 0.19)}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.fillStyle = `rgba(255,255,255,${0.72 * alpha})`;
+          ctx.fillText(label, x, y + s * 0.065);
+        }
+        function drawGlyphField(x, y, w, h, z, time, variant = 0) {
+          const chars = [
+            "01",
+            "λ",
+            "Σ",
+            "△",
+            "○",
+            "↔",
+            "⊕",
+            "⋮",
+            "?",
+            "∞",
+            "⌁",
+            "✦",
+          ];
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(x, y, w, h);
+          ctx.clip();
+          for (let i = 0; i < 36; i++) {
+            const col = i % 6,
+              row = Math.floor(i / 6),
+              px = x + ((col + 0.5) * w) / 6,
+              py = y + ((row + 0.5) * h) / 6;
+            ctx.font = `800 ${Math.max(10, Math.min(w, h) * (0.075 + (i % 3) * 0.015))}px system-ui`;
+            ctx.textAlign = "center";
+            ctx.fillStyle = rgba(
+              i % 4 ? z.color : [255, 235, 180],
+              0.25 + 0.28 * (0.5 + 0.5 * Math.sin(time * 0.4 + i)),
+            );
+            ctx.fillText(chars[(i * 3 + variant) % chars.length], px, py);
+          }
+          ctx.restore();
+        }
+        function drawChoiceBranches(z, time, labels) {
+          const s = Math.min(width, height),
+            selected = Math.min(
+              labels.length - 1,
+              Math.floor(pointerX * labels.length),
+            );
+          for (let i = 0; i < labels.length; i++) {
+            const x = width * (0.08 + ((i + 0.5) * 0.84) / labels.length),
+              chosen = i === selected;
+            ctx.strokeStyle = rgba(
+              chosen ? [255, 245, 195] : z.color,
+              chosen ? 0.72 : 0.18,
+            );
+            ctx.lineWidth = chosen ? 3 : 1.2;
+            ctx.beginPath();
+            ctx.moveTo(width * 0.5, height * 0.72);
+            ctx.quadraticCurveTo(x, height * 0.48, x, height * 0.27);
+            ctx.stroke();
+            circle(
+              x,
+              height * 0.25,
+              s * (chosen ? 0.026 : 0.018),
+              rgba(chosen ? [255, 245, 195] : z.color, chosen ? 0.65 : 0.27),
+            );
+            ctx.font = `900 ${Math.max(8, s * 0.014)}px system-ui`;
+            ctx.textAlign = "center";
+            ctx.fillStyle = `rgba(255,255,255,${chosen ? 0.8 : 0.35})`;
+            ctx.fillText(labels[i], x, height * 0.19);
+          }
+          circle(width * 0.5, height * 0.74, s * 0.025, rgba(z.color, 0.72));
+        }
+        function drawCivilization(cx, cy, r, z, time, variant = 0) {
+          softHalo(cx, cy, r * 2, z.color, 0.13);
+          if (variant % 3 === 0) {
+            drawNetwork(cx, cy, r, z, time, 14);
+          } else if (variant % 3 === 1) {
+            for (let i = 0; i < 9; i++) {
+              const a = (i / 9) * TAU + time * 0.015,
+                rr = r * (0.35 + (i % 3) * 0.22);
+              circle(
+                cx + Math.cos(a) * rr,
+                cy + Math.sin(a) * rr * 0.72,
+                r * 0.055,
+                rgba(i % 2 ? z.color : [255, 225, 160], 0.55),
+              );
+              line(
+                cx,
+                cy,
+                cx + Math.cos(a) * rr,
+                cy + Math.sin(a) * rr * 0.72,
+                rgba(z.color, 0.13),
+                1,
+              );
+            }
+            circle(cx, cy, r * 0.13, rgba(z.color, 0.45));
+          } else {
+            for (let i = 0; i < 6; i++) {
+              const a = (i / 6) * TAU + time * 0.01,
+                rr = r * 0.62;
+              polygon(
+                [
+                  [
+                    cx + Math.cos(a) * rr - r * 0.09,
+                    cy + Math.sin(a) * rr * 0.65,
+                  ],
+                  [
+                    cx + Math.cos(a) * rr + r * 0.09,
+                    cy + Math.sin(a) * rr * 0.65,
+                  ],
+                  [
+                    cx + Math.cos(a) * rr,
+                    cy + Math.sin(a) * rr * 0.65 - r * 0.16,
+                  ],
+                ],
+                rgba(z.color, 0.14),
+                rgba(z.color, 0.55),
+                1.2,
+              );
+            }
+          }
+        }
+
+        function selectedFrame(labels) {
+          return Math.min(
+            labels.length - 1,
+            Math.floor(pointerX * labels.length),
+          );
+        }
+        function labelAt(text, x, y, size, color = "rgba(255,255,255,.55)") {
+          ctx.font = `900 ${Math.max(8, size)}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = color;
+          ctx.fillText(text, x, y);
+          ctx.textBaseline = "alphabetic";
+        }
+        function drawLensPanel(x, y, w, h, z, label, active, variant, time) {
+          ctx.fillStyle = rgba(z.color, active ? 0.12 : 0.035);
+          ctx.strokeStyle = rgba(
+            active ? [255, 248, 215] : z.color,
+            active ? 0.72 : 0.2,
+          );
+          ctx.lineWidth = active ? 2.2 : 1;
+          roundedRectPath(x, y, w, h, Math.min(w, h) * 0.12);
+          ctx.fill();
+          ctx.stroke();
+          const cx = x + w * 0.5,
+            cy = y + h * 0.48,
+            r = Math.min(w, h) * 0.2;
+          if (variant === 0) drawStar(cx, cy, r, [255, 218, 130], time);
+          else if (variant === 1) {
+            for (let i = 0; i < 9; i++) {
+              const a = (i / 9) * TAU;
+              drawOrbitalRing(
+                cx,
+                cy,
+                r * (0.45 + i * 0.07),
+                r * (0.18 + i * 0.03),
+                a * 0.18,
+                z.color,
+                0.15 + i * 0.018,
+                1,
+              );
+            }
+          } else if (variant === 2) {
+            for (let i = 0; i < 24; i++) {
+              const a = (i / 24) * TAU + time * 0.01,
+                rr = r * (0.35 + (i % 6) * 0.12);
+              circle(
+                cx + Math.cos(a) * rr,
+                cy + Math.sin(a) * rr * 0.7,
+                1.3 + (i % 3),
+                rgba(i % 4 ? z.color : [255, 235, 175], 0.55),
+              );
+            }
+          } else if (variant === 3) {
+            drawWaveform(
+              x + w * 0.14,
+              y + h * 0.27,
+              w * 0.72,
+              h * 0.42,
+              z,
+              time,
+              2,
+            );
+          } else if (variant === 4) {
+            drawGlyphField(
+              x + w * 0.08,
+              y + h * 0.16,
+              w * 0.84,
+              h * 0.58,
+              z,
+              time,
+              variant,
+            );
+          } else {
+            drawNetwork(cx, cy, r * 1.15, z, time, 15);
+          }
+          labelAt(
+            label,
+            cx,
+            y + h * 0.84,
+            Math.min(w, h) * 0.075,
+            `rgba(255,255,255,${active ? 0.85 : 0.42})`,
+          );
+        }
+
+        function horizonLabels(z) {
+          return z.features.map((feature) => {
+            const value = feature[0].toLocaleUpperCase("es-ES");
+            return value.length > 13 ? `${value.slice(0, 12)}…` : value;
+          });
+        }
+
+        function drawHorizonPackets(z, time, y = 0.8) {
+          const labels = horizonLabels(z), selected = selectedFrame(labels), s = Math.min(width, height);
+          for (let i = 0; i < labels.length; i++) {
+            const x = width * (0.085 + i * 0.166);
+            drawPacket(x, height * y, s * (i === selected ? 0.069 : 0.054), z, labels[i], i === selected ? 0.94 : 0.27);
+          }
+          return selected;
+        }
+
+        function horizonColor(i) {
+          return [[246,220,180],[128,228,210],[120,188,244],[190,150,240],[242,146,204],[226,232,244]][i % 6];
+        }
+
+        function drawIdentityCopies(z, selected, time) {
+          const s = Math.min(width, height), originX = width * 0.5, originY = height * 0.68;
+          drawAbstractBody(originX, originY, s * 0.075, z, time, selected);
+          for (let i = 0; i < 6; i++) {
+            const x = width * (0.09 + i * 0.164), y = height * (0.24 + Math.abs(i - 2.5) * 0.025), chosen = i === selected;
+            ctx.strokeStyle = rgba(chosen ? [255,244,208] : z.color, chosen ? 0.7 : 0.14);
+            ctx.lineWidth = chosen ? 3 : 1.2;
+            ctx.beginPath(); ctx.moveTo(originX, originY - s * 0.07);
+            ctx.bezierCurveTo(originX, height * 0.49, x, height * 0.5, x, y + s * 0.06); ctx.stroke();
+            drawAbstractBody(x, y, s * (chosen ? 0.056 : 0.043), { ...z, color: horizonColor(i) }, time * (0.7 + i * 0.05), i);
+          }
+        }
+
+        function drawDysonSwarm(cx, cy, r, z, time, selected = 0) {
+          drawStar(cx, cy, r * 0.26, [255,220,135], time);
+          for (let ring = 0; ring < 4; ring++) {
+            const rr = r * (0.46 + ring * 0.17), count = 10 + ring * 4;
+            ctx.strokeStyle = rgba(z.color, 0.1 + ring * 0.025); ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.ellipse(cx, cy, rr, rr * (0.46 + ring * 0.05), ring * 0.22, 0, TAU); ctx.stroke();
+            for (let i = 0; i < count; i++) {
+              const a = i / count * TAU + time * (0.012 - ring * 0.0015),
+                ca = Math.cos(a), sa = Math.sin(a), rot = ring * 0.22,
+                x0 = ca * rr, y0 = sa * rr * (0.46 + ring * 0.05),
+                x = cx + x0 * Math.cos(rot) - y0 * Math.sin(rot),
+                y = cy + x0 * Math.sin(rot) + y0 * Math.cos(rot);
+              ctx.save(); ctx.translate(x,y); ctx.rotate(a+rot);
+              ctx.fillStyle = rgba(ring === selected % 4 ? [255,245,205] : z.color, ring === selected % 4 ? 0.78 : 0.32);
+              ctx.fillRect(-r*.035,-r*.012,r*.07,r*.024); ctx.restore();
+            }
+          }
+        }
+
+        function drawBlackHole(cx, cy, r, z, time, active = 0) {
+          softHalo(cx, cy, r * 2.3, z.color, 0.1);
+          for (let i = 5; i >= 0; i--) {
+            const rr = r * (0.72 + i * 0.13), squeeze = 0.25 + i * 0.025;
+            ctx.strokeStyle = rgba(i === active ? [255,235,190] : z.color, i === active ? 0.72 : 0.14 + i * 0.025);
+            ctx.lineWidth = i === active ? 3 : 1.3;
+            ctx.beginPath(); ctx.ellipse(cx, cy, rr, rr * squeeze, time * 0.018 + i * 0.09, 0, TAU); ctx.stroke();
+          }
+          const g = ctx.createRadialGradient(cx-r*.18,cy-r*.18,0,cx,cy,r*.62);
+          g.addColorStop(0,"rgba(12,16,24,.98)"); g.addColorStop(.72,"rgba(0,0,0,1)"); g.addColorStop(1,"rgba(0,0,0,.75)");
+          ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,r*.62,0,TAU); ctx.fill();
+          ctx.strokeStyle=rgba([255,225,165],.42); ctx.lineWidth=2; ctx.beginPath(); ctx.arc(cx,cy,r*.64,0,TAU); ctx.stroke();
+        }
+
+        function drawSimulationLayers(z, selected, time) {
+          const s = Math.min(width,height), layers = 6;
+          for (let i = layers-1; i >= 0; i--) {
+            const w = width * (0.28 + i * 0.085), h = height * (0.18 + i * 0.045), x = width*.5-w*.5, y = height*(.18+i*.034), chosen=i===selected;
+            ctx.fillStyle=rgba(z.color,chosen?.12:.025); ctx.strokeStyle=rgba(chosen?[255,242,205]:z.color,chosen?.7:.14); ctx.lineWidth=chosen?3:1;
+            roundedRectPath(x,y,w,h,Math.min(w,h)*.06); ctx.fill(); ctx.stroke();
+            drawGlyphField(x+w*.08,y+h*.14,w*.84,h*.56,z,time*.25+i,i);
+          }
+        }
+
+        function drawWorldPanels(z, selected, time) {
+          const s=Math.min(width,height);
+          for(let i=0;i<6;i++){
+            const col=i%3,row=Math.floor(i/3),w=width*.25,h=height*.22,x=width*(.08+col*.31),y=height*(.18+row*.3),active=i===selected;
+            drawLensPanel(x,y,w,h,z,horizonLabels(z)[i],active,i,time*.35);
+          }
+        }
+
+        function drawCausalHorizon(z, selected, time) {
+          const s=Math.min(width,height),cx=width*.5,cy=height*.45;
+          for(let i=0;i<6;i++){
+            const r=s*(.065+i*.047),active=i===selected;
+            ctx.setLineDash(active?[]:[2,7+i*2]); ctx.strokeStyle=rgba(active?[255,244,210]:z.color,active?.72:.11); ctx.lineWidth=active?3:1.1;
+            ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();
+          }
+          ctx.setLineDash([]); circle(cx,cy,s*.018,rgba([255,244,210],.8));
+          for(let i=0;i<24;i++){
+            const a=i/24*TAU,rr=s*(.05+seeded(i+760)*.32),fade=1-clamp((rr-s*.18)/(s*.2),0,1);
+            circle(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.75,1+seeded(i+780)*2,rgba(z.color,.08+.28*fade));
+          }
+        }
+
+        function drawEnergyBudget(z, selected, time) {
+          const s=Math.min(width,height),baseY=height*.67;
+          for(let i=0;i<6;i++){
+            const x=width*(.1+i*.16),active=i===selected,h=s*(.11+.28*(1-i/6));
+            ctx.fillStyle=rgba(active?[255,239,196]:z.color,active?.55:.15); ctx.fillRect(x-s*.025,baseY-h,s*.05,h);
+            line(x-s*.035,baseY,x+s*.035,baseY,rgba(z.color,.3),1.5);
+            const p=fract(time*(.05-i*.005)+i*.12); circle(x,baseY-h*p,s*(active?.013:.008),rgba([255,245,210],active?.85:.35));
+          }
+        }
+
+        function drawEntropyField(z, selected, time) {
+          const s=Math.min(width,height),count=56;
+          for(let i=0;i<count;i++){
+            const order=1-selected/7, gx=(i%8)/7, gy=Math.floor(i/8)/6,
+              x=width*(.12+.76*gx)+Math.sin(i*2.3+time*.03)*s*.012*(1-order),
+              y=height*(.18+.48*gy)+Math.cos(i*1.7+time*.025)*s*.012*(1-order),
+              alpha=.06+.32*(1-gy)*(1-selected/8);
+            circle(x,y,s*(.004+.006*seeded(i+991)),rgba(i%5?z.color:[255,235,195],alpha));
+          }
+          ctx.strokeStyle=rgba(z.color,.12);ctx.beginPath();
+          for(let i=0;i<=60;i++){const p=i/60,x=width*(.1+.8*p),y=height*(.69-.28*Math.exp(-p*(2+selected*.5)));i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.stroke();
+        }
+
+        function drawHistoryTrace(z, selected, time) {
+          const s=Math.min(width,height),xs=[.08,.2,.32,.44,.56,.68,.8,.92];
+          for(let i=0;i<xs.length;i++){
+            const x=width*xs[i],y=height*(.6-.045*i),alpha=.22+.07*i;
+            if(i===0)drawStar(x,y,s*.032,[255,220,145],time);
+            else if(i===1)drawMolecule(x,y,s*.042,z,time,6);
+            else if(i===2)drawPlanet(x,y,s*.042,z,time,true);
+            else if(i===3)drawCell(x,y,s*.045,z,time,1);
+            else if(i===4)drawAbstractBody(x,y,s*.045,z,time,selected);
+            else if(i===5)drawCivilization(x,y,s*.052,z,time,1);
+            else if(i===6)drawGear(x,y,s*.045,10,z.color,time*.02);
+            else {
+              for(let ring=0;ring<4;ring++){
+                ctx.strokeStyle=rgba([232,228,210],.18+ring*.06);ctx.lineWidth=1;
+                ctx.beginPath();ctx.arc(x,y,s*(.018+ring*.012),0,TAU);ctx.stroke();
+              }
+              circle(x,y,s*.008,rgba([245,240,218],.78));
+            }
+            if(i<xs.length-1)line(x+s*.035,y,width*xs[i+1]-s*.035,height*(.6-.045*(i+1)),rgba(z.color,alpha),1.8);
+          }
+        }
+
+        function drawBoundaryField(z, selected, time) {
+          const s=Math.min(width,height), y=height*.36;
+          ctx.save();
+          const g=ctx.createLinearGradient(width*.08,0,width*.92,0);g.addColorStop(0,rgba(z.color,.05));g.addColorStop(.5,rgba([245,240,218],.38));g.addColorStop(1,rgba(z.color,.05));
+          ctx.strokeStyle=g;ctx.lineWidth=2.5;ctx.setLineDash([2,8+selected*3]);ctx.beginPath();
+          for(let i=0;i<=100;i++){const p=i/100,x=width*(.07+.86*p),jitter=Math.sin(p*TAU*(4+selected)+time*.02)*s*.012*(1-p*.6),yy=y+jitter;i?ctx.lineTo(x,yy):ctx.moveTo(x,yy);}ctx.stroke();ctx.restore();
+          ctx.setLineDash([]);
+          for(let i=0;i<36;i++){
+            const x=width*(.08+.84*seeded(i+1180)), yy=y-s*(.02+.24*seeded(i+1210)), fade=1-seeded(i+1240)*.85;
+            circle(x,yy,1+seeded(i+1260)*2,rgba(i%4?z.color:[255,245,220],.04+.18*fade));
+          }
+          ctx.fillStyle="rgba(0,0,0,.36)";ctx.fillRect(0,y+s*.035,width,height-y);
+        }
+
+        function drawHorizonScene(z, time, mode) {
+          const labels=horizonLabels(z), selected=selectedFrame(labels), s=Math.min(width,height);
+          switch(mode){
+            case 0:{
+              drawBranching(width*.5,height*.72,height*.2,z,time,7,.88);
+              for(let i=0;i<6;i++){const x=width*(.09+i*.164),active=i===selected;drawCivilization(x,height*.72,s*(active?.067:.047),{...z,color:horizonColor(i)},time+i,i%3);labelAt(labels[i],x,height*.86,s*.011,`rgba(255,255,255,${active?.88:.28})`);}
+              drawPacket(width*.5,height*.72,s*.09,z,"HISTORIA",.86); footerLabel("NINGÚN FUTURO ES INEVITABLE",z);break;
+            }
+            case 1:{
+              drawCell(width*.34,height*.42,s*.14,z,time,selected%3);drawGear(width*.66,height*.42,s*.12,12,z.color,time*.035);
+              for(let i=0;i<8;i++){const p=fract(time*.025+i/8);circle(mix(width*.42,width*.58,p),height*.42+Math.sin(p*TAU*2+i)*s*.035,2,rgba([255,242,205],.48));}
+              drawHorizonPackets(z,time,.8);footerLabel("SUPERAR UN LÍMITE CREA NUEVAS DEPENDENCIAS",z);break;
+            }
+            case 2:{
+              drawAbstractBody(width*.5,height*.38,s*.12,z,time,selected);for(let i=0;i<6;i++){const r=s*(.09+i*.043),active=i===selected;ctx.strokeStyle=rgba(active?[255,242,204]:z.color,active?.72:.12);ctx.lineWidth=active?3:1;ctx.beginPath();ctx.arc(width*.5,height*.38,r,0,TAU);ctx.stroke();}
+              drawWaveform(width*.12,height*.64,width*.76,height*.12,z,time,selected%4);drawHorizonPackets(z,time,.83);footerLabel("REDISEÑAR LA MENTE CAMBIA TAMBIÉN SUS VALORES",z);break;
+            }
+            case 3:{drawIdentityCopies(z,selected,time);drawHorizonPackets(z,time,.84);footerLabel("COPIAR UN PATRÓN NO PRUEBA CONTINUIDAD SUBJETIVA",z);break;}
+            case 4:{
+              const xs=[.13,.28,.43,.58,.73,.88];for(let i=0;i<6;i++){const x=width*xs[i],active=i===selected;if(i<2)drawCell(x,height*.42,s*(active?.075:.055),{...z,color:horizonColor(i)},time,i);else if(i<4)drawAbstractBody(x,height*.42,s*(active?.07:.052),{...z,color:horizonColor(i)},time,i);else drawNetwork(x,height*.42,s*(active?.085:.062),{...z,color:horizonColor(i)},time,12+i);if(i<5)line(x+s*.06,height*.42,width*xs[i+1]-s*.06,height*.42,rgba(z.color,.19),2);}
+              drawHorizonPackets(z,time,.8);footerLabel("DURABILIDAD NO EQUIVALE AUTOMÁTICAMENTE A PROGRESO",z);break;
+            }
+            case 5:{
+              const cx=width*.5,cy=height*.42;for(let i=0;i<6;i++){const r=s*(.065+i*.047),active=i===selected;ctx.strokeStyle=rgba(active?[255,244,210]:z.color,active?.7:.12);ctx.lineWidth=active?3:1;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();const p=fract(time*(.09/(i+1))+i*.13);circle(cx+Math.cos(p*TAU)*r,cy+Math.sin(p*TAU)*r,s*(active?.015:.009),rgba([255,242,205],active?.85:.38));}
+              drawHorizonPackets(z,time,.81);footerLabel("UNA VIDA PUEDE DESVINCULARSE DEL RITMO BIOLÓGICO",z);break;
+            }
+            case 6:{
+              drawNetwork(width*.5,height*.42,s*.31,z,time*.4,36);for(let i=0;i<6;i++){const a=i/6*TAU-Math.PI/2,x=width*.5+Math.cos(a)*s*.31,y=height*.42+Math.sin(a)*s*.22,active=i===selected;drawCivilization(x,y,s*(active?.06:.042),{...z,color:horizonColor(i)},time+i,i%3);}
+              drawHorizonPackets(z,time,.82);footerLabel("UNA GALAXIA CONECTADA NO PUEDE SER SINCRÓNICA",z);break;
+            }
+            case 7:{drawDysonSwarm(width*.5,height*.42,s*.28,z,time,selected);drawHorizonPackets(z,time,.82);footerLabel("REORGANIZAR MATERIA NO ABOLIR LAS LEYES FÍSICAS",z);break;}
+            case 8:{
+              drawBlackHole(width*.28,height*.4,s*.12,z,time,selected);drawSimulationLayers(z,selected,time*.35);drawHorizonPackets(z,time,.84);footerLabel("EL MUNDO VIVIDO Y EL SUSTRATO SON CAPAS DISTINTAS",z);break;
+            }
+            case 9:{drawWorldPanels(z,selected,time);footerLabel("EL CONCEPTO DE MUNDO SE VUELVE PLURAL",z);break;}
+            case 10:{
+              drawAbstractBody(width*.28,height*.4,s*.09,z,time,selected);drawAbstractBody(width*.72,height*.4,s*.09,{...z,color:[242,160,210]},-time,5-selected);drawNetwork(width*.5,height*.4,s*.18,z,time*.4,22);
+              for(let i=0;i<6;i++){const y=height*(.2+i*.085),active=i===selected;ctx.strokeStyle=rgba(active?[255,244,210]:z.color,active?.7:.1);ctx.lineWidth=active?3:1;ctx.beginPath();ctx.moveTo(width*.36,y);ctx.bezierCurveTo(width*.44,y+s*.035*Math.sin(i),width*.56,y-s*.035*Math.sin(i),width*.64,y);ctx.stroke();}
+              drawHorizonPackets(z,time,.82);footerLabel("INDIVIDUO Y COLECTIVO DEJAN DE SER FRONTERAS FIJAS",z);break;
+            }
+            case 11:{
+              for(let i=0;i<6;i++){const x=width*(.09+i*.164),active=i===selected;drawLensPanel(x-s*.06,height*.25,s*.12,s*.28,z,labels[i],active,i,time*.25);}
+              drawWaveform(width*.1,height*.66,width*.8,height*.1,z,time,selected%4);footerLabel("DETECTAR NO ES LO MISMO QUE PODER EXPERIMENTAR",z);break;
+            }
+            case 12:{
+              ctx.save();ctx.globalAlpha=.3;drawGlyphField(width*.08,height*.13,width*.84,height*.48,z,time*.2,selected);ctx.restore();
+              for(let i=0;i<6;i++){const x=width*(.1+i*.16),h=s*(.08+.19*(1-i/7)),active=i===selected;ctx.strokeStyle=rgba(active?[255,244,205]:z.color,active?.75:.15);ctx.lineWidth=active?3:1;ctx.strokeRect(x-s*.035,height*.68-h,s*.07,h);}
+              drawHorizonPackets(z,time,.84);footerLabel("MÁS INTELIGENCIA NO PRODUCE OMNISCIENCIA",z);break;
+            }
+            case 13:{drawCausalHorizon(z,selected,time);drawHorizonPackets(z,time,.82);footerLabel("NO SABIDO TODAVÍA ≠ INACCESIBLE EN PRINCIPIO",z);break;}
+            case 14:{
+              const cx=width*.48,cy=height*.44;for(let i=0;i<32;i++){const a=i/32*TAU,rr=s*(.08+seeded(i+1410)*.3),fade=1-clamp((rr-s*.17)/(s*.22),0,1);circle(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.68,1+seeded(i+1430)*3,rgba(i%5?z.color:[255,235,190],.04+.45*fade));}
+              ctx.strokeStyle=rgba([242,236,215],.5);ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(cx,cy,s*.19,0,TAU);ctx.stroke();ctx.fillStyle="rgba(0,0,0,.38)";ctx.fillRect(cx+s*.2,0,width-(cx+s*.2),height);
+              drawHorizonPackets(z,time,.82);footerLabel("EL UNIVERSO OBSERVABLE PUEDE ENCOGER LOCALMENTE",z);break;
+            }
+            case 15:{
+              const islands=[[.2,.42],[.5,.28],[.8,.48]];for(let k=0;k<3;k++){drawNetwork(width*islands[k][0],height*islands[k][1],s*.09,{...z,color:horizonColor(k*2)},time*.2,12);circle(width*islands[k][0],height*islands[k][1],s*.12,"rgba(0,0,0,0)",rgba(z.color,.18),1);}
+              for(let k=0;k<2;k++){ctx.setLineDash([3,12]);line(width*islands[k][0]+s*.1,height*islands[k][1],width*islands[k+1][0]-s*.1,height*islands[k+1][1],rgba(z.color,.11),1);ctx.setLineDash([]);}
+              drawHorizonPackets(z,time,.83);footerLabel("UN COSMOS COMPARTIDO PUEDE VOLVERSE MUCHOS COSMOS AISLADOS",z);break;
+            }
+            case 16:{drawEnergyBudget(z,selected,time);drawHorizonPackets(z,time,.82);footerLabel("ENERGÍA TOTAL NO EQUIVALE A TRABAJO DISPONIBLE",z);break;}
+            case 17:{
+              drawStar(width*.18,height*.35,s*.055,[255,182,120],time*.2);drawPlanet(width*.36,height*.44,s*.045,{...z,color:[150,170,190]},time,false);drawBlackHole(width*.68,height*.4,s*.09,z,time*.15,selected%6);
+              for(let i=0;i<12;i++){const x=width*(.08+.84*seeded(i+1500)),y=height*(.18+.48*seeded(i+1530));circle(x,y,1+seeded(i+1560)*2,rgba(z.color,.09+.13*(1-i/12)));}
+              drawHorizonPackets(z,time,.82);footerLabel("LA INTELIGENCIA ACTÚA DENTRO DEL DECLIVE CÓSMICO",z);break;
+            }
+            case 18:{
+              drawBlackHole(width*.5,height*.4,s*.12,z,time*.12,selected);for(let i=0;i<18;i++){const p=fract(time*.012+i/18),a=p*TAU*1.3,x=width*.5+Math.cos(a)*s*(.14+.18*p),y=height*.4+Math.sin(a)*s*(.05+.08*p);circle(x,y,1.4,rgba(i%3?z.color:[255,236,190],.18+.3*(1-p)));}
+              ctx.save();ctx.globalAlpha=.22;drawGlyphField(width*.1,height*.64,width*.8,height*.1,z,time*.1,selected);ctx.restore();drawHorizonPackets(z,time,.84);footerLabel("PRESERVAR UN PATRÓN NO GARANTIZA PODER RECUPERARLO",z);break;
+            }
+            case 19:{drawEntropyField(z,selected,time);drawHorizonPackets(z,time,.82);footerLabel("LA MUERTE TÉRMICA ES PÉRDIDA DE GRADIENTES ÚTILES",z);break;}
+            case 20:{
+              drawBranching(width*.5,height*.7,height*.22,z,time*.08,6,.86);softHalo(width*.5,height*.18,s*.2,z.color,.06);ctx.save();ctx.globalAlpha=.26;drawGlyphField(width*.13,height*.16,width*.74,height*.31,z,time*.08,selected);ctx.restore();drawHorizonPackets(z,time,.84);footerLabel("INCERTIDUMBRE NO ES UNA PROMESA DE ESCAPE",z);break;
+            }
+            case 21:{
+              for(let i=0;i<24;i++){const x=seeded(i+1650)*width,y=seeded(i+1680)*height*.64+height*.08,fade=(1-i/24)*.28;circle(x,y,1+seeded(i+1710)*2.5,rgba(i%4?z.color:[230,225,205],fade));}
+              ctx.setLineDash([2,14]);line(width*.08,height*.68,width*.92,height*.68,rgba(z.color,.14),1);ctx.setLineDash([]);drawHorizonPackets(z,time,.82);footerLabel("LOS PROCESOS CONTINÚAN AUNQUE NADIE LOS VIVA",z);break;
+            }
+            case 22:{
+              const icons=[0,1,2,3,4,5];for(let i=0;i<6;i++){const x=width*(.09+i*.164),active=i===selected;if(i===0)drawBranching(x,height*.53,height*.31,{...z,color:horizonColor(i)},time*.08,3,.11);else if(i===1)drawGlyphField(x-s*.05,height*.35,s*.1,s*.16,{...z,color:horizonColor(i)},time*.08,i);else if(i===2)drawCell(x,height*.45,s*(active?.055:.04),{...z,color:horizonColor(i)},time,i);else if(i===3)drawDysonSwarm(x,height*.44,s*.07,{...z,color:horizonColor(i)},time*.08,i);else if(i===4)drawAbstractBody(x,height*.44,s*(active?.055:.042),{...z,color:horizonColor(i)},time,i);else drawPlanet(x,height*.44,s*(active?.05:.038),{...z,color:horizonColor(i)},time,true);}
+              drawHorizonPackets(z,time,.8);footerLabel("UNA CONSECUENCIA REAL NO NECESITA SER ETERNA",z);break;
+            }
+            case 23:{drawHistoryTrace(z,selected,time*.12);drawHorizonPackets(z,time,.82);footerLabel("UNA SOLA HISTORIA · MUCHOS NIVELES · LÍMITES DESDE DENTRO",z);break;}
+            case 24:{
+              drawBoundaryField(z,selected,time*.08);softHalo(width*.5,height*.25,s*.2,[245,240,218],.05);drawHorizonPackets(z,time,.81);footerLabel("LA EXISTENCIA PERMANECE INCOMPLETA PARA TODA PERSPECTIVA INTERIOR",z);break;
+            }
+          }
+        }
+
+        function colorsForMeaning(i) { return horizonColor(i); }
+
+
+        const SCENES = Array.from({ length: ZONES.length }, (_, index) =>
+          (zone, time) => drawHorizonScene(zone, time, index),
+        );
+
+        function zoneWeight(progress, p0, p1, feather = 0.035) {
+          const enter = smooth(
+              clamp((progress - (p0 - feather)) / feather, 0, 1),
+            ),
+            exit = 1 - smooth(clamp((progress - p1) / feather, 0, 1));
+          return enter * exit;
+        }
+        function drawScene(progress, time) {
+          footerLabel.pending = null;
+          for (const z of ZONES) {
+            const alpha = zoneWeight(progress, z.p0, z.p1, 0.012);
+            if (alpha < 0.003) continue;
+            footerLabel.alpha = alpha;
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            SCENES[z.scene](z, time * (1 - 0.82 * z.p0));
+            ctx.restore();
+          }
+          paintFooter();
+        }
+        function drawBursts(dt) {
+          for (let i = bursts.length - 1; i >= 0; i--) {
+            const p = bursts[i];
+            p.life -= dt * p.decay;
+            if (p.life <= 0) {
+              bursts.splice(i, 1);
+              continue;
+            }
+            p.x += p.vx * dt;
+            p.y += p.vy * dt;
+            p.vx *= Math.pow(0.94, dt * 60);
+            p.vy *= Math.pow(0.94, dt * 60);
+            circle(
+              p.x,
+              p.y,
+              p.r * (0.5 + p.life),
+              rgba(p.color, p.life * 0.55),
+            );
+          }
+          for (let i = waves.length - 1; i >= 0; i--) {
+            const w = waves[i];
+            w.life -= dt * 1.05;
+            if (w.life <= 0) {
+              waves.splice(i, 1);
+              continue;
+            }
+            w.radius += dt * Math.min(width, height) * 0.24;
+            ctx.strokeStyle = rgba(w.color, w.life * 0.25);
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.arc(w.x, w.y, w.radius, 0, TAU);
+            ctx.stroke();
+          }
+        }
+
+        function render(now) {
+          const dt = Math.min(0.04, Math.max(0.001, (now - lastFrame) / 1000));
+          lastFrame = now;
+          elapsed += reducedMotion ? dt * 0.24 : dt;
+          pointerX += (targetX - pointerX) * (1 - Math.pow(0.001, dt));
+          pointerY += (targetY - pointerY) * (1 - Math.pow(0.001, dt));
+          currentProgress +=
+            (depthFromY(pointerY) - currentProgress) *
+            (1 - Math.pow(0.005, dt));
+          shownX += (pointerX * width - shownX) * (1 - Math.pow(0.001, dt));
+          shownY += (pointerY * height - shownY) * (1 - Math.pow(0.001, dt));
+          touchEnergy *= Math.pow(0.075, dt);
+          drawBackground(currentProgress, elapsed);
+          drawScene(currentProgress, elapsed);
+          drawBursts(dt);
+          if (!pointerDown) setAccent(zoneForDepth(currentProgress));
+          requestAnimationFrame(render);
+        }
+        window.addEventListener("resize", resize, { passive: true });
+        window.addEventListener(
+          "orientationchange",
+          () => setTimeout(resize, 120),
+          { passive: true },
+        );
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden && audioCtx && audioCtx.state === "running")
+            audioCtx.suspend().catch(() => {});
+        });
+        resize();
+        setAccent(ZONES[0]);
+        requestAnimationFrame(render);
+      })();
+    </script>
+    <div id="final-transition" hidden>
+      No vemos más allá del horizonte final. Esto no demuestra que no exista
+      nada más. Solo marca el límite entre aquello que podemos describir con
+      evidencia y aquello que todavía pertenece a la posibilidad, la
+      especulación o lo inconcebible. La existencia permanece incompleta para
+      toda perspectiva que intenta comprenderla desde dentro. Esta aplicación
+      concluye la secuencia cósmica principal.
+    </div>
+  </body>
+</html>
