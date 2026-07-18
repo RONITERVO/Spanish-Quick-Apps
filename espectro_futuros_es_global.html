@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#070915">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora de los futuros de la civilización: desde los futuros tecnológicos y la transición planetaria hasta la expansión cósmica y el horizonte desconocido.">
+  <meta name="application-name" content="Espectro de los Futuros: de la Civilización Planetaria al Destino Cósmico">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro de los Futuros">
+  <meta property="og:description" content="Toca y asciende desde los futuros tecnológicos hasta el horizonte desconocido de la civilización cósmica.">
+  <title>Espectro de los Futuros: de la Civilización Planetaria al Destino Cósmico</title>
+  <style>
+    :root {
+      --accent: 116 228 255;
+      --accent-soft: rgb(var(--accent) / .34);
+      --ink: 255 255 255;
+      --panel: 8 9 14;
+      --scan-x: 50vw;
+      --scan-y: 96vh;
+      --progress: 2%;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #05070a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: rgb(var(--ink));
+      font-family: Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #futures-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette,
+    #top-bloom,
+    #bottom-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background: radial-gradient(circle at var(--scan-x) var(--scan-y), rgb(var(--accent) / .56) 0, rgb(var(--accent) / .15) 11%, transparent 35%);
+      mix-blend-mode: screen;
+    }
+    body.active #light-field { opacity: .82; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg, transparent calc(var(--scan-x) - 1px), rgb(var(--accent) / .52) var(--scan-x), transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg, transparent calc(var(--scan-y) - 1px), rgb(var(--accent) / .32) var(--scan-y), transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+    body.active #scan-line { opacity: .17; }
+
+    #grain {
+      z-index: 4;
+      opacity: .042;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 38%, rgb(0 0 0 / .22) 72%, rgb(0 0 0 / .84) 128%),
+        linear-gradient(90deg, rgb(0 0 0 / .47), transparent 13%, transparent 87%, rgb(0 0 0 / .45));
+    }
+
+    #top-bloom {
+      z-index: 1;
+      opacity: .5;
+      background: radial-gradient(ellipse at 50% -10%, rgb(214 229 255 / .42), transparent 52%);
+      mix-blend-mode: screen;
+    }
+
+    #bottom-glow {
+      z-index: 1;
+      opacity: .46;
+      background: radial-gradient(ellipse at 50% 110%, rgb(91 209 255 / .22), transparent 50%);
+      mix-blend-mode: screen;
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 49%;
+      width: min(92vw, 860px);
+      padding: clamp(15px, 3.2vw, 27px) clamp(19px, 5vw, 52px) clamp(18px, 3.7vw, 33px);
+      border: 1px solid rgb(255 255 255 / .22);
+      border-radius: clamp(25px, 6vw, 52px);
+      color: white;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        rgb(var(--panel) / .66);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .58),
+        0 0 86px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .26),
+        inset 0 -1px 0 rgb(0 0 0 / .25);
+      backdrop-filter: blur(23px) saturate(1.36);
+      -webkit-backdrop-filter: blur(23px) saturate(1.36);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #evidence-class {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 27px;
+      margin-bottom: clamp(9px, 2vw, 15px);
+      padding: 6px 13px 7px;
+      border: 1px solid rgb(var(--accent) / .62);
+      border-radius: 999px;
+      color: rgb(var(--accent));
+      font-size: clamp(.62rem, 2.1vw, .87rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: rgb(var(--accent) / .09);
+      box-shadow: 0 0 25px var(--accent-soft), inset 0 1px 0 rgb(255 255 255 / .1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.5vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow: 0 0 30px var(--accent-soft), 0 5px 24px rgb(0 0 0 / .5);
+    }
+    #zone-name.compact { font-size: clamp(1.7rem, 7.15vw, 5.55rem); letter-spacing: -.046em; line-height: .9; }
+    #zone-name.long { font-size: clamp(1.38rem, 5.9vw, 4.45rem); letter-spacing: -.034em; line-height: .94; }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 880;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(10px, 2vw, 17px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.67rem, 2.2vw, .92rem);
+      font-weight: 820;
+      line-height: 1.12;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .2);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .11);
+    }
+
+    #fact {
+      display: block;
+      max-width: 700px;
+      margin: clamp(10px, 2.25vw, 17px) auto 0;
+      font-size: clamp(.82rem, 2.63vw, 1.1rem);
+      font-weight: 600;
+      line-height: 1.42;
+      letter-spacing: .005em;
+      color: rgb(255 255 255 / .91);
+      text-wrap: pretty;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 93%;
+      width: clamp(58px, 15vw, 104px);
+      aspect-ratio: 1;
+      border: 1px solid rgb(var(--accent) / .82);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(.4);
+      background: radial-gradient(circle, rgb(255 255 255 / .82) 0 2%, rgb(var(--accent) / .34) 7%, rgb(var(--accent) / .09) 36%, transparent 70%);
+      box-shadow: 0 0 18px rgb(var(--accent) / .58), 0 0 62px rgb(var(--accent) / .42), inset 0 0 26px rgb(var(--accent) / .19);
+      transition: opacity 150ms ease, transform 260ms cubic-bezier(.16, 1, .3, 1);
+    }
+    #touch-orb.visible { opacity: .9; transform: translate(-50%, -50%) scale(1); }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(10px, env(safe-area-inset-right));
+      top: max(19px, env(safe-area-inset-top));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: clamp(50px, 10vw, 78px);
+      pointer-events: none;
+      opacity: .58;
+      transition: opacity 180ms ease;
+    }
+    body.active #journey-scale { opacity: .9; }
+
+    #scale-track {
+      position: absolute;
+      right: 11px;
+      top: 48px;
+      bottom: 48px;
+      width: 3px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgb(255 255 255 / .14);
+      box-shadow: 0 0 12px rgb(0 0 0 / .5);
+    }
+    #scale-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(to top, rgb(94 214 164 / .68), rgb(var(--accent)));
+      box-shadow: 0 0 14px rgb(var(--accent) / .72);
+    }
+    #scale-dot {
+      position: absolute;
+      right: 6px;
+      bottom: 48px;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgb(255 255 255 / .84);
+      border-radius: 50%;
+      transform: translateY(50%);
+      background: rgb(var(--accent));
+      box-shadow: 0 0 17px rgb(var(--accent) / .85);
+    }
+    #scale-bottom,
+    #scale-top {
+      position: absolute;
+      right: 0;
+      width: 74px;
+      font-size: clamp(.49rem, 1.6vw, .61rem);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: .11em;
+      text-align: right;
+      text-transform: uppercase;
+      color: rgb(255 255 255 / .65);
+    }
+    #scale-top { top: 0; }
+    #scale-bottom { bottom: 0; }
+    #scale-value {
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      width: min(34vh, 250px);
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right center;
+      font-size: clamp(.54rem, 1.7vw, .66rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .14em;
+      text-align: center;
+      text-transform: uppercase;
+      color: rgb(var(--accent));
+      text-shadow: 0 0 14px rgb(var(--accent) / .6);
+      white-space: nowrap;
+    }
+
+    #hint {
+      position: fixed;
+      z-index: 6;
+      left: 50%;
+      bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+      width: min(78vw, 530px);
+      transform: translateX(-50%);
+      color: rgb(255 255 255 / .78);
+      text-align: center;
+      pointer-events: none;
+      font-size: clamp(.7rem, 2.4vw, .94rem);
+      font-weight: 800;
+      line-height: 1.34;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 16px rgb(0 0 0 / .8);
+      animation: breathe 3.2s ease-in-out infinite;
+    }
+    #hint strong { color: rgb(var(--accent)); }
+
+    .ripple {
+      position: fixed;
+      z-index: 7;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgb(var(--accent) / .78);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 22px rgb(var(--accent) / .52), inset 0 0 15px rgb(var(--accent) / .2);
+      animation: ripple 920ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple { to { width: min(72vw, 560px); height: min(72vw, 560px); opacity: 0; } }
+    @keyframes breathe {
+      0%, 100% { opacity: .4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: .95; transform: translateX(-50%) translateY(-3px); }
+    }
+
+    @media (max-height: 620px) {
+      #readout { width: min(88vw, 760px); padding-top: 12px; padding-bottom: 14px; }
+      #evidence-class { margin-bottom: 7px; }
+      #fact { margin-top: 8px; line-height: 1.32; }
+      #metric { margin-top: 7px; }
+      #journey-scale { opacity: .46; }
+    }
+
+    @media (max-width: 460px) {
+      #readout { width: 91vw; }
+      #journey-scale { right: 3px; }
+      #scale-value { display: none; }
+      #scale-bottom, #scale-top { width: 54px; font-size: .45rem; }
+      #hint { width: 72vw; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #hint { animation: none; }
+      .ripple { animation-duration: 1ms; }
+      #readout, #touch-orb, #light-field, #scan-line { transition-duration: 1ms; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="futures-spectrum" tabindex="0" role="application" aria-label="Exploración táctil de los futuros de la civilización, desde los futuros tecnológicos en la parte inferior hasta el horizonte desconocido en la parte superior. Toca, arrastra o usa las flechas del teclado."></canvas>
+  <div id="top-bloom" aria-hidden="true"></div><div id="bottom-glow" aria-hidden="true"></div><div id="light-field" aria-hidden="true"></div><div id="scan-line" aria-hidden="true"></div><div id="grain" aria-hidden="true"></div><div id="vignette" aria-hidden="true"></div>
+  <div id="hint" aria-hidden="true"><strong>Toca y asciende</strong> · del presente planetario al destino cósmico</div>
+  <div id="readout" aria-live="polite" aria-atomic="true"><span id="evidence-class"></span><strong id="zone-name"></strong><span id="feature-name"></span><span id="metric"></span><span id="fact"></span></div>
+  <div id="touch-orb" aria-hidden="true"></div>
+  <div id="journey-scale" aria-hidden="true"><span id="scale-top">Horizonte desconocido</span><div id="scale-track"><div id="scale-fill"></div></div><div id="scale-dot"></div><span id="scale-value">Futuros tecnológicos</span><span id="scale-bottom">Futuros tecnológicos</span></div>
+
+  <!--
+    Visualización educativa conceptual, táctil y sin dependencias externas.
+
+    La escala vertical representa escenarios y capacidades posibles, no una cronología inevitable ni una
+    predicción. Los niveles cercanos al presente combinan tecnologías existentes con transiciones todavía
+    incompletas; los niveles superiores son progresivamente más hipotéticos. Cada capacidad puede producir
+    resultados distintos según valores, propiedad, distribución, instituciones, cooperación y accidentes.
+
+    La aplicación distingue posibilidad física, viabilidad técnica, legitimidad política y deseabilidad social.
+    No afirma que la inteligencia implique conciencia, que la expansión espacial sea inevitable, que una mayor
+    escala energética equivalga a progreso moral ni que la humanidad tenga derecho automático a transformar
+    otros mundos. Las escenas son metáforas interactivas, no reconstrucciones ni predicciones literales.
+  -->
+
+  <script>
+  (() => {
+    "use strict";
+
+    const canvas = document.getElementById("futures-spectrum");
+    const ctx = canvas.getContext("2d", { alpha: false });
+    const root = document.documentElement;
+    const readout = document.getElementById("readout");
+    const evidenceClass = document.getElementById("evidence-class");
+    const zoneName = document.getElementById("zone-name");
+    const featureName = document.getElementById("feature-name");
+    const metric = document.getElementById("metric");
+    const fact = document.getElementById("fact");
+    const touchOrb = document.getElementById("touch-orb");
+    const scaleValue = document.getElementById("scale-value");
+    const scaleDot = document.getElementById("scale-dot");
+    const hint = document.getElementById("hint");
+
+    const TAU = Math.PI * 2;
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const mix = (a, b, t) => a + (b - a) * t;
+    const smooth = t => t * t * (3 - 2 * t);
+    const fract = v => v - Math.floor(v);
+    const seeded = n => fract(Math.sin(n * 127.1 + 311.7) * 43758.5453123);
+    const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+    const ZONES = [{"id":"technological-futures","name":"Futuros tecnológicos","className":"Punto de partida · escenarios, no profecías","color":[226,240,255],"metric":"Tendencias + posibilidades físicas + decisiones humanas → escenarios abiertos","fact":"Las proyecciones del futuro no son profecías: cartografían posibilidades condicionadas por decisiones todavía abiertas.","features":[["presente planetario","La humanidad ya modifica sistemas planetarios mediante energía, agricultura, ciudades, redes, industria y decisiones colectivas."],["energía limpia","Las tecnologías bajas en carbono pueden reducir daños, pero exigen materiales, redes, mantenimiento y acceso equitativo."],["inteligencia artificial","La inteligencia artificial amplía capacidades de análisis y creación mientras introduce nuevas dependencias, errores y concentraciones de poder."],["biotecnología","Editar y diseñar sistemas vivos abre posibilidades médicas y ecológicas junto con riesgos heredables y difíciles de revertir."],["automatización","Delegar tareas físicas y cognitivas puede elevar productividad o desplazar ingresos, control y responsabilidad."],["infraestructura planetaria","Satélites, centros de datos, cadenas logísticas y redes energéticas conectan soluciones y vulnerabilidades a escala mundial."],["restauración ecológica","La tecnología puede apoyar la recuperación de ecosistemas, pero no sustituye cambios en extracción, consumo y gobernanza."],["riesgo sistémico","Cuanto más capaces e interdependientes son los sistemas, mayor puede ser el alcance de errores, abusos y fallos en cascada."]],"p0":0.0,"p1":0.0526315789,"scene":0,"sound":{"base":52.0,"filter":700,"noise":0.016,"pulse":0.05,"type":"sine"}},{"id":"energy-transition","name":"Transición energética","className":"Reconstrucción de la base material de la civilización","color":[255,221,105],"metric":"Generación + redes + almacenamiento + eficiencia + demanda → sistema energético transformado","fact":"Una transición energética no consiste únicamente en inventar nuevas fuentes, sino en reconstruir infraestructuras completas.","features":[["energía solar","Los paneles convierten luz en electricidad variable y requieren redes, almacenamiento, espacio, materiales y reciclaje."],["energía eólica","Las turbinas aprovechan corrientes de aire; su producción cambia con el clima y la ubicación."],["energía nuclear","La fisión puede producir electricidad baja en carbono de forma continua, con exigencias de seguridad, residuos, costes y confianza pública."],["almacenamiento","Baterías, calor, combustibles, bombeo y otras tecnologías desplazan energía entre momentos de abundancia y necesidad."],["electrificación","Vehículos, calefacción e industria pueden sustituir combustión directa por electricidad cuando la red y los equipos se adaptan."],["redes inteligentes","Sensores, control y mercados coordinan millones de fuentes y cargas sin eliminar vulnerabilidades físicas o digitales."],["combustibles sintéticos","Electricidad, hidrógeno y carbono capturado pueden producir combustibles para usos difíciles de electrificar, con pérdidas energéticas importantes."],["fusión experimental","La fusión busca aprovechar reacciones nucleares ligeras, pero todavía requiere superar desafíos científicos, industriales y económicos antes de sostener redes eléctricas."]],"p0":0.0526315789,"p1":0.1052631579,"scene":1,"sound":{"base":56.75,"filter":818,"noise":0.0205,"pulse":0.071,"type":"triangle"}},{"id":"automation","name":"Automatización","className":"Transferencia de tareas a sistemas mecánicos y digitales","color":[255,157,88],"metric":"Sensores + modelos + actuadores + organización → trabajo parcialmente automatizado","fact":"Automatizar una tarea no elimina el trabajo humano: cambia dónde se concentra, quién lo controla y quién recibe sus beneficios.","features":[["fábricas autónomas","Robots, visión artificial y planificación coordinan producción, aunque siguen dependiendo de mantenimiento, materiales y objetivos humanos."],["logística","Almacenes, rutas y puertos automatizados pueden acelerar flujos y propagar interrupciones con gran rapidez."],["transporte","Vehículos automatizados operan dentro de límites concretos y deben responder a entornos sociales difíciles de predecir."],["agricultura","Sensores, drones y maquinaria pueden aplicar agua, nutrientes o cosecha con precisión, pero también concentrar datos y capital."],["administración","Software puede clasificar solicitudes y asignar recursos, haciendo decisivos la transparencia, la apelación y la calidad de los datos."],["laboratorios","Equipos robotizados ejecutan ciclos experimentales rápidos y reproducibles bajo hipótesis y criterios definidos."],["cuidados","Máquinas pueden asistir movilidad, vigilancia y tareas rutinarias sin reemplazar automáticamente confianza, empatía ni responsabilidad."],["trabajo creativo","Herramientas generativas amplían bocetos, escritura, música y diseño mientras alteran autoría, remuneración y acceso profesional."]],"p0":0.1052631579,"p1":0.1578947368,"scene":2,"sound":{"base":61.5,"filter":936,"noise":0.025,"pulse":0.092,"type":"sine"}},{"id":"advanced-intelligence","name":"Inteligencia avanzada","className":"Capacidades futuras inciertas · control no garantizado","color":[255,126,226],"metric":"Capacidad + objetivos + acceso a herramientas + supervisión → efectos difíciles de anticipar","fact":"Una inteligencia más capaz no es automáticamente más consciente, benevolente ni controlable.","features":[["resolución general","Un sistema más flexible podría transferir aprendizaje entre dominios sin compartir necesariamente comprensión, valores o experiencia humana."],["investigación autónoma","Modelos conectados a instrumentos podrían proponer, ejecutar y evaluar experimentos con velocidad superior a la supervisión humana."],["planificación estratégica","Comparar cadenas largas de acciones aumenta utilidad y también capacidad de manipulación, evasión o búsqueda de objetivos mal definidos."],["uso recursivo de herramientas","Un sistema puede encadenar código, búsqueda, simulación y robots, amplificando tanto competencias como errores."],["descubrimiento científico","La inteligencia artificial puede explorar espacios inmensos de moléculas, materiales y teorías, pero los resultados necesitan validación física."],["coordinación de máquinas","Muchos agentes conectados pueden repartir tareas y crear conductas colectivas no previstas por ningún componente aislado."],["alineación","Alinear significa hacer que el comportamiento siga intenciones humanas robustas bajo situaciones nuevas, no solo obedecer ejemplos conocidos."],["control y verificación","Límites de acceso, pruebas, interpretación y supervisión reducen riesgos sin demostrar que un sistema complejo permanecerá controlable en todo contexto."]],"p0":0.1578947368,"p1":0.2105263158,"scene":3,"sound":{"base":66.25,"filter":1054,"noise":0.0295,"pulse":0.113,"type":"triangle"}},{"id":"future-biotechnology","name":"Biotecnología futura","className":"Intervención creciente sobre cuerpos, herencia y ecosistemas","color":[143,255,151],"metric":"Información biológica + edición + cultivo + ambiente → organismos y funciones modificados","fact":"Tratamiento, mejora, modificación heredable y transformación de ecosistemas son intervenciones distintas con consecuencias distintas.","features":[["medicina personalizada","Genomas, historiales y biomarcadores pueden orientar tratamientos individuales sin convertir las predicciones en certezas."],["edición genética","Modificar secuencias concretas puede tratar enfermedades o crear cambios involuntarios, especialmente cuando afectan células reproductivas."],["organismos sintéticos","Circuitos genéticos diseñados pueden producir medicamentos, materiales o combustibles y también escapar de condiciones previstas."],["ingeniería de órganos","Células, andamios y señales buscan reparar o fabricar tejidos funcionales compatibles con cada paciente."],["longevidad","Investigar envejecimiento podría extender años saludables, con incertidumbres biológicas y profundas consecuencias distributivas."],["interfaces neuronales","Electrodos y otros sistemas pueden leer o estimular actividad cerebral, aumentando capacidad terapéutica y sensibilidad de los datos mentales."],["ingeniería ecológica","Intervenir poblaciones o hábitats puede restaurar funciones y producir efectos evolutivos que cruzan fronteras."],["computación biológica","Células y moléculas pueden almacenar información o ejecutar operaciones con propiedades muy diferentes de la electrónica convencional."]],"p0":0.2105263158,"p1":0.2631578947,"scene":4,"sound":{"base":71.0,"filter":1172,"noise":0.034,"pulse":0.134,"type":"sine"}},{"id":"human-machine-collaboration","name":"Colaboración humano–máquina","className":"Herramientas que se aproximan a extensiones de la persona","color":[118,220,255],"metric":"Persona + interfaz + modelo + cuerpo + comunidad → capacidad compartida","fact":"El futuro puede transformar a las personas sin reemplazarlas ni dejarlas intactas.","features":[["asistentes cognitivos","Sistemas personales pueden recordar, traducir, analizar y proponer acciones, haciendo crucial quién controla su memoria y sus objetivos."],["prótesis avanzadas","Sensores y actuadores pueden devolver movimiento o percepción y convertirse en capacidades nuevas, no solo sustituciones."],["interfaces cerebro–computadora","Conectar actividad neural con máquinas puede apoyar comunicación y control bajo límites de precisión, invasividad y privacidad."],["percepción aumentada","Visión, audición y sensores externos pueden mostrar información invisible al cuerpo humano."],["inteligencia colectiva","Personas y modelos conectados pueden combinar conocimientos diversos o amplificar sesgos compartidos."],["encarnación robótica","Controlar cuerpos remotos permite actuar en entornos peligrosos y separa parcialmente presencia, identidad y ubicación."],["decisión compartida","Sistemas pueden organizar evidencia y alternativas sin resolver por sí mismos conflictos de valores o legitimidad."],["memoria digital","Registros persistentes pueden ampliar continuidad personal y también dificultar olvido, consentimiento y reinterpretación del pasado."]],"p0":0.2631578947,"p1":0.3157894737,"scene":5,"sound":{"base":75.75,"filter":1290,"noise":0.016,"pulse":0.155,"type":"sawtooth"}},{"id":"sustainable-civilization","name":"Civilización sostenible","className":"Escenario posible · bienestar dentro de límites planetarios","color":[109,243,164],"metric":"Energía limpia + ciclos materiales + ecosistemas + justicia + resiliencia → estabilidad prolongada","fact":"La sostenibilidad no significa detener todo cambio, sino mantener el bienestar sin destruir los sistemas que lo hacen posible.","features":[["flujos circulares","Diseñar para duración, reparación, reutilización y reciclaje reduce extracción, aunque ningún ciclo material es perfectamente cerrado."],["energía baja en carbono","Una base energética limpia limita calentamiento y contaminación cuando también se gestionan materiales, territorio y demanda."],["ecosistemas restaurados","Bosques, humedales, suelos y océanos pueden recuperar funciones si disminuyen las presiones que causaron su degradación."],["ciudades resilientes","Vivienda, transporte, agua, sombra y servicios distribuidos ayudan a resistir calor, inundaciones y fallos de suministro."],["alimentación sostenible","Dietas, agricultura, almacenamiento y reducción de pérdidas pueden sostener nutrición con menor impacto ecológico."],["monitorización global","Sensores y ciencia abierta detectan cambios temprano, pero observar un problema no garantiza actuar sobre él."],["reducción de residuos","Evitar productos innecesarios y sustancias persistentes suele ser más eficaz que gestionar residuos después de crearlos."],["planificación a largo plazo","Instituciones capaces de proteger bienes comunes y generaciones futuras deben equilibrar continuidad, democracia y adaptación."]],"p0":0.3157894737,"p1":0.3684210526,"scene":6,"sound":{"base":80.5,"filter":1408,"noise":0.0205,"pulse":0.176,"type":"sine"}},{"id":"technological-inequality","name":"Desigualdad tecnológica","className":"Capacidades futuras distribuidas de forma desigual","color":[255,184,103],"metric":"Acceso + propiedad + datos + infraestructura + poder → beneficios y riesgos desiguales","fact":"El futuro es una cuestión política y social además de un problema de ingeniería.","features":[["acceso desigual","Precio, geografía, idioma, discapacidad y educación determinan quién puede usar nuevas capacidades."],["propiedad concentrada","Controlar plataformas, modelos, patentes o infraestructura permite decidir condiciones para millones de personas."],["exclusión digital","Servicios esenciales pueden volverse inaccesibles para quienes carecen de dispositivos, conexión o identificación compatible."],["control algorítmico","Clasificación y vigilancia automatizadas pueden limitar oportunidades sin explicaciones comprensibles ni vías de apelación."],["poblaciones mejoradas","Mejoras médicas o cognitivas desiguales podrían convertir diferencias económicas en diferencias corporales heredables."],["monopolios de recursos","Minerales, energía, órbitas, datos y capacidad de cómputo pueden concentrarse en pocos actores."],["riqueza automatizada","Cuando la producción necesita menos trabajo, la distribución depende todavía más de propiedad, impuestos e instituciones."],["dependencia tecnológica","Comunidades pueden perder autonomía cuando herramientas esenciales no pueden repararse, auditarse ni sustituirse localmente."]],"p0":0.3684210526,"p1":0.4210526316,"scene":7,"sound":{"base":85.25,"filter":1526,"noise":0.025,"pulse":0.05,"type":"triangle"}},{"id":"global-risks","name":"Riesgos globales","className":"Amenazas capaces de afectar a la civilización completa","color":[255,102,103],"metric":"Peligro × exposición × vulnerabilidad × interconexión → riesgo sistémico","fact":"Cuanto más interconectada se vuelve una civilización, más puede compartir tanto sus soluciones como sus fallos.","features":[["desestabilización climática","Calentamiento, extremos y cambios ecológicos pueden interactuar con alimentos, migración, salud, infraestructura y conflicto."],["conflicto nuclear","Armas nucleares combinan destrucción inmediata, contaminación, escalada y posibles efectos climáticos mundiales."],["pandemias diseñadas","La biotecnología puede mejorar defensa sanitaria y también facilitar patógenos más peligrosos o accidentes de laboratorio."],["inteligencia no controlada","Sistemas capaces de actuar ampliamente podrían perseguir objetivos incompatibles con la seguridad humana o escapar de supervisión efectiva."],["colapso ecológico","La pérdida de biodiversidad y funciones ecosistémicas puede reducir alimentos, agua, estabilidad climática y capacidad de recuperación."],["fallo de infraestructura","Electricidad, comunicaciones, finanzas y logística forman redes donde una interrupción puede desencadenar muchas otras."],["impactos de asteroides","Objetos cercanos a la Tierra son poco frecuentes pero físicamente detectables y, con suficiente anticipación, potencialmente desviables."],["crisis en cascada","Dos amenazas moderadas pueden combinarse de forma no lineal cuando debilitan simultáneamente instituciones y suministros."]],"p0":0.4210526316,"p1":0.4736842105,"scene":8,"sound":{"base":90.0,"filter":1644,"noise":0.0295,"pulse":0.071,"type":"sine"}},{"id":"planetary-governance","name":"Gobernanza planetaria","className":"Coordinación sin destino institucional único","color":[174,180,255],"metric":"Cooperación + legitimidad + conocimiento + cumplimiento → acción a escala planetaria","fact":"Coordinar problemas globales no implica que un único gobierno mundial sea inevitable ni necesariamente deseable.","features":[["tratados","Los acuerdos internacionales convierten intereses compartidos en compromisos que dependen de verificación, incentivos y confianza."],["cooperación científica","Datos, observatorios y laboratorios distribuidos permiten estudiar problemas que ningún país puede abarcar solo."],["regulación tecnológica","Normas sobre seguridad, uso y responsabilidad intentan reducir daños sin congelar toda innovación."],["vigilancia de riesgos","Sistemas globales pueden detectar brotes, impactos, emisiones y fallos antes de que se conviertan en crisis."],["estándares comunes","Protocolos compartidos permiten interoperabilidad y también pueden favorecer a quienes dominan su diseño."],["prevención de conflictos","Diplomacia, comunicación y control de armamentos reducen probabilidades sin eliminar competencia o error."],["gobernanza de recursos","Océanos, atmósfera, polos, órbitas y quizá recursos espaciales requieren reglas sobre acceso, daño y beneficio."],["generaciones futuras","Representar a personas aún no nacidas obliga a considerar efectos que exceden ciclos políticos y vidas individuales."]],"p0":0.4736842105,"p1":0.5263157895,"scene":9,"sound":{"base":94.75,"filter":1762,"noise":0.034,"pulse":0.092,"type":"triangle"}},{"id":"space-industry","name":"Industria espacial","className":"Actividad económica más allá de la superficie terrestre","color":[122,201,255],"metric":"Transporte + energía + soporte vital + mantenimiento + mercado → operación espacial sostenida","fact":"Expandirse al espacio exige sistemas continuos de energía, mantenimiento y cooperación, no solamente transporte.","features":[["lanzamiento reutilizable","Recuperar vehículos reduce parte del coste de acceso, aunque combustible, operaciones y seguridad siguen siendo decisivos."],["fabricación orbital","La microgravedad y el vacío permiten procesos particulares cuando el valor obtenido supera transporte y complejidad."],["servicio de satélites","Reparar, reabastecer o retirar satélites puede prolongar infraestructura y reducir residuos orbitales."],["recursos lunares","Hielo, regolito y energía solar podrían apoyar operaciones locales antes de convertirse en exportaciones útiles."],["observatorios espaciales","Instrumentos fuera de la atmósfera ven longitudes de onda y detalles bloqueados desde la superficie."],["prospección de asteroides","Conocer composición y órbita precede a cualquier minería; la viabilidad depende de energía, robótica, mercado y derecho."],["hábitats orbitales","Estructuras habitables necesitan protección, gravedad artificial o contramedidas, ciclos materiales y rescate."],["defensa planetaria","Encuestas, modelos y misiones de desviación pueden transformar un peligro natural raro en un riesgo parcialmente gobernable."]],"p0":0.5263157895,"p1":0.5789473684,"scene":10,"sound":{"base":99.5,"filter":1880,"noise":0.016,"pulse":0.113,"type":"sine"}},{"id":"offworld-settlements","name":"Asentamientos extraplanetarios","className":"De visitas temporales a sociedades autosuficientes","color":[255,192,128],"metric":"Base → asentamiento → producción local → autonomía social y ecológica","fact":"Visitar, mantener una base, construir un asentamiento y formar una sociedad autosuficiente son logros radicalmente distintos.","features":[["bases lunares","La cercanía facilita comunicación y rescate, pero vacío, polvo, radiación y largas noches complican toda permanencia."],["asentamientos marcianos","Marte ofrece recursos y ciclos diarios reconocibles junto con atmósfera tenue, frío, radiación y enorme distancia logística."],["hábitats giratorios","Estructuras rotatorias podrían producir gravedad aparente y vivir independientes de superficies planetarias."],["ecosistemas cerrados","Aire, agua, nutrientes y residuos deben circular durante años con pérdidas mínimas y alta capacidad de reparación."],["protección radiológica","Regolito, agua, campos y refugios reducen exposición a partículas solares y rayos cósmicos."],["gravedad artificial","La rotación puede simular peso, pero exige estructuras grandes, control de movimiento y adaptación humana."],["fabricación local","Transformar materiales disponibles en piezas, alimento y combustible disminuye dependencia de suministros terrestres."],["separación cultural","Distancia, peligro y experiencias propias pueden crear identidades distintas mucho antes de la autosuficiencia económica."]],"p0":0.5789473684,"p1":0.6315789474,"scene":11,"sound":{"base":104.25,"filter":1998,"noise":0.0205,"pulse":0.134,"type":"sawtooth"}},{"id":"multiplanetary-civilization","name":"Civilización multiplanetaria","className":"Sociedades separadas por minutos u horas de luz","color":[156,164,255],"metric":"Mundos habitados + autonomía local + comunicación retardada → civilización distribuida","fact":"Una civilización multiplanetaria no sería una nación terrestre ampliada: las distancias crearían nuevas sociedades y formas de independencia.","features":[["retrasos de comunicación","La información viaja como máximo a la velocidad de la luz, impidiendo conversación instantánea entre mundos distantes."],["economías independientes","Transportar bienes entre planetas favorece producción local y comercio de objetos o información de alto valor."],["culturas divergentes","Entornos, riesgos y generaciones separadas producirían costumbres e identidades cada vez más distintas."],["gobernanza local","Decisiones urgentes no pueden esperar instrucciones de otro planeta y empujan hacia autoridad cercana."],["comercio interplanetario","Rutas lentas y ventanas orbitales convierten logística, seguros y planificación en procesos de años."],["adaptación biológica","Salud en otras gravedades podría requerir medicina, selección cultural o modificaciones biológicas controvertidas."],["autonomía política","La dependencia material puede disminuir mientras memoria histórica y tratados mantienen vínculos."],["herencia compartida","Lenguas, ciencia y origen terrestre podrían unir poblaciones que ya no comparten exactamente la misma experiencia humana."]],"p0":0.6315789474,"p1":0.6842105263,"scene":12,"sound":{"base":109.0,"filter":2116,"noise":0.025,"pulse":0.155,"type":"sine"}},{"id":"planetary-engineering","name":"Modificación planetaria","className":"Intervención sobre ambientes completos · legitimidad incierta","color":[111,235,205],"metric":"Energía + materiales + biología + siglos + gobernanza → ambiente planetario alterado","fact":"Ser técnicamente capaz de modificar un planeta no implica tener el derecho, el conocimiento suficiente ni la legitimidad para hacerlo.","features":[["ingeniería atmosférica","Añadir, retirar o transformar gases exige cantidades enormes de materia y puede producir retroalimentaciones difíciles de revertir."],["espejos orbitales","Reflectores podrían modificar iluminación o temperatura local, con riesgos de control, fallo y efectos transfronterizos."],["magnetosferas artificiales","Campos generados en el espacio se han propuesto para desviar partículas, pero requerirían infraestructuras aún hipotéticas."],["siembra ecológica","Introducir organismos puede construir ciclos vivos o destruir entornos autóctonos antes de comprenderlos."],["control climático","Regular un clima completo exige predecir sistemas caóticos y decidir quién define las condiciones deseadas."],["terraformación","Transformar un planeta para vida terrestre probablemente requeriría siglos o milenios y capacidades muy superiores a las actuales."],["paraterraformación","Encerrar regiones habitables limita la escala y permite control local sin alterar todo el planeta."],["protección planetaria","Evitar contaminación biológica protege ciencia, ecosistemas posibles y decisiones que pertenecen a generaciones futuras."]],"p0":0.6842105263,"p1":0.7368421053,"scene":13,"sound":{"base":113.75,"filter":2234,"noise":0.0295,"pulse":0.176,"type":"triangle"}},{"id":"postbiological-intelligence","name":"Inteligencia postbiológica","className":"Hipótesis · mentes no limitadas a cuerpos orgánicos","color":[223,153,255],"metric":"Cognición + soporte físico + energía + continuidad → posibles personas o culturas sintéticas","fact":"Las inteligencias postbiológicas son hipótesis, no resultados establecidos ni destinos inevitables.","features":[["mentes sintéticas","Sistemas construidos podrían desarrollar capacidades o experiencias propias, pero no sabemos qué arquitectura produciría conciencia."],["personas digitales","Reconocer una entidad digital como persona dependería de evidencia sobre continuidad, experiencia, autonomía y relaciones sociales."],["cognición distribuida","Una mente podría extenderse entre muchos procesadores, lugares y cuerpos con problemas nuevos de identidad y coordinación."],["civilizaciones robóticas","Máquinas capaces de mantenimiento y reproducción industrial podrían vivir donde la biología terrestre no puede."],["emulación mental","Copiar con suficiente detalle un cerebro exigiría comprender qué estructura y dinámica son necesarias para preservar una mente."],["independencia de sustrato","La idea de que una mente puede existir en materiales distintos sigue siendo una hipótesis filosófica y científica abierta."],["computación prolongada","Sistemas no biológicos podrían operar lentamente, hibernar o durar milenios si conservan energía, memoria y reparación."],["culturas de máquinas","Entidades sintéticas podrían desarrollar ritmos, valores y formas de comunicación difíciles de interpretar desde la experiencia humana."]],"p0":0.7368421053,"p1":0.7894736842,"scene":14,"sound":{"base":118.5,"filter":2352,"noise":0.034,"pulse":0.05,"type":"sine"}},{"id":"interstellar-civilization","name":"Civilización interestelar","className":"Expansión separada por años, generaciones y milenios","color":[146,205,255],"metric":"Propulsión + autonomía + tiempo + reproducción social → presencia entre estrellas","fact":"Las distancias interestelares transforman expansión, comunicación e identidad en procesos de generaciones o milenios.","features":[["naves generacionales","Comunidades completas podrían vivir y cambiar durante viajes más largos que una vida humana."],["animación suspendida","Reducir metabolismo durante décadas sigue siendo una posibilidad especulativa con grandes obstáculos médicos."],["sondas autorreplicantes","Máquinas que usan recursos locales podrían explorar muchas estrellas y multiplicar errores, objetivos o contaminación."],["propulsión láser","Velas muy ligeras impulsadas por haces podrían alcanzar altas velocidades sin transportar todo su combustible."],["propulsión de fusión","Reacciones de fusión podrían impulsar naves rápidas si se dominan combustible, confinamiento, masa y calor."],["sistemas semilla","Paquetes autónomos podrían construir infraestructura o incluso organismos al llegar, planteando control y legitimidad extremos."],["comunicación interestelar","Cada mensaje tardaría años o siglos, convirtiendo diálogo en correspondencia entre generaciones."],["colonias aisladas","La separación prolongada produciría evolución cultural, política y quizá biológica independiente."]],"p0":0.7894736842,"p1":0.8421052632,"scene":15,"sound":{"base":123.25,"filter":2470,"noise":0.016,"pulse":0.071,"type":"triangle"}},{"id":"kardashev-scale","name":"Escalas de Kardashev","className":"Herramienta conceptual basada en energía, no en sabiduría","color":[255,218,123],"metric":"Potencia controlada aproximada → escala planetaria, estelar o galáctica","fact":"La escala de Kardashev mide aproximadamente uso de energía; no mide bienestar, moralidad, sabiduría ni inevitabilidad histórica.","features":[["energía planetaria","Una civilización planetaria gestionaría una fracción grande de la energía disponible en su mundo sin necesariamente hacerlo de forma justa."],["energía estelar","Capturar parte sustancial de la luz de una estrella requeriría una población inmensa de colectores y sistemas orbitales."],["enjambres de Dyson","Millones de estructuras independientes son físicamente más plausibles que una esfera rígida alrededor de una estrella."],["computación distribuida","Energía estelar podría alimentar grandes redes de cálculo limitadas por temperatura, comunicación y materiales."],["infraestructura galáctica","Extender actividad por una galaxia exigiría millones de años incluso con expansión rápida a escala humana."],["eficiencia energética","Una civilización avanzada podría hacer más con menos energía y ser menos visible que otra más derrochadora."],["firmas observables","Calor residual, estructuras orbitales o cambios estelares podrían revelar tecnología sin explicar su cultura."],["límites físicos","Termodinámica, velocidad de la luz, estabilidad orbital y recursos acotan cualquier ingeniería cósmica."]],"p0":0.8421052632,"p1":0.8947368421,"scene":16,"sound":{"base":128.0,"filter":2588,"noise":0.0205,"pulse":0.092,"type":"sine"}},{"id":"divergent-futures","name":"Futuros divergentes","className":"Múltiples resultados · ninguna rama garantizada","color":[255,150,190],"metric":"Capacidad tecnológica × valores × instituciones × accidentes → trayectorias divergentes","fact":"Cada nueva capacidad abre varias ramas; el poder tecnológico por sí solo no decide cuál se vuelve realidad.","features":[["abundancia sostenible","Energía limpia, automatización y distribución justa podrían elevar bienestar sin exceder límites ecológicos."],["control autoritario","Vigilancia, predicción y dependencia digital podrían concentrar poder con apariencia de eficiencia."],["civilización descentralizada","Producción local, redes abiertas y autonomía comunitaria podrían repartir resiliencia y coordinación."],["recuperación ecológica","Sociedades podrían restaurar ecosistemas y redefinir prosperidad alrededor de continuidad biológica."],["estancamiento tecnológico","Conflicto, límites económicos o elección cultural pueden frenar innovación sin terminar la historia."],["transformación posthumana","Biología, máquinas y cultura podrían producir descendientes que ya no encajen en categorías humanas actuales."],["colapso y reconstrucción","Sistemas complejos pueden perder capacidad y luego reorganizarse con memoria parcial del pasado."],["inteligencia cooperativa","Personas, instituciones y máquinas podrían formar sistemas de decisión más capaces si preservan pluralidad, revisión y control."]],"p0":0.8947368421,"p1":0.9473684211,"scene":17,"sound":{"base":132.75,"filter":2706,"noise":0.025,"pulse":0.113,"type":"sawtooth"}},{"id":"unknown-horizon","name":"Horizonte desconocido","className":"Frontera de la imaginación informada","color":[238,244,255],"metric":"Cuanto mayor la distancia temporal → menor predicción y mayor espacio de posibilidades","fact":"Cuanto más lejos miramos, menos predecimos acontecimientos y más cartografiamos posibilidades.","features":[["física desconocida","Nuevas leyes o fenómenos podrían cambiar límites que hoy parecen fundamentales."],["formas nuevas de inteligencia","La cognición futura podría existir en cuerpos, escalas y ritmos sin equivalentes actuales."],["vida alienígena","Descubrir otra biosfera modificaría nuestra comprensión de evolución, singularidad y responsabilidad cósmica."],["identidad transformada","Cambios biológicos, digitales y sociales pueden volver insuficientes las palabras actuales para persona, especie o sociedad."],["restricciones cósmicas","Energía, entropía, expansión y velocidad de la luz continuarán condicionando cualquier civilización conocida."],["civilizaciones irreconocibles","Tecnología muy avanzada podría no parecer una ciudad, una nave ni una señal deliberada."],["vocabulario ausente","Algunas posibilidades no pueden describirse bien desde conceptos creados para el presente."],["más allá","Si la vida y la inteligencia pueden expandirse por el cosmos, debemos preguntar si estamos solos y cómo reconoceríamos una civilización verdaderamente alienígena."]],"p0":0.9473684211,"p1":1.0,"scene":18,"sound":{"base":137.5,"filter":2824,"noise":0.0295,"pulse":0.134,"type":"sine"}}];
+
+    let width = 1, height = 1, dpr = 1;
+    let pointerDown = false;
+    let targetX = .5, targetY = .982, pointerX = .5, pointerY = .982;
+    let shownX = .5, shownY = .982;
+    let lastZoneId = "", lastFeature = -1;
+    let hideTimer = 0, speechTimer = 0, lastSpoken = "", speechUnlocked = false;
+    let lastFrame = performance.now(), elapsed = 0, currentProgress = .018, touchEnergy = 0;
+
+    const particles = [], nodes = [], structures = [], packets = [], glyphs = [], bursts = [], waves = [];
+    let audioCtx = null, master = null, droneA = null, droneB = null, droneGain = null;
+    let droneFilter = null, pulseOsc = null, pulseGain = null, noiseSource = null;
+    let noiseGain = null, noiseFilter = null, stereo = null;
+
+    function depthFromY(yNorm) { return clamp(1 - yNorm, 0, 1); }
+    function zoneForDepth(p) {
+      for (const zone of ZONES) if (p >= zone.p0 && p < zone.p1) return zone;
+      return ZONES[ZONES.length - 1];
+    }
+    function featureFor(zone, xNorm) {
+      const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .999999) * zone.features.length));
+      return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+    }
+    function setAccent(zone) { root.style.setProperty("--accent", `${zone.color[0]} ${zone.color[1]} ${zone.color[2]}`); }
+    function setCssPoint(x, y) { root.style.setProperty("--scan-x", `${x}px`); root.style.setProperty("--scan-y", `${y}px`); }
+
+    function buildScene() {
+      particles.length = nodes.length = structures.length = packets.length = glyphs.length = 0;
+      const count = reducedMotion ? 90 : Math.round(clamp(width * height / 4800, 150, 380));
+      for (let i=0;i<count;i++) particles.push({x:seeded(i+1),y:seeded(i+1000),r:.5+seeded(i+2000)*2.4,phase:seeded(i+3000)*TAU,speed:.12+seeded(i+4000)*.9,kind:i%11});
+      for (let i=0;i<70;i++) nodes.push({x:.05+seeded(i+5000)*.9,y:.07+seeded(i+6000)*.86,r:2+seeded(i+7000)*5,phase:seeded(i+8000)*TAU,kind:i%9});
+      for (let i=0;i<46;i++) structures.push({x:.03+seeded(i+9000)*.94,y:.08+seeded(i+10000)*.84,w:.025+seeded(i+11000)*.09,h:.03+seeded(i+12000)*.16,phase:seeded(i+13000)*TAU,kind:i%10});
+      for (let i=0;i<62;i++) packets.push({x1:seeded(i+14000),y1:seeded(i+15000),x2:seeded(i+16000),y2:seeded(i+17000),phase:seeded(i+18000)*TAU,speed:.16+seeded(i+18100)*.55,kind:i%7});
+      const chars='01λΣΔAI{}<>→∞⊕◌⌁✦?';
+      for (let i=0;i<80;i++) glyphs.push({x:.04+seeded(i+19000)*.92,y:.06+seeded(i+20000)*.86,char:chars[i%chars.length],size:9+seeded(i+21000)*22,phase:seeded(i+22000)*TAU,speed:.2+seeded(i+23000)*.9});
+    }
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      width = Math.max(1, rect.width); height = Math.max(1, rect.height);
+      dpr = Math.min(2, devicePixelRatio || 1);
+      canvas.width = Math.round(width*dpr); canvas.height = Math.round(height*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0); buildScene();
+      shownX = targetX*width; shownY = targetY*height; setCssPoint(shownX, shownY);
+    }
+
+    function ensureAudio() {
+      if (audioCtx) { if (audioCtx.state === "suspended") audioCtx.resume().catch(()=>{}); return; }
+      const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
+      audioCtx = new AudioContext(); master = audioCtx.createGain(); master.gain.value = 0;
+      const compressor = audioCtx.createDynamicsCompressor(); compressor.threshold.value=-24; compressor.knee.value=20; compressor.ratio.value=5;
+      master.connect(compressor).connect(audioCtx.destination);
+      droneA=audioCtx.createOscillator(); droneB=audioCtx.createOscillator(); droneGain=audioCtx.createGain(); droneFilter=audioCtx.createBiquadFilter();
+      stereo=audioCtx.createStereoPanner?audioCtx.createStereoPanner():audioCtx.createGain();
+      droneA.type='sine'; droneB.type='triangle'; droneGain.gain.value=.0001; droneFilter.type='lowpass'; droneFilter.frequency.value=850; droneFilter.Q.value=.8;
+      droneA.connect(droneGain); droneB.connect(droneGain); droneGain.connect(droneFilter).connect(stereo).connect(master); droneA.start(); droneB.start();
+      pulseOsc=audioCtx.createOscillator(); pulseGain=audioCtx.createGain(); pulseOsc.type='sine'; pulseGain.gain.value=.0001; pulseOsc.connect(pulseGain).connect(master); pulseOsc.start();
+      const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate), channel=buffer.getChannelData(0);
+      for(let i=0;i<channel.length;i++) channel[i]=Math.random()*2-1;
+      noiseSource=audioCtx.createBufferSource(); noiseSource.buffer=buffer; noiseSource.loop=true;
+      noiseFilter=audioCtx.createBiquadFilter(); noiseFilter.type='bandpass'; noiseFilter.frequency.value=1100; noiseFilter.Q.value=.5;
+      noiseGain=audioCtx.createGain(); noiseGain.gain.value=.0001; noiseSource.connect(noiseFilter).connect(noiseGain).connect(master); noiseSource.start();
+    }
+
+    function setAudioFor(zone,xNorm,progress,active){
+      if(!audioCtx||!master)return; const now=audioCtx.currentTime,s=zone.sound,base=s.base*(.94+xNorm*.13);
+      droneA.type=s.type; droneB.type=s.type==='sawtooth'?'triangle':'sine';
+      droneA.frequency.setTargetAtTime(base,now,.08); droneB.frequency.setTargetAtTime(base*(1.496+progress*.012),now,.1);
+      droneFilter.frequency.setTargetAtTime(s.filter*(.84+xNorm*.3),now,.1); droneGain.gain.setTargetAtTime(active?.010+progress*.006:.0001,now,.09);
+      pulseOsc.frequency.setTargetAtTime(base*(1.985+s.pulse),now,.08); pulseGain.gain.setTargetAtTime(active?.0024+progress*.002:.0001,now,.1);
+      noiseFilter.frequency.setTargetAtTime(s.filter*1.13,now,.1); noiseGain.gain.setTargetAtTime(active?Math.max(.0001,s.noise*.052):.0001,now,.1);
+      if(stereo.pan)stereo.pan.setTargetAtTime((xNorm-.5)*.7,now,.08); master.gain.setTargetAtTime(active?.25:.0001,now,.09);
+    }
+
+    function ping(zone,xNorm,index=0){
+      if(!audioCtx||!master)return; const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),filter=audioCtx.createBiquadFilter();
+      const pan=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null; osc.type=index%3===0?'sine':index%3===1?'triangle':'square';
+      osc.frequency.value=zone.sound.base*(2.05+index*.12); filter.type='lowpass'; filter.frequency.value=1800+zone.scene*105;
+      gain.gain.setValueAtTime(.0001,now); gain.gain.exponentialRampToValueAtTime(.065,now+.012); gain.gain.exponentialRampToValueAtTime(.0001,now+.48);
+      osc.connect(filter).connect(gain); if(pan){pan.pan.value=(xNorm-.5)*1.25;gain.connect(pan).connect(master)}else gain.connect(master); osc.start(now);osc.stop(now+.54);
+    }
+
+    function queueSpeech(label){
+      if(!speechUnlocked||!("speechSynthesis" in window)||!label||label===lastSpoken)return; clearTimeout(speechTimer);
+      speechTimer=setTimeout(()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(label);u.lang='es-ES';u.rate=.86;u.pitch=1;
+        const voices=speechSynthesis.getVoices();const voice=voices.find(v=>/^es(-|_)/i.test(v.lang))||voices.find(v=>/spanish|español/i.test(v.name));if(voice)u.voice=voice;
+        speechSynthesis.speak(u);lastSpoken=label;}catch(_){ }},360);
+    }
+
+    function addRipple(x,y){const node=document.createElement('div');node.className='ripple';node.style.left=`${x}px`;node.style.top=`${y}px`;document.body.appendChild(node);node.addEventListener('animationend',()=>node.remove(),{once:true});}
+    function addBurst(x,y,color){const count=reducedMotion?5:13;for(let i=0;i<count;i++){const a=Math.random()*TAU,s=18+Math.random()*72;bursts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:.8+Math.random()*2.4,life:1,decay:1+Math.random()*.8,color});}waves.push({x,y,radius:5,life:1,color});}
+
+    function updateReadout(x,y,isNewPress=false){
+      const xNorm=clamp(x/width,0,.999999),yNorm=clamp(y/height,0,.999999),progress=depthFromY(yNorm),zone=zoneForDepth(progress),feature=featureFor(zone,xNorm);
+      if(isNewPress){currentProgress=progress;pointerX=xNorm;pointerY=yNorm;}
+      targetX=xNorm;targetY=yNorm;touchEnergy=1;setCssPoint(x,y);setAccent(zone);root.style.setProperty('--progress',`${Math.max(1.2,progress*100)}%`);
+      scaleDot.style.bottom=`${48+progress*Math.max(0,height-96)}px`;touchOrb.style.left=`${x}px`;touchOrb.style.top=`${y}px`;scaleValue.textContent=zone.className;
+      const changed=zone.id!==lastZoneId||feature.index!==lastFeature;
+      if(changed||isNewPress){evidenceClass.textContent=zone.className;zoneName.textContent=zone.name;zoneName.className=zone.name.length>31?'long':zone.name.length>21?'compact':'';
+        featureName.textContent=feature.name;metric.textContent=zone.metric;fact.textContent=feature.fact||zone.fact;ping(zone,xNorm,feature.index);addBurst(x,y,zone.color);queueSpeech(feature.name);lastZoneId=zone.id;lastFeature=feature.index;}
+      readout.classList.add('visible');touchOrb.classList.add('visible');document.body.classList.add('active');hint.style.display='none';setAudioFor(zone,xNorm,progress,true);
+    }
+    function releaseInteraction(delay=1050){clearTimeout(hideTimer);hideTimer=setTimeout(()=>{readout.classList.remove('visible');touchOrb.classList.remove('visible');document.body.classList.remove('active');const z=zoneForDepth(depthFromY(targetY));setAudioFor(z,targetX,depthFromY(targetY),false);},delay);}
+    function endPointer(){pointerDown=false;releaseInteraction();}
+    canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.focus({preventScroll:true});pointerDown=true;speechUnlocked=true;ensureAudio();try{canvas.setPointerCapture(e.pointerId)}catch(_){ }updateReadout(e.clientX,e.clientY,true);addRipple(e.clientX,e.clientY);});
+    canvas.addEventListener('pointermove',e=>{if(!pointerDown&&e.pointerType!=='mouse')return;if(!pointerDown&&e.buttons===0){targetX=clamp(e.clientX/width,0,1);targetY=clamp(e.clientY/height,0,1);return;}e.preventDefault();updateReadout(e.clientX,e.clientY);});
+    canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);canvas.addEventListener('lostpointercapture',endPointer);
+    canvas.addEventListener('keydown',e=>{const keys=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter',' '];if(!keys.includes(e.key))return;e.preventDefault();speechUnlocked=true;ensureAudio();const step=e.shiftKey?.09:.035;
+      if(e.key==='ArrowUp')targetY=clamp(targetY-step,.005,.995);if(e.key==='ArrowDown')targetY=clamp(targetY+step,.005,.995);if(e.key==='ArrowLeft')targetX=clamp(targetX-step,.005,.995);if(e.key==='ArrowRight')targetX=clamp(targetX+step,.005,.995);
+      updateReadout(targetX*width,targetY*height,e.key==='Enter'||e.key===' ');releaseInteraction(1600);});
+
+    function softHalo(cx,cy,radius,color,alpha){const g=ctx.createRadialGradient(cx,cy,0,cx,cy,radius);g.addColorStop(0,rgba(color,alpha));g.addColorStop(.35,rgba(color,alpha*.4));g.addColorStop(1,rgba(color,0));ctx.fillStyle=g;ctx.fillRect(cx-radius,cy-radius,radius*2,radius*2);}
+    function roundedRectPath(x,y,w,h,r){const rr=Math.min(r,w*.5,h*.5);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();}
+    function line(x1,y1,x2,y2,stroke='rgba(255,255,255,.3)',lw=1){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+    function circle(x,y,r,fill='rgba(255,255,255,.5)',stroke=null,lw=1){ctx.fillStyle=fill;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+    function polygon(points,fill,stroke=null,lw=1){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+    function drawGear(cx,cy,r,teeth,color,rotation=0){ctx.save();ctx.translate(cx,cy);ctx.rotate(rotation);ctx.strokeStyle=color;ctx.fillStyle='rgba(0,0,0,.15)';ctx.lineWidth=1.6;ctx.beginPath();for(let i=0;i<teeth*2;i++){const a=i/(teeth*2)*TAU,rr=i%2?r:r*.76;const x=Math.cos(a)*rr,y=Math.sin(a)*rr;if(!i)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.closePath();ctx.fill();ctx.stroke();circle(0,0,r*.27,'rgba(0,0,0,.42)',color,1.2);ctx.restore();}
+    function drawGlobe(cx,cy,r,z,time,network=true){
+      softHalo(cx,cy,r*2.15,z.color,.2);const g=ctx.createRadialGradient(cx-r*.38,cy-r*.43,r*.04,cx,cy,r);g.addColorStop(0,'rgba(205,248,255,.98)');g.addColorStop(.42,'rgba(63,173,222,.94)');g.addColorStop(1,'rgba(8,39,92,.97)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.fill();ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.clip();ctx.fillStyle='rgba(86,186,114,.67)';for(let i=0;i<12;i++){const a=seeded(i+300)*TAU,rr=seeded(i+330)*r*.77,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.78;ctx.beginPath();ctx.ellipse(x,y,r*(.055+seeded(i+350)*.13),r*(.025+seeded(i+370)*.065),a,0,TAU);ctx.fill();}ctx.strokeStyle='rgba(255,255,255,.15)';for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(cx-r*.24+i*r*.075,cy-r*.13+i*r*.035,r*(.47+i*.05),.18,2.55);ctx.stroke();}ctx.restore();ctx.strokeStyle='rgba(190,240,255,.55)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();
+      if(network){for(let i=0;i<27;i++){const a=i/27*TAU+time*.01,x=cx+Math.cos(a)*r*.82,y=cy+Math.sin(a)*r*.82;circle(x,y,1.5+i%3,rgba(i%4?z.color:[255,240,185],.46));}}
+    }
+    function drawBuilding(x,ground,w,h,color,lit=.45){ctx.fillStyle='rgba(8,14,25,.58)';ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.fillRect(x-w*.5,ground-h,w,h);ctx.strokeRect(x-w*.5,ground-h,w,h);let row=0;for(let ry=0;ry<h-w*.2;ry+=Math.max(10,w*.38),row++)for(let c=-1;c<=1;c++){const on=fract(Math.sin((x+row*17+c*31)*12.9898)*43758.5453)<lit;circle(x+c*w*.23,ground-h+w*.22+ry,1.25,on?'rgba(255,230,145,.45)':'rgba(120,220,255,.2)');}}
+    function drawTool(x,y,len,angle,type,color){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.lineCap='round';if(type==='hammer'){line(-len*.42,0,len*.35,0,'rgba(180,120,73,.9)',len*.10);ctx.fillStyle=color;roundedRectPath(len*.17,-len*.18,len*.34,len*.36,len*.05);ctx.fill();}else if(type==='knife'){line(-len*.42,0,-len*.1,0,'rgba(156,96,55,.9)',len*.12);polygon([[-len*.1,-len*.08],[len*.45,-len*.03],[len*.28,len*.12],[-len*.1,len*.08]],'rgba(220,240,250,.75)',color,1);}else if(type==='needle'){line(-len*.45,0,len*.45,0,color,2);circle(-len*.36,0,len*.055,'rgba(0,0,0,.2)',color,1);}else if(type==='rope'){ctx.strokeStyle=color;ctx.lineWidth=len*.045;ctx.beginPath();for(let i=0;i<=30;i++){const xx=-len*.45+i/30*len*.9,yy=Math.sin(i*.7)*len*.04;i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy);}ctx.stroke();}else{line(-len*.42,0,len*.42,0,color,len*.06);circle(len*.34,0,len*.12,'rgba(0,0,0,.2)',color,2);}ctx.restore();}
+
+    function drawBackground(progress,time){
+      const f=clamp(progress*(ZONES.length-1),0,ZONES.length-1),i=Math.floor(f),j=Math.min(ZONES.length-1,i+1),t=smooth(f-i),a=ZONES[i].color,b=ZONES[j].color;
+      const c=a.map((v,k)=>Math.round(mix(v,b[k],t))), dark=c.map(v=>Math.round(v*.09)), mid=c.map(v=>Math.round(v*.29));
+      const g=ctx.createLinearGradient(0,height,0,0);g.addColorStop(0,`rgb(${Math.max(3,dark[0]-4)} ${Math.max(5,dark[1]-2)} ${Math.max(8,dark[2])})`);g.addColorStop(.56,`rgb(${mid[0]} ${mid[1]} ${mid[2]})`);g.addColorStop(1,`rgb(${Math.min(255,c[0]*.62)} ${Math.min(255,c[1]*.62)} ${Math.min(255,c[2]*.62)})`);ctx.fillStyle=g;ctx.fillRect(0,0,width,height);
+      softHalo(width*(.44+.1*Math.sin(time*.05)),height*(.74-progress*.46),Math.max(width,height)*.72,c,.105+progress*.05);
+      for(const p of particles){const x=fract(p.x+time*.0018*p.speed)*width+Math.sin(time*.19+p.phase)*4,y=fract(p.y-time*.0011*p.speed)*height+Math.cos(time*.15+p.phase)*4,col=p.kind%3===0?c:p.kind%3===1?[255,244,215]:[132,226,255];circle(x,y,p.r*(.72+progress*.38),rgba(col,.07+.15*(.5+.5*Math.sin(time*p.speed+p.phase))));}
+      for(let k=1;k<8;k++)line(k/8*width,0,k/8*width,height,'rgba(255,255,255,.016)');
+    }
+
+
+    function drawPlanet(cx,cy,r,z,time,land=true){
+      softHalo(cx,cy,r*2.2,z.color,.18);const g=ctx.createRadialGradient(cx-r*.32,cy-r*.38,r*.03,cx,cy,r);g.addColorStop(0,'rgba(225,250,255,.98)');g.addColorStop(.38,rgba(z.color,.78));g.addColorStop(1,'rgba(7,20,55,.98)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.fill();ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.clip();
+      if(land){ctx.fillStyle='rgba(105,207,145,.58)';for(let i=0;i<10;i++){const a=seeded(i+310)*TAU,rr=seeded(i+340)*r*.72;ctx.beginPath();ctx.ellipse(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.78,r*(.055+seeded(i+370)*.14),r*(.026+seeded(i+390)*.07),a,0,TAU);ctx.fill();}}
+      ctx.strokeStyle='rgba(255,255,255,.13)';for(let i=0;i<6;i++){ctx.beginPath();ctx.ellipse(cx,cy,r*(.35+i*.11),r*(.12+i*.035),time*.006+i*.27,0,TAU);ctx.stroke();}ctx.restore();ctx.strokeStyle='rgba(215,245,255,.55)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();
+    }
+    function drawStar(cx,cy,r,color,time){softHalo(cx,cy,r*3,color,.2);const g=ctx.createRadialGradient(cx-r*.25,cy-r*.3,0,cx,cy,r);g.addColorStop(0,'rgba(255,255,240,1)');g.addColorStop(.38,rgba(color,.96));g.addColorStop(1,rgba([255,128,70],.48));ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r*(1+.025*Math.sin(time*1.8)),0,TAU);ctx.fill();for(let i=0;i<12;i++){const a=i/12*TAU+time*.025,lineR=r*(1.25+(i%3)*.2);line(cx+Math.cos(a)*r*1.05,cy+Math.sin(a)*r*1.05,cx+Math.cos(a)*lineR,cy+Math.sin(a)*lineR,rgba(color,.22),1.3);}}
+    function drawSatellite(x,y,s,z,angle=0){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.fillStyle='rgba(220,235,245,.68)';roundedRectPath(-s*.12,-s*.08,s*.24,s*.16,s*.035);ctx.fill();ctx.strokeStyle=rgba(z.color,.7);ctx.stroke();ctx.fillStyle=rgba(z.color,.28);ctx.fillRect(-s*.42,-s*.07,s*.25,s*.14);ctx.fillRect(s*.17,-s*.07,s*.25,s*.14);line(0,-s*.08,0,-s*.22,'rgba(255,255,255,.52)',1.5);circle(0,-s*.25,s*.025,rgba(z.color,.78));ctx.restore();}
+    function drawHabitat(x,y,s,z,domes=3){line(x-s*.42,y,x+s*.42,y,rgba(z.color,.35),3);for(let i=0;i<domes;i++){const dx=(i-(domes-1)/2)*s*.27,r=s*(.095+(i%2)*.018);ctx.fillStyle=rgba(z.color,.12);ctx.strokeStyle=rgba(z.color,.65);ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(x+dx,y,r,Math.PI,TAU);ctx.lineTo(x+dx+r,y);ctx.lineTo(x+dx-r,y);ctx.closePath();ctx.fill();ctx.stroke();for(let k=-1;k<=1;k++)circle(x+dx+k*r*.38,y-r*.42,1.4,'rgba(255,235,160,.62)');}}
+    function drawNetwork(cx,cy,r,z,time,count=18){for(let i=0;i<count;i++){const a=i/count*TAU+seeded(i+900)*.5,rr=r*(.36+seeded(i+930)*.64),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.72;nodes[i]._x=x;nodes[i]._y=y;circle(x,y,2+i%3,rgba(i%4?z.color:[255,240,180],.68));}for(let i=0;i<count*2;i++){const a=nodes[i%count],b=nodes[(i*7+3)%count];line(a._x,a._y,b._x,b._y,rgba(z.color,.075+(i%4)*.018),1);const p=fract(time*(.07+(i%3)*.012)+i*.053);circle(mix(a._x,b._x,p),mix(a._y,b._y,p),1.3,rgba([255,250,220],.5));}}
+    function drawBranching(originX,originY,targetY,z,time,branches=9,spread=.82){for(let i=0;i<branches;i++){const ex=width*((1-spread)/2+i/(branches-1)*spread),cx=originX+(ex-originX)*.36+Math.sin(i*2.1)*width*.035;ctx.strokeStyle=rgba(i%3===0?[255,170,190]:i%3===1?z.color:[140,255,176],.2+i*.012);ctx.lineWidth=1.7+i%3;ctx.beginPath();ctx.moveTo(originX,originY);ctx.bezierCurveTo(cx,mix(originY,targetY,.32),cx,mix(originY,targetY,.7),ex,targetY);ctx.stroke();const p=fract(time*(.045+i*.004)+i*.09),u=1-p,x=(u*u*u)*originX+3*u*u*p*cx+3*u*p*p*cx+p*p*p*ex,y=(u*u*u)*originY+3*u*u*p*mix(originY,targetY,.32)+3*u*p*p*mix(originY,targetY,.7)+p*p*p*targetY;circle(x,y,2+i%2,rgba([255,250,225],.54));circle(ex,targetY,3+i%3,rgba(i%2?z.color:[255,184,130],.46));}}
+    function drawRiskSymbol(x,y,r,z,type){ctx.strokeStyle=rgba(z.color,.75);ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.stroke();ctx.font=`900 ${r*.95}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=rgba(z.color,.8);ctx.fillText(type,x,y+r*.05);ctx.textBaseline='alphabetic';}
+
+    function sceneFuturesStart(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.72,r=s*.17;drawPlanet(cx,cy,r,z,time,true);for(let i=0;i<7;i++){const a=i/7*TAU+time*.035,rr=r*(1.45+(i%2)*.2);drawSatellite(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.5,s*.12,z,a+Math.PI*.5);}drawBranching(cx,cy-r*.55,height*.15,z,time,9,.85);ctx.font=`900 ${s*.026}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.62)';ctx.fillText('ESCENARIOS, NO PROFECÍAS',cx,height*.93);}
+    function sceneEnergy(z,time){const s=Math.min(width,height),ground=height*.78;drawStar(width*.18,height*.25,s*.075,[255,220,100],time);for(let i=0;i<4;i++){const x=width*(.38+i*.15);line(x,ground,x,height*.44,rgba([225,235,245],.52),3);ctx.save();ctx.translate(x,height*.44);ctx.rotate(time*.18+i);for(let k=0;k<3;k++){ctx.rotate(TAU/3);line(0,0,s*.09,0,rgba([245,250,255],.72),3);}ctx.restore();}for(let i=0;i<8;i++){const x=width*(.07+i*.11),y=ground-s*(.01+(i%2)*.04);polygon([[x-s*.045,y],[x+s*.045,y],[x+s*.035,y+s*.055],[x-s*.055,y+s*.055]],rgba([70,165,240],.38),rgba(z.color,.62),1);}const bx=width*.5,by=height*.2,w=s*.25,h=s*.1;ctx.fillStyle='rgba(10,20,35,.55)';roundedRectPath(bx-w*.5,by-h*.5,w,h,h*.18);ctx.fill();ctx.strokeStyle=rgba(z.color,.7);ctx.stroke();ctx.fillStyle=rgba(z.color,.38);ctx.fillRect(bx-w*.38,by-h*.28,w*(.15+.6*(.5+.5*Math.sin(time*.4))),h*.56);line(width*.08,ground+s*.06,width*.92,ground+s*.06,rgba(z.color,.34),4);for(let i=0;i<12;i++)circle(width*(.08+i*.075),ground+s*.06,2+i%2,rgba([255,245,190],.6));}
+    function sceneAutomation(z,time){const s=Math.min(width,height),base=height*.76;line(width*.05,base,width*.95,base,rgba(z.color,.35),5);for(let i=0;i<7;i++){const p=fract(time*(.08+i*.008)+i*.14),x=width*(.05+p*.9),w=s*.07,h=s*.045;ctx.fillStyle=rgba(i%2?z.color:[120,205,255],.34);roundedRectPath(x-w*.5,base-h,w,h,h*.18);ctx.fill();ctx.strokeStyle=rgba([255,255,255],.42);ctx.stroke();}const joints=[[width*.28,base],[width*.3,base-s*.18],[width*.48,base-s*.29],[width*.63,base-s*.2]];ctx.lineCap='round';for(let i=0;i<joints.length-1;i++)line(joints[i][0],joints[i][1],joints[i+1][0],joints[i+1][1],rgba([220,230,240],.62),s*.05);for(const p of joints)circle(p[0],p[1],s*.04,'rgba(8,16,28,.82)',rgba(z.color,.72),2);for(let i=0;i<9;i++){const x=width*(.08+i*.105),y=height*.25+Math.sin(time*.7+i)*s*.018;drawGear(x,y,s*(.03+(i%3)*.012),9+i%4,rgba(z.color,.48),time*(i%2?.2:-.16)+i);}}
+    function sceneAdvancedAI(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.49;softHalo(cx,cy,s*.42,z.color,.2);drawNetwork(cx,cy,s*.33,z,time,24);for(let r=1;r<=4;r++){ctx.strokeStyle=rgba(z.color,.09/r);ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,s*(.06+r*.055),0,TAU);ctx.stroke();}circle(cx,cy,s*.055,'rgba(255,255,255,.14)',rgba(z.color,.85),2);for(let i=0;i<24;i++){ctx.font=`800 ${s*.023}px ui-monospace, monospace`;ctx.textAlign='center';ctx.fillStyle=rgba(i%2?z.color:[255,255,255],.12);ctx.fillText(glyphs[i].char,width*(.05+seeded(i+40)*.9),height*(.08+seeded(i+70)*.82));}ctx.font=`900 ${s*.025}px system-ui`;ctx.fillStyle='rgba(255,255,255,.55)';ctx.fillText('CAPACIDAD ≠ CONCIENCIA ≠ CONTROL',cx,height*.91);}
+    function sceneFutureBiotech(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5,r=s*.27;for(let i=0;i<=42;i++){const t=i/42,yy=cy-r+t*r*2,phase=t*TAU*3+time*.45,x1=cx+Math.sin(phase)*r*.38,x2=cx-Math.sin(phase)*r*.38;circle(x1,yy,s*.011,rgba(z.color,.72));circle(x2,yy,s*.011,rgba([255,195,235],.67));if(i%3===0)line(x1,yy,x2,yy,'rgba(255,255,255,.2)',1.2);}for(let i=0;i<12;i++){const a=i/12*TAU+time*.025,rr=s*.35,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.66;circle(x,y,s*(.023+(i%3)*.007),rgba(i%2?z.color:[125,225,255],.13),rgba(i%2?z.color:[255,225,245],.48),1.3);for(let k=0;k<4;k++){const aa=k/4*TAU+time*.12;circle(x+Math.cos(aa)*s*.014,y+Math.sin(aa)*s*.014,s*.0035,rgba([255,255,255],.55));}}}
+    function sceneHumanMachine(z,time){const s=Math.min(width,height),cx=width*.43,cy=height*.48;circle(cx,cy-s*.17,s*.065,'rgba(220,235,245,.16)',rgba(z.color,.7),2);ctx.strokeStyle=rgba([225,235,245],.55);ctx.lineWidth=s*.04;ctx.lineCap='round';line(cx,cy-s*.1,cx,cy+s*.17,ctx.strokeStyle,ctx.lineWidth);line(cx,cy,cx-s*.16,cy+s*.08,ctx.strokeStyle,ctx.lineWidth);line(cx,cy,cx+s*.17,cy+s*.03,rgba(z.color,.75),ctx.lineWidth);line(cx,cy+s*.16,cx-s*.12,cy+s*.35,ctx.strokeStyle,ctx.lineWidth);line(cx,cy+s*.16,cx+s*.13,cy+s*.35,rgba(z.color,.75),ctx.lineWidth);for(let i=0;i<6;i++){const x=width*.72+Math.cos(i/6*TAU+time*.12)*s*.13,y=height*.42+Math.sin(i/6*TAU+time*.12)*s*.18;circle(x,y,s*.018,rgba(z.color,.72));line(cx+s*.17,cy+s*.03,x,y,rgba(z.color,.12),1.2);}for(let i=0;i<5;i++){const a=i/5*TAU+time*.09,x=cx+Math.cos(a)*s*.28,y=cy+Math.sin(a)*s*.22;circle(x,y,2+i%2,rgba([255,245,205],.52));}}
+    function sceneSustainable(z,time){const s=Math.min(width,height),ground=height*.8;for(let i=0;i<11;i++){const x=width*(.05+i*.09),h=s*(.08+(i%5)*.025);drawBuilding(x,ground,s*(.035+(i%3)*.01),h,rgba(z.color,.35),.58);ctx.fillStyle=rgba([80,205,130],.4);ctx.fillRect(x-s*.018,ground-h-s*.015,s*.036,s*.015);}for(let i=0;i<7;i++){const x=width*(.12+i*.13),y=ground+s*.045;line(x,y,x,y-s*.09,rgba([155,110,70],.6),3);circle(x,y-s*.11,s*.038,rgba([95,230,135],.34),rgba(z.color,.55),1.2);}const cx=width*.5,cy=height*.3,r=s*.15;for(let i=0;i<3;i++){ctx.strokeStyle=rgba(z.color,.36);ctx.lineWidth=s*.018;ctx.beginPath();ctx.arc(cx,cy,r,i*TAU/3+.35,(i+1)*TAU/3-.12);ctx.stroke();const a=(i+1)*TAU/3-.12;polygon([[cx+Math.cos(a)*r,cy+Math.sin(a)*r],[cx+Math.cos(a-.23)*r*.9,cy+Math.sin(a-.23)*r*.9],[cx+Math.cos(a+.12)*r*.87,cy+Math.sin(a+.12)*r*.87]],rgba(z.color,.48));}ctx.font=`900 ${s*.025}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.57)';ctx.fillText('BIENESTAR DENTRO DE LÍMITES',cx,height*.93);}
+    function sceneInequality(z,time){const s=Math.min(width,height),mid=width*.5,ground=height*.82;ctx.fillStyle='rgba(255,210,120,.035)';ctx.fillRect(0,0,mid,height);ctx.fillStyle='rgba(20,25,40,.28)';ctx.fillRect(mid,0,mid,height);line(mid,height*.08,mid,height*.92,'rgba(255,255,255,.22)',2);for(let i=0;i<8;i++){const x=width*(.05+i*.055),h=s*(.12+(i%4)*.05);drawBuilding(x,ground,s*.042,h,rgba([255,210,125],.55),.8);}for(let i=0;i<7;i++){const x=width*(.57+i*.06),h=s*(.07+(i%3)*.03);drawBuilding(x,ground,s*.038,h,rgba(z.color,.22),.15);}for(let i=0;i<10;i++){const p=fract(time*.08+i*.1),y=height*(.18+p*.56);line(mid-s*.06,y,mid+s*.06,y,rgba(z.color,.26),1.5);}ctx.font=`900 ${s*.028}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.55)';ctx.fillText('CAPACIDAD',mid*.5,height*.16);ctx.fillText('ACCESO',mid+mid*.5,height*.16);}
+    function sceneRisks(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5,r=s*.2;drawPlanet(cx,cy,r,z,time,true);for(let i=0;i<8;i++){const a=i/8*TAU+time*.02,rr=s*.34,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.72;drawRiskSymbol(x,y,s*.04,z,['!','☢','△','×','⚠','⌁','◉','+'][i]);line(cx+Math.cos(a)*r,cy+Math.sin(a)*r*.72,x,y,rgba(z.color,.16),1.5);}for(let k=0;k<3;k++){ctx.strokeStyle=rgba(z.color,.08+k*.035);ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,r*(1.25+k*.25)+Math.sin(time*.7+k)*3,0,TAU);ctx.stroke();}}
+    function sceneGovernance(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5,r=s*.28;circle(cx,cy,s*.075,'rgba(255,255,255,.08)',rgba(z.color,.7),2);for(let i=0;i<12;i++){const a=i/12*TAU-time*.025,x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r*.68;circle(x,y,s*.027,rgba(i%3?z.color:[255,220,130],.3),rgba([255,255,255],.42),1.2);line(x,y,cx,cy,rgba(z.color,.13),1.2);for(let j=i+1;j<12;j++)if((i+j)%7===0){const b=j/12*TAU-time*.025;line(x,y,cx+Math.cos(b)*r,cy+Math.sin(b)*r*.68,rgba(z.color,.07),1);}}ctx.font=`900 ${s*.027}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.6)';ctx.fillText('COOPERACIÓN · LEGITIMIDAD · CUMPLIMIENTO',cx,height*.91);}
+    function sceneSpaceIndustry(z,time){const s=Math.min(width,height),cx=width*.35,cy=height*.6,r=s*.16;drawPlanet(cx,cy,r,z,time,true);for(let i=0;i<8;i++){const a=i/8*TAU+time*(.035+i*.002),rr=r*(1.5+(i%3)*.25);drawSatellite(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.55,s*.09,z,a+Math.PI*.5);}const moonX=width*.78,moonY=height*.34;drawPlanet(moonX,moonY,s*.1,{color:[205,208,214]},time,false);drawHabitat(moonX,moonY+s*.1,s*.55,z,2);for(let i=0;i<4;i++){const p=fract(time*.045+i*.23),x=mix(cx,moonX,p),y=mix(cy,moonY,p)-Math.sin(p*Math.PI)*s*.2;polygon([[x-s*.02,y],[x+s*.025,y],[x+s*.04,y+s*.012],[x-s*.035,y+s*.012]],rgba(z.color,.55),rgba([255,255,255],.5),1);}}
+    function sceneSettlements(z,time){const s=Math.min(width,height),horizon=height*.65;const g=ctx.createLinearGradient(0,horizon,0,height);g.addColorStop(0,'rgba(120,75,55,.08)');g.addColorStop(1,'rgba(180,90,55,.32)');ctx.fillStyle=g;ctx.fillRect(0,horizon,width,height-horizon);ctx.strokeStyle='rgba(255,200,160,.26)';ctx.beginPath();ctx.moveTo(0,horizon);for(let x=0;x<=width;x+=width/12)ctx.lineTo(x,horizon-Math.sin(x*.018+time*.05)*s*.035-seeded(x+5)*s*.04);ctx.lineTo(width,height);ctx.lineTo(0,height);ctx.closePath();ctx.stroke();drawHabitat(width*.5,horizon+s*.12,s*.95,z,4);for(let i=0;i<6;i++){const x=width*(.13+i*.15),y=horizon+s*(.2+(i%2)*.04);circle(x,y,s*.018,'rgba(230,235,240,.55)',rgba(z.color,.55),1);line(x,y+s*.018,x-s*.018,y+s*.07,rgba([220,225,235],.48),2);line(x,y+s*.018,x+s*.018,y+s*.07,rgba([220,225,235],.48),2);}ctx.font=`900 ${s*.024}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.58)';ctx.fillText('VISITA → BASE → ASENTAMIENTO → SOCIEDAD',width*.5,height*.92);}
+    function sceneMultiplanetary(z,time){const s=Math.min(width,height),planets=[[width*.2,height*.68,s*.115,[90,190,255]],[width*.52,height*.32,s*.09,[255,155,100]],[width*.8,height*.69,s*.08,[190,185,220]]];for(let i=0;i<planets.length;i++){const p=planets[i];drawPlanet(p[0],p[1],p[2],{color:p[3]},time,i===0);for(let k=0;k<4;k++){const a=k/4*TAU+time*.04,rr=p[2]*1.45;circle(p[0]+Math.cos(a)*rr,p[1]+Math.sin(a)*rr*.55,2+k%2,rgba(z.color,.55));}}for(let i=0;i<3;i++)for(let j=i+1;j<3;j++){const a=planets[i],b=planets[j];ctx.setLineDash([5,8]);line(a[0],a[1],b[0],b[1],rgba(z.color,.18),1.5);ctx.setLineDash([]);const p=fract(time*.055+(i+j)*.27);circle(mix(a[0],b[0],p),mix(a[1],b[1],p),2.2,rgba([255,245,205],.67));}ctx.font=`850 ${s*.023}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.57)';ctx.fillText('LA DISTANCIA CREA AUTONOMÍA',width*.5,height*.92);}
+    function scenePlanetaryEngineering(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.52,r=s*.23;drawPlanet(cx,cy,r,z,time,true);ctx.strokeStyle=rgba(z.color,.42);ctx.lineWidth=s*.018;ctx.beginPath();ctx.ellipse(cx,cy,r*1.55,r*.55,time*.03,0,TAU);ctx.stroke();for(let i=0;i<9;i++){const a=i/9*TAU+time*.04,x=cx+Math.cos(a)*r*1.55,y=cy+Math.sin(a)*r*.55;polygon([[x-s*.018,y],[x+s*.018,y],[x+s*.028,y+s*.012],[x-s*.028,y+s*.012]],rgba([225,235,245],.58),rgba(z.color,.65),1);}for(let i=0;i<18;i++){const a=i/18*TAU+time*.012,rr=r*1.16,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;line(x,y,x+Math.cos(a)*s*.035,y+Math.sin(a)*s*.035,rgba(z.color,.28),2);}ctx.font=`900 ${s*.025}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.57)';ctx.fillText('CAPACIDAD ≠ DERECHO ≠ LEGITIMIDAD',cx,height*.92);}
+    function scenePostBiological(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5;drawNetwork(cx,cy,s*.36,z,time,28);for(let i=0;i<8;i++){const a=i/8*TAU+time*.035,rr=s*.27,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.7;ctx.strokeStyle=rgba(z.color,.5);ctx.strokeRect(x-s*.035,y-s*.035,s*.07,s*.07);circle(x-s*.013,y-s*.005,s*.005,'rgba(255,255,255,.75)');circle(x+s*.013,y-s*.005,s*.005,'rgba(255,255,255,.75)');line(x-s*.015,y+s*.017,x+s*.015,y+s*.017,rgba(z.color,.65),1.5);}for(let i=0;i<12;i++){const p=fract(time*.05+i*.08),a=i/12*TAU,x=cx+Math.cos(a)*s*(.08+p*.34),y=cy+Math.sin(a)*s*(.05+p*.24);circle(x,y,2,rgba([255,245,220],.5*(1-p)));}}
+    function sceneInterstellar(z,time){const s=Math.min(width,height);for(let i=0;i<90;i++){const x=width*(.03+seeded(i+1200)*.94),y=height*(.04+seeded(i+1250)*.88),r=.5+seeded(i+1300)*2.2;circle(x,y,r,rgba(i%6?z.color:[255,235,180],.22+.4*seeded(i+1350)));}drawStar(width*.16,height*.25,s*.055,[255,215,120],time);drawStar(width*.84,height*.22,s*.038,[165,210,255],time);const x=width*.5,y=height*.58;polygon([[x-s*.18,y],[x+s*.16,y-s*.03],[x+s*.24,y],[x+s*.16,y+s*.03]],'rgba(205,225,240,.38)',rgba(z.color,.72),1.5);ctx.fillStyle=rgba(z.color,.18);ctx.fillRect(x-s*.14,y-s*.085,s*.26,s*.17);for(let i=0;i<5;i++)circle(x-s*.08+i*s*.05,y,2,'rgba(255,230,160,.7)');line(x-s*.2,y,width*.18,height*.28,rgba([255,140,120],.3),3);ctx.setLineDash([7,9]);line(width*.2,height*.28,width*.8,height*.24,rgba(z.color,.22),1.4);ctx.setLineDash([]);ctx.font=`900 ${s*.024}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.58)';ctx.fillText('AÑOS LUZ · GENERACIONES · MILENIOS',width*.5,height*.91);}
+    function sceneKardashev(z,time){const s=Math.min(width,height);drawPlanet(width*.18,height*.69,s*.075,{color:[95,195,255]},time,true);drawStar(width*.5,height*.46,s*.12,[255,220,105],time);for(let i=0;i<26;i++){const a=i/26*TAU+time*.028,rr=s*(.18+(i%3)*.018),x=width*.5+Math.cos(a)*rr,y=height*.46+Math.sin(a)*rr*.58;polygon([[x-s*.012,y],[x+s*.012,y],[x+s*.018,y+s*.008],[x-s*.018,y+s*.008]],rgba(z.color,.5),rgba([255,255,255],.36),1);}for(let i=0;i<36;i++){const a=seeded(i+1700)*TAU,rr=s*(.23+seeded(i+1750)*.2),x=width*.78+Math.cos(a)*rr*.45,y=height*.65+Math.sin(a)*rr*.2;circle(x,y,1+i%3,rgba(i%5?z.color:[255,230,165],.42));}ctx.font=`900 ${s*.024}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.58)';ctx.fillText('PLANETA → ESTRELLA → GALAXIA',width*.5,height*.92);}
+    function sceneDivergent(z,time){const s=Math.min(width,height),ox=width*.5,oy=height*.86;drawBranching(ox,oy,height*.16,z,time,11,.9);for(let i=0;i<11;i++){const x=width*(.05+i*.09),col=i%4===0?[120,245,160]:i%4===1?[255,120,135]:i%4===2?[145,180,255]:[255,215,120];softHalo(x,height*.15,s*.07,col,.12);circle(x,height*.15,s*(.012+(i%3)*.006),rgba(col,.65));}ctx.font=`900 ${s*.027}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.63)';ctx.fillText('NINGUNA RAMA ESTÁ GARANTIZADA',ox,height*.94);}
+    function sceneUnknown(z,time){const s=Math.min(width,height),h=height*.36;const g=ctx.createLinearGradient(0,height,0,0);g.addColorStop(0,'rgba(8,12,28,.98)');g.addColorStop(.55,'rgba(55,60,105,.42)');g.addColorStop(1,'rgba(235,245,255,.24)');ctx.fillStyle=g;ctx.fillRect(0,0,width,height);softHalo(width*.5,h,s*.45,z.color,.15);for(let i=0;i<13;i++){const x=width*(.03+i/12*.94),a=Math.abs(i-6)/6;ctx.strokeStyle=rgba(z.color,.24*(1-a*.55));ctx.lineWidth=1.2+i%3;ctx.beginPath();ctx.moveTo(width*.5,height*.88);ctx.quadraticCurveTo(width*.5+(x-width*.5)*.35,height*.58,x,h);ctx.stroke();if(i%2===0)circle(x,h,2+i%3,rgba([255,255,255],.5));}for(let i=0;i<55;i++){const x=seeded(i+2200)*width,y=seeded(i+2250)*h,r=.6+seeded(i+2300)*2;circle(x,y,r,rgba(i%7?z.color:[255,225,170],.15+.36*seeded(i+2350)));}for(let i=0;i<5;i++){const a=time*.08+i*TAU/5,x=width*.5+Math.cos(a)*s*.16,y=h+Math.sin(a)*s*.06;ctx.strokeStyle=rgba(z.color,.16);ctx.beginPath();ctx.arc(x,y,s*(.025+i*.008),0,TAU);ctx.stroke();}ctx.font=`900 ${s*.025}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.65)';ctx.fillText('MÁS ALLÁ: LA VIDA CÓSMICA',width*.5,height*.92);}
+
+    const SCENES=[sceneFuturesStart,sceneEnergy,sceneAutomation,sceneAdvancedAI,sceneFutureBiotech,sceneHumanMachine,sceneSustainable,sceneInequality,sceneRisks,sceneGovernance,sceneSpaceIndustry,sceneSettlements,sceneMultiplanetary,scenePlanetaryEngineering,scenePostBiological,sceneInterstellar,sceneKardashev,sceneDivergent,sceneUnknown];
+
+    function zoneWeight(progress,p0,p1,feather=.035){const enter=smooth(clamp((progress-(p0-feather))/feather,0,1)),exit=1-smooth(clamp((progress-p1)/feather,0,1));return enter*exit;}
+    function drawScene(progress,time){for(const z of ZONES){const alpha=zoneWeight(progress,z.p0,z.p1,.016);if(alpha<.003)continue;ctx.save();ctx.globalAlpha=alpha;SCENES[z.scene](z,time);ctx.restore();}}
+    function drawBursts(dt){for(let i=bursts.length-1;i>=0;i--){const p=bursts[i];p.life-=dt*p.decay;if(p.life<=0){bursts.splice(i,1);continue}p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.94,dt*60);p.vy*=Math.pow(.94,dt*60);circle(p.x,p.y,p.r*(.5+p.life),rgba(p.color,p.life*.55));}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.life-=dt*1.05;if(w.life<=0){waves.splice(i,1);continue}w.radius+=dt*Math.min(width,height)*.24;ctx.strokeStyle=rgba(w.color,w.life*.25);ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(w.x,w.y,w.radius,0,TAU);ctx.stroke();}}
+
+    function render(now){const dt=Math.min(.04,Math.max(.001,(now-lastFrame)/1000));lastFrame=now;elapsed+=reducedMotion?dt*.24:dt;pointerX+=(targetX-pointerX)*(1-Math.pow(.001,dt));pointerY+=(targetY-pointerY)*(1-Math.pow(.001,dt));currentProgress+=(depthFromY(pointerY)-currentProgress)*(1-Math.pow(.005,dt));shownX+=(pointerX*width-shownX)*(1-Math.pow(.001,dt));shownY+=(pointerY*height-shownY)*(1-Math.pow(.001,dt));touchEnergy*=Math.pow(.075,dt);
+      drawBackground(currentProgress,elapsed);drawScene(currentProgress,elapsed);drawBursts(dt);if(!pointerDown)setAccent(zoneForDepth(currentProgress));requestAnimationFrame(render);}
+    window.addEventListener('resize',resize,{passive:true});window.addEventListener('orientationchange',()=>setTimeout(resize,120),{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden&&audioCtx&&audioCtx.state==='running')audioCtx.suspend().catch(()=>{});});
+    resize();setAccent(ZONES[0]);requestAnimationFrame(render);
+  })();
+</script>
+</body>
+</html>
