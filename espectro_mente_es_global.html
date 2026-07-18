@@ -1,0 +1,1447 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#080611">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora de la mente: de la experiencia consciente a la percepción, la memoria, el lenguaje, la imaginación, la cultura y el conocimiento compartido.">
+  <meta name="application-name" content="Espectro de la Mente: de la Percepción al Pensamiento">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro de la Mente">
+  <meta property="og:description" content="Toca y asciende desde la experiencia consciente hasta la memoria, el lenguaje, la imaginación, la cultura y el conocimiento compartido.">
+  <title>Espectro de la Mente: de la Percepción al Pensamiento</title>
+  <style>
+    :root {
+      --accent: 255 220 164;
+      --accent-soft: rgb(var(--accent) / .34);
+      --ink: 255 255 255;
+      --panel: 8 6 17;
+      --scan-x: 50vw;
+      --scan-y: 93vh;
+      --progress: 2%;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #05040b;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: rgb(var(--ink));
+      font-family: Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #mind-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette,
+    #top-bloom,
+    #bottom-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background: radial-gradient(circle at var(--scan-x) var(--scan-y), rgb(var(--accent) / .56) 0, rgb(var(--accent) / .15) 11%, transparent 35%);
+      mix-blend-mode: screen;
+    }
+    body.active #light-field { opacity: .82; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg, transparent calc(var(--scan-x) - 1px), rgb(var(--accent) / .52) var(--scan-x), transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg, transparent calc(var(--scan-y) - 1px), rgb(var(--accent) / .32) var(--scan-y), transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+    body.active #scan-line { opacity: .17; }
+
+    #grain {
+      z-index: 4;
+      opacity: .042;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 38%, rgb(0 0 0 / .22) 72%, rgb(0 0 0 / .84) 128%),
+        linear-gradient(90deg, rgb(0 0 0 / .47), transparent 13%, transparent 87%, rgb(0 0 0 / .45));
+    }
+
+    #top-bloom {
+      z-index: 1;
+      opacity: .5;
+      background: radial-gradient(ellipse at 50% -10%, rgb(255 243 216 / .34), transparent 49%);
+      mix-blend-mode: screen;
+    }
+
+    #bottom-glow {
+      z-index: 1;
+      opacity: .46;
+      background: radial-gradient(ellipse at 50% 110%, rgb(228 170 255 / .25), transparent 48%);
+      mix-blend-mode: screen;
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 49%;
+      width: min(92vw, 860px);
+      padding: clamp(15px, 3.2vw, 27px) clamp(19px, 5vw, 52px) clamp(18px, 3.7vw, 33px);
+      border: 1px solid rgb(255 255 255 / .22);
+      border-radius: clamp(25px, 6vw, 52px);
+      color: white;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        rgb(var(--panel) / .66);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .58),
+        0 0 86px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .26),
+        inset 0 -1px 0 rgb(0 0 0 / .25);
+      backdrop-filter: blur(23px) saturate(1.36);
+      -webkit-backdrop-filter: blur(23px) saturate(1.36);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #evidence-class {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 27px;
+      margin-bottom: clamp(9px, 2vw, 15px);
+      padding: 6px 13px 7px;
+      border: 1px solid rgb(var(--accent) / .62);
+      border-radius: 999px;
+      color: rgb(var(--accent));
+      font-size: clamp(.62rem, 2.1vw, .87rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: rgb(var(--accent) / .09);
+      box-shadow: 0 0 25px var(--accent-soft), inset 0 1px 0 rgb(255 255 255 / .1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.5vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow: 0 0 30px var(--accent-soft), 0 5px 24px rgb(0 0 0 / .5);
+    }
+    #zone-name.compact { font-size: clamp(1.7rem, 7.15vw, 5.55rem); letter-spacing: -.046em; line-height: .9; }
+    #zone-name.long { font-size: clamp(1.38rem, 5.9vw, 4.45rem); letter-spacing: -.034em; line-height: .94; }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 880;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(10px, 2vw, 17px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.67rem, 2.2vw, .92rem);
+      font-weight: 820;
+      line-height: 1.12;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .2);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .11);
+    }
+
+    #fact {
+      display: block;
+      max-width: 700px;
+      margin: clamp(10px, 2.25vw, 17px) auto 0;
+      font-size: clamp(.82rem, 2.63vw, 1.1rem);
+      font-weight: 600;
+      line-height: 1.42;
+      letter-spacing: .005em;
+      color: rgb(255 255 255 / .91);
+      text-wrap: pretty;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 93%;
+      width: clamp(58px, 15vw, 104px);
+      aspect-ratio: 1;
+      border: 1px solid rgb(var(--accent) / .82);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(.4);
+      background: radial-gradient(circle, rgb(255 255 255 / .82) 0 2%, rgb(var(--accent) / .34) 7%, rgb(var(--accent) / .09) 36%, transparent 70%);
+      box-shadow: 0 0 18px rgb(var(--accent) / .58), 0 0 62px rgb(var(--accent) / .42), inset 0 0 26px rgb(var(--accent) / .19);
+      transition: opacity 150ms ease, transform 260ms cubic-bezier(.16, 1, .3, 1);
+    }
+    #touch-orb.visible { opacity: .9; transform: translate(-50%, -50%) scale(1); }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(10px, env(safe-area-inset-right));
+      top: max(19px, env(safe-area-inset-top));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: clamp(50px, 10vw, 78px);
+      pointer-events: none;
+      opacity: .58;
+      transition: opacity 180ms ease;
+    }
+    body.active #journey-scale { opacity: .9; }
+
+    #scale-track {
+      position: absolute;
+      right: 11px;
+      top: 48px;
+      bottom: 48px;
+      width: 3px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgb(255 255 255 / .14);
+      box-shadow: 0 0 12px rgb(0 0 0 / .5);
+    }
+    #scale-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(to top, rgb(70 255 186 / .68), rgb(var(--accent)));
+      box-shadow: 0 0 14px rgb(var(--accent) / .72);
+    }
+    #scale-dot {
+      position: absolute;
+      right: 6px;
+      bottom: 48px;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgb(255 255 255 / .84);
+      border-radius: 50%;
+      transform: translateY(50%);
+      background: rgb(var(--accent));
+      box-shadow: 0 0 17px rgb(var(--accent) / .85);
+    }
+    #scale-bottom,
+    #scale-top {
+      position: absolute;
+      right: 0;
+      width: 74px;
+      font-size: clamp(.49rem, 1.6vw, .61rem);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: .11em;
+      text-align: right;
+      text-transform: uppercase;
+      color: rgb(255 255 255 / .65);
+    }
+    #scale-top { top: 0; }
+    #scale-bottom { bottom: 0; }
+    #scale-value {
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      width: min(34vh, 250px);
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right center;
+      font-size: clamp(.54rem, 1.7vw, .66rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .14em;
+      text-align: center;
+      text-transform: uppercase;
+      color: rgb(var(--accent));
+      text-shadow: 0 0 14px rgb(var(--accent) / .6);
+      white-space: nowrap;
+    }
+
+    #hint {
+      position: fixed;
+      z-index: 6;
+      left: 50%;
+      bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+      width: min(78vw, 530px);
+      transform: translateX(-50%);
+      color: rgb(255 255 255 / .78);
+      text-align: center;
+      pointer-events: none;
+      font-size: clamp(.7rem, 2.4vw, .94rem);
+      font-weight: 800;
+      line-height: 1.34;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 16px rgb(0 0 0 / .8);
+      animation: breathe 3.2s ease-in-out infinite;
+    }
+    #hint strong { color: rgb(var(--accent)); }
+
+    .ripple {
+      position: fixed;
+      z-index: 7;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgb(var(--accent) / .78);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 22px rgb(var(--accent) / .52), inset 0 0 15px rgb(var(--accent) / .2);
+      animation: ripple 920ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple { to { width: min(72vw, 560px); height: min(72vw, 560px); opacity: 0; } }
+    @keyframes breathe {
+      0%, 100% { opacity: .4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: .95; transform: translateX(-50%) translateY(-3px); }
+    }
+
+    @media (max-height: 620px) {
+      #readout { width: min(88vw, 760px); padding-top: 12px; padding-bottom: 14px; }
+      #evidence-class { margin-bottom: 7px; }
+      #fact { margin-top: 8px; line-height: 1.32; }
+      #metric { margin-top: 7px; }
+      #journey-scale { opacity: .46; }
+    }
+
+    @media (max-width: 460px) {
+      #readout { width: 91vw; }
+      #journey-scale { right: 3px; }
+      #scale-value { display: none; }
+      #scale-bottom, #scale-top { width: 54px; font-size: .45rem; }
+      #hint { width: 72vw; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #hint { animation: none; }
+      .ripple { animation-duration: 1ms; }
+      #readout, #touch-orb, #light-field, #scan-line { transition-duration: 1ms; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="mind-spectrum" tabindex="0" role="application" aria-label="Exploración táctil de la mente, desde la experiencia consciente en la parte inferior hasta el conocimiento compartido en la parte superior. Toca, arrastra o usa las flechas del teclado."></canvas>
+  <div id="top-bloom" aria-hidden="true"></div>
+  <div id="bottom-glow" aria-hidden="true"></div>
+  <div id="light-field" aria-hidden="true"></div>
+  <div id="scan-line" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <div id="hint" aria-hidden="true"><strong>Toca y asciende</strong> · de la experiencia al conocimiento</div>
+
+  <div id="readout" aria-live="polite" aria-atomic="true">
+    <span id="evidence-class"></span>
+    <strong id="zone-name"></strong>
+    <span id="feature-name"></span>
+    <span id="metric"></span>
+    <span id="fact"></span>
+  </div>
+
+  <div id="touch-orb" aria-hidden="true"></div>
+
+  <div id="journey-scale" aria-hidden="true">
+    <span id="scale-top">El conocimiento compartido</span>
+    <div id="scale-track"><div id="scale-fill"></div></div>
+    <div id="scale-dot"></div>
+    <span id="scale-value">La experiencia consciente</span>
+    <span id="scale-bottom">La experiencia consciente</span>
+  </div>
+
+  <!--
+    Visualización educativa conceptual, táctil y sin dependencias externas.
+
+    La escala vertical representa un aumento de abstracción, no una jerarquía de valor ni una localización
+    anatómica literal. Los procesos mentales se superponen, se retroalimentan y dependen del cuerpo, el
+    cerebro, el entorno y la vida social. Muchas operaciones que influyen en la conducta no son conscientes.
+
+    La percepción se presenta como interpretación activa; la memoria, como reconstrucción; la emoción, como
+    coordinación de valoración, cuerpo y acción; y la inteligencia, como una familia de capacidades. No se
+    afirma que el lenguaje sea necesario para todo pensamiento, que exista una única medida de inteligencia,
+    que el yo ocupe un punto cerebral aislado ni que la neurociencia haya explicado por completo la experiencia
+    subjetiva. Los elementos visuales son metáforas interactivas, no imágenes literales del interior de una mente.
+
+    En las regiones superiores, "mente colectiva" no significa una conciencia grupal única. Describe cómo
+    personas conectadas distribuyen atención, memoria, enseñanza, crítica y coordinación mediante símbolos,
+    herramientas e instituciones. El conocimiento se muestra como información sometida a pruebas, revisión y
+    conservación pública, siempre provisional y corregible.
+  -->
+
+  <script>
+  (() => {
+    "use strict";
+
+    const canvas = document.getElementById("mind-spectrum");
+    const ctx = canvas.getContext("2d", { alpha: false, desynchronized: true });
+    const root = document.documentElement;
+    const readout = document.getElementById("readout");
+    const evidenceClass = document.getElementById("evidence-class");
+    const zoneName = document.getElementById("zone-name");
+    const featureName = document.getElementById("feature-name");
+    const metric = document.getElementById("metric");
+    const fact = document.getElementById("fact");
+    const touchOrb = document.getElementById("touch-orb");
+    const scaleValue = document.getElementById("scale-value");
+    const scaleDot = document.getElementById("scale-dot");
+    const hint = document.getElementById("hint");
+
+    const TAU = Math.PI * 2;
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const mix = (a, b, t) => a + (b - a) * t;
+    const smooth = t => t * t * (3 - 2 * t);
+    const fract = v => v - Math.floor(v);
+    const seeded = n => fract(Math.sin(n * 127.1 + 311.7) * 43758.5453123);
+    const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+    const ZONES = [{"id":"consciousness","name":"La experiencia consciente","className":"Frontera científica abierta","color":[255,220,164],"metric":"Vigilia + experiencia + cuerpo + atención + actividad neural","fact":"La experiencia consciente es el punto de partida de este viaje, no una explicación terminada. Experimentar algo no es lo mismo que comprenderlo, recordarlo o expresarlo.","sound":{"base":58,"filter":780,"noise":0.018,"pulse":0.08,"type":"sine"},"features":[["vigilia","La vigilia permite responder al entorno, pero estar despierto no describe por sí solo todo el contenido de la conciencia."],["experiencia subjetiva","Una experiencia posee una perspectiva: existe algo que se siente para el organismo que la vive."],["conciencia sensorial","Colores, sonidos, tacto y dolor pueden formar parte del campo consciente sin estar plenamente comprendidos."],["atención","Atención y conciencia se relacionan, pero una puede cambiar sin que la otra cambie de la misma manera."],["conciencia corporal","La experiencia del cuerpo integra tacto, postura, equilibrio, movimiento e información de los órganos internos."],["estado interno","Hambre, fatiga, respiración y activación corporal modifican lo que destaca y cómo se interpreta."],["actividad neural","Se conocen correlatos neurales de la experiencia, pero correlación no equivale todavía a una explicación completa."],["pregunta abierta","Aún se debate cómo procesos físicos distribuidos producen una experiencia unificada y subjetiva."]],"p0":0.0,"p1":0.055556},{"id":"sensation","name":"Sensación","className":"Transducción biológica ampliamente establecida","color":[111,221,255],"metric":"Evento físico o químico → receptor → señal biológica","fact":"Los sentidos no envían copias completas del mundo. Receptores especializados convierten ciertas formas de energía y sustancias en señales que el sistema nervioso puede procesar.","sound":{"base":66,"filter":1050,"noise":0.035,"pulse":0.13,"type":"triangle"},"features":[["luz","Los fotorreceptores responden a rangos de radiación; el color percibido surge después, mediante comparación y contexto."],["sonido","Las vibraciones mueven estructuras del oído y se transforman en patrones eléctricos, no en pequeños sonidos dentro del cerebro."],["presión","Receptores de la piel y tejidos detectan deformación, contacto, vibración y estiramiento."],["calor","Termorreceptores responden a cambios de temperatura dentro de intervalos biológicamente relevantes."],["dolor","La nocicepción detecta amenaza o daño potencial; la experiencia de dolor también depende de contexto, atención y aprendizaje."],["equilibrio","El sistema vestibular registra aceleraciones y orientación de la cabeza para estabilizar postura y mirada."],["cuerpo","La propiocepción informa sobre posición y tensión de músculos y articulaciones."],["interocepción","Señales del interior corporal contribuyen a hambre, sed, respiración, latido y estado emocional."]],"p0":0.055556,"p1":0.111111},{"id":"perception","name":"Percepción","className":"Construcción activa apoyada por amplia evidencia","color":[176,163,255],"metric":"Señales incompletas + contexto + predicción → interpretación","fact":"La percepción organiza señales ambiguas en formas, objetos, movimientos y escenas. Es una interpretación activa y útil, no una fotografía perfecta de la realidad.","sound":{"base":74,"filter":1370,"noise":0.026,"pulse":0.18,"type":"sine"},"features":[["bordes","El sistema visual compara regiones y cambios locales para inferir límites que no siempre coinciden con objetos reales."],["color","La misma luz puede parecer distinta según iluminación, contraste, adaptación y expectativas."],["movimiento","El cerebro integra cambios a través del tiempo y puede percibir movimiento incluso en imágenes estáticas secuenciales."],["profundidad","Perspectiva, disparidad binocular, movimiento y experiencia previa ayudan a inferir distancia."],["ritmo","La mente agrupa eventos en pulsos y patrones temporales que no están contenidos en un instante aislado."],["objeto","Reconocer un objeto exige separar figura y fondo, completar partes ocultas y mantener identidad pese a cambios de vista."],["rostro","Los rostros reciben procesamiento especializado, pero el contexto todavía puede alterar identidad, emoción y dirección de la mirada."],["ambigüedad","Una misma figura puede admitir interpretaciones incompatibles; el contexto inclina cuál se vuelve dominante."]],"p0":0.111111,"p1":0.166667},{"id":"attention","name":"Atención","className":"Selección limitada y dinámica","color":[255,242,142],"metric":"Muchos estímulos → selección → procesamiento prioritario","fact":"La capacidad de procesamiento es limitada. La atención vuelve algunas señales más nítidas mientras otras permanecen débiles, aunque sigan influyendo en la conducta.","sound":{"base":82,"filter":1680,"noise":0.018,"pulse":0.25,"type":"triangle"},"features":[["selección","Atender favorece cierta información sobre alternativas que compiten por procesamiento y acción."],["foco","El foco puede concentrarse en una posición, una característica, un objeto, una tarea o un pensamiento."],["distracción","Un estímulo novedoso, intenso o relevante puede capturar atención incluso contra la intención actual."],["novedad","Los cambios inesperados reciben prioridad porque pueden señalar oportunidades, errores o peligro."],["objetivo","Las metas preparan al sistema para buscar unas señales e ignorar otras."],["atención dividida","Realizar varias tareas a la vez suele implicar alternar recursos y aceptar pérdidas de precisión o velocidad."],["ceguera por inatención","Un evento visible puede pasar inadvertido cuando la atención está comprometida con otra tarea."],["vigilancia","Mantener atención durante largos periodos requiere esfuerzo y suele degradarse con fatiga y monotonía."]],"p0":0.166667,"p1":0.222222},{"id":"emotion","name":"Emoción","className":"Sistemas de valoración, cuerpo y acción","color":[255,122,135],"metric":"Valoración + estado corporal + motivación + expresión","fact":"Las emociones no son enemigas de la razón. Coordinan cambios corporales, valoración, memoria, atención y tendencias de acción para señalar qué importa ahora.","sound":{"base":92,"filter":1880,"noise":0.045,"pulse":0.36,"type":"sawtooth"},"features":[["alegría","La alegría puede reforzar exploración, vínculo y repetición de situaciones valoradas positivamente."],["miedo","El miedo prioriza posibles amenazas, acelera aprendizaje defensivo y prepara huida, inmovilidad o protección."],["sorpresa","La sorpresa marca una discrepancia entre lo esperado y lo ocurrido, orientando atención y actualización."],["tristeza","La tristeza puede acompañar pérdida, reducción de actividad y búsqueda de apoyo o reevaluación."],["ira","La ira suele aparecer ante obstáculos, daño o injusticia percibida y prepara confrontación o corrección."],["calma","La calma implica menor urgencia y puede ampliar la exploración, la regulación y la deliberación."],["expresión","Rostro, voz y postura comunican estados, aunque las expresiones varían con contexto, cultura y control voluntario."],["regulación","Reinterpretar, respirar, cambiar atención o modificar la situación puede transformar una respuesta emocional."]],"p0":0.222222,"p1":0.277778},{"id":"memory","name":"Memoria","className":"Múltiples sistemas reconstructivos","color":[104,180,255],"metric":"Codificación + conservación + recuperación + reconstrucción","fact":"La memoria permite que el pasado modifique el presente, pero recordar no significa reproducir una grabación exacta. Cada recuperación reconstruye con pistas, conocimiento y estado actual.","sound":{"base":104,"filter":2140,"noise":0.022,"pulse":0.42,"type":"sine"},"features":[["memoria de trabajo","Mantiene y manipula una cantidad limitada de información durante segundos para comprender, calcular o planificar."],["memoria episódica","Relaciona acontecimientos con lugares, tiempos y una perspectiva autobiográfica."],["memoria semántica","Conserva conceptos, palabras y conocimientos sin exigir recordar cuándo se aprendieron."],["memoria procedimental","El entrenamiento transforma secuencias en habilidades que pueden ejecutarse sin describir cada paso."],["reconocimiento","Una sensación de familiaridad puede aparecer antes de recuperar detalles sobre el origen de un recuerdo."],["olvido","Olvidar puede reflejar pérdida, interferencia, falta de pistas o una selección útil de información relevante."],["reconstrucción","Nuevos datos, preguntas y expectativas pueden alterar la forma en que se reconstruye un episodio."],["consolidación","Sueño, repetición y reactivación ayudan a estabilizar cambios, aunque ninguna memoria queda completamente inmóvil."]],"p0":0.277778,"p1":0.333333},{"id":"learning","name":"Aprendizaje","className":"Cambio duradero producido por experiencia","color":[116,238,157],"metric":"Experiencia + error de predicción + práctica → cambio","fact":"Aprender significa cambiar de manera relativamente duradera por experiencia. El organismo detecta regularidades, consecuencias, modelos sociales y diferencias entre lo esperado y lo ocurrido.","sound":{"base":116,"filter":2380,"noise":0.025,"pulse":0.48,"type":"triangle"},"features":[["asociación","Eventos que coinciden o se predicen mutuamente pueden quedar vinculados, aunque correlación no demuestra causalidad."],["refuerzo","Las consecuencias modifican la probabilidad de repetir una acción en contextos semejantes."],["imitación","Observar a otros permite adquirir conductas sin descubrir cada paso mediante ensayo directo."],["práctica","La repetición con retroalimentación mejora precisión, velocidad y automatización."],["error de predicción","La diferencia entre resultado esperado y real impulsa actualización de expectativas."],["hábito","Una conducta repetida puede volverse dependiente de señales del contexto y menos sensible a la meta actual."],["generalización","Lo aprendido se extiende a situaciones parecidas, a veces de manera útil y otras de manera excesiva."],["aprendizaje social","Enseñanza, cooperación, prestigio y conformidad influyen en qué información se adopta y transmite."]],"p0":0.333333,"p1":0.388889},{"id":"concepts","name":"Conceptos","className":"Categorías flexibles construidas y aprendidas","color":[142,132,255],"metric":"Experiencias distintas → rasgos y relaciones → categoría","fact":"Los conceptos permiten tratar experiencias diferentes como ejemplos de una misma idea. Sus límites pueden ser claros, graduales, contextuales o discutidos.","sound":{"base":128,"filter":2620,"noise":0.018,"pulse":0.54,"type":"sine"},"features":[["objeto","El concepto de objeto reúne continuidad, forma, función y expectativas sobre cómo algo puede comportarse."],["animal","Una categoría biológica cotidiana puede combinar movimiento, apariencia, conocimiento cultural y excepciones."],["herramienta","Las herramientas se agrupan por función y posibilidad de acción, no solo por aspecto visual."],["peligro","El peligro integra señales sensoriales, memoria, probabilidad y posibles consecuencias."],["número","Los números permiten representar cantidades y relaciones más allá de conjuntos visibles inmediatos."],["causa","Pensar causalmente distingue entre sucesión, correlación y mecanismos que producen cambios."],["semejanza","Dos experiencias pueden parecer similares según forma, función, origen o cualquier dimensión relevante para la tarea."],["frontera de categoría","Los ejemplos atípicos muestran que muchas categorías no poseen una única característica necesaria y suficiente."]],"p0":0.388889,"p1":0.444444},{"id":"language","name":"Lenguaje","className":"Sistema simbólico biológico y cultural","color":[239,145,255],"metric":"Sonidos o gestos + símbolos + reglas + diálogo","fact":"El lenguaje permite referirse a lo ausente, coordinar perspectivas y conservar ideas. No solo etiqueta pensamientos terminados: también reorganiza memoria, abstracción y cooperación.","sound":{"base":142,"filter":2860,"noise":0.032,"pulse":0.61,"type":"triangle"},"features":[["palabra","Una palabra enlaza una forma sonora, escrita o gestual con usos y significados compartidos."],["nombre","Nombrar permite volver a identificar, comparar y comunicar una entidad o categoría."],["frase","La combinación ordenada de palabras expresa relaciones que ninguna palabra contiene por sí sola."],["significado","El significado depende de convenciones, contexto, intención, conocimiento y relación con otras expresiones."],["pregunta","Preguntar hace visible una ausencia de información y solicita cooperación para reducirla."],["respuesta","Una respuesta puede informar, explicar, corregir, persuadir o revelar nueva incertidumbre."],["metáfora","La metáfora traslada estructura entre dominios y permite pensar lo abstracto mediante relaciones conocidas."],["escritura","La escritura separa el mensaje del momento de habla y amplía memoria, revisión y transmisión entre generaciones."]],"p0":0.444444,"p1":0.5},{"id":"reasoning","name":"Razonamiento","className":"Inferencias falibles guiadas por reglas y evidencia","color":[101,200,255],"metric":"Premisas + relaciones + método → conclusión provisional","fact":"Razonar conecta ideas para producir inferencias. No garantiza una conclusión correcta: depende de premisas, evidencia, métodos y de cómo se representan las alternativas.","sound":{"base":156,"filter":3100,"noise":0.015,"pulse":0.67,"type":"sine"},"features":[["comparación","Comparar exige elegir dimensiones relevantes; cambiar el criterio puede invertir cuál opción parece mejor."],["deducción","Una deducción válida preserva la verdad desde premisas a conclusión, pero no demuestra que las premisas sean ciertas."],["inducción","La inducción generaliza desde casos observados y siempre conserva algún grado de incertidumbre."],["analogía","Una analogía transfiere relaciones entre situaciones, pero falla cuando las diferencias relevantes superan las semejanzas."],["causalidad","Inferir una causa requiere considerar mecanismos, controles y explicaciones alternativas."],["probabilidad","El razonamiento probabilístico representa grados de posibilidad en vez de exigir certeza completa."],["evidencia","La fuerza de una evidencia depende de su calidad, independencia y capacidad de distinguir hipótesis."],["incertidumbre","Reconocer incertidumbre permite buscar datos, comparar escenarios y evitar una confianza injustificada."]],"p0":0.5,"p1":0.555556},{"id":"decisions","name":"Toma de decisiones","className":"Competencia entre metas, valores y restricciones","color":[255,184,92],"metric":"Opciones + valor + riesgo + tiempo + contexto → acción","fact":"Decidir combina metas, recompensas, hábitos, emociones, información social y consecuencias futuras. La misma elección puede cambiar bajo presión, incertidumbre o un marco diferente.","sound":{"base":172,"filter":3300,"noise":0.028,"pulse":0.73,"type":"sawtooth"},"features":[["meta","Una meta define qué resultados cuentan como progreso y qué información merece atención."],["recompensa","El valor esperado integra atractivo, probabilidad, demora y estado actual del organismo."],["riesgo","El riesgo combina posibles resultados con incertidumbre, no solo con la magnitud del daño."],["hábito","Una respuesta habitual puede dominar aunque la situación actual favorezca otra opción."],["emoción","Las emociones aportan señales de urgencia, importancia y aprendizaje previo a la comparación de alternativas."],["información social","Consejos, normas y comportamiento ajeno pueden mejorar decisiones o propagar errores."],["presión temporal","Con menos tiempo, la mente usa reglas rápidas y explora menos consecuencias posibles."],["consecuencia diferida","Elegir entre beneficio inmediato y resultado futuro exige representar un yo y un mundo que todavía no existen."]],"p0":0.555556,"p1":0.611111},{"id":"imagination","name":"Imaginación","className":"Simulación de lo ausente y lo posible","color":[208,133,255],"metric":"Memoria recombinada + simulación → escenarios posibles","fact":"Imaginar combina elementos conservados para construir escenas que no están presentes. Permite explorar posibilidades sin tener que vivirlas primero.","sound":{"base":188,"filter":3500,"noise":0.022,"pulse":0.78,"type":"triangle"},"features":[["imagen mental","Una imagen mental puede representar forma, espacio o movimiento sin entrada sensorial equivalente en ese momento."],["simulación","La mente ensaya acciones y consecuencias posibles antes de comprometer el cuerpo."],["contrafactual","Pensar qué habría ocurrido de otro modo ayuda a explicar, aprender y asignar responsabilidad."],["creatividad","La creatividad combina novedad con utilidad, expresividad o adecuación a una meta."],["planificación","Planificar organiza pasos futuros, recursos y contingencias alrededor de un objetivo."],["sueño","Los sueños mezclan memoria, emoción y generación interna con menor control del entorno inmediato."],["relato","Una narración ordena agentes, causas, conflictos y cambios en una secuencia significativa."],["futuro posible","Representar varios futuros permite comparar caminos, aunque ninguna simulación elimina la incertidumbre real."]],"p0":0.611111,"p1":0.666667},{"id":"identity","name":"Identidad","className":"Continuidad construida a través del cambio","color":[255,153,183],"metric":"Cuerpo + memoria autobiográfica + valores + relaciones + relato","fact":"La identidad combina continuidad y transformación. No es un objeto perfectamente fijo ni queda reducida a una ilusión: emerge de cuerpo, memoria, rasgos, compromisos y reconocimiento social.","sound":{"base":202,"filter":3680,"noise":0.018,"pulse":0.82,"type":"sine"},"features":[["cuerpo","El cuerpo proporciona una perspectiva estable pero cambiante desde la que se actúa y se siente."],["memoria autobiográfica","Los recuerdos enlazan episodios en una historia personal, aunque esa historia se reconstruya."],["personalidad","Tendencias relativamente estables orientan conducta, pero se expresan de manera distinta según situación y desarrollo."],["rol social","Una persona ocupa funciones y relaciones que influyen en expectativas, conducta y autodescripción."],["valor","Los valores organizan prioridades y permiten juzgar qué clase de acción concuerda con el yo que se desea sostener."],["relato personal","El relato de sí conecta causas, cambios y metas, pero siempre selecciona entre muchos hechos posibles."],["continuidad","Sentirse la misma persona depende de conexiones corporales, psicológicas y sociales a través del tiempo."],["transformación","Aprender, perder, elegir y relacionarse puede cambiar profundamente una identidad sin borrar toda continuidad."]],"p0":0.666667,"p1":0.722222},{"id":"intelligence","name":"Inteligencia","className":"Familia plural de capacidades adaptativas","color":[91,235,214],"metric":"Aprender + adaptar + resolver + comunicar + crear","fact":"La inteligencia no es una sola facultad ni pertenece únicamente a los humanos. Incluye capacidades diferentes para aprender, adaptarse, resolver problemas, cooperar, planificar y usar herramientas.","sound":{"base":218,"filter":3860,"noise":0.021,"pulse":0.86,"type":"triangle"},"features":[["aprendizaje","Un sistema inteligente modifica representaciones o estrategias a partir de experiencia."],["adaptación","Adaptarse significa cambiar conducta o estructura para funcionar bajo condiciones nuevas."],["resolución de problemas","Resolver problemas exige representar una meta, restricciones y operaciones posibles."],["comunicación","Coordinar información con otros amplía las capacidades disponibles para cada individuo."],["planificación","La planificación compara secuencias antes de actuar y reserva recursos para metas futuras."],["creatividad","Generar posibilidades originales puede abrir soluciones que las reglas habituales no producen."],["inteligencia social","Comprender atención, intención, emoción y reputación facilita cooperación y competencia."],["uso de herramientas","Una herramienta extiende acción y cognición al incorporar propiedades del entorno en la solución."]],"p0":0.722222,"p1":0.777778},{"id":"metacognition","name":"Metacognición","className":"Pensamiento que supervisa pensamiento","color":[206,224,255],"metric":"Estimación + control + revisión + cambio de estrategia","fact":"La metacognición permite evaluar confianza, detectar errores y elegir estrategias. No ofrece acceso perfecto a la propia mente: también puede estar sesgada o equivocada.","sound":{"base":236,"filter":4040,"noise":0.012,"pulse":0.9,"type":"sine"},"features":[["confianza","La confianza estima la probabilidad de estar en lo correcto, pero puede separarse de la precisión real."],["incertidumbre","Representar que falta información es el primer paso para buscarla o suspender una conclusión."],["detección de error","Conflicto, sorpresa o retroalimentación pueden señalar que una respuesta necesita revisión."],["autocorrección","Corregirse exige conservar el error, identificar su origen y modificar el proceso que lo produjo."],["reflexión","La reflexión desacopla parcialmente respuesta inmediata y acción para examinar razones y alternativas."],["estrategia","Elegir una estrategia implica anticipar qué método se ajusta mejor a la tarea y a los recursos disponibles."],["límite","Saber que la memoria, atención o conocimiento son limitados ayuda a usar notas, herramientas y colaboración."],["ignorancia reconocida","Una mente mejora cuando puede distinguir entre no saber, creer saber y disponer de evidencia suficiente."]],"p0":0.777778,"p1":0.833333},{"id":"connected","name":"Mentes conectadas","className":"Cognición distribuida entre personas y herramientas","color":[97,208,255],"metric":"Atención compartida + enseñanza + cooperación + memoria externa","fact":"Una comunidad puede conservar y procesar más información que cualquier individuo aislado. Esto no crea necesariamente una conciencia única, sino una red de capacidades coordinadas.","sound":{"base":252,"filter":4210,"noise":0.02,"pulse":0.93,"type":"triangle"},"features":[["atención compartida","Dos personas pueden orientar la mirada y la acción hacia el mismo referente y saber que lo comparten."],["enseñanza","Enseñar modifica deliberadamente la experiencia de otro para acelerar aprendizaje y evitar repetir todos los errores."],["imitación","La imitación transmite habilidades visibles, pero también puede copiar acciones irrelevantes o convencionales."],["cooperación","La cooperación divide tareas, combina especialización y permite metas inaccesibles a un individuo."],["desacuerdo","El desacuerdo revela modelos distintos y puede producir corrección cuando existen reglas para comparar razones y pruebas."],["memoria distribuida","Las personas recuerdan quién sabe qué, mientras notas, mapas y dispositivos conservan contenido fuera del cerebro."],["institución","Una institución estabiliza roles, procedimientos y registros más allá de participantes concretos."],["acción coordinada","Lenguaje, señales y normas sincronizan muchas decisiones en tiempo y espacio."]],"p0":0.833333,"p1":0.888889},{"id":"culture","name":"Cultura","className":"Herencia acumulativa transmitida socialmente","color":[255,163,103],"metric":"Aprendizaje social + símbolos + prácticas + acumulación","fact":"La cultura es un sistema de herencia aprendido: transmite costumbres, herramientas, relatos, arte, valores e instituciones. Cambia por innovación, selección, mezcla, conflicto y olvido.","sound":{"base":268,"filter":4380,"noise":0.028,"pulse":0.96,"type":"sawtooth"},"features":[["costumbre","Una costumbre coordina expectativas mediante prácticas repetidas y socialmente reconocidas."],["relato","Los relatos conservan modelos de personas, lugares, causas y valores en formas fáciles de recordar y transmitir."],["herramienta","Las herramientas encarnan conocimiento acumulado que el usuario no necesita reinventar por completo."],["arte","El arte explora percepción, emoción, identidad y significado mediante formas compartidas y abiertas a interpretación."],["valor cultural","Los valores aprendidos orientan qué conductas se elogian, toleran, prohíben o consideran sagradas."],["ritual","Los rituales sincronizan atención, emoción y pertenencia mediante secuencias reconocibles."],["tecnología","La tecnología organiza materiales, energía e información para extender capacidades humanas."],["institución","Leyes, escuelas, mercados, archivos y gobiernos conservan reglas y recursos a gran escala."]],"p0":0.888889,"p1":0.944444},{"id":"knowledge","name":"El conocimiento compartido","className":"Ideas conservadas, contrastadas y revisables","color":[255,243,211],"metric":"Observación + registro + prueba + crítica + revisión","fact":"Cuando muchas mentes comparten símbolos, corrigen errores y conservan descubrimientos, el pensamiento individual se convierte en cultura y conocimiento acumulativo.","sound":{"base":286,"filter":4560,"noise":0.009,"pulse":0.99,"type":"sine"},"features":[["observación","Observar de forma sistemática separa lo que se encontró de lo que se esperaba encontrar."],["testimonio","El testimonio transmite experiencia ajena, pero su fiabilidad depende de memoria, competencia, incentivos y corroboración."],["escritura","Los registros permiten comparar afirmaciones con versiones anteriores y ampliar la memoria de una comunidad."],["medición","Medir relaciona observaciones con procedimientos y unidades que otros pueden repetir y criticar."],["archivo","Un archivo conserva información, procedencia y contexto para que el pasado siga disponible a nuevas preguntas."],["matemáticas","Las matemáticas expresan estructuras y relaciones con precisión, revelando consecuencias que la intuición no siempre anticipa."],["modelo científico","Un modelo comprime observaciones, explica mecanismos y produce predicciones que pueden fallar."],["crítica y revisión","El conocimiento se fortalece cuando las afirmaciones pueden ser examinadas, replicadas, corregidas o reemplazadas."],["siguiente viaje","Más allá: Espectro de la Cultura, del lenguaje compartido a herramientas, ciudades, ciencia, industria y civilización planetaria."]],"p0":0.944444,"p1":1.0001}];
+
+    let width = 1;
+    let height = 1;
+    let dpr = 1;
+    let pointerDown = false;
+    let targetX = .5;
+    let targetY = .965;
+    let pointerX = .5;
+    let pointerY = .965;
+    let shownX = .5;
+    let shownY = .94;
+    let lastZoneId = "";
+    let lastFeature = -1;
+    let hideTimer = 0;
+    let speechTimer = 0;
+    let lastSpoken = "";
+    let speechUnlocked = false;
+    let lastFrame = performance.now();
+    let elapsed = 0;
+    let currentProgress = .018;
+    let touchEnergy = 0;
+
+    const motes = [];
+    const signals = [];
+    const memories = [];
+    const nodes = [];
+    const branches = [];
+    const glyphs = [];
+    const people = [];
+    const bursts = [];
+    const waves = [];
+
+    let audioCtx = null;
+    let master = null;
+    let droneA = null;
+    let droneB = null;
+    let droneGain = null;
+    let droneFilter = null;
+    let pulseOsc = null;
+    let pulseGain = null;
+    let noiseSource = null;
+    let noiseGain = null;
+    let noiseFilter = null;
+    let stereo = null;
+
+    function depthFromY(yNorm) { return clamp(1 - yNorm, 0, 1); }
+
+    function zoneForDepth(p) {
+      for (let i = 0; i < ZONES.length; i++) if (p >= ZONES[i].p0 && p < ZONES[i].p1) return ZONES[i];
+      return ZONES[ZONES.length - 1];
+    }
+
+    function featureFor(zone, xNorm) {
+      const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .999999) * zone.features.length));
+      return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+    }
+
+    function setAccent(zone) {
+      root.style.setProperty("--accent", `${zone.color[0]} ${zone.color[1]} ${zone.color[2]}`);
+    }
+
+    function setCssPoint(x, y) {
+      root.style.setProperty("--scan-x", `${x}px`);
+      root.style.setProperty("--scan-y", `${y}px`);
+    }
+
+    function buildScene() {
+      motes.length = 0;
+      signals.length = 0;
+      memories.length = 0;
+      nodes.length = 0;
+      branches.length = 0;
+      glyphs.length = 0;
+      people.length = 0;
+
+      const moteCount = reducedMotion ? 90 : Math.round(clamp(width * height / 5200, 130, 310));
+      for (let i = 0; i < moteCount; i++) {
+        motes.push({
+          x: seeded(i + 1), y: seeded(i + 1000),
+          vx: (seeded(i + 2000) - .5) * .034,
+          vy: (seeded(i + 3000) - .5) * .032,
+          r: .7 + seeded(i + 4000) * 2.5,
+          phase: seeded(i + 5000) * TAU,
+          kind: i % 11
+        });
+      }
+
+      for (let i = 0; i < 56; i++) {
+        signals.push({
+          x: seeded(i + 6000), y: seeded(i + 7000),
+          phase: seeded(i + 8000) * TAU,
+          speed: .25 + seeded(i + 9000) * .85,
+          band: i % 7,
+          amp: .25 + seeded(i + 10000) * .75
+        });
+      }
+
+      for (let i = 0; i < 28; i++) {
+        memories.push({
+          x: .08 + seeded(i + 11000) * .84,
+          y: .12 + seeded(i + 12000) * .76,
+          w: .045 + seeded(i + 13000) * .095,
+          h: .035 + seeded(i + 14000) * .075,
+          phase: seeded(i + 15000) * TAU,
+          age: seeded(i + 16000),
+          kind: i % 6
+        });
+      }
+
+      for (let i = 0; i < 72; i++) {
+        const a = seeded(i + 17000) * TAU;
+        const r = Math.sqrt(seeded(i + 18000)) * .46;
+        nodes.push({
+          x: .5 + Math.cos(a) * r,
+          y: .5 + Math.sin(a) * r * .8,
+          r: 1.5 + seeded(i + 19000) * 4.7,
+          phase: seeded(i + 20000) * TAU,
+          group: i % 9,
+          hub: seeded(i + 21000) > .83
+        });
+      }
+
+      for (let i = 0; i < 19; i++) {
+        branches.push({
+          x: .1 + seeded(i + 22000) * .8,
+          bias: (seeded(i + 23000) - .5) * .44,
+          phase: seeded(i + 24000) * TAU,
+          weight: .45 + seeded(i + 25000) * .9,
+          kind: i % 5
+        });
+      }
+
+      const chars = 'Aa¿?∞≈ΣΔidea123abc✦';
+      for (let i = 0; i < 46; i++) {
+        glyphs.push({
+          x: .06 + seeded(i + 26000) * .88,
+          y: .08 + seeded(i + 27000) * .84,
+          char: chars[i % chars.length],
+          size: 10 + seeded(i + 28000) * 26,
+          phase: seeded(i + 29000) * TAU,
+          speed: .3 + seeded(i + 30000) * .9
+        });
+      }
+
+      for (let i = 0; i < 34; i++) {
+        people.push({
+          x: .06 + seeded(i + 31000) * .88,
+          y: .1 + seeded(i + 32000) * .78,
+          r: 3 + seeded(i + 33000) * 7,
+          phase: seeded(i + 34000) * TAU,
+          group: i % 6,
+          role: i % 4
+        });
+      }
+    }
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      width = Math.max(1, rect.width);
+      height = Math.max(1, rect.height);
+      dpr = Math.min(2, devicePixelRatio || 1);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      buildScene();
+      shownX = targetX * width;
+      shownY = targetY * height;
+      setCssPoint(shownX, shownY);
+    }
+
+    function ensureAudio() {
+      if (audioCtx) {
+        if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+        return;
+      }
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      audioCtx = new AudioContext();
+      master = audioCtx.createGain();
+      master.gain.value = 0;
+      const compressor = audioCtx.createDynamicsCompressor();
+      compressor.threshold.value = -24;
+      compressor.knee.value = 20;
+      compressor.ratio.value = 5;
+      master.connect(compressor).connect(audioCtx.destination);
+
+      droneA = audioCtx.createOscillator();
+      droneB = audioCtx.createOscillator();
+      droneGain = audioCtx.createGain();
+      droneFilter = audioCtx.createBiquadFilter();
+      stereo = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : audioCtx.createGain();
+      droneA.type = "sine";
+      droneB.type = "triangle";
+      droneGain.gain.value = .0001;
+      droneFilter.type = "lowpass";
+      droneFilter.frequency.value = 850;
+      droneFilter.Q.value = .8;
+      droneA.connect(droneGain);
+      droneB.connect(droneGain);
+      droneGain.connect(droneFilter).connect(stereo).connect(master);
+      droneA.start();
+      droneB.start();
+
+      pulseOsc = audioCtx.createOscillator();
+      pulseGain = audioCtx.createGain();
+      pulseOsc.type = "sine";
+      pulseGain.gain.value = .0001;
+      pulseOsc.connect(pulseGain).connect(master);
+      pulseOsc.start();
+
+      const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+      const channel = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < channel.length; i++) channel[i] = Math.random() * 2 - 1;
+      noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
+      noiseSource.loop = true;
+      noiseFilter = audioCtx.createBiquadFilter();
+      noiseFilter.type = "bandpass";
+      noiseFilter.frequency.value = 1100;
+      noiseFilter.Q.value = .5;
+      noiseGain = audioCtx.createGain();
+      noiseGain.gain.value = .0001;
+      noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
+      noiseSource.start();
+    }
+
+    function setAudioFor(zone, xNorm, progress, active) {
+      if (!audioCtx || !master) return;
+      const now = audioCtx.currentTime;
+      const s = zone.sound;
+      const base = s.base * (.93 + xNorm * .15);
+      droneA.type = s.type;
+      droneB.type = s.type === "sawtooth" || s.type === "square" ? "triangle" : "sine";
+      droneA.frequency.setTargetAtTime(base, now, .08);
+      droneB.frequency.setTargetAtTime(base * (1.498 + progress * .009), now, .1);
+      droneFilter.frequency.setTargetAtTime(s.filter * (.84 + xNorm * .28), now, .1);
+      droneGain.gain.setTargetAtTime(active ? .012 + progress * .006 : .0001, now, .09);
+      pulseOsc.frequency.setTargetAtTime(base * (1.985 + s.pulse), now, .08);
+      pulseGain.gain.setTargetAtTime(active ? .0026 + progress * .002 : .0001, now, .1);
+      noiseFilter.frequency.setTargetAtTime(s.filter * 1.12, now, .1);
+      noiseGain.gain.setTargetAtTime(active ? Math.max(.0001, s.noise * .06) : .0001, now, .1);
+      if (stereo.pan) stereo.pan.setTargetAtTime((xNorm - .5) * .7, now, .08);
+      master.gain.setTargetAtTime(active ? .27 : .0001, now, .09);
+    }
+
+    function ping(zone, xNorm, featureIndex = 0) {
+      if (!audioCtx || !master) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+      const pan = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+      const scale = [1, 1.125, 1.25, 1.5, 1.667, 2, 2.25, 2.5, 2.75][featureIndex % 9];
+      osc.type = zone.sound.type;
+      osc.frequency.setValueAtTime(Math.max(38, zone.sound.base * 2.5 * scale), now);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(36, zone.sound.base * 1.2), now + .48);
+      filter.type = "lowpass";
+      filter.frequency.value = Math.max(380, zone.sound.filter * 1.42);
+      gain.gain.setValueAtTime(.0001, now);
+      gain.gain.exponentialRampToValueAtTime(.026, now + .012);
+      gain.gain.exponentialRampToValueAtTime(.0001, now + .56);
+      osc.connect(filter).connect(gain);
+      if (pan) {
+        pan.pan.value = (xNorm - .5) * 1.35;
+        gain.connect(pan).connect(master);
+      } else gain.connect(master);
+      osc.start(now);
+      osc.stop(now + .62);
+    }
+
+    function queueSpeech(label) {
+      if (!speechUnlocked || !("speechSynthesis" in window) || !label || label === lastSpoken) return;
+      clearTimeout(speechTimer);
+      speechTimer = setTimeout(() => {
+        try {
+          speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(label);
+          utterance.lang = "es-ES";
+          utterance.rate = .86;
+          utterance.pitch = 1;
+          const voices = speechSynthesis.getVoices();
+          const voice = voices.find(v => /^es(-|_)/i.test(v.lang)) || voices.find(v => /spanish|español/i.test(v.name));
+          if (voice) utterance.voice = voice;
+          speechSynthesis.speak(utterance);
+          lastSpoken = label;
+        } catch (_) {}
+      }, 360);
+    }
+
+    function addRipple(x, y) {
+      const node = document.createElement("div");
+      node.className = "ripple";
+      node.style.left = `${x}px`;
+      node.style.top = `${y}px`;
+      document.body.appendChild(node);
+      node.addEventListener("animationend", () => node.remove(), { once: true });
+    }
+
+    function addBurst(x, y, color) {
+      const count = reducedMotion ? 5 : 13;
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * TAU;
+        const speed = 18 + Math.random() * 72;
+        bursts.push({
+          x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+          r: .8 + Math.random() * 2.4, life: 1, decay: 1 + Math.random() * .8,
+          color
+        });
+      }
+      waves.push({ x, y, radius: 5, life: 1, color });
+    }
+
+    function updateReadout(x, y, isNewPress = false) {
+      const xNorm = clamp(x / width, 0, .999999);
+      const yNorm = clamp(y / height, 0, .999999);
+      const progress = depthFromY(yNorm);
+      const zone = zoneForDepth(progress);
+      const feature = featureFor(zone, xNorm);
+
+      targetX = xNorm;
+      targetY = yNorm;
+      touchEnergy = 1;
+      setCssPoint(x, y);
+      setAccent(zone);
+      root.style.setProperty("--progress", `${Math.max(1.2, progress * 100)}%`);
+      scaleDot.style.bottom = `${48 + progress * Math.max(0, height - 96)}px`;
+      touchOrb.style.left = `${x}px`;
+      touchOrb.style.top = `${y}px`;
+      scaleValue.textContent = zone.className;
+
+      const changed = zone.id !== lastZoneId || feature.index !== lastFeature;
+      if (changed || isNewPress) {
+        evidenceClass.textContent = zone.className;
+        zoneName.textContent = zone.name;
+        zoneName.className = zone.name.length > 31 ? "long" : zone.name.length > 21 ? "compact" : "";
+        featureName.textContent = feature.name;
+        metric.textContent = zone.metric;
+        fact.textContent = feature.fact || zone.fact;
+        ping(zone, xNorm, feature.index);
+        addBurst(x, y, zone.color);
+        queueSpeech(feature.name);
+        lastZoneId = zone.id;
+        lastFeature = feature.index;
+      }
+
+      readout.classList.add("visible");
+      touchOrb.classList.add("visible");
+      document.body.classList.add("active");
+      hint.style.display = "none";
+      setAudioFor(zone, xNorm, progress, true);
+    }
+
+    function releaseInteraction(delay = 1050) {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        readout.classList.remove("visible");
+        touchOrb.classList.remove("visible");
+        document.body.classList.remove("active");
+        const zone = zoneForDepth(depthFromY(targetY));
+        setAudioFor(zone, targetX, depthFromY(targetY), false);
+      }, delay);
+    }
+
+    function endPointer() {
+      pointerDown = false;
+      releaseInteraction();
+    }
+
+    canvas.addEventListener("pointerdown", event => {
+      event.preventDefault();
+      canvas.focus({ preventScroll: true });
+      pointerDown = true;
+      speechUnlocked = true;
+      ensureAudio();
+      try { canvas.setPointerCapture(event.pointerId); } catch (_) {}
+      updateReadout(event.clientX, event.clientY, true);
+      addRipple(event.clientX, event.clientY);
+    });
+
+    canvas.addEventListener("pointermove", event => {
+      if (!pointerDown && event.pointerType !== "mouse") return;
+      if (!pointerDown && event.buttons === 0) {
+        targetX = clamp(event.clientX / width, 0, 1);
+        targetY = clamp(event.clientY / height, 0, 1);
+        return;
+      }
+      event.preventDefault();
+      updateReadout(event.clientX, event.clientY);
+    });
+
+    canvas.addEventListener("pointerup", endPointer);
+    canvas.addEventListener("pointercancel", endPointer);
+    canvas.addEventListener("lostpointercapture", endPointer);
+
+    canvas.addEventListener("keydown", event => {
+      const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " "];
+      if (!keys.includes(event.key)) return;
+      event.preventDefault();
+      speechUnlocked = true;
+      ensureAudio();
+      const step = event.shiftKey ? .09 : .035;
+      if (event.key === "ArrowUp") targetY = clamp(targetY - step, .005, .995);
+      if (event.key === "ArrowDown") targetY = clamp(targetY + step, .005, .995);
+      if (event.key === "ArrowLeft") targetX = clamp(targetX - step, .005, .995);
+      if (event.key === "ArrowRight") targetX = clamp(targetX + step, .005, .995);
+      updateReadout(targetX * width, targetY * height, event.key === "Enter" || event.key === " ");
+      releaseInteraction(1600);
+    });
+
+    function gradientStops(progress) {
+      const stops = [
+        [[18,11,20],[88,57,49]],
+        [[8,22,34],[24,101,126]],
+        [[17,16,50],[89,74,151]],
+        [[28,24,25],[136,118,43]],
+        [[48,13,25],[156,54,62]],
+        [[10,24,52],[44,92,150]],
+        [[8,34,30],[45,120,85]],
+        [[23,17,61],[80,66,146]],
+        [[43,14,57],[145,62,151]],
+        [[10,34,56],[45,112,160]],
+        [[52,29,11],[173,94,34]],
+        [[39,18,65],[132,66,163]],
+        [[52,20,38],[160,67,100]],
+        [[5,39,43],[34,130,119]],
+        [[24,29,45],[113,135,167]],
+        [[5,34,50],[40,116,153]],
+        [[57,25,12],[171,85,39]],
+        [[57,48,39],[197,171,126]]
+      ];
+      const pos = clamp(progress, 0, .9999) * (stops.length - 1);
+      const i = Math.floor(pos);
+      const t = smooth(pos - i);
+      const next = Math.min(stops.length - 1, i + 1);
+      return [
+        stops[i][0].map((v, k) => Math.round(mix(v, stops[next][0][k], t))),
+        stops[i][1].map((v, k) => Math.round(mix(v, stops[next][1][k], t)))
+      ];
+    }
+
+    function drawBackground(progress, time) {
+      const [bottom, top] = gradientStops(progress);
+      const g = ctx.createLinearGradient(0, height, 0, 0);
+      g.addColorStop(0, `rgb(${bottom[0]} ${bottom[1]} ${bottom[2]})`);
+      g.addColorStop(.48, `rgb(${Math.round((bottom[0] + top[0]) * .43)} ${Math.round((bottom[1] + top[1]) * .43)} ${Math.round((bottom[2] + top[2]) * .43)})`);
+      g.addColorStop(1, `rgb(${top[0]} ${top[1]} ${top[2]})`);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, width, height);
+
+      const focusY = mix(height * .78, height * .25, progress);
+      const focusX = mix(width * .42, width * .58, .5 + .5 * Math.sin(time * .08));
+      const glow = ctx.createRadialGradient(focusX, focusY, 0, focusX, focusY, Math.max(width, height) * .74);
+      glow.addColorStop(0, `rgba(${150 + progress * 90},${120 + progress * 100},${190 + progress * 55},${.08 + progress * .08})`);
+      glow.addColorStop(.5, 'rgba(110,150,220,.025)');
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.save();
+      for (let i = 0; i < motes.length; i++) {
+        const m = motes[i];
+        m.x = fract(m.x + m.vx * .0022);
+        m.y = fract(m.y + m.vy * .0022);
+        const x = m.x * width + Math.sin(time * .13 + m.phase) * 6;
+        const y = m.y * height + Math.cos(time * .1 + m.phase) * 6;
+        const twinkle = .11 + .2 * (.5 + .5 * Math.sin(time * (.45 + progress * .35) + m.phase));
+        const palette = m.kind % 4 === 0 ? [255,221,170] : m.kind % 4 === 1 ? [117,215,255] : m.kind % 4 === 2 ? [217,154,255] : [127,244,190];
+        ctx.fillStyle = rgba(palette, twinkle * (.6 + progress * .5));
+        ctx.beginPath(); ctx.arc(x, y, m.r * (.72 + progress * .32), 0, TAU); ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function softHalo(cx, cy, radius, color, alpha) {
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+      g.addColorStop(0, rgba(color, alpha));
+      g.addColorStop(.35, rgba(color, alpha * .42));
+      g.addColorStop(1, rgba(color, 0));
+      ctx.fillStyle = g;
+      ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+    }
+
+    function roundedRectPath(x, y, w, h, r) {
+      const rr = Math.min(r, w * .5, h * .5);
+      ctx.beginPath();
+      ctx.moveTo(x + rr, y);
+      ctx.arcTo(x + w, y, x + w, y + h, rr);
+      ctx.arcTo(x + w, y + h, x, y + h, rr);
+      ctx.arcTo(x, y + h, x, y, rr);
+      ctx.arcTo(x, y, x + w, y, rr);
+      ctx.closePath();
+    }
+
+    function drawConsciousField(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save(); ctx.globalAlpha = alpha;
+      const s = Math.min(width, height), cx = width * .5, cy = height * .52;
+      softHalo(cx, cy, s * .5, [255,221,174], .22);
+      for (let ring = 0; ring < 9; ring++) {
+        const rr = s * (.055 + ring * .031);
+        ctx.strokeStyle = ring % 2 ? 'rgba(224,171,255,.22)' : 'rgba(255,232,191,.28)';
+        ctx.lineWidth = 1 + (ring % 3) * .35;
+        ctx.beginPath();
+        for (let k = 0; k <= 96; k++) {
+          const a = k / 96 * TAU;
+          const wobble = 1 + .045 * Math.sin(a * (2 + ring) + time * (.24 + ring * .018));
+          const x = cx + Math.cos(a) * rr * wobble;
+          const y = cy + Math.sin(a) * rr * .74 * wobble;
+          if (!k) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+      ctx.strokeStyle = 'rgba(255,244,222,.62)'; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx - s*.035, cy - s*.13);
+      ctx.bezierCurveTo(cx - s*.13, cy - s*.07, cx - s*.125, cy + s*.07, cx - s*.03, cy + s*.14);
+      ctx.bezierCurveTo(cx + s*.055, cy + s*.095, cx + s*.055, cy + s*.025, cx + s*.11, cy - s*.005);
+      ctx.bezierCurveTo(cx + s*.145, cy - s*.095, cx + s*.07, cy - s*.155, cx - s*.035, cy - s*.13);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,248,231,.9)';
+      ctx.beginPath(); ctx.arc(cx + s*.035, cy - s*.038, 3.1 + Math.sin(time)*.7, 0, TAU); ctx.fill();
+      ctx.restore();
+    }
+
+    function drawSensation(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save(); ctx.globalAlpha = alpha;
+      const s = Math.min(width, height), cx = width * .5, cy = height * .52;
+      softHalo(cx, cy, s * .46, [107,218,255], .17);
+      for (let band = 0; band < 7; band++) {
+        const y0 = height * (.2 + band * .1);
+        ctx.strokeStyle = band % 3 === 0 ? 'rgba(255,210,128,.34)' : band % 3 === 1 ? 'rgba(112,224,255,.32)' : 'rgba(208,155,255,.3)';
+        ctx.lineWidth = 1 + band * .13;
+        ctx.beginPath();
+        for (let k = 0; k <= 90; k++) {
+          const t = k / 90;
+          const amp = s * (.015 + band * .003);
+          const x = t * width;
+          const y = y0 + Math.sin(t * TAU * (2 + band*.55) + time * (.8 + band*.08)) * amp;
+          if (!k) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+      }
+      const receptorR = s * .09;
+      ctx.strokeStyle = 'rgba(190,239,255,.52)'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(cx, cy, receptorR, 0, TAU); ctx.stroke();
+      for (let i = 0; i < 22; i++) {
+        const a = i / 22 * TAU + time * .04;
+        const rr = receptorR * (1.25 + .12 * Math.sin(time + i));
+        ctx.strokeStyle = i % 2 ? 'rgba(120,226,255,.25)' : 'rgba(255,220,150,.23)';
+        ctx.beginPath(); ctx.moveTo(cx + Math.cos(a)*receptorR, cy + Math.sin(a)*receptorR); ctx.lineTo(cx + Math.cos(a)*rr, cy + Math.sin(a)*rr); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawPerception(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save(); ctx.globalAlpha = alpha;
+      const s = Math.min(width, height), cx = width*.5, cy=height*.5;
+      softHalo(cx, cy, s*.52, [173,157,255], .15);
+      const shift = (shownX / Math.max(1,width) - .5) * s * .06;
+      const a = s*.15;
+      ctx.lineWidth = 2.1;
+      ctx.strokeStyle = 'rgba(215,204,255,.52)';
+      ctx.beginPath();
+      ctx.moveTo(cx-a+shift, cy-a*.55); ctx.lineTo(cx+a*.1+shift, cy-a); ctx.lineTo(cx+a+shift, cy-a*.35); ctx.lineTo(cx+a*.35+shift, cy+a*.68); ctx.lineTo(cx-a*.72+shift, cy+a*.5); ctx.closePath(); ctx.stroke();
+      ctx.strokeStyle = 'rgba(112,217,255,.47)';
+      ctx.beginPath();
+      ctx.moveTo(cx-a*.42-shift, cy-a*.92); ctx.lineTo(cx+a*.68-shift, cy-a*.47); ctx.lineTo(cx+a*.55-shift, cy+a*.52); ctx.lineTo(cx-a*.55-shift, cy+a*.85); ctx.lineTo(cx-a*.95-shift, cy-a*.03); ctx.closePath(); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,234,174,.12)';
+      ctx.beginPath(); ctx.ellipse(cx-s*.06, cy, s*.055, s*.15, .2, 0, TAU); ctx.fill();
+      ctx.fillStyle = 'rgba(160,127,255,.12)';
+      ctx.beginPath(); ctx.ellipse(cx+s*.06, cy, s*.055, s*.15, -.2, 0, TAU); ctx.fill();
+      for (let i=0;i<8;i++) {
+        ctx.strokeStyle = `rgba(215,195,255,${.08 + i*.018})`;
+        ctx.beginPath(); ctx.arc(cx,cy,s*(.05+i*.035),0,TAU); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawAttention(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save(); ctx.globalAlpha = alpha;
+      const fx = shownX || width*.5, fy = shownY || height*.5;
+      ctx.fillStyle = 'rgba(0,0,0,.38)'; ctx.fillRect(0,0,width,height);
+      const r = Math.min(width,height) * (.16 + touchEnergy*.04);
+      const beam = ctx.createRadialGradient(fx,fy,0,fx,fy,r*1.7);
+      beam.addColorStop(0,'rgba(255,249,202,.4)'); beam.addColorStop(.45,'rgba(255,226,116,.12)'); beam.addColorStop(1,'rgba(255,228,122,0)');
+      ctx.fillStyle=beam; ctx.fillRect(0,0,width,height);
+      for(let i=0;i<signals.length;i++){
+        const q=signals[i];
+        const x=q.x*width, y=q.y*height;
+        const d=Math.hypot(x-fx,y-fy);
+        const vis=clamp(1-d/(r*1.75),0,1);
+        ctx.fillStyle=`rgba(255,244,174,${.05+vis*.65})`;
+        ctx.beginPath(); ctx.arc(x,y,1.2+q.band*.45+vis*2,0,TAU); ctx.fill();
+      }
+      ctx.strokeStyle='rgba(255,247,205,.42)'; ctx.lineWidth=1.4;
+      ctx.beginPath(); ctx.arc(fx,fy,r,0,TAU); ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawEmotion(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height),cx=width*.5,cy=height*.52;
+      const beat=1+.045*Math.sin(time*2.15);
+      softHalo(cx,cy,s*.5,[255,106,126],.2);
+      ctx.fillStyle='rgba(255,113,133,.15)';
+      ctx.beginPath();
+      ctx.moveTo(cx,cy+s*.17);
+      ctx.bezierCurveTo(cx-s*.26,cy+s*.01,cx-s*.17,cy-s*.22,cx,cy-s*.07);
+      ctx.bezierCurveTo(cx+s*.17,cy-s*.22,cx+s*.26,cy+s*.01,cx,cy+s*.17);
+      ctx.fill();
+      ctx.strokeStyle='rgba(255,175,160,.58)';ctx.lineWidth=2.2;
+      ctx.beginPath();
+      for(let k=0;k<=130;k++){
+        const t=k/130,x=t*width;
+        const spike=Math.exp(-Math.pow((t-.5)*18,2));
+        const y=cy+Math.sin(t*TAU*3+time*.35)*s*.018-spike*s*.12+Math.exp(-Math.pow((t-.57)*26,2))*s*.16;
+        if(!k)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+      }ctx.stroke();
+      for(let i=0;i<7;i++){
+        ctx.strokeStyle=i%2?'rgba(255,205,105,.18)':'rgba(255,125,160,.2)';
+        ctx.beginPath();ctx.arc(cx,cy,s*(.06+i*.038)*beat,0,TAU);ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawMemory(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height);
+      softHalo(width*.5,height*.5,s*.55,[102,175,255],.13);
+      for(let i=0;i<memories.length;i++){
+        const m=memories[i];
+        const x=m.x*width+Math.sin(time*.12+m.phase)*s*.01;
+        const y=m.y*height+Math.cos(time*.1+m.phase)*s*.008;
+        const w=m.w*s,h=m.h*s;
+        const clarity=.2+.65*(1-m.age)+.12*Math.sin(time*.4+m.phase);
+        ctx.fillStyle=`rgba(${90+m.kind*18},${150+m.kind*12},255,${.035+clarity*.08})`;
+        roundedRectPath(x-w/2,y-h/2,w,h,8);ctx.fill();
+        ctx.strokeStyle=`rgba(155,205,255,${.11+clarity*.33})`;ctx.lineWidth=1;
+        roundedRectPath(x-w/2,y-h/2,w,h,8);ctx.stroke();
+        if(i%4===0){
+          ctx.strokeStyle='rgba(255,230,170,.17)';ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(width*.5,height*.5);ctx.stroke();
+        }
+      }
+      ctx.fillStyle='rgba(225,238,255,.82)';ctx.beginPath();ctx.arc(width*.5,height*.5,4+Math.sin(time)*1.2,0,TAU);ctx.fill();
+      ctx.restore();
+    }
+
+    function drawLearning(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height),cx=width*.5,cy=height*.5;
+      softHalo(cx,cy,s*.52,[105,235,153],.14);
+      for(let i=0;i<nodes.length;i++){
+        const a=nodes[i],x=a.x*width,y=a.y*height;
+        const j=(i*7+5)%nodes.length,b=nodes[j];
+        const pulse=.5+.5*Math.sin(time*(.5+a.group*.035)+a.phase);
+        ctx.strokeStyle=`rgba(112,240,164,${.025+pulse*.11})`;ctx.lineWidth=.7+(a.hub?1.1:0);
+        ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(b.x*width,b.y*height);ctx.stroke();
+      }
+      for(let i=0;i<nodes.length;i++){
+        const n=nodes[i],pulse=.5+.5*Math.sin(time*.8+n.phase);
+        ctx.fillStyle=n.hub?`rgba(218,255,226,${.45+pulse*.35})`:`rgba(116,244,169,${.18+pulse*.27})`;
+        ctx.beginPath();ctx.arc(n.x*width,n.y*height,n.r*(n.hub?1.45:1),0,TAU);ctx.fill();
+      }
+      const t=fract(time*.12);
+      const start=nodes[3],end=nodes[42];
+      ctx.fillStyle='rgba(255,247,176,.9)';ctx.beginPath();ctx.arc(mix(start.x,end.x,t)*width,mix(start.y,end.y,t)*height,3.5,0,TAU);ctx.fill();
+      ctx.restore();
+    }
+
+    function drawConcepts(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height);
+      const centers=[[.28,.35],[.66,.31],[.5,.67]];
+      const cols=[[140,132,255],[110,205,255],[234,151,255]];
+      for(let c=0;c<centers.length;c++){
+        const cx=centers[c][0]*width,cy=centers[c][1]*height;
+        softHalo(cx,cy,s*.22,cols[c],.12);
+        for(let i=0;i<18;i++){
+          const a=i/18*TAU+time*.03*(c+1),rr=s*(.035+.12*seeded(c*100+i+41000));
+          const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.75;
+          ctx.strokeStyle=rgba(cols[c],.13);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(x,y);ctx.stroke();
+          ctx.fillStyle=rgba(cols[c],.35+.25*Math.sin(time*.4+i));ctx.beginPath();ctx.arc(x,y,2+i%3,0,TAU);ctx.fill();
+        }
+        ctx.fillStyle=rgba(cols[c],.75);ctx.beginPath();ctx.arc(cx,cy,5,0,TAU);ctx.fill();
+      }
+      ctx.strokeStyle='rgba(235,224,255,.18)';ctx.lineWidth=1.4;
+      ctx.beginPath();ctx.moveTo(centers[0][0]*width,centers[0][1]*height);ctx.lineTo(centers[1][0]*width,centers[1][1]*height);ctx.lineTo(centers[2][0]*width,centers[2][1]*height);ctx.closePath();ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawLanguage(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height);
+      softHalo(width*.5,height*.5,s*.55,[233,140,255],.12);
+      ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='700 18px system-ui, sans-serif';
+      for(let i=0;i<glyphs.length;i++){
+        const g=glyphs[i];
+        const x=g.x*width+Math.sin(time*.16*g.speed+g.phase)*s*.015;
+        const y=g.y*height+Math.cos(time*.13*g.speed+g.phase)*s*.012;
+        const focus=1-clamp(Math.abs(g.x-shownX/Math.max(1,width))*2.5,0,1);
+        ctx.font=`${Math.round(g.size*(.72+focus*.38))}px system-ui, sans-serif`;
+        ctx.fillStyle=`rgba(247,195,255,${.08+focus*.4})`;ctx.fillText(g.char,x,y);
+      }
+      const y=height*.52;
+      ctx.strokeStyle='rgba(255,217,255,.3)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(width*.16,y);ctx.bezierCurveTo(width*.35,y-s*.1,width*.65,y+s*.1,width*.84,y);ctx.stroke();
+      for(let i=0;i<7;i++){
+        const t=i/6,x=mix(width*.17,width*.83,t),yy=y+Math.sin(t*TAU+time*.2)*s*.055;
+        ctx.fillStyle=i%2?'rgba(130,218,255,.72)':'rgba(248,171,255,.78)';ctx.beginPath();ctx.arc(x,yy,4+i%2,0,TAU);ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawReasoning(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height),left=width*.14,right=width*.86,top=height*.18,bottom=height*.82;
+      softHalo(width*.5,height*.5,s*.55,[96,196,255],.12);
+      const pts=[];
+      for(let i=0;i<9;i++)pts.push([mix(left,right,seeded(i+43000)),mix(top,bottom,seeded(i+44000))]);
+      for(let i=0;i<pts.length;i++){
+        const j=(i*3+2)%pts.length;
+        ctx.strokeStyle=i%2?'rgba(105,207,255,.23)':'rgba(220,228,255,.18)';ctx.lineWidth=1.2;
+        ctx.beginPath();ctx.moveTo(...pts[i]);ctx.lineTo(...pts[j]);ctx.stroke();
+      }
+      for(let i=0;i<pts.length;i++){
+        ctx.fillStyle=i===8?'rgba(255,237,174,.9)':'rgba(137,218,255,.68)';ctx.beginPath();ctx.arc(pts[i][0],pts[i][1],i===8?6:3.5,0,TAU);ctx.fill();
+      }
+      const t=fract(time*.1);
+      const a=pts[Math.floor(t*8)],b=pts[Math.min(8,Math.floor(t*8)+1)],lt=fract(t*8);
+      ctx.fillStyle='rgba(255,250,224,.95)';ctx.beginPath();ctx.arc(mix(a[0],b[0],lt),mix(a[1],b[1],lt),3,0,TAU);ctx.fill();
+      ctx.restore();
+    }
+
+    function drawDecisions(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height),cx=width*.5,y0=height*.82;
+      softHalo(cx,height*.48,s*.56,[255,178,82],.13);
+      for(let i=0;i<branches.length;i++){
+        const b=branches[i],tx=b.x*width,ty=height*.14+Math.abs(b.bias)*height*.2;
+        const selected=1-clamp(Math.abs(b.x-shownX/Math.max(1,width))*4,0,1);
+        ctx.strokeStyle=`rgba(${255-b.kind*15},${172+b.kind*9},${75+b.kind*15},${.07+selected*.43})`;
+        ctx.lineWidth=.7+b.weight+selected*2;
+        ctx.beginPath();ctx.moveTo(cx,y0);ctx.bezierCurveTo(cx+b.bias*width,y0-height*.25,tx-b.bias*width*.2,ty+height*.18,tx,ty);ctx.stroke();
+        ctx.fillStyle=`rgba(255,220,154,${.18+selected*.66})`;ctx.beginPath();ctx.arc(tx,ty,2.5+selected*3,0,TAU);ctx.fill();
+      }
+      ctx.fillStyle='rgba(255,239,198,.92)';ctx.beginPath();ctx.arc(cx,y0,6,0,TAU);ctx.fill();
+      ctx.restore();
+    }
+
+    function drawImagination(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height),cx=width*.5,cy=height*.5;
+      softHalo(cx,cy,s*.62,[203,126,255],.15);
+      for(let layer=0;layer<8;layer++){
+        ctx.strokeStyle=`rgba(${205+layer*4},${132+layer*8},255,${.11+layer*.013})`;ctx.lineWidth=1+layer*.12;
+        ctx.beginPath();
+        for(let k=0;k<=120;k++){
+          const a=k/120*TAU,rr=s*(.055+layer*.025)*(1+.16*Math.sin(a*(3+layer)+time*(.2+layer*.03)));
+          const x=cx+Math.cos(a)*rr*(1+layer*.05),y=cy+Math.sin(a)*rr*.72;
+          if(!k)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+        }ctx.closePath();ctx.stroke();
+      }
+      const shapes=5;
+      for(let i=0;i<shapes;i++){
+        const a=i/shapes*TAU+time*.07,rr=s*.28;
+        ctx.fillStyle=i%2?'rgba(255,205,136,.14)':'rgba(120,214,255,.14)';
+        ctx.beginPath();ctx.arc(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.65,s*(.025+i*.004),0,TAU);ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawIdentity(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height),cx=width*.5,cy=height*.47;
+      softHalo(cx,cy,s*.55,[255,147,178],.13);
+      ctx.strokeStyle='rgba(255,210,220,.54)';ctx.lineWidth=2.2;
+      ctx.beginPath();ctx.arc(cx,cy-s*.11,s*.07,0,TAU);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx,cy-s*.04);ctx.bezierCurveTo(cx-s*.13,cy+s*.02,cx-s*.12,cy+s*.24,cx,cy+s*.29);ctx.bezierCurveTo(cx+s*.12,cy+s*.24,cx+s*.13,cy+s*.02,cx,cy-s*.04);ctx.stroke();
+      ctx.strokeStyle='rgba(255,184,205,.22)';
+      ctx.beginPath();ctx.moveTo(width*.12,height*.77);
+      for(let k=0;k<=80;k++){
+        const t=k/80,x=mix(width*.12,width*.88,t),y=height*.77-Math.sin(t*Math.PI)*height*.45+Math.sin(t*TAU*4+time*.1)*s*.012;
+        ctx.lineTo(x,y);
+      }ctx.stroke();
+      for(let i=0;i<9;i++){
+        const t=i/8,x=mix(width*.12,width*.88,t),y=height*.77-Math.sin(t*Math.PI)*height*.45;
+        ctx.fillStyle=i%2?'rgba(255,214,165,.7)':'rgba(255,156,190,.65)';ctx.beginPath();ctx.arc(x,y,3+i%3,0,TAU);ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawIntelligence(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height);
+      softHalo(width*.5,height*.5,s*.57,[84,232,210],.13);
+      for(let i=0;i<nodes.length;i++){
+        const n=nodes[i],j=(i*11+9)%nodes.length,m=nodes[j];
+        const active=(i+Math.floor(time*2))%13===0;
+        ctx.strokeStyle=active?'rgba(255,243,174,.58)':'rgba(93,231,216,.08)';ctx.lineWidth=active?2:1;
+        ctx.beginPath();ctx.moveTo(n.x*width,n.y*height);ctx.lineTo(m.x*width,m.y*height);ctx.stroke();
+      }
+      for(let i=0;i<nodes.length;i++){
+        const n=nodes[i],active=(i+Math.floor(time*2))%13===0;
+        ctx.fillStyle=active?'rgba(255,247,200,.9)':n.hub?'rgba(155,255,237,.66)':'rgba(83,221,207,.24)';
+        ctx.beginPath();ctx.arc(n.x*width,n.y*height,n.r*(n.hub?1.45:1),0,TAU);ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawMetacognition(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height),cx=width*.5,cy=height*.5;
+      softHalo(cx,cy,s*.58,[203,221,255],.15);
+      for(let ring=0;ring<10;ring++){
+        const rr=s*(.045+ring*.028);
+        ctx.strokeStyle=ring%2?'rgba(120,210,255,.18)':'rgba(225,235,255,.23)';ctx.lineWidth=1+ring*.08;
+        ctx.beginPath();ctx.arc(cx,cy,rr,Math.sin(time*.08+ring)*.25,TAU-Math.cos(time*.07+ring)*.3);ctx.stroke();
+      }
+      const angle=time*.22;
+      ctx.strokeStyle='rgba(255,245,205,.55)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(angle)*s*.27,cy+Math.sin(angle)*s*.27);ctx.stroke();
+      ctx.fillStyle='rgba(255,248,221,.92)';ctx.beginPath();ctx.arc(cx+Math.cos(angle)*s*.27,cy+Math.sin(angle)*s*.27,4,0,TAU);ctx.fill();
+      ctx.fillStyle='rgba(218,231,255,.9)';ctx.beginPath();ctx.arc(cx,cy,5,0,TAU);ctx.fill();
+      ctx.restore();
+    }
+
+    function drawConnected(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height);
+      softHalo(width*.5,height*.5,s*.62,[90,204,255],.13);
+      for(let i=0;i<people.length;i++){
+        const a=people[i],j=(i*5+7)%people.length,b=people[j];
+        const pulse=.5+.5*Math.sin(time*.35+a.phase);
+        ctx.strokeStyle=`rgba(104,211,255,${.035+pulse*.12})`;ctx.lineWidth=.8+(a.role===0?.8:0);
+        ctx.beginPath();ctx.moveTo(a.x*width,a.y*height);ctx.quadraticCurveTo(width*.5,height*.5,b.x*width,b.y*height);ctx.stroke();
+      }
+      for(let i=0;i<people.length;i++){
+        const p=people[i],x=p.x*width,y=p.y*height;
+        ctx.fillStyle=p.role===0?'rgba(255,231,171,.78)':p.group%2?'rgba(116,220,255,.58)':'rgba(193,170,255,.55)';
+        ctx.beginPath();ctx.arc(x,y,p.r*.45,0,TAU);ctx.fill();
+        ctx.strokeStyle='rgba(214,237,255,.22)';ctx.beginPath();ctx.arc(x,y+p.r,p.r*.8,Math.PI,TAU);ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawCulture(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height);
+      softHalo(width*.5,height*.5,s*.65,[255,153,89],.14);
+      const rows=5,cols=7;
+      for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+        const x=width*(.13+c/(cols-1)*.74),y=height*(.18+r/(rows-1)*.64);
+        const q=(r*cols+c)%6;
+        ctx.strokeStyle=q%2?'rgba(255,184,111,.28)':'rgba(229,139,255,.2)';ctx.lineWidth=1.2;
+        if(q===0){ctx.beginPath();ctx.arc(x,y,s*.025,0,TAU);ctx.stroke();}
+        else if(q===1){ctx.strokeRect(x-s*.022,y-s*.022,s*.044,s*.044);}
+        else if(q===2){ctx.beginPath();ctx.moveTo(x,y-s*.03);ctx.lineTo(x+s*.028,y+s*.025);ctx.lineTo(x-s*.028,y+s*.025);ctx.closePath();ctx.stroke();}
+        else if(q===3){ctx.beginPath();ctx.moveTo(x-s*.03,y);ctx.lineTo(x+s*.03,y);ctx.moveTo(x,y-s*.03);ctx.lineTo(x,y+s*.03);ctx.stroke();}
+        else if(q===4){ctx.beginPath();ctx.arc(x,y,s*.028,0,Math.PI);ctx.stroke();}
+        else {ctx.beginPath();ctx.moveTo(x-s*.025,y+s*.02);ctx.quadraticCurveTo(x,y-s*.04,x+s*.025,y+s*.02);ctx.stroke();}
+        if(c<cols-1){ctx.strokeStyle='rgba(255,204,143,.07)';ctx.beginPath();ctx.moveTo(x+s*.04,y);ctx.lineTo(width*(.13+(c+1)/(cols-1)*.74)-s*.04,y);ctx.stroke();}
+      }
+      ctx.restore();
+    }
+
+    function drawKnowledge(progress,time,alpha){
+      if(alpha<=.001)return;
+      ctx.save();ctx.globalAlpha=alpha;
+      const s=Math.min(width,height),cx=width*.5,cy=height*.5;
+      softHalo(cx,cy,s*.85,[255,242,210],.22);
+      const rings=11;
+      for(let r=0;r<rings;r++){
+        const rr=s*(.04+r*.027);
+        ctx.strokeStyle=`rgba(255,${225+r*2},${176+r*5},${.11+r*.014})`;ctx.lineWidth=1+r*.09;
+        ctx.beginPath();ctx.arc(cx,cy,rr,0,TAU);ctx.stroke();
+        const count=5+r;
+        for(let i=0;i<count;i++){
+          const a=i/count*TAU+time*(.018+r*.002),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;
+          ctx.fillStyle=i%3?'rgba(244,232,207,.46)':'rgba(126,214,255,.66)';ctx.beginPath();ctx.arc(x,y,1.5+(r%3),0,TAU);ctx.fill();
+        }
+      }
+      ctx.fillStyle='rgba(255,250,230,.95)';ctx.beginPath();ctx.arc(cx,cy,7+Math.sin(time*.6),0,TAU);ctx.fill();
+      ctx.strokeStyle='rgba(255,249,224,.2)';
+      for(let i=0;i<18;i++){
+        const a=i/18*TAU+time*.01;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*s*.42,cy+Math.sin(a)*s*.42);ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function zoneWeight(progress, p0, p1, feather = .045) {
+      const enter = smooth(clamp((progress - (p0 - feather)) / feather, 0, 1));
+      const exit = 1 - smooth(clamp((progress - p1) / feather, 0, 1));
+      return enter * exit;
+    }
+
+    function drawBursts(dt) {
+      for (let i = bursts.length - 1; i >= 0; i--) {
+        const p = bursts[i];
+        p.life -= dt * p.decay;
+        if (p.life <= 0) { bursts.splice(i, 1); continue; }
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        p.vx *= Math.pow(.94, dt * 60); p.vy *= Math.pow(.94, dt * 60);
+        ctx.fillStyle = rgba(p.color, p.life * .55);
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (.5 + p.life), 0, TAU); ctx.fill();
+      }
+      for (let i = waves.length - 1; i >= 0; i--) {
+        const w = waves[i];
+        w.life -= dt * 1.05;
+        if (w.life <= 0) { waves.splice(i, 1); continue; }
+        w.radius += dt * Math.min(width, height) * .24;
+        ctx.strokeStyle = rgba(w.color, w.life * .25);
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.arc(w.x, w.y, w.radius, 0, TAU); ctx.stroke();
+      }
+    }
+
+    function render(now) {
+      const dt = Math.min(.04, Math.max(.001, (now - lastFrame) / 1000));
+      lastFrame = now;
+      elapsed += reducedMotion ? dt * .24 : dt;
+      pointerX += (targetX - pointerX) * (1 - Math.pow(.001, dt));
+      pointerY += (targetY - pointerY) * (1 - Math.pow(.001, dt));
+      currentProgress += (depthFromY(pointerY) - currentProgress) * (1 - Math.pow(.005, dt));
+      shownX += (pointerX * width - shownX) * (1 - Math.pow(.001, dt));
+      shownY += (pointerY * height - shownY) * (1 - Math.pow(.001, dt));
+      touchEnergy *= Math.pow(.075, dt);
+
+      drawBackground(currentProgress, elapsed);
+      drawConsciousField(currentProgress, elapsed, zoneWeight(currentProgress, 0.0, .072, .035));
+      drawSensation(currentProgress, elapsed, zoneWeight(currentProgress, .035, .13, .035));
+      drawPerception(currentProgress, elapsed, zoneWeight(currentProgress, .09, .19, .036));
+      drawAttention(currentProgress, elapsed, zoneWeight(currentProgress, .145, .245, .036));
+      drawEmotion(currentProgress, elapsed, zoneWeight(currentProgress, .20, .30, .036));
+      drawMemory(currentProgress, elapsed, zoneWeight(currentProgress, .255, .355, .036));
+      drawLearning(currentProgress, elapsed, zoneWeight(currentProgress, .31, .41, .036));
+      drawConcepts(currentProgress, elapsed, zoneWeight(currentProgress, .365, .465, .036));
+      drawLanguage(currentProgress, elapsed, zoneWeight(currentProgress, .42, .525, .036));
+      drawReasoning(currentProgress, elapsed, zoneWeight(currentProgress, .48, .585, .036));
+      drawDecisions(currentProgress, elapsed, zoneWeight(currentProgress, .535, .64, .036));
+      drawImagination(currentProgress, elapsed, zoneWeight(currentProgress, .59, .695, .036));
+      drawIdentity(currentProgress, elapsed, zoneWeight(currentProgress, .645, .75, .036));
+      drawIntelligence(currentProgress, elapsed, zoneWeight(currentProgress, .70, .805, .036));
+      drawMetacognition(currentProgress, elapsed, zoneWeight(currentProgress, .755, .86, .036));
+      drawConnected(currentProgress, elapsed, zoneWeight(currentProgress, .81, .915, .036));
+      drawCulture(currentProgress, elapsed, zoneWeight(currentProgress, .865, .97, .034));
+      drawKnowledge(currentProgress, elapsed, smooth(clamp((currentProgress - .925) / .075, 0, 1)));
+
+      drawBursts(dt);
+      if (!pointerDown) setAccent(zoneForDepth(currentProgress));
+      requestAnimationFrame(render);
+    }
+
+    window.addEventListener("resize", resize, { passive: true });
+    window.addEventListener("orientationchange", () => setTimeout(resize, 120), { passive: true });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && audioCtx && audioCtx.state === "running") audioCtx.suspend().catch(() => {});
+    });
+
+    resize();
+    setAccent(ZONES[0]);
+    requestAnimationFrame(render);
+  })();
+  </script>
+</body>
+</html>
