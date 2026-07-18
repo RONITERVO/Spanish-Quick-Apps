@@ -1,0 +1,1866 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#030611">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora desde el límite del Grupo Local hasta el Gran Atractor y la frontera de Laniakea, en español.">
+  <meta name="application-name" content="Espectro de Laniakea: del Grupo Local al Gran Atractor">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro de Laniakea">
+  <meta property="og:description" content="Toca y recorre Laniakea desde el límite del Grupo Local hasta el Gran Atractor y la red cósmica.">
+  <title>Espectro de Laniakea: del Grupo Local al Gran Atractor</title>
+  <style>
+    :root {
+      --accent: rgb(130 205 255);
+      --accent-soft: rgb(130 205 255 / .34);
+      --ink: rgb(255 255 255);
+      --panel: rgb(3 6 17 / .52);
+      --scan-x: 50vw;
+      --scan-y: 88vh;
+      --progress: 6%;
+      --home-y: 90vh;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #02030a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: white;
+      font-family:
+        Inter, ui-rounded, "SF Pro Rounded", "Segoe UI",
+        system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #laniakea-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background:
+        radial-gradient(circle at var(--scan-x) var(--scan-y),
+          color-mix(in srgb, var(--accent) 66%, transparent) 0%,
+          color-mix(in srgb, var(--accent) 20%, transparent) 12%,
+          transparent 35%);
+      mix-blend-mode: screen;
+    }
+
+    body.active #light-field { opacity: .88; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 160ms ease;
+      background:
+        linear-gradient(90deg,
+          transparent calc(var(--scan-x) - 1px),
+          color-mix(in srgb, var(--accent) 70%, transparent) var(--scan-x),
+          transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg,
+          transparent calc(var(--scan-y) - 1px),
+          color-mix(in srgb, var(--accent) 42%, transparent) var(--scan-y),
+          transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+
+    body.active #scan-line { opacity: .28; }
+
+    #grain {
+      z-index: 4;
+      opacity: .048;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 42%, rgb(0 0 0 / .24) 75%, rgb(0 0 0 / .75) 122%),
+        linear-gradient(90deg, rgb(0 0 0 / .32), transparent 13%, transparent 87%, rgb(0 0 0 / .36));
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 48%;
+      width: min(92vw, 800px);
+      padding: clamp(16px, 3.3vw, 28px) clamp(20px, 5vw, 50px) clamp(18px, 3.8vw, 34px);
+      border: 1px solid rgb(255 255 255 / .24);
+      border-radius: clamp(26px, 6vw, 52px);
+      color: var(--ink);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        var(--panel);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .42),
+        0 0 78px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .28),
+        inset 0 -1px 0 rgb(0 0 0 / .2);
+      backdrop-filter: blur(23px) saturate(1.38);
+      -webkit-backdrop-filter: blur(23px) saturate(1.38);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear,
+        background 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.8vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow:
+        0 0 30px var(--accent-soft),
+        0 5px 24px rgb(0 0 0 / .48);
+    }
+
+    #zone-name.compact {
+      font-size: clamp(1.75rem, 7.6vw, 5.8rem);
+      letter-spacing: -.048em;
+      line-height: .89;
+    }
+
+    #zone-name.long {
+      font-size: clamp(1.52rem, 6.8vw, 4.9rem);
+      letter-spacing: -.038em;
+      line-height: .93;
+    }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 860;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+      opacity: .97;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(11px, 2vw, 18px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.7rem, 2.25vw, .95rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .18);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .12);
+    }
+
+    #fact {
+      display: block;
+      max-width: 630px;
+      margin: clamp(11px, 2.3vw, 18px) auto 0;
+      font-size: clamp(.85rem, 2.68vw, 1.12rem);
+      font-weight: 630;
+      line-height: 1.28;
+      letter-spacing: -.012em;
+      text-wrap: balance;
+      opacity: .84;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.35);
+      background: radial-gradient(circle, rgb(255 255 255 / .18), transparent 67%);
+      box-shadow:
+        0 0 0 1px rgb(0 0 0 / .24),
+        0 0 21px var(--accent),
+        0 0 54px var(--accent-soft),
+        inset 0 0 18px rgb(255 255 255 / .25);
+      transition:
+        opacity 120ms ease,
+        transform 280ms cubic-bezier(.16, 1, .3, 1),
+        border-color 110ms linear,
+        box-shadow 110ms linear;
+      will-change: transform, opacity;
+    }
+
+    #touch-orb.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 8;
+      top: max(18px, env(safe-area-inset-top));
+      right: max(10px, env(safe-area-inset-right));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: 42px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(14px);
+      transition: opacity 180ms ease, transform 300ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    #journey-scale.visible {
+      opacity: .92;
+      transform: translateX(0);
+    }
+
+    #scale-track {
+      position: absolute;
+      top: 20px;
+      right: 11px;
+      bottom: 20px;
+      width: 2px;
+      border-radius: 999px;
+      background: rgb(255 255 255 / .2);
+      box-shadow: 0 0 18px rgb(255 255 255 / .08);
+      overflow: hidden;
+    }
+
+    #scale-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(0deg, rgb(255 194 92), var(--accent));
+      box-shadow: 0 0 16px var(--accent);
+    }
+
+    #scale-dot {
+      position: absolute;
+      right: 5px;
+      bottom: 20px;
+      width: 14px;
+      height: 14px;
+      border: 2px solid white;
+      border-radius: 999px;
+      transform: translateY(50%);
+      background: var(--accent);
+      box-shadow: 0 0 16px var(--accent), 0 0 30px var(--accent-soft);
+    }
+
+    #scale-bottom,
+    #scale-top,
+    #scale-value {
+      position: absolute;
+      right: 1px;
+      font-size: clamp(.5rem, 1.52vw, .64rem);
+      font-weight: 850;
+      letter-spacing: .12em;
+      line-height: 1;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px rgb(0 0 0 / .9);
+      white-space: nowrap;
+    }
+
+    #scale-bottom { bottom: 0; }
+    #scale-top { top: 0; }
+    #scale-value {
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right center;
+      opacity: .86;
+    }
+
+    #scale-home {
+      position: absolute;
+      right: 1px;
+      bottom: 5%;
+      padding-right: 15px;
+      font-size: clamp(.46rem, 1.35vw, .59rem);
+      font-weight: 900;
+      letter-spacing: .1em;
+      line-height: 1;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px rgb(0 0 0 / .92);
+      white-space: nowrap;
+      color: rgb(225 190 255);
+    }
+
+    #scale-home::after {
+      content: "";
+      position: absolute;
+      right: 7px;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      border: 1px solid white;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      background: rgb(205 158 255);
+      box-shadow: 0 0 10px rgb(205 158 255);
+    }
+
+    #hint {
+      position: fixed;
+      z-index: 7;
+      left: 50%;
+      top: var(--home-y);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      animation: hint-in 900ms 650ms ease forwards, hint-pulse 2.8s 1.6s ease-in-out infinite;
+      transition: opacity 360ms ease;
+    }
+
+    #hint.hidden {
+      opacity: 0 !important;
+      animation: none;
+    }
+
+    #hint-ring {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border: 2px solid rgb(255 255 255 / .76);
+      border-radius: 999px;
+      box-shadow: 0 0 20px rgb(205 158 255 / .58), inset 0 0 12px rgb(255 255 255 / .14);
+    }
+
+    #hint-ring::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2px;
+      height: 70px;
+      border-radius: 999px;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(180deg, transparent, rgb(255 255 255 / .68), transparent);
+      animation: hint-swipe 2.2s ease-in-out infinite;
+    }
+
+    #hint-text {
+      max-width: min(84vw, 460px);
+      font-size: .67rem;
+      font-weight: 850;
+      letter-spacing: .18em;
+      line-height: 1.3;
+      text-align: center;
+      text-transform: uppercase;
+      text-shadow: 0 2px 12px rgb(0 0 0 / .76);
+      opacity: .82;
+    }
+
+    #hint-subtext {
+      max-width: min(84vw, 440px);
+      font-size: .58rem;
+      font-weight: 700;
+      line-height: 1.36;
+      letter-spacing: .08em;
+      text-align: center;
+      text-transform: uppercase;
+      text-shadow: 0 2px 12px rgb(0 0 0 / .86);
+      opacity: .65;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .ripple {
+      position: fixed;
+      z-index: 7;
+      width: 44px;
+      height: 44px;
+      border: 2px solid var(--accent);
+      border-radius: 999px;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(.35);
+      box-shadow: 0 0 28px var(--accent-soft);
+      animation: ripple 850ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple {
+      to { opacity: 0; transform: translate(-50%, -50%) scale(5.8); }
+    }
+
+    @keyframes hint-in { to { opacity: .84; } }
+
+    @keyframes hint-pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: .7; }
+      50% { transform: translate(-50%, -50%) scale(1.08); opacity: .98; }
+    }
+
+    @keyframes hint-swipe {
+      0%, 100% { transform: translate(-50%, -38%) scaleY(.45); opacity: .25; }
+      50% { transform: translate(-50%, -62%) scaleY(1); opacity: .9; }
+    }
+
+    @media (max-width: 560px) {
+      #readout { width: min(90vw, 560px); top: 47%; }
+      #fact { max-width: 80vw; }
+      #journey-scale { right: max(7px, env(safe-area-inset-right)); width: 36px; }
+      #scale-value { right: 17px; font-size: .53rem; }
+    }
+
+    @media (max-height: 520px) and (orientation: landscape) {
+      #readout {
+        top: 49%;
+        width: min(86vw, 800px);
+        padding: 10px 28px 12px;
+        border-radius: 34px;
+      }
+      #zone-name { font-size: clamp(2.1rem, 13.5vh, 4rem); line-height: .88; }
+      #zone-name.compact {
+      font-size: clamp(1.75rem, 7.6vw, 5.8rem);
+      letter-spacing: -.048em;
+      line-height: .89;
+    }
+
+    #zone-name.long {
+      font-size: clamp(1.52rem, 6.8vw, 4.9rem);
+      letter-spacing: -.038em;
+      line-height: .93;
+    }
+
+    #feature-name { margin-top: 5px; font-size: clamp(.76rem, 4vh, 1.15rem); }
+      #metric { min-height: 24px; margin-top: 7px; padding: 5px 10px 6px; font-size: clamp(.6rem, 2.5vh, .76rem); }
+      #fact { max-width: 660px; margin-top: 7px; font-size: clamp(.7rem, 3vh, .88rem); line-height: 1.16; }
+      #journey-scale { top: max(8px, env(safe-area-inset-top)); bottom: max(8px, env(safe-area-inset-bottom)); }
+      #hint { top: 78%; gap: 4px; }
+      #hint-ring { width: 38px; height: 38px; }
+      #hint-subtext { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #readout,
+      #touch-orb,
+      #journey-scale,
+      #light-field,
+      #scan-line { transition-duration: 70ms; }
+      #hint,
+      .ripple,
+      #hint-ring::after { animation: none; }
+      #hint { opacity: .75; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="laniakea-spectrum" role="application" tabindex="0" aria-describedby="instructions" aria-label="Mapa táctil desde el límite del Grupo Local hasta el Gran Atractor y el límite de Laniakea"></canvas>
+  <p id="instructions" class="sr-only">La aventura continúa exactamente en el límite del Grupo Local. Toca o arrastra hacia arriba para viajar por el Volumen Local, Virgo, las corrientes galácticas, el Gran Atractor y la cuenca de Laniakea. Arrastra horizontalmente para descubrir palabras distintas dentro de cada región. También puedes usar las flechas del teclado.</p>
+
+  <div id="light-field" aria-hidden="true"></div>
+  <div id="scan-line" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <div id="hint" aria-hidden="true">
+    <div id="hint-ring"></div>
+    <div id="hint-text">El Grupo Local queda debajo</div>
+    <div id="hint-subtext">Asciende por las corrientes de Laniakea · explora de lado a lado</div>
+  </div>
+
+  <div id="readout" aria-live="polite" aria-atomic="true">
+    <span id="zone-name"></span>
+    <span id="feature-name"></span>
+    <span id="metric"></span>
+    <span id="fact"></span>
+  </div>
+
+  <div id="touch-orb" aria-hidden="true"></div>
+
+  <div id="journey-scale" aria-hidden="true">
+    <div id="scale-track"><div id="scale-fill"></div></div>
+    <div id="scale-dot"></div>
+    <span id="scale-bottom">Límite local</span>
+    <span id="scale-home">Grupo Local</span>
+    <span id="scale-value">Escala educativa · distancias comprimidas</span>
+    <span id="scale-top">Límite de Laniakea</span>
+  </div>
+
+  <!--
+    Base científica: Tully et al., “The Laniakea supercluster of galaxies”, Nature 513 (2014),
+    y literatura posterior sobre velocidades peculiares. La visualización es educativa: comprime
+    distancias y presenta el Gran Atractor como una región de convergencia dependiente de la escala.
+  -->
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.getElementById("laniakea-spectrum");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const root = document.documentElement;
+      const readout = document.getElementById("readout");
+      const zoneName = document.getElementById("zone-name");
+      const featureName = document.getElementById("feature-name");
+      const metric = document.getElementById("metric");
+      const fact = document.getElementById("fact");
+      const touchOrb = document.getElementById("touch-orb");
+      const journeyScale = document.getElementById("journey-scale");
+      const scaleValue = document.getElementById("scale-value");
+      const scaleDot = document.getElementById("scale-dot");
+      const hint = document.getElementById("hint");
+
+      const TAU = Math.PI * 2;
+      const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const ZONES = [
+        {
+          id: "local-group-limit",
+          name: "Límite del Grupo Local",
+          p0: 0,
+          p1: .065,
+          color: [198, 194, 255],
+          metric: "Continuidad · comienza el siguiente salto",
+          fact: "El recorrido comienza exactamente donde terminó el anterior: en la frontera dinámica y difusa de nuestra pequeña familia de galaxias.",
+          sound: { base: 68, filter: 760, noise: .08, pulse: .34, type: "triangle" },
+          features: [
+            ["Grupo Local", "La Vía Láctea, Andrómeda, Triángulo y muchas galaxias pequeñas forman nuestra familia galáctica inmediata."],
+            ["frontera difusa", "No existe una pared. La pertenencia se deduce comparando distancias, velocidades y gravedad."],
+            ["superficie de velocidad cero", "Es una frontera ideal donde la atracción local y la expansión cósmica llegan aproximadamente a equilibrarse."],
+            ["salto de escala", "Ahora las galaxias dejan de ser destinos aislados y pasan a formar corrientes, láminas, cúmulos y cuencas."],
+            ["Laniakea", "El Grupo Local ocupa una pequeña rama dentro de una región dinámica muchísimo mayor."]
+          ]
+        },
+        {
+          id: "local-volume",
+          name: "Volumen local",
+          p0: .065,
+          p1: .17,
+          color: [132, 189, 255],
+          metric: "Entorno cercano · grupos y galaxias dispersas",
+          fact: "Al ampliar la vista aparecen numerosas galaxias y grupos vecinos, separados por grandes extensiones de espacio tenue.",
+          sound: { base: 76, filter: 930, noise: .075, pulse: .31, type: "sine" },
+          features: [
+            ["galaxia vecina", "Fuera del Grupo Local existen muchas galaxias cercanas que pertenecen a otros grupos pequeños."],
+            ["grupo de galaxias", "Varias galaxias pueden compartir una envoltura gravitatoria sin formar todavía un cúmulo gigantesco."],
+            ["distancia cósmica", "En esta escala, incluso los vecinos más próximos están a millones de años luz unos de otros."],
+            ["velocidad peculiar", "Además de participar en la expansión del universo, cada galaxia posee un movimiento local causado por la gravedad."],
+            ["mapa tridimensional", "Las distancias y velocidades permiten reconstruir una geografía invisible alrededor de nosotros."]
+          ]
+        },
+        {
+          id: "local-sheet",
+          name: "Lámina Local",
+          p0: .17,
+          p1: .285,
+          color: [83, 219, 224],
+          metric: "Estructura aplanada · nuestro vecindario cósmico",
+          fact: "El Grupo Local y otras galaxias cercanas ocupan una estructura relativamente delgada llamada Lámina Local.",
+          sound: { base: 88, filter: 1260, noise: .065, pulse: .25, type: "triangle" },
+          features: [
+            ["lámina galáctica", "Una lámina es una distribución aplanada de galaxias: ancha en dos direcciones y mucho más delgada en la tercera."],
+            ["Consejo de Gigantes", "Varias galaxias grandes cercanas forman un anillo aproximado alrededor del Grupo Local dentro de la Lámina Local."],
+            ["plano local", "Nuestro vecindario no está repartido al azar; muchas galaxias cercanas comparten un plano espacial."],
+            ["borde del Vacío Local", "La Lámina Local limita con una extensa región pobre en galaxias que influye en el patrón de movimientos."],
+            ["puente hacia Virgo", "La distribución local se conecta con estructuras más densas en dirección al cúmulo de Virgo."]
+          ]
+        },
+        {
+          id: "virgo-cluster",
+          name: "Cúmulo de Virgo",
+          p0: .285,
+          p1: .405,
+          color: [255, 203, 132],
+          metric: "Gran nodo cercano · miles de galaxias",
+          fact: "Virgo es el gran cúmulo de galaxias más cercano: una región densa donde galaxias, gas caliente y materia oscura comparten un profundo potencial gravitatorio.",
+          sound: { base: 104, filter: 1740, noise: .07, pulse: .2, type: "sine" },
+          features: [
+            ["cúmulo de galaxias", "Un cúmulo reúne muchísimas galaxias, gas extremadamente caliente y una gran cantidad de materia oscura."],
+            ["M87", "Esta galaxia elíptica gigante domina una de las regiones centrales de Virgo y alberga un agujero negro supermasivo."],
+            ["gas intracumular", "Entre las galaxias hay plasma tan caliente que emite principalmente rayos X."],
+            ["materia oscura", "La mayor parte de la masa gravitatoria del cúmulo no brilla y se detecta por sus efectos."],
+            ["órbitas rápidas", "Las galaxias atraviesan el cúmulo a grandes velocidades y pueden perder gas durante el recorrido."]
+          ]
+        },
+        {
+          id: "virgo-supercluster",
+          name: "Supercúmulo de Virgo",
+          p0: .405,
+          p1: .515,
+          color: [255, 143, 188],
+          metric: "Rama histórica · grupos, cúmulos y filamentos",
+          fact: "El nombre Supercúmulo de Virgo describe la concentración extensa que incluye nuestro entorno y Virgo; en el mapa dinámico moderno aparece como parte de Laniakea.",
+          sound: { base: 116, filter: 2180, noise: .06, pulse: .18, type: "triangle" },
+          features: [
+            ["supercúmulo", "Es una asociación enorme de grupos, cúmulos, láminas y filamentos; no tiene por qué estar completamente unida por gravedad."],
+            ["rama de Virgo", "El Grupo Local ocupa una zona periférica conectada con el gran nodo de Virgo."],
+            ["cadena de cúmulos", "Las galaxias se concentran en ramificaciones en vez de llenar el espacio de forma uniforme."],
+            ["escala histórica", "Antes de Laniakea, esta era la dirección cósmica usada habitualmente para describir nuestro domicilio mayor."],
+            ["subestructura", "Dentro de Laniakea, Virgo es una rama importante de una cuenca de flujo mucho más extensa."]
+          ]
+        },
+        {
+          id: "galaxy-flows",
+          name: "Corrientes galácticas",
+          p0: .515,
+          p1: .645,
+          color: [104, 208, 255],
+          metric: "Velocidades peculiares · rutas gravitatorias",
+          fact: "Al retirar matemáticamente la expansión general, los movimientos residuales dibujan corrientes que siguen valles del campo gravitatorio.",
+          sound: { base: 132, filter: 2600, noise: .052, pulse: .145, type: "sine" },
+          features: [
+            ["flujo peculiar", "Es el movimiento de una galaxia respecto a la expansión cósmica media de su entorno."],
+            ["línea de corriente", "Una línea de corriente representa la dirección reconstruida del movimiento en cada punto del mapa."],
+            ["valle gravitatorio", "Las regiones con más masa curvan las trayectorias colectivas como valles en un paisaje invisible."],
+            ["expansión cósmica", "La expansión aumenta las separaciones a gran escala, mientras la gravedad añade movimientos locales sobre ese fondo."],
+            ["reconstrucción", "Estas corrientes se infieren combinando posiciones, distancias, desplazamientos al rojo y modelos cosmológicos."]
+          ]
+        },
+        {
+          id: "local-void",
+          name: "Vacío Local",
+          p0: .645,
+          p1: .735,
+          color: [105, 132, 238],
+          metric: "Región subdensa · pocas galaxias",
+          fact: "El Vacío Local es una región vecina con mucha menos materia que el promedio. Los flujos se apartan de ella y se dirigen hacia estructuras más densas.",
+          sound: { base: 54, filter: 540, noise: .12, pulse: .42, type: "sine" },
+          features: [
+            ["vacío cósmico", "Un vacío no está completamente vacío: contiene materia, pero mucha menos que las láminas y los filamentos vecinos."],
+            ["subdensidad", "Al haber menos masa, existe menos atracción desde esa dirección que desde las regiones densas opuestas."],
+            ["expansión más rápida", "Los vacíos tienden a expandirse relativamente y a desplazar materia hacia sus paredes y bordes."],
+            ["movimiento local", "Parte del movimiento de nuestro vecindario se entiende por la combinación de alejamiento del vacío y atracción hacia zonas densas."],
+            ["silencio visual", "La oscuridad de esta región contrasta con los nodos luminosos y ayuda a revelar la estructura del mapa."]
+          ]
+        },
+        {
+          id: "great-attractor",
+          name: "Gran Atractor",
+          p0: .735,
+          p1: .875,
+          color: [255, 170, 108],
+          metric: "Convergencia gravitatoria · no es un objeto único",
+          fact: "El Gran Atractor es una región de convergencia del campo de velocidades, asociada a grandes concentraciones de masa; no es una esfera, estrella ni agujero negro gigantesco.",
+          sound: { base: 72, filter: 1180, noise: .09, pulse: .58, type: "sawtooth" },
+          features: [
+            ["convergencia", "Muchas líneas de corriente reconstruidas se acercan a esta región desde direcciones distintas."],
+            ["región de Hydra-Centauro", "La convergencia se relaciona con una extensa concentración de galaxias y cúmulos en esta zona del cielo."],
+            ["cúmulo de Norma", "Norma es uno de los grandes cúmulos próximos a la región clásica del Gran Atractor."],
+            ["Zona de Evitación", "El polvo y las estrellas de la Vía Láctea ocultan parte de esta dirección y dificultan observar galaxias lejanas."],
+            ["depende de la escala", "El punto aparente de convergencia cambia según la resolución y el volumen empleados para reconstruir el flujo."]
+          ]
+        },
+        {
+          id: "laniakea-basin",
+          name: "Cuenca de Laniakea",
+          p0: .875,
+          p1: .955,
+          color: [205, 146, 255],
+          metric: "Cuenca de flujo · cientos de millones de años luz",
+          fact: "Laniakea se define como una inmensa cuenca de velocidades peculiares: dentro de su frontera, las líneas reconstruidas pertenecen al mismo sistema de drenaje cósmico.",
+          sound: { base: 154, filter: 3280, noise: .04, pulse: .11, type: "sine" },
+          features: [
+            ["Laniakea", "Su nombre hawaiano suele interpretarse como cielo inmenso o cielo inconmensurable."],
+            ["cuenca de atracción", "La frontera se dibuja como una divisoria de aguas entre patrones de flujo que convergen hacia regiones diferentes."],
+            ["decenas de miles de galaxias", "La cuenca contiene una población enorme distribuida en grupos, cúmulos, láminas y ramificaciones."],
+            ["mapa dinámico", "Laniakea no es una figura sólida: es una clasificación basada en movimientos reconstruidos."],
+            ["no está totalmente ligada", "A esta escala, la expansión acelerada impide asumir que toda la región colapsará en un único sistema futuro."]
+          ]
+        },
+        {
+          id: "laniakea-limit",
+          name: "Límite de Laniakea",
+          p0: .955,
+          p1: 1,
+          color: [190, 213, 255],
+          metric: "Divisoria dinámica · entrada a la red cósmica",
+          fact: "En el borde de la cuenca, las líneas de flujo se separan hacia otras grandes regiones. La vista está lista para revelar la red cósmica completa.",
+          sound: { base: 202, filter: 4400, noise: .032, pulse: .065, type: "sine" },
+          features: [
+            ["divisoria de flujo", "A cada lado de esta frontera ideal, las trayectorias reconstruidas pertenecen a cuencas cósmicas diferentes."],
+            ["frontera permeable", "No hay una pared física y la definición puede cambiar al mejorar los datos y los modelos."],
+            ["cuencas vecinas", "Más allá existen otras regiones dinámicas enormes conectadas por estructuras todavía mayores."],
+            ["red cósmica", "Filamentos, vacíos y nodos forman el patrón de materia a gran escala del universo."],
+            ["Más allá", "Más allá: los filamentos, vacíos y nodos de la red cósmica. Allí continúa la siguiente aplicación."]
+          ]
+        }
+      ];
+
+      const LANDMARKS = [
+        { id: "local-group-limit", p: .032, lane: -.02, size: 150 },
+        { id: "local-volume", p: .12, lane: .04, size: 104 },
+        { id: "local-sheet", p: .225, lane: -.04, size: 140 },
+        { id: "virgo-cluster", p: .345, lane: .09, size: 112 },
+        { id: "virgo-supercluster", p: .46, lane: -.03, size: 145 },
+        { id: "galaxy-flows", p: .585, lane: 0, size: 160 },
+        { id: "local-void", p: .69, lane: -.18, size: 118 },
+        { id: "great-attractor", p: .805, lane: .06, size: 196 },
+        { id: "laniakea-basin", p: .915, lane: 0, size: 230 },
+        { id: "boundary", p: .982, lane: 0, size: 180 }
+      ];
+
+      const stars = [];
+      const dust = [];
+      const cosmicRays = [];
+      const fieldGalaxies = [];
+      const particles = [];
+      const waves = [];
+
+      let width = 1;
+      let height = 1;
+      let dpr = 1;
+      let activePointer = null;
+      let pointerX = .5;
+      let pointerY = .935;
+      let targetX = .5;
+      let targetY = .935;
+      let hasInteracted = false;
+      let hideTimer = 0;
+      let lastZoneId = "";
+      let lastFeature = -1;
+      let lastTime = performance.now();
+      let raf = 0;
+
+      let audioCtx = null;
+      let master = null;
+      let droneA = null;
+      let droneB = null;
+      let droneGain = null;
+      let droneFilter = null;
+      let pulseOsc = null;
+      let pulseGain = null;
+      let noiseSource = null;
+      let noiseGain = null;
+      let noiseFilter = null;
+      let stereo = null;
+
+      function seeded(seed) {
+        let value = seed >>> 0;
+        return () => {
+          value = (value * 1664525 + 1013904223) >>> 0;
+          return value / 4294967296;
+        };
+      }
+
+      function buildStaticScene() {
+        const random = seeded(18072031);
+        stars.length = 0;
+        dust.length = 0;
+        cosmicRays.length = 0;
+        fieldGalaxies.length = 0;
+
+        const starCount = Math.max(150, Math.round((width * height) / 5000));
+        for (let i = 0; i < starCount; i++) {
+          const y = random();
+          stars.push({
+            x: random(),
+            y,
+            r: .25 + random() * 1.2,
+            alpha: (.07 + random() * .36) * (.8 + Math.abs(y - .5) * .5),
+            phase: random() * TAU,
+            speed: .35 + random() * 1.5,
+            warmth: random()
+          });
+        }
+
+        for (let i = 0; i < 78; i++) {
+          dust.push({
+            x: random(),
+            y: random(),
+            r: 24 + random() * 120,
+            alpha: .006 + random() * .025,
+            phase: random() * TAU,
+            hue: random()
+          });
+        }
+
+        for (let i = 0; i < 18; i++) {
+          cosmicRays.push({
+            x: random(),
+            y: random(),
+            len: 18 + random() * 84,
+            speed: .000009 + random() * .000024,
+            alpha: .035 + random() * .085,
+            phase: random() * TAU
+          });
+        }
+
+        const galaxyCount = Math.max(72, Math.min(150, Math.round((width * height) / 7000)));
+        for (let i = 0; i < galaxyCount; i++) {
+          const y = .08 + random() * .84;
+          const attractorBias = Math.pow(random(), 1.6);
+          fieldGalaxies.push({
+            x: random(),
+            y,
+            r: .7 + random() * 1.7 + attractorBias * 1.2,
+            angle: random() * TAU,
+            alpha: .08 + random() * .22,
+            warm: random() > .72,
+            phase: random() * TAU
+          });
+        }
+      }
+
+      function resize() {
+        width = Math.max(1, innerWidth);
+        height = Math.max(1, innerHeight);
+        dpr = Math.min(2, devicePixelRatio || 1);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildStaticScene();
+      }
+
+      function clamp(value, min = 0, max = 1) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function journeyFromY(yNorm) {
+        return clamp(1 - yNorm);
+      }
+
+      function yFromJourney(progress) {
+        return clamp(1 - progress);
+      }
+
+      function zoneForJourney(progress) {
+        const p = clamp(progress, 0, .999999);
+        for (const zone of ZONES) {
+          if (p >= zone.p0 && p < zone.p1) return zone;
+        }
+        return ZONES[ZONES.length - 1];
+      }
+
+      function localRatio(zone, progress) {
+        return clamp((progress - zone.p0) / Math.max(.0001, zone.p1 - zone.p0));
+      }
+
+      function featureFor(zone, xNorm) {
+        const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .99999) * zone.features.length));
+        return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+      }
+
+      function routeX(progress) {
+        const wave = Math.sin(progress * Math.PI * 2.08 - .55) * width * .075;
+        const basinTurn = Math.sin(progress * Math.PI * 5.35 + .8) * width * .016;
+        const attraction = Math.exp(-Math.pow((progress - .805) / .16, 2)) * width * .045;
+        return width * .48 + wave + basinTurn + attraction;
+      }
+
+      function routeY(progress) {
+        return height * (.962 - progress * .922);
+      }
+
+      function landmarkPoint(landmark) {
+        return {
+          x: routeX(landmark.p) + landmark.lane * Math.min(width * .56, 520),
+          y: routeY(landmark.p)
+        };
+      }
+
+      function sceneScale() {
+        return clamp(Math.sqrt((width * height) / (390 * 844)), .86, 1.8);
+      }
+
+      function setCssPoint(x, y) {
+        root.style.setProperty("--scan-x", x + "px");
+        root.style.setProperty("--scan-y", y + "px");
+      }
+
+      function setAccent(zone) {
+        const [r, g, b] = zone.color;
+        root.style.setProperty("--accent", `rgb(${r} ${g} ${b})`);
+        root.style.setProperty("--accent-soft", `rgb(${r} ${g} ${b} / .34)`);
+      }
+
+      function ensureAudio() {
+        if (audioCtx) {
+          if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+          return;
+        }
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtor) return;
+
+        audioCtx = new AudioCtor();
+        master = audioCtx.createGain();
+        master.gain.value = .16;
+
+        const compressor = audioCtx.createDynamicsCompressor();
+        compressor.threshold.value = -22;
+        compressor.knee.value = 24;
+        compressor.ratio.value = 8;
+        compressor.attack.value = .006;
+        compressor.release.value = .22;
+
+        stereo = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+        if (stereo) {
+          master.connect(stereo);
+          stereo.connect(compressor);
+        } else {
+          master.connect(compressor);
+        }
+        compressor.connect(audioCtx.destination);
+
+        droneA = audioCtx.createOscillator();
+        droneB = audioCtx.createOscillator();
+        droneGain = audioCtx.createGain();
+        droneFilter = audioCtx.createBiquadFilter();
+        droneA.type = "sine";
+        droneB.type = "triangle";
+        droneA.frequency.value = 62;
+        droneB.frequency.value = 62.5;
+        droneGain.gain.value = .0001;
+        droneFilter.type = "lowpass";
+        droneFilter.frequency.value = 1000;
+        droneFilter.Q.value = 1.1;
+        droneA.connect(droneFilter);
+        droneB.connect(droneFilter);
+        droneFilter.connect(droneGain);
+        droneGain.connect(master);
+        droneA.start();
+        droneB.start();
+
+        pulseOsc = audioCtx.createOscillator();
+        pulseGain = audioCtx.createGain();
+        pulseOsc.type = "sine";
+        pulseOsc.frequency.value = 1.5;
+        pulseGain.gain.value = .0001;
+        pulseOsc.connect(pulseGain);
+        pulseGain.connect(master);
+        pulseOsc.start();
+
+        const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+        const channel = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < channel.length; i++) channel[i] = Math.random() * 2 - 1;
+        noiseSource = audioCtx.createBufferSource();
+        noiseSource.buffer = noiseBuffer;
+        noiseSource.loop = true;
+        noiseFilter = audioCtx.createBiquadFilter();
+        noiseFilter.type = "bandpass";
+        noiseFilter.frequency.value = 620;
+        noiseFilter.Q.value = .7;
+        noiseGain = audioCtx.createGain();
+        noiseGain.gain.value = .0001;
+        noiseSource.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(master);
+        noiseSource.start();
+      }
+
+      function setAudioFor(zone, xNorm, yNorm, active) {
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const s = zone.sound;
+        const vertical = .9 + (1 - yNorm) * .34;
+        const horizontal = .92 + xNorm * .18;
+        const base = s.base * vertical * horizontal;
+
+        droneA.type = s.type;
+        droneB.type = s.type === "sawtooth" ? "triangle" : "sine";
+        droneA.frequency.setTargetAtTime(base, now, .06);
+        droneB.frequency.setTargetAtTime(base * 1.006, now, .07);
+        droneFilter.frequency.setTargetAtTime(s.filter * (.86 + xNorm * .35), now, .07);
+        droneFilter.Q.setTargetAtTime(1.1 + xNorm * 2.2, now, .08);
+        droneGain.gain.setTargetAtTime(active ? .16 : .0001, now, active ? .045 : .2);
+
+        pulseOsc.frequency.setTargetAtTime(.45 + s.pulse * 3.8, now, .08);
+        pulseGain.gain.setTargetAtTime(active ? .018 + s.pulse * .035 : .0001, now, .08);
+
+        noiseFilter.frequency.setTargetAtTime(250 + s.filter * .38, now, .08);
+        noiseGain.gain.setTargetAtTime(active ? s.noise * .12 : .0001, now, .09);
+        if (stereo) stereo.pan.setTargetAtTime((xNorm - .5) * 1.2, now, .07);
+      }
+
+      function ping(zone, xNorm, featureIndex = 0) {
+        if (!audioCtx || !master) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+        const pan = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+        const scale = [1, 1.125, 1.25, 1.5, 1.6875][featureIndex % 5];
+        osc.type = featureIndex % 2 ? "triangle" : "sine";
+        osc.frequency.setValueAtTime(zone.sound.base * 3.2 * scale, now);
+        osc.frequency.exponentialRampToValueAtTime(zone.sound.base * 5.1 * scale, now + .24);
+        filter.type = "lowpass";
+        filter.frequency.value = Math.min(6200, zone.sound.filter * 1.8);
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(.11, now + .012);
+        gain.gain.exponentialRampToValueAtTime(.0001, now + .42);
+        osc.connect(filter);
+        filter.connect(gain);
+        if (pan) {
+          pan.pan.value = (xNorm - .5) * 1.4;
+          gain.connect(pan);
+          pan.connect(master);
+        } else {
+          gain.connect(master);
+        }
+        osc.start(now);
+        osc.stop(now + .46);
+      }
+
+      function addRipple(x, y) {
+        const node = document.createElement("div");
+        node.className = "ripple";
+        node.style.left = x + "px";
+        node.style.top = y + "px";
+        document.body.appendChild(node);
+        node.addEventListener("animationend", () => node.remove(), { once: true });
+      }
+
+      function addBurst(x, y, zone) {
+        const count = reducedMotion ? 5 : 18;
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * TAU;
+          const speed = 25 + Math.random() * 115;
+          particles.push({
+            x,
+            y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 1,
+            decay: .65 + Math.random() * .7,
+            r: 1 + Math.random() * 3,
+            color: zone.color
+          });
+        }
+        waves.push({ x, y, radius: 10, life: 1, color: zone.color });
+      }
+
+      function updateReadout(x, y, isNewPress = false) {
+        const xNorm = clamp(x / width, 0, .999999);
+        const yNorm = clamp(y / height, 0, .999999);
+        const progress = journeyFromY(yNorm);
+        const zone = zoneForJourney(progress);
+        const feature = featureFor(zone, xNorm);
+
+        pointerX = xNorm;
+        pointerY = yNorm;
+        targetX = xNorm;
+        targetY = yNorm;
+
+        setCssPoint(x, y);
+        setAccent(zone);
+        root.style.setProperty("--progress", `${(progress * 100).toFixed(2)}%`);
+
+        const trackHeight = Math.max(1, height - 40);
+        scaleDot.style.bottom = `${20 + progress * trackHeight}px`;
+        scaleValue.textContent = zone.metric;
+
+        zoneName.textContent = zone.name;
+        zoneName.classList.toggle("compact", zone.name.length > 15);
+        zoneName.classList.toggle("long", zone.name.length > 20);
+        featureName.textContent = feature.name;
+        metric.textContent = zone.metric;
+        fact.textContent = feature.fact;
+
+        touchOrb.style.left = x + "px";
+        touchOrb.style.top = y + "px";
+        touchOrb.classList.add("visible");
+        readout.classList.add("visible");
+        journeyScale.classList.add("visible");
+        document.body.classList.add("active");
+
+        ensureAudio();
+        setAudioFor(zone, xNorm, yNorm, true);
+
+        const zoneChanged = zone.id !== lastZoneId;
+        const featureChanged = feature.index !== lastFeature;
+        if (zoneChanged || (isNewPress && featureChanged)) {
+          ping(zone, xNorm, feature.index);
+          addBurst(x, y, zone);
+        }
+        if (isNewPress) addRipple(x, y);
+
+        lastZoneId = zone.id;
+        lastFeature = feature.index;
+        hasInteracted = true;
+        hint.classList.add("hidden");
+        clearTimeout(hideTimer);
+      }
+
+      function releaseInteraction(delay = 900) {
+        document.body.classList.remove("active");
+        setAudioFor(zoneForJourney(journeyFromY(pointerY)), pointerX, pointerY, false);
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          readout.classList.remove("visible");
+          touchOrb.classList.remove("visible");
+          journeyScale.classList.remove("visible");
+        }, delay);
+      }
+
+      function pointerPosition(event) {
+        return { x: clamp(event.clientX, 0, width), y: clamp(event.clientY, 0, height) };
+      }
+
+      canvas.addEventListener("pointerdown", event => {
+        activePointer = event.pointerId;
+        try { canvas.setPointerCapture?.(event.pointerId); } catch {}
+        const point = pointerPosition(event);
+        updateReadout(point.x, point.y, true);
+      });
+
+      canvas.addEventListener("pointermove", event => {
+        if (activePointer !== event.pointerId) return;
+        const point = pointerPosition(event);
+        updateReadout(point.x, point.y, false);
+      });
+
+      function endPointer(event) {
+        if (activePointer !== event.pointerId) return;
+        activePointer = null;
+        try { canvas.releasePointerCapture?.(event.pointerId); } catch {}
+        releaseInteraction();
+      }
+
+      canvas.addEventListener("pointerup", endPointer);
+      canvas.addEventListener("pointercancel", endPointer);
+      canvas.addEventListener("contextmenu", event => event.preventDefault());
+
+      canvas.addEventListener("keydown", event => {
+        const step = event.shiftKey ? .09 : .035;
+        let handled = true;
+        if (event.key === "ArrowUp") targetY -= step;
+        else if (event.key === "ArrowDown") targetY += step;
+        else if (event.key === "ArrowLeft") targetX -= step;
+        else if (event.key === "ArrowRight") targetX += step;
+        else if (event.key === "Home") targetY = .96;
+        else if (event.key === "End") targetY = .04;
+        else if (event.key === " " || event.key === "Enter") {}
+        else handled = false;
+        if (!handled) return;
+        event.preventDefault();
+        targetX = clamp(targetX, .02, .98);
+        targetY = clamp(targetY, .025, .975);
+        updateReadout(targetX * width, targetY * height, true);
+        releaseInteraction(1500);
+      });
+
+      function drawBackground(time) {
+        const bg = ctx.createLinearGradient(0, height, 0, 0);
+        bg.addColorStop(0, "#0b081a");
+        bg.addColorStop(.16, "#050712");
+        bg.addColorStop(.43, "#020712");
+        bg.addColorStop(.68, "#07091a");
+        bg.addColorStop(1, "#0e0b24");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, width, height);
+
+        const localGlow = ctx.createRadialGradient(width * .46, height * 1.04, 0, width * .46, height * 1.04, Math.max(width, height) * .58);
+        localGlow.addColorStop(0, "rgba(183,172,255,.31)");
+        localGlow.addColorStop(.18, "rgba(96,151,255,.12)");
+        localGlow.addColorStop(.5, "rgba(32,58,125,.035)");
+        localGlow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = localGlow;
+        ctx.fillRect(0, height * .44, width, height * .56);
+
+        const attractor = landmarkPoint(LANDMARKS.find(item => item.id === "great-attractor"));
+        const fieldGlow = ctx.createRadialGradient(attractor.x, attractor.y, 8, attractor.x, attractor.y, Math.max(width, height) * .45);
+        fieldGlow.addColorStop(0, "rgba(255,158,83,.1)");
+        fieldGlow.addColorStop(.24, "rgba(176,76,130,.045)");
+        fieldGlow.addColorStop(.62, "rgba(73,72,169,.025)");
+        fieldGlow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = fieldGlow;
+        ctx.fillRect(0, 0, width, height * .7);
+
+        const webGlow = ctx.createRadialGradient(width * .52, -height * .08, 0, width * .52, -height * .08, Math.max(width, height) * .5);
+        webGlow.addColorStop(0, "rgba(202,190,255,.25)");
+        webGlow.addColorStop(.22, "rgba(95,178,255,.11)");
+        webGlow.addColorStop(.62, "rgba(83,55,164,.035)");
+        webGlow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = webGlow;
+        ctx.fillRect(0, 0, width, height * .42);
+
+        for (const star of stars) {
+          const flicker = .76 + Math.sin(time * .00095 * star.speed + star.phase) * .24;
+          const x = star.x * width;
+          const y = star.y * height;
+          const alpha = star.alpha * flicker;
+          ctx.fillStyle = star.warmth > .9 ? `rgba(255,224,184,${alpha})` : `rgba(206,224,255,${alpha})`;
+          ctx.beginPath();
+          ctx.arc(x, y, star.r, 0, TAU);
+          ctx.fill();
+        }
+
+        for (const mote of dust) {
+          const drift = reducedMotion ? 0 : Math.sin(time * .00008 + mote.phase) * 7;
+          const x = mote.x * width + drift;
+          const y = mote.y * height;
+          const violet = mote.hue > .47;
+          const glow = ctx.createRadialGradient(x, y, 0, x, y, mote.r);
+          glow.addColorStop(0, violet ? `rgba(176,112,255,${mote.alpha})` : `rgba(65,179,218,${mote.alpha})`);
+          glow.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = glow;
+          ctx.fillRect(x - mote.r, y - mote.r, mote.r * 2, mote.r * 2);
+        }
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const galaxy of fieldGalaxies) {
+          const x = galaxy.x * width;
+          const y = galaxy.y * height;
+          const twinkle = .78 + Math.sin(time * .0007 + galaxy.phase) * .22;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(galaxy.angle);
+          ctx.scale(1, .34);
+          ctx.fillStyle = galaxy.warm
+            ? `rgba(255,210,156,${galaxy.alpha * twinkle})`
+            : `rgba(163,207,255,${galaxy.alpha * twinkle})`;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, galaxy.r * 2.7, galaxy.r, 0, 0, TAU);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        for (const ray of cosmicRays) {
+          const x = ((ray.x + time * ray.speed) % 1.14 - .07) * width;
+          const y = ray.y * height + (reducedMotion ? 0 : Math.sin(time * .0002 + ray.phase) * 7);
+          ctx.strokeStyle = `rgba(151,211,255,${ray.alpha})`;
+          ctx.lineWidth = .52;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + ray.len * .26, y - ray.len);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawJourneyPath(time) {
+        ctx.save();
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
+        const pathGrad = ctx.createLinearGradient(0, height, 0, 0);
+        pathGrad.addColorStop(0, "rgba(201,194,255,.42)");
+        pathGrad.addColorStop(.25, "rgba(84,218,225,.34)");
+        pathGrad.addColorStop(.48, "rgba(255,172,134,.31)");
+        pathGrad.addColorStop(.72, "rgba(255,154,104,.48)");
+        pathGrad.addColorStop(1, "rgba(188,211,255,.5)");
+        ctx.strokeStyle = pathGrad;
+        ctx.lineWidth = Math.max(1.35, Math.min(width, height) * .003);
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = "rgba(147,185,255,.32)";
+        ctx.beginPath();
+        for (let p = 0; p <= 1.0001; p += .008) {
+          const x = routeX(p);
+          const y = routeY(p);
+          if (p === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        for (const zone of ZONES) {
+          const y = routeY(zone.p0);
+          const [r, g, b] = zone.color;
+          const fade = ctx.createLinearGradient(0, y, width, y);
+          fade.addColorStop(0, `rgba(${r},${g},${b},0)`);
+          fade.addColorStop(.3, `rgba(${r},${g},${b},.055)`);
+          fade.addColorStop(.5, `rgba(${r},${g},${b},.17)`);
+          fade.addColorStop(.7, `rgba(${r},${g},${b},.055)`);
+          fade.addColorStop(1, `rgba(${r},${g},${b},0)`);
+          ctx.strokeStyle = fade;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+
+        const exitX = routeX(.995);
+        const exitY = routeY(.995);
+        const exitGlow = ctx.createRadialGradient(exitX, exitY, 0, exitX, exitY, Math.min(width, height) * .3);
+        exitGlow.addColorStop(0, "rgba(206,211,255,.31)");
+        exitGlow.addColorStop(.25, "rgba(91,184,255,.11)");
+        exitGlow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = exitGlow;
+        ctx.fillRect(0, 0, width, height * .32);
+
+        const pulseP = clamp(journeyFromY(pointerY));
+        const pulseX = routeX(pulseP);
+        const pulseY = routeY(pulseP);
+        const pulse = 4.7 + Math.sin(time * .004) * 2.1;
+        ctx.fillStyle = "rgba(255,255,255,.94)";
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = "rgba(171,215,255,.9)";
+        ctx.beginPath();
+        ctx.arc(pulseX, pulseY, pulse, 0, TAU);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function starGlow(x, y, radius, inner, middle, outer) {
+        const glow = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        glow.addColorStop(0, inner);
+        glow.addColorStop(.2, middle);
+        glow.addColorStop(1, outer);
+        ctx.fillStyle = glow;
+        ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+      }
+
+      function miniGalaxy(time, x, y, r, rotation, color = "164,206,255", alpha = .8, core = "255,230,190") {
+        const breathe = 1 + (reducedMotion ? 0 : Math.sin(time * .0008 + rotation * 7) * .035);
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+        ctx.scale(breathe, breathe);
+        ctx.globalCompositeOperation = "screen";
+        const halo = ctx.createRadialGradient(0, 0, 0, 0, 0, r * 2.2);
+        halo.addColorStop(0, `rgba(${core},${alpha * .54})`);
+        halo.addColorStop(.24, `rgba(${color},${alpha * .2})`);
+        halo.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = halo;
+        ctx.fillRect(-r * 2.3, -r * 2.3, r * 4.6, r * 4.6);
+        ctx.scale(1, .33);
+        ctx.fillStyle = `rgba(${color},${alpha * .6})`;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, r * 1.85, r, 0, 0, TAU);
+        ctx.fill();
+        ctx.fillStyle = `rgba(${core},${alpha})`;
+        ctx.beginPath();
+        ctx.arc(0, 0, Math.max(.55, r * .33), 0, TAU);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function seededPoint(seed) {
+        const a = Math.sin(seed * 91.17) * 43758.5453;
+        return a - Math.floor(a);
+      }
+
+      function cubicPoint(a, b, c, d, t) {
+        const u = 1 - t;
+        return {
+          x: u * u * u * a.x + 3 * u * u * t * b.x + 3 * u * t * t * c.x + t * t * t * d.x,
+          y: u * u * u * a.y + 3 * u * u * t * b.y + 3 * u * t * t * c.y + t * t * t * d.y
+        };
+      }
+
+      function flowGeometry(index) {
+        const attractor = landmarkPoint(LANDMARKS.find(item => item.id === "great-attractor"));
+        const side = index % 2 ? 1 : -1;
+        const rank = Math.floor(index / 2);
+        const start = {
+          x: width * (.5 + side * (.18 + (rank % 4) * .095)) + Math.sin(index * 2.1) * width * .025,
+          y: height * (.72 - (rank % 3) * .105)
+        };
+        const controlA = {
+          x: start.x - side * width * (.035 + (rank % 3) * .02),
+          y: height * (.54 - (rank % 2) * .05)
+        };
+        const controlB = {
+          x: attractor.x + side * width * (.16 + (rank % 4) * .035),
+          y: attractor.y + height * (.08 + (rank % 3) * .025)
+        };
+        const convergenceWidth = Math.min(width, height) * .105;
+        const end = {
+          x: attractor.x + Math.sin(index * 2.13 + .4) * convergenceWidth,
+          y: attractor.y + Math.cos(index * 1.71) * convergenceWidth * .34
+        };
+        return { start, controlA, controlB, end };
+      }
+
+      function drawGlobalFlows(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.lineCap = "round";
+        const count = width < 520 ? 10 : 14;
+        for (let index = 0; index < count; index++) {
+          const g = flowGeometry(index);
+          const grad = ctx.createLinearGradient(g.start.x, g.start.y, g.end.x, g.end.y);
+          grad.addColorStop(0, "rgba(75,192,235,0)");
+          grad.addColorStop(.23, `rgba(${index % 3 === 0 ? "83,223,224" : "114,177,255"},.09)`);
+          grad.addColorStop(.72, "rgba(255,177,116,.17)");
+          grad.addColorStop(1, "rgba(255,198,134,.03)");
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = .72 + (index % 4) * .28;
+          ctx.beginPath();
+          for (let step = 0; step <= 32; step++) {
+            const p = cubicPoint(g.start, g.controlA, g.controlB, g.end, step / 32);
+            if (!step) ctx.moveTo(p.x, p.y);
+            else ctx.lineTo(p.x, p.y);
+          }
+          ctx.stroke();
+
+          const movers = width < 520 ? 2 : 3;
+          for (let mover = 0; mover < movers; mover++) {
+            const speed = reducedMotion ? 0 : time * (.000025 + index * .00000045);
+            const t = (speed + mover / movers + seededPoint(index * 11 + mover)) % 1;
+            const p = cubicPoint(g.start, g.controlA, g.controlB, g.end, t);
+            const next = cubicPoint(g.start, g.controlA, g.controlB, g.end, Math.min(1, t + .01));
+            const angle = Math.atan2(next.y - p.y, next.x - p.x);
+            miniGalaxy(time, p.x, p.y, 1.4 + (index + mover) % 3 * .42, angle, index % 3 ? "133,197,255" : "105,225,220", .48);
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawLocalGroupLimit(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size * sceneScale(), Math.min(width, height) * .25);
+        ctx.save();
+        ctx.strokeStyle = "rgba(199,194,255,.24)";
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([4, 8]);
+        ctx.beginPath();
+        ctx.ellipse(x, y + r * .08, r * 1.12, r * .44, -.04, Math.PI * 1.06, Math.PI * 1.94);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        miniGalaxy(time, x - r * .28, y + r * .27, r * .13, -.18, "173,177,255", .68);
+        miniGalaxy(time, x + r * .32, y + r * .19, r * .16, .22, "255,196,138", .72);
+        starGlow(x, y - r * .02, r * .18, "rgba(220,219,255,.42)", "rgba(144,164,255,.09)", "rgba(0,0,0,0)");
+        ctx.restore();
+      }
+
+      function drawLocalVolume(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size * sceneScale(), Math.min(width, height) * .18);
+        ctx.save();
+        for (let i = 0; i < 23; i++) {
+          const a = i * 2.399 + .4;
+          const rr = r * (.15 + seededPoint(i + 3) * .92);
+          const px = x + Math.cos(a) * rr * 1.25;
+          const py = y + Math.sin(a * 1.07) * rr * .72;
+          miniGalaxy(time, px, py, 1.6 + (i % 4) * .55, a, i % 5 === 0 ? "255,202,150" : "139,199,255", .42 + (i % 3) * .08);
+        }
+        ctx.strokeStyle = "rgba(130,190,255,.09)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.ellipse(x, y, r * 1.35, r * .78, .1, 0, TAU);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawLocalSheet(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size * sceneScale(), Math.min(width, height) * .25);
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(-.08);
+        ctx.globalCompositeOperation = "screen";
+        const band = ctx.createLinearGradient(-r * 1.7, 0, r * 1.7, 0);
+        band.addColorStop(0, "rgba(70,220,222,0)");
+        band.addColorStop(.22, "rgba(74,221,221,.085)");
+        band.addColorStop(.5, "rgba(166,236,241,.16)");
+        band.addColorStop(.78, "rgba(77,205,228,.085)");
+        band.addColorStop(1, "rgba(70,220,222,0)");
+        ctx.fillStyle = band;
+        ctx.beginPath();
+        ctx.moveTo(-r * 1.75, -r * .08);
+        ctx.quadraticCurveTo(0, -r * .2, r * 1.75, -r * .04);
+        ctx.lineTo(r * 1.75, r * .08);
+        ctx.quadraticCurveTo(0, r * .2, -r * 1.75, r * .04);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = "rgba(134,238,236,.19)";
+        ctx.lineWidth = .8;
+        ctx.beginPath();
+        ctx.moveTo(-r * 1.62, 0);
+        ctx.bezierCurveTo(-r * .58, -r * .08, r * .55, r * .08, r * 1.62, 0);
+        ctx.stroke();
+        for (let i = 0; i < 20; i++) {
+          const px = -r * 1.34 + i / 19 * r * 2.68;
+          const py = Math.sin(i * 2.05) * r * .08 + (seededPoint(i + 44) - .5) * r * .09;
+          miniGalaxy(time, px, py, 1.7 + (i % 4) * .42, i * .43, i % 5 === 0 ? "255,213,164" : "114,224,226", .54);
+        }
+        ctx.restore();
+      }
+
+      function drawVirgoCluster(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size * sceneScale(), Math.min(width, height) * .19);
+        starGlow(x, y, r * 1.3, "rgba(255,209,147,.15)", "rgba(255,161,111,.055)", "rgba(0,0,0,0)");
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (let i = 0; i < 48; i++) {
+          const a = i * 2.399 + .2;
+          const rr = r * Math.sqrt((i + .5) / 48) * (.8 + seededPoint(i + 72) * .32);
+          const px = x + Math.cos(a) * rr;
+          const py = y + Math.sin(a) * rr * .72;
+          miniGalaxy(time, px, py, 1.2 + (i % 5) * .45, a * .6, i % 7 === 0 ? "255,191,132" : "178,205,255", .42 + (i % 4) * .07);
+        }
+        const core = ctx.createRadialGradient(x, y, 0, x, y, r * .22);
+        core.addColorStop(0, "rgba(255,247,218,.9)");
+        core.addColorStop(.22, "rgba(255,207,151,.42)");
+        core.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = core;
+        ctx.beginPath();
+        ctx.ellipse(x, y, r * .22, r * .15, -.2, 0, TAU);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawVirgoSupercluster(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size * sceneScale(), Math.min(width, height) * .23);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.lineCap = "round";
+        for (let branch = 0; branch < 6; branch++) {
+          const side = branch % 2 ? 1 : -1;
+          const sy = y + (branch - 2.5) * r * .14;
+          const ex = x + side * r * (1.02 + (branch % 3) * .13);
+          const ey = y - r * (.12 + branch * .04);
+          const grad = ctx.createLinearGradient(x, y, ex, ey);
+          grad.addColorStop(0, "rgba(255,150,187,.18)");
+          grad.addColorStop(1, "rgba(107,187,255,0)");
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 1 + (branch % 3) * .35;
+          ctx.beginPath();
+          ctx.moveTo(x - side * r * .12, sy);
+          ctx.bezierCurveTo(x + side * r * .25, sy - r * .2, ex - side * r * .24, ey + r * .12, ex, ey);
+          ctx.stroke();
+          for (let j = 1; j <= 5; j++) {
+            const t = j / 6;
+            const px = (1 - t) * (x - side * r * .12) + t * ex + Math.sin(t * Math.PI) * side * r * .16;
+            const py = (1 - t) * sy + t * ey - Math.sin(t * Math.PI) * r * .08;
+            miniGalaxy(time, px, py, 1.4 + (j % 3) * .55, branch + j, branch % 2 ? "255,155,194" : "122,194,255", .46);
+          }
+        }
+        starGlow(x, y, r * .36, "rgba(255,211,173,.47)", "rgba(255,127,182,.12)", "rgba(0,0,0,0)");
+        ctx.restore();
+      }
+
+      function drawGalaxyFlows(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size * sceneScale(), Math.min(width, height) * .25);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (let ring = 0; ring < 3; ring++) {
+          ctx.strokeStyle = `rgba(104,208,255,${.055 + ring * .025})`;
+          ctx.lineWidth = .8;
+          ctx.setLineDash([2 + ring, 7 + ring * 2]);
+          ctx.beginPath();
+          ctx.ellipse(x, y, r * (1.1 - ring * .18), r * (.42 - ring * .045), -.16, .12, Math.PI * 1.8);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+        ctx.restore();
+      }
+
+      function drawLocalVoid(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size * sceneScale(), Math.min(width, height) * .22);
+        ctx.save();
+        const voidGradient = ctx.createRadialGradient(x - r * .12, y - r * .06, 0, x, y, r * 1.12);
+        voidGradient.addColorStop(0, "rgba(0,1,8,.92)");
+        voidGradient.addColorStop(.58, "rgba(4,7,23,.78)");
+        voidGradient.addColorStop(.82, "rgba(52,65,162,.08)");
+        voidGradient.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = voidGradient;
+        ctx.beginPath();
+        ctx.ellipse(x, y, r * 1.18, r * .86, -.14, 0, TAU);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(117,142,244,.14)";
+        ctx.lineWidth = 1.1;
+        ctx.setLineDash([3, 9]);
+        ctx.beginPath();
+        ctx.ellipse(x, y, r * 1.12, r * .82, -.14, 0, TAU);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        for (let i = 0; i < 7; i++) {
+          const a = i / 7 * TAU;
+          const px = x + Math.cos(a) * r * 1.05;
+          const py = y + Math.sin(a) * r * .77;
+          miniGalaxy(time, px, py, 1.4 + i % 3 * .38, a, "121,151,244", .28);
+        }
+        ctx.restore();
+      }
+
+      function drawGreatAttractor(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size * sceneScale(), Math.min(width, height) * .34);
+        const pulse = 1 + (reducedMotion ? 0 : Math.sin(time * .00115) * .025);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+
+        const leftField = ctx.createRadialGradient(x - r * .16, y + r * .02, 0, x - r * .16, y + r * .02, r * .92 * pulse);
+        leftField.addColorStop(0, "rgba(255,186,118,.075)");
+        leftField.addColorStop(.28, "rgba(255,137,94,.08)");
+        leftField.addColorStop(.68, "rgba(177,79,145,.035)");
+        leftField.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = leftField;
+        ctx.fillRect(x - r * 1.2, y - r, r * 2.4, r * 2);
+
+        const rightField = ctx.createRadialGradient(x + r * .18, y - r * .04, 0, x + r * .18, y - r * .04, r * .78 * pulse);
+        rightField.addColorStop(0, "rgba(255,221,171,.055)");
+        rightField.addColorStop(.35, "rgba(236,128,157,.055)");
+        rightField.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = rightField;
+        ctx.fillRect(x - r, y - r, r * 2, r * 2);
+
+        for (let ring = 0; ring < 9; ring++) {
+          const rr = r * (.16 + ring * .095) * pulse;
+          const alpha = .16 - ring * .012;
+          const shiftX = Math.sin(ring * 1.7) * r * .045;
+          const shiftY = Math.cos(ring * 1.23) * r * .022;
+          ctx.strokeStyle = `rgba(${ring < 4 ? "255,194,130" : "221,131,177"},${alpha})`;
+          ctx.lineWidth = ring % 3 === 0 ? 1.15 : .72;
+          ctx.setLineDash(ring % 2 ? [3, 8] : [1, 6]);
+          ctx.beginPath();
+          ctx.ellipse(x + shiftX, y + shiftY, rr * (1.18 + ring * .022), rr * (.48 + ring * .018), -.23 + ring * .043, .18 + ring * .025, TAU - .28 + ring * .018);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+
+        for (let spoke = 0; spoke < 18; spoke++) {
+          const a = spoke / 18 * TAU + .13;
+          const outer = r * (.58 + (spoke % 5) * .1);
+          const inner = r * (.08 + (spoke % 3) * .018);
+          const sx = x + Math.cos(a) * outer;
+          const sy = y + Math.sin(a) * outer * .56;
+          const spread = r * .13;
+          const ex = x + Math.cos(a * 1.7 + spoke) * spread;
+          const ey = y + Math.sin(a * 1.3 + spoke * .7) * spread * .42;
+          const grad = ctx.createLinearGradient(sx, sy, ex, ey);
+          grad.addColorStop(0, "rgba(128,181,255,0)");
+          grad.addColorStop(.52, "rgba(255,168,108,.085)");
+          grad.addColorStop(1, "rgba(255,221,175,.2)");
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = .75 + (spoke % 4) * .2;
+          ctx.beginPath();
+          ctx.moveTo(sx, sy);
+          ctx.quadraticCurveTo(x + Math.cos(a + .6) * r * .3, y + Math.sin(a + .6) * r * .18, ex, ey);
+          ctx.stroke();
+        }
+
+        // No central body is drawn: the destination is a broad convergence field.
+        ctx.restore();
+      }
+
+      function drawLaniakeaBasin(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size * sceneScale(), Math.min(width, height) * .43);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.lineCap = "round";
+        for (let contour = 0; contour < 7; contour++) {
+          const spread = r * (1 - contour * .09);
+          const alpha = .04 + contour * .012;
+          ctx.strokeStyle = `rgba(${contour % 2 ? "201,145,255" : "134,193,255"},${alpha})`;
+          ctx.lineWidth = .75 + (contour % 3) * .28;
+          ctx.setLineDash(contour < 2 ? [6, 10] : []);
+          ctx.beginPath();
+          ctx.moveTo(x - spread * 1.35, y + spread * .35);
+          ctx.bezierCurveTo(x - spread * .92, y - spread * .6, x - spread * .18, y - spread * .72, x, y - spread * .26);
+          ctx.bezierCurveTo(x + spread * .27, y - spread * .82, x + spread * 1.18, y - spread * .49, x + spread * 1.34, y + spread * .12);
+          ctx.bezierCurveTo(x + spread * .94, y + spread * .58, x + spread * .2, y + spread * .72, x - spread * .38, y + spread * .5);
+          ctx.bezierCurveTo(x - spread * .77, y + spread * .7, x - spread * 1.16, y + spread * .64, x - spread * 1.35, y + spread * .35);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+        for (let i = 0; i < 32; i++) {
+          const a = i * 2.399;
+          const rr = r * (.2 + seededPoint(i + 180) * 1.12);
+          const px = x + Math.cos(a) * rr * 1.14;
+          const py = y + Math.sin(a) * rr * .48;
+          miniGalaxy(time, px, py, 1.2 + i % 4 * .35, a, i % 6 === 0 ? "226,161,255" : "132,195,255", .24 + i % 3 * .045);
+        }
+        ctx.restore();
+      }
+
+      function drawBoundary(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size * sceneScale(), Math.min(width, height) * .38);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.strokeStyle = "rgba(197,213,255,.2)";
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([5, 9]);
+        ctx.beginPath();
+        ctx.ellipse(x, y + r * .2, r * 1.35, r * .54, -.02, Math.PI * .1, Math.PI * .9, true);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        for (let strand = 0; strand < 9; strand++) {
+          const startX = width * (-.05 + strand * .14);
+          const endX = width * (.02 + strand * .125) + Math.sin(strand * 1.8) * width * .035;
+          const color = strand % 3 === 0 ? "214,159,255" : strand % 3 === 1 ? "105,207,255" : "164,201,255";
+          ctx.strokeStyle = `rgba(${color},${.055 + (strand % 3) * .018})`;
+          ctx.lineWidth = 1 + (strand % 4) * .3;
+          ctx.beginPath();
+          ctx.moveTo(startX, height * .145);
+          ctx.bezierCurveTo(startX + width * .07, height * .095, endX - width * .04, height * .055, endX, -height * .06);
+          ctx.stroke();
+          if (strand % 2 === 0) {
+            const nodeY = height * (.055 + (strand % 3) * .02);
+            starGlow(endX, nodeY, 12 + (strand % 3) * 4, "rgba(224,235,255,.42)", `rgba(${color},.12)`, "rgba(0,0,0,0)");
+          }
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = "rgba(153,190,255,.32)";
+        ctx.fillStyle = "rgba(224,230,255,.5)";
+        ctx.font = `800 ${Math.max(8, Math.min(11, width * .023))}px Inter, system-ui, sans-serif`;
+        ctx.fillText("MÁS ALLÁ", width * .5, Math.max(7, height * .009));
+        ctx.fillStyle = "rgba(213,224,255,.65)";
+        ctx.font = `900 ${Math.max(9, Math.min(13, width * .027))}px Inter, system-ui, sans-serif`;
+        ctx.fillText("FILAMENTOS · VACÍOS · NODOS", width * .5, Math.max(21, height * .03));
+        ctx.restore();
+      }
+
+      function drawLandmarks(time) {
+        drawLaniakeaBasin(time, LANDMARKS.find(item => item.id === "laniakea-basin"));
+        drawGlobalFlows(time);
+        drawLocalGroupLimit(time, LANDMARKS.find(item => item.id === "local-group-limit"));
+        drawLocalVolume(time, LANDMARKS.find(item => item.id === "local-volume"));
+        drawLocalSheet(time, LANDMARKS.find(item => item.id === "local-sheet"));
+        drawVirgoCluster(time, LANDMARKS.find(item => item.id === "virgo-cluster"));
+        drawVirgoSupercluster(time, LANDMARKS.find(item => item.id === "virgo-supercluster"));
+        drawGalaxyFlows(time, LANDMARKS.find(item => item.id === "galaxy-flows"));
+        drawLocalVoid(time, LANDMARKS.find(item => item.id === "local-void"));
+        drawGreatAttractor(time, LANDMARKS.find(item => item.id === "great-attractor"));
+        drawBoundary(time, LANDMARKS.find(item => item.id === "boundary"));
+      }
+
+      function drawParticles(dt) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life -= p.decay * dt;
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.vx *= Math.pow(.09, dt);
+          p.vy *= Math.pow(.09, dt);
+          const [r, g, b] = p.color;
+          ctx.fillStyle = `rgba(${r},${g},${b},${p.life * .72})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * (.4 + p.life), 0, TAU);
+          ctx.fill();
+        }
+
+        for (let i = waves.length - 1; i >= 0; i--) {
+          const wave = waves[i];
+          wave.life -= dt * 1.25;
+          if (wave.life <= 0) {
+            waves.splice(i, 1);
+            continue;
+          }
+          wave.radius += dt * 128;
+          const [r, g, b] = wave.color;
+          ctx.strokeStyle = `rgba(${r},${g},${b},${wave.life * .42})`;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.arc(wave.x, wave.y, wave.radius, 0, TAU);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function draw(time) {
+        const dt = Math.min(.05, Math.max(0, (time - lastTime) / 1000));
+        lastTime = time;
+
+        if (!reducedMotion) {
+          pointerX += (targetX - pointerX) * .08;
+          pointerY += (targetY - pointerY) * .08;
+        } else {
+          pointerX = targetX;
+          pointerY = targetY;
+        }
+
+        drawBackground(time);
+        drawJourneyPath(time);
+        drawLandmarks(time);
+        drawParticles(dt);
+
+        raf = requestAnimationFrame(draw);
+      }
+
+      function init() {
+        resize();
+        addEventListener("resize", resize, { passive: true });
+        addEventListener("orientationchange", () => setTimeout(resize, 120), { passive: true });
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden && audioCtx?.state === "running") audioCtx.suspend().catch(() => {});
+        });
+        canvas.focus({ preventScroll: true });
+        raf = requestAnimationFrame(draw);
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
