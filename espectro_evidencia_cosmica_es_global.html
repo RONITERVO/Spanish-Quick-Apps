@@ -1,0 +1,1930 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#05070d">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora de los distintos grados de evidencia cosmológica: de los datos observados a la frontera de lo conocible.">
+  <meta name="application-name" content="Espectro de la Evidencia Cósmica: de las Huellas Observables a las Preguntas del Origen">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro de la Evidencia Cósmica">
+  <meta property="og:description" content="Toca y distingue lo observado, inferido, predicho, hipotético y desconocido en la investigación del origen cósmico.">
+  <title>Espectro de la Evidencia Cósmica: de las Huellas Observables a las Preguntas del Origen</title>
+  <style>
+    :root {
+      --accent: rgb(183 222 255);
+      --accent-soft: rgb(183 222 255 / .34);
+      --ink: rgb(255 255 255);
+      --panel: rgb(5 9 18 / .62);
+      --scan-x: 50vw;
+      --scan-y: 93vh;
+      --progress: 4%;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #02040a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: white;
+      font-family:
+        Inter, ui-rounded, "SF Pro Rounded", "Segoe UI",
+        system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #cosmic-evidence-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background:
+        radial-gradient(circle at var(--scan-x) var(--scan-y),
+          color-mix(in srgb, var(--accent) 72%, transparent) 0%,
+          color-mix(in srgb, var(--accent) 22%, transparent) 11%,
+          transparent 34%);
+      mix-blend-mode: screen;
+    }
+
+    body.active #light-field { opacity: .88; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg,
+          transparent calc(var(--scan-x) - 1px),
+          color-mix(in srgb, var(--accent) 74%, transparent) var(--scan-x),
+          transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg,
+          transparent calc(var(--scan-y) - 1px),
+          color-mix(in srgb, var(--accent) 46%, transparent) var(--scan-y),
+          transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+
+    body.active #scan-line { opacity: .24; }
+
+    #grain {
+      z-index: 4;
+      opacity: .046;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 39%, rgb(0 0 0 / .22) 72%, rgb(0 0 0 / .8) 125%),
+        linear-gradient(90deg, rgb(0 0 0 / .43), transparent 13%, transparent 87%, rgb(0 0 0 / .42));
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 49%;
+      width: min(92vw, 840px);
+      padding: clamp(16px, 3.3vw, 28px) clamp(20px, 5vw, 52px) clamp(18px, 3.8vw, 34px);
+      border: 1px solid rgb(255 255 255 / .23);
+      border-radius: clamp(26px, 6vw, 52px);
+      color: var(--ink);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        var(--panel);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .52),
+        0 0 82px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .27),
+        inset 0 -1px 0 rgb(0 0 0 / .22);
+      backdrop-filter: blur(23px) saturate(1.38);
+      -webkit-backdrop-filter: blur(23px) saturate(1.38);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear,
+        background 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #evidence-class {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 27px;
+      margin-bottom: clamp(10px, 2vw, 16px);
+      padding: 6px 13px 7px;
+      border: 1px solid color-mix(in srgb, var(--accent) 66%, transparent);
+      border-radius: 999px;
+      color: color-mix(in srgb, var(--accent) 78%, white);
+      font-size: clamp(.64rem, 2.15vw, .88rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: color-mix(in srgb, var(--accent) 10%, rgb(0 0 0 / .34));
+      box-shadow: 0 0 25px var(--accent-soft), inset 0 1px 0 rgb(255 255 255 / .11);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.5vw, 6.7rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow:
+        0 0 30px var(--accent-soft),
+        0 5px 24px rgb(0 0 0 / .5);
+    }
+
+    #zone-name.compact {
+      font-size: clamp(1.72rem, 7.2vw, 5.6rem);
+      letter-spacing: -.047em;
+      line-height: .89;
+    }
+
+    #zone-name.long {
+      font-size: clamp(1.42rem, 6.1vw, 4.55rem);
+      letter-spacing: -.035em;
+      line-height: .93;
+    }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 880;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+      opacity: .98;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(11px, 2vw, 18px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.69rem, 2.25vw, .94rem);
+      font-weight: 820;
+      line-height: 1.12;
+      letter-spacing: .045em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .19);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .12);
+    }
+
+    #fact {
+      display: block;
+      max-width: 680px;
+      margin: clamp(11px, 2.3vw, 18px) auto 0;
+      font-size: clamp(.84rem, 2.68vw, 1.12rem);
+      font-weight: 630;
+      line-height: 1.3;
+      letter-spacing: -.011em;
+      text-wrap: balance;
+      opacity: .87;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.35);
+      background: radial-gradient(circle, rgb(255 255 255 / .18), transparent 67%);
+      box-shadow:
+        0 0 0 1px rgb(0 0 0 / .24),
+        0 0 21px var(--accent),
+        0 0 54px var(--accent-soft),
+        inset 0 0 18px rgb(255 255 255 / .25);
+      transition:
+        opacity 120ms ease,
+        transform 280ms cubic-bezier(.16, 1, .3, 1),
+        border-color 110ms linear,
+        box-shadow 110ms linear;
+      will-change: transform, opacity;
+    }
+
+    #touch-orb.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(11px, env(safe-area-inset-right));
+      top: max(20px, env(safe-area-inset-top));
+      bottom: max(20px, env(safe-area-inset-bottom));
+      width: 21px;
+      pointer-events: none;
+      opacity: .72;
+      transition: opacity 180ms ease;
+    }
+
+    body.active #journey-scale { opacity: 1; }
+
+    #scale-track {
+      position: absolute;
+      right: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgb(255 255 255 / .15);
+      box-shadow: 0 0 10px rgb(255 255 255 / .08);
+    }
+
+    #scale-fill {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: var(--progress);
+      border-radius: 99px;
+      background: linear-gradient(0deg, rgb(178 225 255 / .9), var(--accent));
+      box-shadow: 0 0 18px var(--accent);
+    }
+
+    #scale-dot {
+      position: absolute;
+      right: 3px;
+      bottom: calc(var(--progress) - 7px);
+      width: 12px;
+      height: 12px;
+      border: 2px solid white;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 14px var(--accent), 0 0 2px black;
+      transition: bottom 80ms linear, background 110ms linear;
+    }
+
+    #scale-bottom,
+    #scale-top,
+    #scale-value {
+      position: absolute;
+      right: 28px;
+      width: min(66vw, 380px);
+      color: rgb(255 255 255 / .57);
+      font-size: clamp(.52rem, 1.9vw, .72rem);
+      font-weight: 820;
+      line-height: 1;
+      letter-spacing: .08em;
+      text-align: right;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-shadow: 0 1px 7px black;
+    }
+
+    #scale-bottom { bottom: -1px; }
+    #scale-top { top: -1px; }
+
+    #scale-value {
+      top: clamp(10%, calc(100% - var(--progress)), 90%);
+      margin-top: -4px;
+      color: rgb(255 255 255 / .79);
+      opacity: 0;
+      transform: translateY(-50%);
+      transition: opacity 150ms ease;
+    }
+
+    body.active #scale-value { opacity: 1; }
+
+    #hint {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 81%;
+      display: grid;
+      justify-items: center;
+      gap: 7px;
+      width: min(86vw, 540px);
+      color: rgb(225 244 255 / .82);
+      text-align: center;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: hint-life 8s ease forwards;
+      text-shadow: 0 2px 12px #000;
+    }
+
+    #hint-ring {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgb(202 236 255 / .65);
+      border-radius: 50%;
+      box-shadow: 0 0 24px rgb(121 203 255 / .25);
+      animation: hint-pulse 2.2s ease-in-out infinite;
+    }
+
+    #hint-ring::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgb(234 248 255 / .96);
+      box-shadow: 0 0 14px rgb(111 204 255 / .85);
+      animation: hint-climb 2.2s ease-in-out infinite;
+    }
+
+    #hint-text {
+      font-size: clamp(.74rem, 2.9vw, 1.02rem);
+      font-weight: 920;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #hint-subtext {
+      font-size: clamp(.62rem, 2.25vw, .79rem);
+      font-weight: 720;
+      letter-spacing: .045em;
+      opacity: .77;
+    }
+
+    .ripple {
+      position: fixed;
+      z-index: 6;
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: ripple-out .8s cubic-bezier(.12, .68, .2, 1) forwards;
+      box-shadow: 0 0 24px var(--accent-soft);
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    @keyframes hint-life {
+      0%, 58% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    @keyframes hint-pulse {
+      0%, 100% { transform: scale(.88); opacity: .6; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    @keyframes hint-climb {
+      0%, 100% { transform: translate(-50%, 8px); }
+      50% { transform: translate(-50%, -14px); }
+    }
+
+    @keyframes ripple-out {
+      from { opacity: .9; transform: translate(-50%, -50%) scale(.6); }
+      to { opacity: 0; transform: translate(-50%, -50%) scale(8); }
+    }
+
+    @media (max-width: 620px) {
+      #journey-scale { right: max(7px, env(safe-area-inset-right)); }
+      #scale-bottom,
+      #scale-top,
+      #scale-value { right: 23px; }
+      #scale-bottom,
+      #scale-top { display: none; }
+    }
+
+    @media (max-height: 570px) and (orientation: landscape) {
+      #readout {
+        width: min(84vw, 780px);
+        padding: 10px 28px 12px;
+        border-radius: 25px;
+      }
+      #evidence-class { margin-bottom: 7px; min-height: 22px; padding: 4px 10px 5px; font-size: clamp(.56rem, 2.2vh, .72rem); }
+      #zone-name { font-size: clamp(1.55rem, 7.3vh, 3.25rem); line-height: .9; }
+      #zone-name.compact { font-size: clamp(1.36rem, 6.8vh, 2.95rem); }
+      #zone-name.long { font-size: clamp(1.15rem, 6.1vh, 2.55rem); }
+      #feature-name { margin-top: 5px; font-size: clamp(.76rem, 4vh, 1.15rem); }
+      #metric { min-height: 24px; margin-top: 7px; padding: 5px 10px 6px; font-size: clamp(.6rem, 2.5vh, .76rem); }
+      #fact { max-width: 680px; margin-top: 7px; font-size: clamp(.7rem, 3vh, .88rem); line-height: 1.16; }
+      #journey-scale { top: max(8px, env(safe-area-inset-top)); bottom: max(8px, env(safe-area-inset-bottom)); }
+      #hint { top: 78%; gap: 4px; }
+      #hint-ring { width: 38px; height: 38px; }
+      #hint-subtext { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #readout,
+      #touch-orb,
+      #journey-scale,
+      #light-field,
+      #scan-line { transition-duration: 70ms; }
+      #hint,
+      .ripple,
+      #hint-ring::after { animation: none; }
+      #hint { opacity: .75; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="cosmic-evidence-spectrum" role="application" tabindex="0" aria-describedby="instructions" aria-label="Mapa táctil de los grados de evidencia cosmológica, desde el límite de la física conocida hasta la frontera de lo conocible"></canvas>
+  <p id="instructions" class="sr-only">La aventura comienza exactamente donde termina el universo temprano: en el límite de la física conocida. Toca o arrastra hacia arriba para recorrer observación directa, huellas fósiles, inferencias robustas, predicciones comprobables, señales aún no detectadas, modelos de gravedad cuántica, condiciones iniciales y frontera de lo conocible. La altura ya no representa un tiempo cada vez más temprano: representa una disminución gradual del grado de evidencia. Arrastra horizontalmente para descubrir conceptos distintos dentro de cada región. También puedes usar las flechas del teclado.</p>
+
+  <div id="light-field" aria-hidden="true"></div>
+  <div id="scan-line" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <div id="hint" aria-hidden="true">
+    <div id="hint-ring"></div>
+    <div id="hint-text">La cronología termina aquí</div>
+    <div id="hint-subtext">Asciende · compara la fuerza de la evidencia</div>
+  </div>
+
+  <div id="readout" aria-live="polite" aria-atomic="true">
+    <span id="evidence-class"></span>
+    <span id="zone-name"></span>
+    <span id="feature-name"></span>
+    <span id="metric"></span>
+    <span id="fact"></span>
+  </div>
+
+  <div id="touch-orb" aria-hidden="true"></div>
+
+  <div id="journey-scale" aria-hidden="true">
+    <div id="scale-track"><div id="scale-fill"></div></div>
+    <div id="scale-dot"></div>
+    <span id="scale-bottom">Límite de la física conocida</span>
+    <span id="scale-value">Grado de evidencia</span>
+    <span id="scale-top">Frontera de lo conocible</span>
+  </div>
+
+  <!--
+    Visualización educativa sin dependencias externas.
+    A diferencia de las aplicaciones anteriores, la altura ya no representa una cronología ni una
+    escala espacial. Representa una transición conceptual desde datos observados y huellas medibles
+    hacia inferencias, predicciones, marcos teóricos competidores y preguntas abiertas.
+
+    La visualización evita presentar como hechos confirmados la inflación, las ondas gravitacionales
+    primordiales, una partícula concreta de materia oscura, el decaimiento del protón, una teoría de
+    gravedad cuántica, el multiverso, una singularidad física o unas condiciones iniciales definitivas.
+    “Antes del Big Bang” no se trata como una expresión necesariamente significativa.
+  -->
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.getElementById("cosmic-evidence-spectrum");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const root = document.documentElement;
+      const readout = document.getElementById("readout");
+      const evidenceClass = document.getElementById("evidence-class");
+      const zoneName = document.getElementById("zone-name");
+      const featureName = document.getElementById("feature-name");
+      const metric = document.getElementById("metric");
+      const fact = document.getElementById("fact");
+      const touchOrb = document.getElementById("touch-orb");
+      const scaleValue = document.getElementById("scale-value");
+      const hint = document.getElementById("hint");
+
+      const TAU = Math.PI * 2;
+      const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const ZONES = [
+        {
+          id: "handoff", name: "Límite de la física conocida", className: "Punto de partida", p0: 0, p1: .065,
+          color: [222, 230, 255], metric: "Continuidad con el universo temprano · la cronología se detiene",
+          fact: "Aquí termina el recorrido hacia épocas cada vez más tempranas. Desde este punto, subir ya no significa retroceder en el tiempo: significa alejarse gradualmente de la evidencia directa.",
+          sound: { base: 78, filter: 920, noise: .08, pulse: .22, type: "triangle" },
+          features: [
+            ["cambio de eje", "La altura deja de representar tiempo y comienza a representar la fuerza relativa de la evidencia científica."],
+            ["teorías insuficientes", "La relatividad general y la física cuántica funcionan extraordinariamente bien en sus dominios, pero no forman todavía una descripción completa de condiciones extremas."],
+            ["sin destino confirmado", "El límite no contiene una singularidad observada, un primer instante fotografiado ni una respuesta definitiva sobre el origen."],
+            ["disciplina científica", "El recorrido separa datos, reconstrucciones, predicciones, hipótesis y desconocimiento en lugar de mezclarlos."],
+            ["nueva pregunta", "¿Qué puede sostener la evidencia y qué permanece abierto a nuevas observaciones o teorías?"]
+          ]
+        },
+        {
+          id: "observed", name: "Observación directa", className: "Observado", p0: .065, p1: .205,
+          color: [113, 211, 255], metric: "Datos medidos · estructuras nítidas · resultados reproducibles",
+          fact: "La base más firme está formada por señales registradas con instrumentos, mapas del cielo, abundancias medidas y física de partículas comprobada en laboratorios.",
+          sound: { base: 92, filter: 1500, noise: .035, pulse: .17, type: "sine" },
+          features: [
+            ["fondo cósmico", "Los detectores miden un cielo de microondas con un espectro casi térmico y pequeñas variaciones angulares."],
+            ["expansión cósmica", "El desplazamiento al rojo, las distancias y múltiples observaciones muestran que la escala del universo cambia con el tiempo."],
+            ["hidrógeno y helio", "Las abundancias de elementos ligeros pueden medirse en entornos antiguos y compararse con cálculos físicos."],
+            ["distribución de galaxias", "Los sondeos cartografían galaxias, cúmulos, filamentos y vacíos a gran escala."],
+            ["laboratorios", "Aceleradores y detectores prueban partículas, campos e interacciones que también se aplican a la cosmología temprana."]
+          ]
+        },
+        {
+          id: "fossil-traces", name: "Huellas fósiles", className: "Observado → reconstruido", p0: .205, p1: .35,
+          color: [114, 244, 207], metric: "Patrones medidos · memoria física del universo temprano",
+          fact: "Algunas observaciones funcionan como fósiles: no muestran directamente el proceso original, pero conservan patrones producidos por él.",
+          sound: { base: 111, filter: 2050, noise: .055, pulse: .14, type: "sine" },
+          features: [
+            ["anisotropías", "Las pequeñas diferencias del fondo cósmico codifican densidad, movimiento y condiciones físicas del plasma temprano."],
+            ["polarización", "La orientación de la radiación añade información independiente sobre dispersión, geometría y perturbaciones."],
+            ["oscilaciones acústicas", "Una escala preferente en la distribución de materia conserva la huella de ondas del plasma primordial."],
+            ["semillas de estructura", "Las regiones ligeramente más densas crecieron por gravedad hasta formar galaxias, cúmulos y la red cósmica."],
+            ["fluctuaciones primordiales", "Su forma estadística se reconstruye comparando mapas del fondo cósmico y estructura a gran escala."]
+          ]
+        },
+        {
+          id: "inference", name: "Inferencias robustas", className: "Inferido", p0: .35, p1: .50,
+          color: [255, 220, 112], metric: "Múltiples evidencias convergentes · reconstrucción física",
+          fact: "Estas ideas no son fotografías directas, pero explican conjuntos amplios de datos mediante teorías que pueden contrastarse entre sí.",
+          sound: { base: 132, filter: 2550, noise: .075, pulse: .11, type: "triangle" },
+          features: [
+            ["plasma primordial", "La opacidad previa al fondo cósmico se infiere a partir de la física de cargas libres y de los patrones observados."],
+            ["nucleosíntesis", "Las reacciones de los primeros minutos conectan parámetros cosmológicos con abundancias de deuterio y helio."],
+            ["fondo de neutrinos", "Es una predicción robusta del Big Bang caliente y deja efectos indirectos, aunque sus neutrinos relictos individuales no se han detectado directamente."],
+            ["materia oscura", "Su gravedad explica numerosos fenómenos, pero la naturaleza microscópica de la materia oscura sigue sin identificarse."],
+            ["perturbaciones", "Las ecuaciones describen cómo pequeñas variaciones evolucionan hasta convertirse en la estructura cósmica observada."],
+            ["fase inflacionaria", "Una fase inflacionaria puede explicar rasgos importantes, pero su mecanismo concreto y su escala de energía no están confirmados."]
+          ]
+        },
+        {
+          id: "testable-predictions", name: "Predicciones comprobables", className: "Predicho", p0: .50, p1: .625,
+          color: [255, 165, 108], metric: "Una teoría se arriesga · la observación puede apoyarla o descartarla",
+          fact: "Una predicción científica valiosa especifica qué patrón debería aparecer, dónde buscarlo y qué resultado contaría en contra del modelo.",
+          sound: { base: 154, filter: 3100, noise: .095, pulse: .085, type: "triangle" },
+          features: [
+            ["patrón de polarización", "Diferentes mecanismos tempranos pueden dejar correlaciones concretas en la polarización del fondo cósmico."],
+            ["forma del espectro", "Los modelos predicen la amplitud, inclinación y posibles desviaciones de las fluctuaciones primordiales."],
+            ["no gaussianidad", "Ciertos escenarios producirían relaciones estadísticas específicas entre modos del fondo cósmico y la estructura."],
+            ["recalentamiento", "La transición posterior a una posible inflación podría dejar consecuencias en partículas, ondas o distribución de perturbaciones."],
+            ["consistencia cruzada", "Una predicción gana fuerza cuando varios instrumentos y mensajeros independientes encuentran el mismo patrón."]
+          ]
+        },
+        {
+          id: "undetected", name: "Señales aún no detectadas", className: "Buscado · no confirmado", p0: .625, p1: .745,
+          color: [255, 116, 157], metric: "Instrumentos entre ruido · límites superiores · ausencia informativa",
+          fact: "No detectar una señal no demuestra que sea imposible. Permite reducir el espacio de modelos y diseñar búsquedas más sensibles.",
+          sound: { base: 176, filter: 3700, noise: .15, pulse: .06, type: "sawtooth" },
+          features: [
+            ["ondas primordiales", "Una señal gravitacional de épocas extremadamente tempranas sería extraordinaria, pero no existe una detección confirmada de ese fondo primordial."],
+            ["modo B primordial", "La polarización buscada debe separarse cuidadosamente del polvo galáctico, lentes gravitacionales y ruido instrumental."],
+            ["partícula de materia oscura", "Numerosos experimentos buscan interacciones no gravitatorias, sin una identificación confirmada de la partícula responsable."],
+            ["decaimiento del protón", "Algunas teorías de unificación lo predicen; los experimentos han establecido vidas medias mínimas cada vez mayores sin observar un caso confirmado."],
+            ["nuevas simetrías", "Partículas asociadas a simetrías adicionales podrían aparecer en colisionadores, astrofísica o experimentos de precisión."],
+            ["huella del recalentamiento", "Se buscan señales indirectas capaces de distinguir cómo terminó una posible etapa inflacionaria."]
+          ]
+        },
+        {
+          id: "quantum-gravity", name: "Modelos de gravedad cuántica", className: "Hipotético · marcos competidores", p0: .745, p1: .855,
+          color: [176, 129, 255], metric: "Sin teoría confirmada · geometrías alternativas · pruebas difíciles",
+          fact: "Aquí las representaciones se vuelven abstractas porque todavía no existe una teoría de gravedad cuántica verificada de forma experimental.",
+          sound: { base: 198, filter: 4250, noise: .125, pulse: .045, type: "sine" },
+          features: [
+            ["espacio-tiempo cuántico", "A escalas extremas, el espacio y el tiempo clásicos podrían dejar de ser una base continua y fija."],
+            ["longitud de Planck", "Es una escala construida con constantes fundamentales; señala dónde nuestras extrapolaciones ordinarias pueden perder fiabilidad."],
+            ["geometría emergente", "Algunos enfoques exploran si el espacio-tiempo surge de grados de libertad más fundamentales."],
+            ["teoría de cuerdas", "Es un amplio marco de investigación con herramientas potentes, no una explicación cosmológica confirmada."],
+            ["gravedad cuántica de bucles", "Es otro programa de investigación que cuantiza aspectos de la geometría, sin estatus de respuesta establecida."],
+            ["otras vías", "Seguridad asintótica, conjuntos causales, triangulaciones y otros enfoques compiten sin un vencedor experimental."]
+          ]
+        },
+        {
+          id: "initial-conditions", name: "Condiciones iniciales", className: "Pregunta abierta", p0: .855, p1: .94,
+          color: [213, 188, 255], metric: "Varias posibilidades · ninguna selección confirmada",
+          fact: "Las preguntas sustituyen a los objetos: no sabemos qué principio, proceso o condición determinó el estado inicial accesible a nuestras teorías.",
+          sound: { base: 220, filter: 4800, noise: .17, pulse: .032, type: "triangle" },
+          features: [
+            ["uniformidad", "¿Por qué el universo observable comenzó en un estado tan uniforme y con entropía gravitatoria tan baja?"],
+            ["leyes físicas", "¿Por qué existen estas leyes y estos valores de constantes, en lugar de otros?"],
+            ["fluctuaciones", "¿Qué determinó el estado y las propiedades precisas de las perturbaciones iniciales?"],
+            ["sentido de «antes»", "Si el tiempo clásico emerge o tiene un límite, preguntar por un antes podría no estar bien definido."],
+            ["comprobabilidad", "¿Qué clases de explicaciones producirían consecuencias observables y cuáles quedarían fuera de contraste?"],
+            ["sin selección", "La visualización abre ramas compatibles, pero no escoge una como historia real del universo."]
+          ]
+        },
+        {
+          id: "knowable-frontier", name: "Frontera de lo conocible", className: "Desconocido", p0: .94, p1: 1,
+          color: [238, 239, 255], metric: "Límites de medición · horizontes causales · teorías incompletas",
+          fact: "La ausencia de una respuesta confirmada no es un vacío de la ciencia. Es la frontera donde comienzan nuevas preguntas.",
+          sound: { base: 242, filter: 5300, noise: .21, pulse: .022, type: "sine" },
+          features: [
+            ["horizonte causal", "Hay regiones o sucesos cuya información no puede alcanzarnos debido a la historia y geometría del espacio-tiempo."],
+            ["incertidumbre", "Todo experimento tiene sensibilidad finita, ruido, degeneraciones y límites fundamentales de inferencia."],
+            ["teoría incompleta", "Una ecuación que falla en un límite extremo señala trabajo pendiente; no convierte automáticamente una extrapolación en realidad."],
+            ["pregunta futura", "Nuevos detectores, mensajeros y métodos podrían transformar algunas preguntas actuales en pruebas concretas."],
+            ["fuera de observación", "Algunas afirmaciones podrían no producir nunca diferencias medibles y quedar fuera del alcance de la ciencia empírica."],
+            ["campo abierto", "El final no contiene creador, multiverso, singularidad ni origen definitivo: contiene posibilidades y límites claramente etiquetados."]
+          ]
+        }
+      ];
+
+      const dataTiles = [];
+      const cmbCells = [];
+      const galaxyNodes = [];
+      const spectra = [];
+      const fossilContours = [];
+      const seedPairs = [];
+      const inferenceNodes = [];
+      const predictionArcs = [];
+      const detectorCones = [];
+      const noisePoints = [];
+      const candidateSignals = [];
+      const quantumStrings = [];
+      const quantumLoops = [];
+      const causalSets = [];
+      const questionBranches = [];
+      const horizonCurves = [];
+      const quietDust = [];
+      const particles = [];
+      const waves = [];
+
+      let width = 1;
+      let height = 1;
+      let dpr = 1;
+      let activePointer = null;
+      let pointerX = .5;
+      let pointerY = .94;
+      let targetX = .5;
+      let targetY = .94;
+      let lastZoneId = "";
+      let lastFeature = -1;
+      let hideTimer = 0;
+      let lastTime = performance.now();
+
+      let audioCtx = null;
+      let master = null;
+      let droneA = null;
+      let droneB = null;
+      let droneGain = null;
+      let droneFilter = null;
+      let pulseOsc = null;
+      let pulseGain = null;
+      let noiseSource = null;
+      let noiseGain = null;
+      let noiseFilter = null;
+      let stereo = null;
+
+      function clamp(value, min = 0, max = 1) { return Math.min(max, Math.max(min, value)); }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function smoothstep(a, b, x) {
+        const t = clamp((x - a) / Math.max(.00001, b - a));
+        return t * t * (3 - 2 * t);
+      }
+      function seeded(seed) {
+        let value = seed >>> 0;
+        return () => {
+          value += 0x6D2B79F5;
+          let t = value;
+          t = Math.imul(t ^ t >>> 15, t | 1);
+          t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+      }
+      function seededPoint(seed) {
+        const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+        return x - Math.floor(x);
+      }
+      function evidenceFromY(yNorm) { return clamp(1 - yNorm); }
+      function zoneForEvidence(progress) {
+        const p = clamp(progress, 0, .999999);
+        return ZONES.find(zone => p >= zone.p0 && p < zone.p1) || ZONES.at(-1);
+      }
+      function featureFor(zone, xNorm) {
+        const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .999999) * zone.features.length));
+        return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+      }
+      function sceneScale() { return Math.sqrt(Math.min(width, height) / 720); }
+
+      function setCssPoint(x, y) {
+        root.style.setProperty("--scan-x", `${x}px`);
+        root.style.setProperty("--scan-y", `${y}px`);
+      }
+      function setAccent(zone) {
+        const [r, g, b] = zone.color;
+        root.style.setProperty("--accent", `rgb(${r} ${g} ${b})`);
+        root.style.setProperty("--accent-soft", `rgb(${r} ${g} ${b} / .34)`);
+      }
+
+      function buildStaticScene() {
+        dataTiles.length = cmbCells.length = galaxyNodes.length = spectra.length = 0;
+        fossilContours.length = seedPairs.length = inferenceNodes.length = 0;
+        predictionArcs.length = detectorCones.length = noisePoints.length = candidateSignals.length = 0;
+        quantumStrings.length = quantumLoops.length = causalSets.length = 0;
+        questionBranches.length = horizonCurves.length = quietDust.length = 0;
+
+        const random = seeded(26071809);
+
+        for (let i = 0; i < 34; i++) {
+          dataTiles.push({
+            x: .04 + random() * .92,
+            y: .80 + random() * .125,
+            w: .025 + random() * .065,
+            h: .009 + random() * .027,
+            phase: random() * TAU,
+            kind: Math.floor(random() * 4),
+            a: .18 + random() * .42
+          });
+        }
+
+        const cmbCols = Math.max(16, Math.round(width / 34));
+        const cmbRows = 4;
+        for (let row = 0; row < cmbRows; row++) {
+          for (let col = 0; col < cmbCols; col++) {
+            const seed = row * 997 + col * 41;
+            cmbCells.push({
+              x: (col + .5 + (seededPoint(seed) - .5) * .85) / cmbCols,
+              y: .825 + (row + .5 + (seededPoint(seed + 8) - .5) * .7) / cmbRows * .075,
+              r: .45 + seededPoint(seed + 18) * 1.6,
+              v: seededPoint(seed + 28),
+              phase: seededPoint(seed + 38) * TAU
+            });
+          }
+        }
+
+        for (let i = 0; i < 46; i++) {
+          galaxyNodes.push({
+            x: .02 + random() * .96,
+            y: .805 + random() * .105,
+            r: .6 + random() * 2,
+            a: .16 + random() * .36,
+            phase: random() * TAU
+          });
+        }
+
+        for (let i = 0; i < 8; i++) {
+          const samples = [];
+          const points = 34;
+          for (let j = 0; j <= points; j++) {
+            const x = j / points;
+            const peak1 = Math.exp(-Math.pow((x - (.18 + i * .012)) / .055, 2));
+            const peak2 = .62 * Math.exp(-Math.pow((x - (.42 + i * .006)) / .075, 2));
+            const peak3 = .38 * Math.exp(-Math.pow((x - .68) / .095, 2));
+            samples.push((peak1 + peak2 + peak3) * (.78 + random() * .18));
+          }
+          spectra.push({ y: .77 + i * .012, samples, a: .09 + i * .013, phase: random() * TAU });
+        }
+
+        for (let i = 0; i < 15; i++) {
+          fossilContours.push({
+            x: .05 + random() * .9,
+            y: .66 + random() * .125,
+            rx: .035 + random() * .095,
+            ry: .012 + random() * .04,
+            turns: 1 + Math.floor(random() * 3),
+            phase: random() * TAU,
+            a: .08 + random() * .18,
+            tilt: (random() - .5) * .8
+          });
+        }
+
+        for (let i = 0; i < 36; i++) {
+          seedPairs.push({
+            x0: .03 + random() * .94,
+            y0: .69 + random() * .09,
+            x1: .03 + random() * .94,
+            y1: .635 + random() * .04,
+            phase: random() * TAU,
+            a: .06 + random() * .15
+          });
+        }
+
+        for (let i = 0; i < 30; i++) {
+          inferenceNodes.push({
+            x: .035 + random() * .93,
+            y: .50 + random() * .145,
+            r: 1 + random() * 2.4,
+            value: random(),
+            phase: random() * TAU,
+            a: .13 + random() * .3
+          });
+        }
+
+        for (let i = 0; i < 25; i++) {
+          predictionArcs.push({
+            x0: random(),
+            y0: .39 + random() * .11,
+            x1: random(),
+            y1: .37 + random() * .115,
+            bend: (random() - .5) * .12,
+            phase: random() * TAU,
+            dash: 3 + random() * 7,
+            a: .06 + random() * .16
+          });
+        }
+
+        for (let i = 0; i < 12; i++) {
+          detectorCones.push({
+            x: .05 + random() * .9,
+            y: .27 + random() * .095,
+            spread: .025 + random() * .075,
+            length: .035 + random() * .09,
+            phase: random() * TAU,
+            a: .05 + random() * .15
+          });
+        }
+
+        const noiseCount = Math.max(240, Math.round(width * height / 2600));
+        for (let i = 0; i < noiseCount; i++) {
+          noisePoints.push({
+            x: random(),
+            y: .255 + random() * .12,
+            r: .25 + random() * 1.1,
+            phase: random() * TAU,
+            a: .025 + random() * .11
+          });
+        }
+
+        for (let i = 0; i < 10; i++) {
+          candidateSignals.push({
+            x: .07 + random() * .86,
+            y: .27 + random() * .08,
+            width: .012 + random() * .035,
+            amp: .004 + random() * .015,
+            phase: random() * TAU,
+            a: .08 + random() * .2
+          });
+        }
+
+        for (let i = 0; i < 18; i++) {
+          quantumStrings.push({
+            x: random(),
+            y: .155 + random() * .1,
+            length: .035 + random() * .12,
+            amp: .003 + random() * .012,
+            freq: 2 + Math.floor(random() * 5),
+            phase: random() * TAU,
+            a: .05 + random() * .15
+          });
+        }
+
+        for (let i = 0; i < 19; i++) {
+          quantumLoops.push({
+            x: .03 + random() * .94,
+            y: .165 + random() * .085,
+            r: .006 + random() * .022,
+            sides: 3 + Math.floor(random() * 6),
+            phase: random() * TAU,
+            a: .05 + random() * .15
+          });
+        }
+
+        for (let i = 0; i < 50; i++) {
+          causalSets.push({
+            x: random(),
+            y: .16 + random() * .095,
+            r: .3 + random() * 1.2,
+            phase: random() * TAU,
+            a: .035 + random() * .12
+          });
+        }
+
+        const branchRoots = [0.15, 0.35, 0.55, 0.75, 0.9];
+        for (let i = 0; i < branchRoots.length; i++) {
+          const rootX = branchRoots[i];
+          const branchCount = 2 + Math.floor(random() * 3);
+          for (let j = 0; j < branchCount; j++) {
+            questionBranches.push({
+              x0: rootX,
+              y0: .145,
+              x1: clamp(rootX + (random() - .5) * .22),
+              y1: .065 + random() * .045,
+              bend: (random() - .5) * .13,
+              phase: random() * TAU,
+              a: .045 + random() * .12
+            });
+          }
+        }
+
+        for (let i = 0; i < 6; i++) {
+          horizonCurves.push({
+            y: .018 + i * .012,
+            amp: .002 + random() * .012,
+            freq: .5 + random() * 1.8,
+            phase: random() * TAU,
+            a: .035 + random() * .09
+          });
+        }
+
+        for (let i = 0; i < 72; i++) {
+          quietDust.push({
+            x: random(),
+            y: random() * .085,
+            r: .25 + random() * 1.2,
+            phase: random() * TAU,
+            a: .018 + random() * .08
+          });
+        }
+      }
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
+        dpr = Math.min(2, devicePixelRatio || 1);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildStaticScene();
+        setCssPoint(targetX * width, targetY * height);
+      }
+
+      function ensureAudio() {
+        if (audioCtx) {
+          if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+          return;
+        }
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        audioCtx = new AudioContext();
+        master = audioCtx.createGain();
+        master.gain.value = 0;
+        const compressor = audioCtx.createDynamicsCompressor();
+        compressor.threshold.value = -23;
+        compressor.knee.value = 18;
+        compressor.ratio.value = 6;
+        master.connect(compressor).connect(audioCtx.destination);
+
+        droneA = audioCtx.createOscillator();
+        droneB = audioCtx.createOscillator();
+        droneA.type = "sine";
+        droneB.type = "triangle";
+        droneGain = audioCtx.createGain();
+        droneGain.gain.value = .0001;
+        droneFilter = audioCtx.createBiquadFilter();
+        droneFilter.type = "lowpass";
+        droneFilter.frequency.value = 900;
+        droneFilter.Q.value = .8;
+        stereo = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : audioCtx.createGain();
+        droneA.connect(droneGain);
+        droneB.connect(droneGain);
+        droneGain.connect(droneFilter).connect(stereo).connect(master);
+        droneA.start();
+        droneB.start();
+
+        pulseOsc = audioCtx.createOscillator();
+        pulseOsc.type = "sine";
+        pulseGain = audioCtx.createGain();
+        pulseGain.gain.value = .0001;
+        pulseOsc.connect(pulseGain).connect(master);
+        pulseOsc.start();
+
+        const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+        const ch = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < ch.length; i++) ch[i] = Math.random() * 2 - 1;
+        noiseSource = audioCtx.createBufferSource();
+        noiseSource.buffer = noiseBuffer;
+        noiseSource.loop = true;
+        noiseGain = audioCtx.createGain();
+        noiseGain.gain.value = .0001;
+        noiseFilter = audioCtx.createBiquadFilter();
+        noiseFilter.type = "bandpass";
+        noiseFilter.frequency.value = 1200;
+        noiseFilter.Q.value = .55;
+        noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
+        noiseSource.start();
+      }
+
+      function setAudioFor(zone, xNorm, yNorm, active) {
+        if (!audioCtx || !master) return;
+        const now = audioCtx.currentTime;
+        const s = zone.sound;
+        const vertical = .93 + (1 - yNorm) * .3;
+        const horizontal = .95 + xNorm * .12;
+        const base = s.base * vertical * horizontal;
+        droneA.type = s.type;
+        droneB.type = s.type === "sawtooth" ? "triangle" : "sine";
+        droneA.frequency.setTargetAtTime(base, now, .055);
+        droneB.frequency.setTargetAtTime(base * 1.498, now, .07);
+        droneFilter.frequency.setTargetAtTime(s.filter * (.82 + xNorm * .32), now, .08);
+        droneGain.gain.setTargetAtTime(active ? .021 : .0001, now, .07);
+        pulseOsc.frequency.setTargetAtTime(base * (2.01 + s.pulse), now, .05);
+        pulseGain.gain.setTargetAtTime(active ? .0055 : .0001, now, .08);
+        noiseFilter.frequency.setTargetAtTime(s.filter * 1.2, now, .08);
+        noiseGain.gain.setTargetAtTime(active ? Math.max(.0001, s.noise * .115) : .0001, now, .08);
+        if (stereo.pan) stereo.pan.setTargetAtTime((xNorm - .5) * .8, now, .05);
+        master.gain.setTargetAtTime(active ? .34 : .0001, now, .07);
+      }
+
+      function ping(zone, xNorm, featureIndex = 0) {
+        if (!audioCtx || !master) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+        const pan = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+        const scale = [1, 1.125, 1.25, 1.5, 1.6875, 2][featureIndex % 6];
+        osc.type = zone.sound.type;
+        osc.frequency.setValueAtTime(zone.sound.base * 3.7 * scale, now);
+        osc.frequency.exponentialRampToValueAtTime(Math.max(45, zone.sound.base * 1.6), now + .42);
+        filter.type = "lowpass";
+        filter.frequency.value = zone.sound.filter * 1.75;
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(.041, now + .012);
+        gain.gain.exponentialRampToValueAtTime(.0001, now + .5);
+        osc.connect(filter).connect(gain);
+        if (pan) {
+          pan.pan.value = (xNorm - .5) * 1.5;
+          gain.connect(pan).connect(master);
+        } else {
+          gain.connect(master);
+        }
+        osc.start(now);
+        osc.stop(now + .55);
+      }
+
+      function addRipple(x, y) {
+        const node = document.createElement("div");
+        node.className = "ripple";
+        node.style.left = `${x}px`;
+        node.style.top = `${y}px`;
+        document.body.appendChild(node);
+        node.addEventListener("animationend", () => node.remove(), { once: true });
+      }
+
+      function addBurst(x, y, zone) {
+        const count = reducedMotion ? 5 : 13;
+        for (let i = 0; i < count; i++) {
+          const a = Math.random() * TAU;
+          const speed = 20 + Math.random() * 85;
+          particles.push({
+            x, y,
+            vx: Math.cos(a) * speed,
+            vy: Math.sin(a) * speed,
+            r: 1 + Math.random() * 2.5,
+            life: 1,
+            decay: 1.1 + Math.random() * .7,
+            color: zone.color
+          });
+        }
+        waves.push({ x, y, radius: 5, life: 1, color: zone.color });
+      }
+
+      function updateReadout(x, y, isNewPress = false) {
+        const xNorm = clamp(x / width, 0, .999999);
+        const yNorm = clamp(y / height, 0, .999999);
+        const progress = evidenceFromY(yNorm);
+        const zone = zoneForEvidence(progress);
+        const feature = featureFor(zone, xNorm);
+
+        targetX = xNorm;
+        targetY = yNorm;
+        setCssPoint(x, y);
+        setAccent(zone);
+        root.style.setProperty("--progress", `${Math.max(1.2, progress * 100)}%`);
+
+        touchOrb.style.left = `${x}px`;
+        touchOrb.style.top = `${y}px`;
+        scaleValue.textContent = zone.className;
+
+        const changed = zone.id !== lastZoneId || feature.index !== lastFeature;
+        if (changed || isNewPress) {
+          evidenceClass.textContent = zone.className;
+          zoneName.textContent = zone.name;
+          zoneName.className = zone.name.length > 27 ? "long" : zone.name.length > 18 ? "compact" : "";
+          featureName.textContent = feature.name;
+          metric.textContent = zone.metric;
+          fact.textContent = feature.fact || zone.fact;
+          ping(zone, xNorm, feature.index);
+          addBurst(x, y, zone);
+          lastZoneId = zone.id;
+          lastFeature = feature.index;
+        }
+
+        readout.classList.add("visible");
+        touchOrb.classList.add("visible");
+        document.body.classList.add("active");
+        hint.style.display = "none";
+        setAudioFor(zone, xNorm, yNorm, true);
+      }
+
+      function releaseInteraction(delay = 900) {
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          readout.classList.remove("visible");
+          touchOrb.classList.remove("visible");
+          document.body.classList.remove("active");
+          const zone = zoneForEvidence(evidenceFromY(targetY));
+          setAudioFor(zone, targetX, targetY, false);
+        }, delay);
+      }
+
+      function pointerPosition(event) {
+        const rect = canvas.getBoundingClientRect();
+        return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+      }
+
+      canvas.addEventListener("pointerdown", event => {
+        event.preventDefault();
+        activePointer = event.pointerId;
+        canvas.setPointerCapture?.(event.pointerId);
+        ensureAudio();
+        const p = pointerPosition(event);
+        addRipple(p.x, p.y);
+        updateReadout(p.x, p.y, true);
+      });
+
+      canvas.addEventListener("pointermove", event => {
+        if (activePointer !== event.pointerId) return;
+        const p = pointerPosition(event);
+        updateReadout(p.x, p.y, false);
+      });
+
+      function endPointer(event) {
+        if (activePointer !== event.pointerId) return;
+        activePointer = null;
+        canvas.releasePointerCapture?.(event.pointerId);
+        releaseInteraction();
+      }
+
+      canvas.addEventListener("pointerup", endPointer);
+      canvas.addEventListener("pointercancel", endPointer);
+      canvas.addEventListener("lostpointercapture", () => {
+        activePointer = null;
+        releaseInteraction();
+      });
+      canvas.addEventListener("contextmenu", event => event.preventDefault());
+
+      canvas.addEventListener("keydown", event => {
+        const step = event.shiftKey ? .09 : .035;
+        if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) return;
+        event.preventDefault();
+        ensureAudio();
+        if (event.key === "ArrowUp") targetY = clamp(targetY - step);
+        if (event.key === "ArrowDown") targetY = clamp(targetY + step);
+        if (event.key === "ArrowLeft") targetX = clamp(targetX - step);
+        if (event.key === "ArrowRight") targetX = clamp(targetX + step);
+        updateReadout(targetX * width, targetY * height, event.key === "Enter" || event.key === " ");
+        releaseInteraction(1500);
+      });
+
+      function glow(x, y, r, core, mid, edge = "rgba(0,0,0,0)") {
+        const g = ctx.createRadialGradient(x, y, 0, x, y, Math.max(1, r));
+        g.addColorStop(0, core);
+        g.addColorStop(.38, mid);
+        g.addColorStop(1, edge);
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(x, y, Math.max(1, r), 0, TAU);
+        ctx.fill();
+      }
+
+      function drawBackground(time) {
+        const g = ctx.createLinearGradient(0, 0, 0, height);
+        g.addColorStop(0, "#02040a");
+        g.addColorStop(.06, "#080c17");
+        g.addColorStop(.145, "#171126");
+        g.addColorStop(.255, "#26163d");
+        g.addColorStop(.375, "#321a34");
+        g.addColorStop(.50, "#3c2922");
+        g.addColorStop(.64, "#1b3d39");
+        g.addColorStop(.79, "#103a4c");
+        g.addColorStop(.94, "#122033");
+        g.addColorStop(1, "#151826");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, width, height);
+
+        const pulse = reducedMotion ? 1 : .93 + Math.sin(time * .00024) * .07;
+        const haze = ctx.createRadialGradient(width * .48, height * .63, 0, width * .48, height * .63, Math.max(width, height) * .8);
+        haze.addColorStop(0, `rgba(111,228,210,${.045 * pulse})`);
+        haze.addColorStop(.45, "rgba(255,171,91,.028)");
+        haze.addColorStop(.74, "rgba(168,103,255,.022)");
+        haze.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = haze;
+        ctx.fillRect(0, 0, width, height);
+      }
+
+      function drawEvidenceBands() {
+        const bands = [
+          { y0: .795, y1: .935, color: "96,203,255", label: "OBSERVADO", solid: true },
+          { y0: .65, y1: .795, color: "105,239,204", label: "HUELLA FÓSIL", solid: true },
+          { y0: .50, y1: .65, color: "255,216,104", label: "INFERIDO", solid: true },
+          { y0: .375, y1: .50, color: "255,159,98", label: "PREDICHO", solid: false },
+          { y0: .255, y1: .375, color: "255,108,154", label: "NO DETECTADO", solid: false },
+          { y0: .145, y1: .255, color: "169,121,255", label: "HIPOTÉTICO", solid: false },
+          { y0: 0, y1: .145, color: "227,229,255", label: "DESCONOCIDO", solid: false }
+        ];
+
+        ctx.save();
+        for (const band of bands) {
+          const top = band.y0 * height;
+          const bottom = band.y1 * height;
+          const grad = ctx.createLinearGradient(0, top, 0, bottom);
+          grad.addColorStop(0, `rgba(${band.color},0)`);
+          grad.addColorStop(.5, `rgba(${band.color},${band.solid ? .032 : .022})`);
+          grad.addColorStop(1, `rgba(${band.color},0)`);
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, top, width, bottom - top);
+
+          ctx.strokeStyle = `rgba(${band.color},${band.solid ? .12 : .075})`;
+          ctx.lineWidth = band.solid ? .8 : .55;
+          ctx.setLineDash(band.solid ? [] : [4, 7]);
+          ctx.beginPath();
+          ctx.moveTo(0, top);
+          ctx.lineTo(width, top);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          ctx.save();
+          ctx.translate(Math.max(10, width * .018), (top + bottom) * .5);
+          ctx.rotate(-Math.PI / 2);
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = `rgba(${band.color},${band.solid ? .28 : .19})`;
+          ctx.font = `900 ${Math.max(6, Math.min(9, width * .018))}px Inter,system-ui,sans-serif`;
+          ctx.fillText(band.label, 0, 0);
+          ctx.restore();
+        }
+        ctx.restore();
+      }
+
+      function drawObservedData(time) {
+        const top = height * .79;
+        const bottom = height * .94;
+        const panel = ctx.createLinearGradient(0, top, 0, bottom);
+        panel.addColorStop(0, "rgba(63,194,255,.025)");
+        panel.addColorStop(.45, "rgba(69,194,225,.08)");
+        panel.addColorStop(1, "rgba(151,198,255,.035)");
+        ctx.fillStyle = panel;
+        ctx.fillRect(0, top, width, bottom - top);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+
+        for (const tile of dataTiles) {
+          const x = tile.x * width;
+          const y = tile.y * height;
+          const w = tile.w * width;
+          const h = tile.h * height;
+          const pulse = reducedMotion ? 1 : .92 + Math.sin(time * .0008 + tile.phase) * .08;
+          ctx.strokeStyle = `rgba(165,229,255,${tile.a * .45 * pulse})`;
+          ctx.fillStyle = `rgba(74,185,224,${tile.a * .055})`;
+          ctx.lineWidth = .7;
+          ctx.fillRect(x - w / 2, y - h / 2, w, h);
+          ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+
+          if (tile.kind === 0) {
+            ctx.beginPath();
+            for (let j = 0; j <= 9; j++) {
+              const px = x - w * .42 + j / 9 * w * .84;
+              const py = y + Math.sin(j * 1.7 + tile.phase) * h * .22;
+              if (j === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+          } else if (tile.kind === 1) {
+            for (let j = 0; j < 5; j++) {
+              ctx.fillStyle = `rgba(174,237,255,${tile.a * (.2 + j * .07)})`;
+              ctx.fillRect(x - w * .38 + j * w * .17, y + h * .28 - j * h * .12, w * .08, j * h * .1 + h * .09);
+            }
+          } else if (tile.kind === 2) {
+            ctx.beginPath();
+            ctx.arc(x, y, Math.min(w, h) * .28, 0, TAU);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(x, y, Math.min(w, h) * .12, 0, TAU);
+            ctx.fillStyle = `rgba(230,249,255,${tile.a * .3})`;
+            ctx.fill();
+          } else {
+            ctx.beginPath();
+            ctx.moveTo(x - w * .38, y + h * .18);
+            ctx.lineTo(x - w * .12, y - h * .05);
+            ctx.lineTo(x + w * .05, y + h * .08);
+            ctx.lineTo(x + w * .38, y - h * .25);
+            ctx.stroke();
+          }
+        }
+
+        for (const cell of cmbCells) {
+          const x = cell.x * width;
+          const y = cell.y * height;
+          const r = cell.r * 4.3 * sceneScale();
+          const warm = cell.v > .5;
+          const color = warm ? "255,176,102" : "99,183,255";
+          glow(x, y, r, `rgba(${color},${.10 + Math.abs(cell.v - .5) * .18})`, `rgba(${color},.02)`);
+        }
+
+        ctx.strokeStyle = "rgba(148,225,255,.12)";
+        ctx.lineWidth = .6;
+        for (let i = 0; i < galaxyNodes.length; i++) {
+          const a = galaxyNodes[i];
+          const b = galaxyNodes[(i + 7) % galaxyNodes.length];
+          if (Math.abs(a.x - b.x) > .16 || Math.abs(a.y - b.y) > .06) continue;
+          ctx.beginPath();
+          ctx.moveTo(a.x * width, a.y * height);
+          ctx.lineTo(b.x * width, b.y * height);
+          ctx.stroke();
+        }
+        for (const n of galaxyNodes) {
+          const pulse = reducedMotion ? 1 : .84 + Math.sin(time * .0007 + n.phase) * .16;
+          glow(n.x * width, n.y * height, n.r * 5.2 * sceneScale() * pulse, `rgba(211,244,255,${n.a * .55})`, `rgba(87,180,255,${n.a * .08})`);
+        }
+
+        for (const spectrum of spectra) {
+          ctx.strokeStyle = `rgba(211,245,255,${spectrum.a})`;
+          ctx.lineWidth = .55;
+          ctx.beginPath();
+          for (let j = 0; j < spectrum.samples.length; j++) {
+            const x = j / (spectrum.samples.length - 1) * width;
+            const y = spectrum.y * height - spectrum.samples[j] * height * .025;
+            if (j === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawFossilTraces(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+
+        for (const c of fossilContours) {
+          const x = c.x * width;
+          const y = c.y * height;
+          const rx = c.rx * width;
+          const ry = c.ry * height;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(c.tilt + (reducedMotion ? 0 : Math.sin(time * .00015 + c.phase) * .04));
+          for (let k = 0; k < c.turns + 2; k++) {
+            ctx.strokeStyle = `rgba(124,255,218,${c.a * (1 - k * .18)})`;
+            ctx.lineWidth = .55;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, rx * (1 + k * .18), ry * (1 + k * .2), 0, 0, TAU);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+
+        for (const pair of seedPairs) {
+          const pulse = reducedMotion ? 1 : .75 + Math.sin(time * .00055 + pair.phase) * .25;
+          const x0 = pair.x0 * width;
+          const y0 = pair.y0 * height;
+          const x1 = pair.x1 * width;
+          const y1 = pair.y1 * height;
+          ctx.strokeStyle = `rgba(146,255,224,${pair.a * pulse})`;
+          ctx.lineWidth = .5;
+          ctx.beginPath();
+          ctx.moveTo(x0, y0);
+          ctx.quadraticCurveTo((x0 + x1) * .5, (y0 + y1) * .5 + Math.sin(pair.phase) * 8, x1, y1);
+          ctx.stroke();
+          glow(x0, y0, 2.5 * sceneScale(), `rgba(224,255,244,${pair.a * 1.5})`, "rgba(95,255,198,.02)");
+          glow(x1, y1, 4.2 * sceneScale(), `rgba(180,255,227,${pair.a * .9})`, "rgba(86,255,190,.02)");
+        }
+
+        const acousticY = height * .705;
+        ctx.strokeStyle = "rgba(160,255,226,.19)";
+        ctx.lineWidth = .7;
+        ctx.beginPath();
+        const segments = 96;
+        for (let i = 0; i <= segments; i++) {
+          const x = i / segments * width;
+          const y = acousticY + Math.sin(i / segments * TAU * 5.4 + (reducedMotion ? 0 : time * .0004)) * height * .007
+            + Math.sin(i / segments * TAU * 11.2) * height * .0025;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawInference(time) {
+        const top = height * .49;
+        const bottom = height * .66;
+        const mist = ctx.createLinearGradient(0, top, 0, bottom);
+        mist.addColorStop(0, "rgba(255,203,70,.025)");
+        mist.addColorStop(.5, "rgba(255,216,107,.075)");
+        mist.addColorStop(1, "rgba(255,217,114,.015)");
+        ctx.fillStyle = mist;
+        ctx.fillRect(0, top, width, bottom - top);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.strokeStyle = "rgba(255,226,137,.11)";
+        ctx.lineWidth = .55;
+        for (let i = 0; i < inferenceNodes.length; i++) {
+          const a = inferenceNodes[i];
+          for (let j = i + 1; j < inferenceNodes.length; j++) {
+            const b = inferenceNodes[j];
+            const dx = a.x - b.x;
+            const dy = (a.y - b.y) * 1.6;
+            const dist = Math.hypot(dx, dy);
+            if (dist > .16) continue;
+            ctx.globalAlpha = (1 - dist / .16) * .7;
+            ctx.beginPath();
+            ctx.moveTo(a.x * width, a.y * height);
+            ctx.lineTo(b.x * width, b.y * height);
+            ctx.stroke();
+          }
+        }
+        ctx.globalAlpha = 1;
+
+        for (const n of inferenceNodes) {
+          const pulse = reducedMotion ? 1 : .86 + Math.sin(time * .00075 + n.phase) * .14;
+          const warm = n.value > .5;
+          const color = warm ? "255,231,150" : "255,193,77";
+          glow(n.x * width, n.y * height, n.r * 6 * sceneScale() * pulse, `rgba(${color},${n.a * .5})`, `rgba(${color},${n.a * .05})`);
+          ctx.strokeStyle = `rgba(${color},${n.a * .5})`;
+          ctx.lineWidth = .55;
+          ctx.beginPath();
+          ctx.arc(n.x * width, n.y * height, n.r * 2.4 * sceneScale(), 0, TAU);
+          ctx.stroke();
+        }
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "rgba(255,239,185,.12)";
+        ctx.font = `700 ${Math.max(8, Math.min(14, width * .028))}px ui-monospace,SFMono-Regular,Consolas,monospace`;
+        const formulas = ["datos + física → reconstrucción", "δ inicial → gravedad → estructura", "abundancia ↔ densidad bariónica"];
+        formulas.forEach((text, i) => {
+          ctx.fillText(text, width * (.25 + i * .25), height * (.535 + (i % 2) * .07));
+        });
+        ctx.restore();
+      }
+
+      function drawPredictions(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.setLineDash([4, 7]);
+        for (const arc of predictionArcs) {
+          const x0 = arc.x0 * width;
+          const y0 = arc.y0 * height;
+          const x1 = arc.x1 * width;
+          const y1 = arc.y1 * height;
+          ctx.strokeStyle = `rgba(255,172,103,${arc.a})`;
+          ctx.lineWidth = .65;
+          ctx.lineDashOffset = reducedMotion ? 0 : -time * .012 + arc.phase * 4;
+          ctx.beginPath();
+          ctx.moveTo(x0, y0);
+          ctx.quadraticCurveTo((x0 + x1) * .5, (y0 + y1) * .5 + arc.bend * height, x1, y1);
+          ctx.stroke();
+          ctx.setLineDash([arc.dash, arc.dash * .9]);
+        }
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1;
+
+        const targets = [
+          { x: .17, y: .43, r: .018 },
+          { x: .39, y: .405, r: .024 },
+          { x: .62, y: .45, r: .016 },
+          { x: .82, y: .40, r: .022 }
+        ];
+        targets.forEach((t, i) => {
+          const pulse = reducedMotion ? 1 : .8 + Math.sin(time * .001 + i) * .2;
+          ctx.strokeStyle = `rgba(255,204,151,${.16 * pulse})`;
+          ctx.lineWidth = .65;
+          ctx.beginPath();
+          ctx.arc(t.x * width, t.y * height, t.r * Math.min(width, height), 0, TAU);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(t.x * width - 8, t.y * height);
+          ctx.lineTo(t.x * width + 8, t.y * height);
+          ctx.moveTo(t.x * width, t.y * height - 8);
+          ctx.lineTo(t.x * width, t.y * height + 8);
+          ctx.stroke();
+        });
+        ctx.restore();
+      }
+
+      function drawUndetected(time) {
+        const top = height * .25;
+        const bottom = height * .38;
+        const fog = ctx.createLinearGradient(0, top, 0, bottom);
+        fog.addColorStop(0, "rgba(255,74,133,.02)");
+        fog.addColorStop(.5, "rgba(255,94,146,.075)");
+        fog.addColorStop(1, "rgba(255,100,151,.02)");
+        ctx.fillStyle = fog;
+        ctx.fillRect(0, top, width, bottom - top);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const p of noisePoints) {
+          const flicker = reducedMotion ? 1 : .35 + Math.abs(Math.sin(time * .0018 + p.phase)) * .65;
+          ctx.fillStyle = `rgba(255,164,195,${p.a * flicker})`;
+          ctx.beginPath();
+          ctx.arc(p.x * width, p.y * height, p.r * sceneScale(), 0, TAU);
+          ctx.fill();
+        }
+
+        for (const cone of detectorCones) {
+          const x = cone.x * width;
+          const y = cone.y * height;
+          const len = cone.length * height;
+          const spread = cone.spread * width;
+          const grad = ctx.createLinearGradient(x, y, x, y + len);
+          grad.addColorStop(0, `rgba(255,190,213,${cone.a})`);
+          grad.addColorStop(1, "rgba(255,109,163,0)");
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x - spread, y + len);
+          ctx.lineTo(x + spread, y + len);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        for (const s of candidateSignals) {
+          const pulse = reducedMotion ? 1 : .55 + Math.sin(time * .0009 + s.phase) * .45;
+          ctx.strokeStyle = `rgba(255,216,229,${s.a * pulse})`;
+          ctx.lineWidth = .65;
+          ctx.beginPath();
+          const points = 30;
+          for (let i = 0; i <= points; i++) {
+            const x = (s.x - s.width + i / points * s.width * 2) * width;
+            const center = s.y * height;
+            const envelope = Math.exp(-Math.pow((i / points - .5) / .23, 2));
+            const y = center + Math.sin(i * 1.9 + s.phase) * s.amp * height * envelope;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          ctx.setLineDash([2, 5]);
+          ctx.strokeStyle = `rgba(255,155,190,${s.a * .4})`;
+          ctx.beginPath();
+          ctx.arc(s.x * width, s.y * height, s.width * width * .8, 0, TAU);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+        ctx.restore();
+      }
+
+      function drawQuantumFrameworks(time) {
+        const top = height * .145;
+        const bottom = height * .26;
+        const veil = ctx.createLinearGradient(0, top, 0, bottom);
+        veil.addColorStop(0, "rgba(99,53,173,.03)");
+        veil.addColorStop(.5, "rgba(161,98,255,.08)");
+        veil.addColorStop(1, "rgba(174,111,255,.015)");
+        ctx.fillStyle = veil;
+        ctx.fillRect(0, top, width, bottom - top);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+
+        ctx.beginPath();
+        ctx.rect(0, top, width / 3, bottom - top);
+        ctx.clip();
+        for (const s of quantumStrings) {
+          const x0 = s.x * width;
+          const y0 = s.y * height;
+          const len = s.length * width;
+          ctx.strokeStyle = `rgba(205,165,255,${s.a})`;
+          ctx.lineWidth = .55;
+          ctx.beginPath();
+          const segments = 34;
+          for (let i = 0; i <= segments; i++) {
+            const t = i / segments;
+            const x = x0 - len / 2 + t * len;
+            const y = y0 + Math.sin(t * TAU * s.freq + s.phase + (reducedMotion ? 0 : time * .0006)) * s.amp * height;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(width / 3, top, width / 3, bottom - top);
+        ctx.clip();
+        ctx.globalCompositeOperation = "screen";
+        for (const loop of quantumLoops) {
+          const x = loop.x * width;
+          const y = loop.y * height;
+          const r = loop.r * Math.min(width, height);
+          ctx.strokeStyle = `rgba(181,142,255,${loop.a})`;
+          ctx.lineWidth = .55;
+          ctx.beginPath();
+          for (let i = 0; i <= loop.sides; i++) {
+            const a = i / loop.sides * TAU + loop.phase + (reducedMotion ? 0 : time * .0001);
+            const px = x + Math.cos(a) * r;
+            const py = y + Math.sin(a) * r;
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(width * 2 / 3, top, width / 3, bottom - top);
+        ctx.clip();
+        ctx.globalCompositeOperation = "screen";
+        ctx.strokeStyle = "rgba(219,197,255,.08)";
+        ctx.lineWidth = .45;
+        for (let i = 0; i < causalSets.length; i++) {
+          const a = causalSets[i];
+          const x = a.x * width;
+          const y = a.y * height;
+          if (x < width * 2 / 3) continue;
+          glow(x, y, a.r * 2.5 * sceneScale(), `rgba(229,211,255,${a.a})`, "rgba(167,120,255,.01)");
+          const b = causalSets[(i + 9) % causalSets.length];
+          const bx = b.x * width;
+          const by = b.y * height;
+          if (bx < width * 2 / 3 || Math.abs(x - bx) > width * .12 || by >= y) continue;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(bx, by);
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "rgba(231,216,255,.17)";
+        ctx.font = `850 ${Math.max(6, Math.min(9, width * .018))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("CUERDAS", width / 6, height * .242);
+        ctx.fillText("BUCLES", width * .5, height * .242);
+        ctx.fillText("OTRAS VÍAS", width * 5 / 6, height * .242);
+        ctx.restore();
+
+        ctx.strokeStyle = "rgba(235,220,255,.08)";
+        ctx.lineWidth = .5;
+        ctx.setLineDash([3, 7]);
+        ctx.beginPath();
+        ctx.moveTo(width / 3, top);
+        ctx.lineTo(width / 3, bottom);
+        ctx.moveTo(width * 2 / 3, top);
+        ctx.lineTo(width * 2 / 3, bottom);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      function drawInitialQuestions(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const b of questionBranches) {
+          const x0 = b.x0 * width;
+          const y0 = b.y0 * height;
+          const x1 = b.x1 * width;
+          const y1 = b.y1 * height;
+          const pulse = reducedMotion ? 1 : .72 + Math.sin(time * .00035 + b.phase) * .28;
+          const grad = ctx.createLinearGradient(x0, y0, x1, y1);
+          grad.addColorStop(0, `rgba(224,204,255,${b.a * pulse})`);
+          grad.addColorStop(1, "rgba(224,204,255,0)");
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = .7;
+          ctx.beginPath();
+          ctx.moveTo(x0, y0);
+          ctx.quadraticCurveTo((x0 + x1) * .5 + b.bend * width, (y0 + y1) * .5, x1, y1);
+          ctx.stroke();
+          glow(x1, y1, 5.5 * sceneScale(), `rgba(239,228,255,${b.a * .8})`, "rgba(182,137,255,.02)");
+        }
+
+        const qs = ["¿uniformidad?", "¿leyes?", "¿fluctuaciones?", "¿antes?", "¿comprobable?"];
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = `760 ${Math.max(7, Math.min(11, width * .022))}px Inter,system-ui,sans-serif`;
+        qs.forEach((q, i) => {
+          ctx.fillStyle = `rgba(235,224,255,${.12 + (i % 2) * .035})`;
+          ctx.fillText(q, width * (.11 + i * .195), height * (.105 + (i % 2) * .026));
+        });
+        ctx.restore();
+      }
+
+      function drawKnowableFrontier(time) {
+        const bottom = height * .075;
+        const veil = ctx.createLinearGradient(0, 0, 0, bottom);
+        veil.addColorStop(0, "rgba(1,3,8,.98)");
+        veil.addColorStop(.55, "rgba(13,18,30,.76)");
+        veil.addColorStop(1, "rgba(24,28,44,0)");
+        ctx.fillStyle = veil;
+        ctx.fillRect(0, 0, width, bottom * 1.3);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const h of horizonCurves) {
+          ctx.strokeStyle = `rgba(231,237,255,${h.a})`;
+          ctx.lineWidth = .5;
+          ctx.beginPath();
+          const points = 70;
+          for (let i = 0; i <= points; i++) {
+            const x = i / points * width;
+            const y = h.y * height + Math.sin(i / points * TAU * h.freq + h.phase + (reducedMotion ? 0 : time * .00012)) * h.amp * height;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        for (const d of quietDust) {
+          const pulse = reducedMotion ? 1 : .45 + Math.abs(Math.sin(time * .0004 + d.phase)) * .55;
+          ctx.fillStyle = `rgba(239,243,255,${d.a * pulse})`;
+          ctx.beginPath();
+          ctx.arc(d.x * width, d.y * height, d.r * sceneScale(), 0, TAU);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function drawHandoff() {
+        const top = height * .93;
+        const grad = ctx.createLinearGradient(0, top, 0, height);
+        grad.addColorStop(0, "rgba(164,137,255,0)");
+        grad.addColorStop(.42, "rgba(171,149,255,.08)");
+        grad.addColorStop(1, "rgba(225,218,255,.13)");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, top, width, height - top);
+
+        ctx.save();
+        ctx.strokeStyle = "rgba(225,220,255,.13)";
+        ctx.lineWidth = .6;
+        ctx.setLineDash([2, 5]);
+        ctx.beginPath();
+        ctx.moveTo(0, height * .94);
+        ctx.lineTo(width, height * .94);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+      }
+
+      function drawScientificCues() {
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "rgba(218,242,255,.17)";
+        ctx.font = `850 ${Math.max(7, Math.min(10, width * .02))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("NO TODAS LAS IDEAS CIENTÍFICAS TIENEN EL MISMO GRADO DE EVIDENCIA", width * .5, height * .73);
+        ctx.fillStyle = "rgba(255,206,166,.15)";
+        ctx.fillText("UNA PREDICCIÓN DEBE PODER FALLAR ANTE LOS DATOS", width * .5, height * .445);
+        ctx.fillStyle = "rgba(222,202,255,.15)";
+        ctx.fillText("NINGÚN MARCO DE GRAVEDAD CUÁNTICA ES AQUÍ LA RESPUESTA CONFIRMADA", width * .5, height * .205);
+        ctx.restore();
+      }
+
+      function drawBottomContinuity() {
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = "rgba(184,150,255,.32)";
+        ctx.fillStyle = "rgba(232,226,255,.58)";
+        ctx.font = `850 ${Math.max(8, Math.min(11, width * .023))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("EL LÍMITE DE LA FÍSICA CONOCIDA CONTINÚA DEBAJO", width * .5, height - Math.max(8, height * .012));
+        ctx.restore();
+      }
+
+      function drawTopTransition() {
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.shadowBlur = 16;
+        ctx.shadowColor = "rgba(190,211,255,.32)";
+        ctx.fillStyle = "rgba(237,243,255,.64)";
+        ctx.font = `840 ${Math.max(7, Math.min(10, width * .021))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("OTRO CAMINO A TRAVÉS DEL TIEMPO", width * .5, Math.max(7, height * .006));
+        ctx.fillStyle = "rgba(255,255,255,.84)";
+        ctx.font = `950 ${Math.max(8, Math.min(12, width * .026))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("DEL UNIVERSO ACTUAL AL FUTURO CÓSMICO", width * .5, Math.max(21, height * .028));
+        ctx.fillStyle = "rgba(224,232,247,.52)";
+        ctx.font = `760 ${Math.max(7, Math.min(9, width * .019))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("ERA ESTELAR → OSCURIDAD CÓSMICA", width * .5, Math.max(38, height * .049));
+        ctx.restore();
+      }
+
+      function drawParticles(dt) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life -= p.decay * dt;
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.vx *= Math.pow(.09, dt);
+          p.vy *= Math.pow(.09, dt);
+          const [r, g, b] = p.color;
+          ctx.fillStyle = `rgba(${r},${g},${b},${p.life * .7})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * (.4 + p.life), 0, TAU);
+          ctx.fill();
+        }
+        for (let i = waves.length - 1; i >= 0; i--) {
+          const w = waves[i];
+          w.life -= dt * 1.25;
+          if (w.life <= 0) {
+            waves.splice(i, 1);
+            continue;
+          }
+          w.radius += dt * 128;
+          const [r, g, b] = w.color;
+          ctx.strokeStyle = `rgba(${r},${g},${b},${w.life * .4})`;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.arc(w.x, w.y, w.radius, 0, TAU);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function draw(time) {
+        const dt = Math.min(.05, Math.max(0, (time - lastTime) / 1000));
+        lastTime = time;
+        if (!reducedMotion) {
+          pointerX += (targetX - pointerX) * .08;
+          pointerY += (targetY - pointerY) * .08;
+        } else {
+          pointerX = targetX;
+          pointerY = targetY;
+        }
+
+        drawBackground(time);
+        drawEvidenceBands();
+        drawInitialQuestions(time);
+        drawQuantumFrameworks(time);
+        drawUndetected(time);
+        drawPredictions(time);
+        drawInference(time);
+        drawFossilTraces(time);
+        drawObservedData(time);
+        drawHandoff();
+        drawKnowableFrontier(time);
+        drawScientificCues();
+        drawBottomContinuity();
+        drawTopTransition();
+        drawParticles(dt);
+        requestAnimationFrame(draw);
+      }
+
+      function init() {
+        resize();
+        addEventListener("resize", resize, { passive: true });
+        addEventListener("orientationchange", () => setTimeout(resize, 120), { passive: true });
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden && audioCtx?.state === "running") audioCtx.suspend().catch(() => {});
+        });
+        canvas.focus({ preventScroll: true });
+        requestAnimationFrame(draw);
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
