@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#070915">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora del contacto cósmico: desde una señal sin explicación definitiva hasta la interpretación, la respuesta y una relación incierta entre civilizaciones.">
+  <meta name="application-name" content="Espectro del Contacto Cósmico: de la Primera Señal al Diálogo entre Civilizaciones">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro del Contacto Cósmico">
+  <meta property="og:description" content="Toca y asciende desde una señal inexplicada hasta un diálogo lento, verificable e incierto entre civilizaciones.">
+  <title>Espectro del Contacto Cósmico: de la Primera Señal al Diálogo entre Civilizaciones</title>
+  <style>
+    :root {
+      --accent: 116 228 255;
+      --accent-soft: rgb(var(--accent) / .34);
+      --ink: 255 255 255;
+      --panel: 8 9 14;
+      --scan-x: 50vw;
+      --scan-y: 96vh;
+      --progress: 2%;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #05070a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: rgb(var(--ink));
+      font-family: Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #cosmic-contact-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette,
+    #top-bloom,
+    #bottom-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background: radial-gradient(circle at var(--scan-x) var(--scan-y), rgb(var(--accent) / .56) 0, rgb(var(--accent) / .15) 11%, transparent 35%);
+      mix-blend-mode: screen;
+    }
+    body.active #light-field { opacity: .82; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg, transparent calc(var(--scan-x) - 1px), rgb(var(--accent) / .52) var(--scan-x), transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg, transparent calc(var(--scan-y) - 1px), rgb(var(--accent) / .32) var(--scan-y), transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+    body.active #scan-line { opacity: .17; }
+
+    #grain {
+      z-index: 4;
+      opacity: .042;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 38%, rgb(0 0 0 / .22) 72%, rgb(0 0 0 / .84) 128%),
+        linear-gradient(90deg, rgb(0 0 0 / .47), transparent 13%, transparent 87%, rgb(0 0 0 / .45));
+    }
+
+    #top-bloom {
+      z-index: 1;
+      opacity: .5;
+      background: radial-gradient(ellipse at 50% -10%, rgb(225 241 255 / .38), transparent 52%);
+      mix-blend-mode: screen;
+    }
+
+    #bottom-glow {
+      z-index: 1;
+      opacity: .46;
+      background: radial-gradient(ellipse at 50% 110%, rgb(190 210 255 / .18), transparent 50%);
+      mix-blend-mode: screen;
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 49%;
+      width: min(92vw, 860px);
+      padding: clamp(15px, 3.2vw, 27px) clamp(19px, 5vw, 52px) clamp(18px, 3.7vw, 33px);
+      border: 1px solid rgb(255 255 255 / .22);
+      border-radius: clamp(25px, 6vw, 52px);
+      color: white;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        rgb(var(--panel) / .66);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .58),
+        0 0 86px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .26),
+        inset 0 -1px 0 rgb(0 0 0 / .25);
+      backdrop-filter: blur(23px) saturate(1.36);
+      -webkit-backdrop-filter: blur(23px) saturate(1.36);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #evidence-class {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 27px;
+      margin-bottom: clamp(9px, 2vw, 15px);
+      padding: 6px 13px 7px;
+      border: 1px solid rgb(var(--accent) / .62);
+      border-radius: 999px;
+      color: rgb(var(--accent));
+      font-size: clamp(.62rem, 2.1vw, .87rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: rgb(var(--accent) / .09);
+      box-shadow: 0 0 25px var(--accent-soft), inset 0 1px 0 rgb(255 255 255 / .1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.5vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow: 0 0 30px var(--accent-soft), 0 5px 24px rgb(0 0 0 / .5);
+    }
+    #zone-name.compact { font-size: clamp(1.7rem, 7.15vw, 5.55rem); letter-spacing: -.046em; line-height: .9; }
+    #zone-name.long { font-size: clamp(1.38rem, 5.9vw, 4.45rem); letter-spacing: -.034em; line-height: .94; }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 880;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(10px, 2vw, 17px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.67rem, 2.2vw, .92rem);
+      font-weight: 820;
+      line-height: 1.12;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .2);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .11);
+    }
+
+    #fact {
+      display: block;
+      max-width: 700px;
+      margin: clamp(10px, 2.25vw, 17px) auto 0;
+      font-size: clamp(.82rem, 2.63vw, 1.1rem);
+      font-weight: 600;
+      line-height: 1.42;
+      letter-spacing: .005em;
+      color: rgb(255 255 255 / .91);
+      text-wrap: pretty;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 93%;
+      width: clamp(58px, 15vw, 104px);
+      aspect-ratio: 1;
+      border: 1px solid rgb(var(--accent) / .82);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(.4);
+      background: radial-gradient(circle, rgb(255 255 255 / .82) 0 2%, rgb(var(--accent) / .34) 7%, rgb(var(--accent) / .09) 36%, transparent 70%);
+      box-shadow: 0 0 18px rgb(var(--accent) / .58), 0 0 62px rgb(var(--accent) / .42), inset 0 0 26px rgb(var(--accent) / .19);
+      transition: opacity 150ms ease, transform 260ms cubic-bezier(.16, 1, .3, 1);
+    }
+    #touch-orb.visible { opacity: .9; transform: translate(-50%, -50%) scale(1); }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(10px, env(safe-area-inset-right));
+      top: max(19px, env(safe-area-inset-top));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: clamp(50px, 10vw, 78px);
+      pointer-events: none;
+      opacity: .58;
+      transition: opacity 180ms ease;
+    }
+    body.active #journey-scale { opacity: .9; }
+
+    #scale-track {
+      position: absolute;
+      right: 11px;
+      top: 48px;
+      bottom: 48px;
+      width: 3px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgb(255 255 255 / .14);
+      box-shadow: 0 0 12px rgb(0 0 0 / .5);
+    }
+    #scale-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(to top, rgb(94 214 164 / .68), rgb(var(--accent)));
+      box-shadow: 0 0 14px rgb(var(--accent) / .72);
+    }
+    #scale-dot {
+      position: absolute;
+      right: 6px;
+      bottom: 48px;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgb(255 255 255 / .84);
+      border-radius: 50%;
+      transform: translateY(50%);
+      background: rgb(var(--accent));
+      box-shadow: 0 0 17px rgb(var(--accent) / .85);
+    }
+    #scale-bottom,
+    #scale-top {
+      position: absolute;
+      right: 0;
+      width: 74px;
+      font-size: clamp(.49rem, 1.6vw, .61rem);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: .11em;
+      text-align: right;
+      text-transform: uppercase;
+      color: rgb(255 255 255 / .65);
+    }
+    #scale-top { top: 0; }
+    #scale-bottom { bottom: 0; }
+    #scale-value {
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      width: min(34vh, 250px);
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right center;
+      font-size: clamp(.54rem, 1.7vw, .66rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .14em;
+      text-align: center;
+      text-transform: uppercase;
+      color: rgb(var(--accent));
+      text-shadow: 0 0 14px rgb(var(--accent) / .6);
+      white-space: nowrap;
+    }
+
+    #hint {
+      position: fixed;
+      z-index: 6;
+      left: 50%;
+      bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+      width: min(78vw, 530px);
+      transform: translateX(-50%);
+      color: rgb(255 255 255 / .78);
+      text-align: center;
+      pointer-events: none;
+      font-size: clamp(.7rem, 2.4vw, .94rem);
+      font-weight: 800;
+      line-height: 1.34;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 16px rgb(0 0 0 / .8);
+      animation: breathe 3.2s ease-in-out infinite;
+    }
+    #hint strong { color: rgb(var(--accent)); }
+
+    .ripple {
+      position: fixed;
+      z-index: 7;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgb(var(--accent) / .78);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 22px rgb(var(--accent) / .52), inset 0 0 15px rgb(var(--accent) / .2);
+      animation: ripple 920ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple { to { width: min(72vw, 560px); height: min(72vw, 560px); opacity: 0; } }
+    @keyframes breathe {
+      0%, 100% { opacity: .4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: .95; transform: translateX(-50%) translateY(-3px); }
+    }
+
+    @media (max-height: 620px) {
+      #readout { width: min(88vw, 760px); padding-top: 12px; padding-bottom: 14px; }
+      #evidence-class { margin-bottom: 7px; }
+      #fact { margin-top: 8px; line-height: 1.32; }
+      #metric { margin-top: 7px; }
+      #journey-scale { opacity: .46; }
+    }
+
+    @media (max-height: 360px) {
+      #readout { top: 50%; width: min(88vw, 760px); padding: 8px 18px 10px; border-radius: 24px; }
+      #evidence-class { min-height: 20px; margin-bottom: 4px; padding: 4px 10px 5px; font-size: .52rem; }
+      #zone-name { font-size: clamp(1.35rem, 6.2vw, 3.15rem); line-height: .87; }
+      #zone-name.compact { font-size: clamp(1.22rem, 5.45vw, 2.75rem); }
+      #zone-name.long { font-size: clamp(1.06rem, 4.75vw, 2.35rem); }
+      #feature-name { margin-top: 4px; font-size: clamp(.62rem, 2.25vw, .83rem); }
+      #metric { min-height: 21px; margin-top: 5px; padding: 4px 10px 5px; font-size: clamp(.49rem, 1.8vw, .66rem); }
+      #fact { margin-top: 5px; font-size: clamp(.58rem, 1.9vw, .72rem); line-height: 1.22; }
+    }
+
+    @media (max-width: 460px) {
+      #readout { width: 91vw; }
+      #journey-scale { right: 6px; }
+      #scale-value { display: none; }
+      #scale-bottom, #scale-top { width: 68px; font-size: .42rem; }
+      #hint { width: 72vw; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #hint { animation: none; }
+      .ripple { animation-duration: 1ms; }
+      #readout, #touch-orb, #light-field, #scan-line { transition-duration: 1ms; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="cosmic-contact-spectrum" tabindex="0" role="application" aria-label="Exploración táctil del contacto cósmico, desde una señal sin explicación definitiva en la parte inferior hasta la coexistencia incierta entre civilizaciones en la parte superior. Toca, arrastra o usa las flechas del teclado."></canvas>
+  <div id="top-bloom" aria-hidden="true"></div><div id="bottom-glow" aria-hidden="true"></div><div id="light-field" aria-hidden="true"></div><div id="scan-line" aria-hidden="true"></div><div id="grain" aria-hidden="true"></div><div id="vignette" aria-hidden="true"></div>
+  <div id="hint" aria-hidden="true"><strong>Toca y asciende</strong> · de la primera señal a una relación incierta</div>
+  <div id="readout" aria-live="polite" aria-atomic="true"><span id="evidence-class"></span><strong id="zone-name"></strong><span id="feature-name"></span><span id="metric"></span><span id="fact"></span></div>
+  <div id="touch-orb" aria-hidden="true"></div>
+  <div id="journey-scale" aria-hidden="true"><span id="scale-top">Coexistencia incierta</span><div id="scale-track"><div id="scale-fill"></div></div><div id="scale-dot"></div><span id="scale-value">Una señal sin explicación definitiva</span><span id="scale-bottom">Señal sin explicación</span></div>
+
+  <!--
+    Visualización educativa conceptual, táctil y sin dependencias externas.
+
+    La escala vertical representa una profundidad creciente de contacto: detección, verificación,
+    interpretación, respuesta, intercambio y relación. No representa una cronología inevitable.
+    La dimensión horizontal presenta explicaciones, decisiones y lecturas rivales: natural o
+    artificial, público o confidencial, silencio o respuesta, cooperación o cautela.
+
+    La aplicación evita la secuencia ficticia «señal → traducción instantánea → amistad alienígena».
+    Distingue anomalía, evidencia, tecnofirma, mensaje, comprensión e intención. Sus escenas son
+    metáforas educativas: no afirman que exista una detección confirmada ni una autoridad planetaria única.
+  -->
+
+  <script>
+  (() => {
+    "use strict";
+
+    const canvas = document.getElementById("cosmic-contact-spectrum");
+    const ctx = canvas.getContext("2d", { alpha: false });
+    const root = document.documentElement;
+    const readout = document.getElementById("readout");
+    const evidenceClass = document.getElementById("evidence-class");
+    const zoneName = document.getElementById("zone-name");
+    const featureName = document.getElementById("feature-name");
+    const metric = document.getElementById("metric");
+    const fact = document.getElementById("fact");
+    const touchOrb = document.getElementById("touch-orb");
+    const scaleValue = document.getElementById("scale-value");
+    const scaleDot = document.getElementById("scale-dot");
+    const hint = document.getElementById("hint");
+
+    const TAU = Math.PI * 2;
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const mix = (a, b, t) => a + (b - a) * t;
+    const smooth = t => t * t * (3 - 2 * t);
+    const fract = v => v - Math.floor(v);
+    const seeded = n => fract(Math.sin(n * 127.1 + 311.7) * 43758.5453123);
+    const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+    const ZONES = [{"id":"unexplained-signal","name":"Una señal sin explicación definitiva","className":"Punto de partida · anomalía heredada, conclusión pendiente","metric":"Señal observada + causas posibles + incertidumbre explícita → pregunta verificable","fact":"Una señal extraña no es todavía evidencia de inteligencia: es un fenómeno que exige mejores datos y explicaciones alternativas.","scene":0,"features":[["emisión estrecha","Una emisión concentrada en una banda pequeña puede llamar la atención, pero también puede surgir de interferencia o de fenómenos naturales poco comunes."],["pulso óptico","Un destello breve y ordenado podría ser instrumental, astronómico o tecnológico; sin repetición no permite distinguirlos."],["tránsito extraño","Una caída irregular de luz puede sugerir estructuras inusuales, aunque polvo, lunas, anillos o errores de modelado siguen siendo explicaciones posibles."],["química industrial","Una molécula atmosférica difícil de producir naturalmente sería interesante, pero habría que conocer por completo la química y la geología del planeta."],["objeto inesperado","Un movimiento difícil de explicar puede reflejar fuerzas mal estimadas, pérdida de material, sesgos de observación o propulsión artificial."],["estructura repetida","La repetición matemática aumenta el interés, pero la naturaleza también genera ritmos, resonancias y regularidades sorprendentes."]],"p0":0.0,"p1":0.03571429,"color":[225,238,255],"sound":{"base":48.0,"filter":720,"noise":0.01,"pulse":0.035,"type":"sine"}},{"id":"first-anomaly","name":"La primera anomalía","className":"Observación inicial · lo extraordinario empieza como discrepancia","metric":"Datos ordinarios − modelo esperado → residuo que merece investigación","fact":"La primera tarea no es nombrar al emisor, sino describir exactamente qué parte de los datos no encaja.","scene":0,"features":[["residuo estadístico","Una desviación solo importa cuando supera el ruido esperado y no depende de elegir después el análisis que mejor la destaca."],["duración","Milisegundos, horas o años implican mecanismos distintos y determinan qué instrumentos pueden confirmar el fenómeno."],["frecuencia","La distribución energética puede revelar propagación, fuente, modulación o contaminación terrestre."],["polarización","La orientación de la señal puede aportar información sobre campos magnéticos, geometría de emisión o instrumentación."],["repetición","Una señal que vuelve permite predecirla, apuntar otros observatorios y separar un evento real de una fluctuación."],["ausencia posterior","No volver a detectar algo no demuestra que fuera falso; limita cuánto puede aprenderse y reduce la confianza."]],"p0":0.03571429,"p1":0.07142857,"color":[170,215,255],"sound":{"base":51.25,"filter":802,"noise":0.014,"pulse":0.052,"type":"triangle"}},{"id":"instrumental-detection","name":"Detección instrumental","className":"Medición · la cadena completa debe permanecer auditable","metric":"Fuente → propagación → sensor → calibración → datos sin procesar → análisis","fact":"Cada etapa puede introducir señales falsas; por eso conservar los datos originales y la configuración es esencial.","scene":1,"features":[["calibración","El instrumento debe observar referencias conocidas para comprobar sensibilidad, frecuencia, tiempo y respuesta direccional."],["resolución","Una resolución insuficiente puede fusionar fuentes, ocultar variaciones o fabricar patrones mediante muestreo."],["marca temporal","Relojes precisos permiten comparar observatorios y verificar si la señal llegó con los retrasos físicos esperados."],["datos originales","Los datos sin filtrar permiten repetir análisis futuros y detectar artefactos introducidos por el procesamiento."],["cadena de software","Conversión, compresión, limpieza y clasificación automática deben registrarse para localizar errores reproducibles."],["repetibilidad","Un procedimiento que nadie puede repetir no sostiene una afirmación extraordinaria, aunque su resultado parezca convincente."]],"p0":0.07142857,"p1":0.10714286,"color":[105,220,255],"sound":{"base":54.5,"filter":884,"noise":0.018,"pulse":0.069,"type":"sine"}},{"id":"interference-rejected","name":"Interferencia descartada","className":"Control de contaminación · terrestre no significa evidente","metric":"Catálogos + geometría + pruebas locales + observaciones de control → interferencia menos probable","fact":"Descartar interferencia requiere demostrar que la señal no sigue transmisores, equipos, software ni trayectorias cercanas.","scene":2,"features":[["satélites","Una señal puede entrar por lóbulos laterales del telescopio y parecer celeste hasta comparar su dirección con órbitas conocidas."],["aeronaves","Radar, comunicaciones y reflexiones móviles pueden producir eventos breves que cambian con la geometría local."],["electrónica cercana","Relojes digitales, motores, redes y fuentes de alimentación pueden contaminar bandas sensibles."],["reflejos","La Luna, meteoros o capas atmosféricas pueden redirigir transmisiones terrestres hacia un observatorio."],["artefacto digital","Desbordamientos, cuantización, compresión o errores de memoria pueden crear periodicidad sin señal física externa."],["observación fuera de fuente","Apuntar a una región vecina ayuda a comprobar si el patrón permanece ligado al cielo o al instrumento."]],"p0":0.10714286,"p1":0.14285714,"color":[75,235,215],"sound":{"base":57.75,"filter":966,"noise":0.022,"pulse":0.086,"type":"triangle"}},{"id":"independent-verification","name":"Verificación independiente","className":"Reproducción · una observación aislada no basta","metric":"Equipos distintos + métodos distintos + predicción común → evidencia independiente","fact":"La confirmación es más fuerte cuando observatorios que no comparten los mismos errores obtienen resultados compatibles.","scene":3,"features":[["otro telescopio","Un instrumento independiente reduce la posibilidad de que el hallazgo pertenezca a un receptor o ubicación concreta."],["otra longitud de onda","Una fuente física puede dejar huellas relacionadas en radio, óptico, infrarrojo, rayos X u otras bandas."],["otro hemisferio","Una ubicación distante cambia el entorno de interferencias y ofrece una geometría de observación diferente."],["análisis ciego","Ocultar qué segmento contiene la posible señal ayuda a reducir ajustes inconscientes del método."],["archivo histórico","Datos antiguos pueden mostrar que el fenómeno existía antes de que la hipótesis guiara la búsqueda."],["resultado nulo","No detectar la señal en condiciones adecuadas también informa sobre su duración, dirección o variabilidad."]],"p0":0.14285714,"p1":0.17857143,"color":[110,245,185],"sound":{"base":61.0,"filter":1048,"noise":0.026,"pulse":0.103,"type":"sine"}},{"id":"distant-origin","name":"Origen distante","className":"Localización física · procedencia celeste cada vez más probable","metric":"Dirección + deriva + dispersión + paralaje + repetición → región de origen limitada","fact":"Demostrar que una señal viene de lejos no demuestra que sea artificial, pero elimina muchas causas locales.","scene":4,"features":[["posición celeste","La señal debe seguir la misma coordenada mientras gira la Tierra y cambian la orientación y el horizonte."],["deriva Doppler","El movimiento relativo entre fuente, planeta y observatorio desplaza la frecuencia de una forma físicamente modelable."],["dispersión","El medio interestelar retrasa frecuencias distintas; ese retraso puede estimar cuánto plasma atravesó la señal."],["paralaje","Observatorios separados pueden medir pequeñas diferencias angulares y distinguir una fuente cercana de una distante."],["estrella asociada","Vincular la señal a un sistema estelar requiere precisión suficiente para excluir fuentes de fondo."],["fuente móvil","Una sonda o transmisor orbital podría desplazarse, por lo que la localización puede cambiar de forma coherente."]],"p0":0.17857143,"p1":0.21428571,"color":[185,240,130],"sound":{"base":64.25,"filter":1130,"noise":0.01,"pulse":0.12,"type":"triangle"}},{"id":"artificial-pattern","name":"Patrón artificial","className":"Hipótesis tecnológica · orden no equivale automáticamente a intención","metric":"Modulación + estructura improbable + corrección de errores + repetición → diseño más plausible","fact":"Un patrón parece artificial cuando combina regularidades funcionales difíciles de producir por mecanismos naturales conocidos.","scene":5,"features":[["números primos","Una secuencia de cantidades divisibles solo por uno y por sí mismas puede señalar selección deliberada, pero necesita una codificación inequívoca."],["modulación","Cambios controlados de frecuencia, fase o amplitud pueden transportar información y revelar una portadora."],["baja entropía","Demasiado orden puede indicar una baliza; demasiada complejidad puede parecer ruido hasta encontrar su estructura."],["corrección de errores","Redundancia diseñada para reconstruir datos dañados sería una fuerte pista de comunicación intencional."],["economía energética","Una señal estrecha, dirigida y repetida puede ser una forma eficiente de hacerse detectable a gran distancia."],["imitación natural","Púlsares y otros fenómenos recuerdan que la naturaleza puede parecer diseñada antes de comprender su mecanismo."]],"p0":0.21428571,"p1":0.25,"color":[255,226,112],"sound":{"base":67.5,"filter":1212,"noise":0.014,"pulse":0.035,"type":"sine"}},{"id":"accumulated-evidence","name":"Evidencia acumulada","className":"Inferencia convergente · ninguna prueba debe cargar sola la conclusión","metric":"Observaciones compatibles × explicaciones fallidas × predicciones acertadas → confianza creciente","fact":"La evidencia se fortalece cuando diferentes mediciones apuntan a la misma explicación y las alternativas producen predicciones peores.","scene":6,"features":[["señal interesante","El fenómeno merece seguimiento, pero todavía encaja en varias categorías naturales o instrumentales."],["señal inexplicada","Los análisis actuales no encuentran una causa satisfactoria; desconocido no significa artificial."],["posible tecnofirma","Algunas propiedades son compatibles con tecnología, aunque las alternativas siguen abiertas."],["tecnofirma probable","La hipótesis tecnológica explica mejor múltiples datos independientes y sobrevive a pruebas específicas."],["evidencia confirmada","La comunidad puede reproducir el resultado, predecir nuevas observaciones y excluir de forma robusta otras causas."],["confianza revisable","Incluso una conclusión muy fuerte debe poder cambiar ante mejores datos o una explicación natural nueva."]],"p0":0.25,"p1":0.28571429,"color":[255,194,104],"sound":{"base":70.75,"filter":1294,"noise":0.018,"pulse":0.052,"type":"triangle"}},{"id":"scientific-announcement","name":"Anuncio científico","className":"Transparencia responsable · comunicar certeza y límites","metric":"Revisión + datos abiertos + lenguaje preciso + correcciones → conocimiento público resistente","fact":"El anuncio tendría que separar lo observado, lo inferido y lo todavía desconocido para evitar convertir probabilidad en certeza.","scene":7,"features":[["revisión por pares","Especialistas examinan métodos, supuestos y alternativas antes de que la afirmación se estabilice."],["datos abiertos","Compartir observaciones y código permite que otros grupos encuentren errores o confirmen el resultado."],["filtración prematura","Una noticia incompleta puede circular antes de las verificaciones y fijar interpretaciones difíciles de corregir."],["terminología","Palabras como señal, tecnofirma, mensaje y contacto implican niveles de evidencia diferentes."],["incertidumbre pública","Expresar probabilidades no es debilidad: muestra qué parte del conocimiento puede cambiar."],["rectificación","Una corrección rápida y visible protege mejor la ciencia que defender una conclusión por prestigio."]],"p0":0.28571429,"p1":0.32142857,"color":[255,154,102],"sound":{"base":74.0,"filter":1376,"noise":0.022,"pulse":0.069,"type":"sine"}},{"id":"international-coordination","name":"Coordinación internacional","className":"Gobernanza planetaria · autoridad dispersa, consecuencias compartidas","metric":"Ciencia + gobiernos + instituciones + ciudadanía → coordinación sin una voz única","fact":"Ninguna organización representa por sí sola a la humanidad; cualquier proceso legítimo tendría que admitir pluralidad y desacuerdo.","scene":8,"features":[["observatorios","Las redes científicas pueden coordinar seguimiento, formatos de datos y criterios de verificación."],["gobiernos","Los Estados podrían controlar infraestructuras, espectro radioeléctrico o información, pero no monopolizar el significado del hallazgo."],["instituciones globales","Foros internacionales pueden facilitar deliberación, aunque sus decisiones no serían automáticamente universales ni vinculantes."],["empresas","Compañías privadas podrían poseer telescopios, transmisores o plataformas informativas con influencia real."],["comunidades científicas","La experiencia técnica es imprescindible, pero no decide por sí sola valores, riesgos o representación."],["sociedad civil","La diversidad cultural y generacional importa porque una respuesta podría comprometer a personas que nunca participaron en la decisión."]],"p0":0.32142857,"p1":0.35714286,"color":[255,126,125],"sound":{"base":77.25,"filter":1458,"noise":0.026,"pulse":0.086,"type":"triangle"}},{"id":"planetary-reaction","name":"Reacción planetaria","className":"Descubrimiento compartido · interpretaciones sociales divergentes","metric":"Información + identidad + confianza institucional + cultura → respuestas humanas múltiples","fact":"La misma evidencia podría provocar curiosidad, temor, esperanza, indiferencia o disputa sin que una reacción represente a toda la especie.","scene":8,"features":[["medios","Titulares simplificados pueden acelerar el conocimiento y también borrar la diferencia entre posibilidad y confirmación."],["desinformación","Imágenes falsas, mensajes inventados y teorías de conspiración competirían con los datos verificables."],["religiones","Tradiciones distintas podrían integrar el hallazgo de maneras compatibles, tensas o transformadoras."],["filosofía","El descubrimiento reabriría preguntas sobre mente, valor, singularidad humana y pertenencia cósmica."],["vida cotidiana","La mayoría de las personas seguiría viviendo entre obligaciones inmediatas aunque cambiara la visión del universo."],["desigualdad","El acceso a datos, educación y decisiones podría distribuirse de forma muy desigual entre regiones y grupos."]],"p0":0.35714286,"p1":0.39285714,"color":[236,126,214],"sound":{"base":80.5,"filter":1540,"noise":0.01,"pulse":0.103,"type":"sine"}},{"id":"interpretation","name":"Interpretación","className":"Análisis semiótico · detectar estructura antes de atribuir significado","metric":"Segmentación + repetición + relaciones + contexto físico → hipótesis de lectura","fact":"Antes de traducir, habría que descubrir dónde empiezan y terminan las unidades, qué relaciones conservan y qué función cumple el mensaje.","scene":9,"features":[["segmentación","Pausas, cabeceras, ritmos o bloques repetidos podrían indicar unidades, pero también formar parte del canal."],["orden","Determinar si los datos se leen en una dimensión, en una matriz, por capas o en varias escalas cambia todo el contenido."],["redundancia","La repetición puede ser énfasis, sincronización, corrección de errores o simplemente una propiedad del emisor."],["compresión","Un mensaje muy comprimido parece aleatorio hasta conocer el algoritmo o las regularidades que elimina."],["intención","Una baliza, archivo, saludo, advertencia o fuga tecnológica exigirían estrategias de interpretación diferentes."],["silencio interno","Ausencias y intervalos pueden transportar información, delimitar símbolos o no significar nada."]],"p0":0.39285714,"p1":0.42857143,"color":[188,142,255],"sound":{"base":83.75,"filter":1622,"noise":0.014,"pulse":0.12,"type":"triangle"}},{"id":"shared-mathematics","name":"Matemáticas compartidas","className":"Referencia potencial · universalidad física, convención representacional","metric":"Relaciones invariantes + ejemplos construidos → primeros puntos de apoyo","fact":"Las matemáticas podrían proporcionar puntos de referencia comunes, pero no constituyen automáticamente un lenguaje completo.","scene":10,"features":[["números primos","Las cantidades pueden demostrarse mediante pulsos, aunque la base numérica y la forma de agruparlos siguen siendo convenciones."],["geometría","Triángulos, círculos y proporciones pueden definirse operacionalmente sin compartir palabras."],["constantes físicas","Frecuencias atómicas o velocidades relativas pueden crear unidades reproducibles en ambos mundos."],["proporciones","Relaciones sin dimensiones evitan depender de metros, segundos o escalas corporales humanas."],["lógica","Patrones de implicación y consistencia pueden ser comunes, pero no garantizan la misma filosofía del razonamiento."],["límite matemático","Las matemáticas podrían proporcionar puntos de referencia comunes, pero no constituyen automáticamente un lenguaje completo."]],"p0":0.42857143,"p1":0.46428571,"color":[135,164,255],"sound":{"base":87.0,"filter":1704,"noise":0.018,"pulse":0.035,"type":"sine"}},{"id":"meaning-construction","name":"Construcción de significado","className":"Anclaje progresivo · símbolos conectados con relaciones observables","metric":"Referencia conocida → transformación → contraste → generalización → concepto provisional","fact":"El significado podría construirse mostrando ejemplos y variaciones, no asignando de inmediato una palabra alienígena a una palabra humana.","scene":11,"features":[["señalar referentes","Un mensaje puede vincular patrones con una estrella, una frecuencia o una geometría observable por ambos."],["pares mínimos","Cambiar una sola parte y mostrar el efecto ayuda a inferir qué componente controla cantidad, tiempo o relación."],["transformaciones","Rotar, sumar, repetir o invertir figuras puede enseñar operaciones antes que vocabulario."],["clasificación","Conjuntos de ejemplos positivos y negativos permiten inferir categorías sin asumir que coinciden con las humanas."],["sintaxis","El orden y la dependencia entre símbolos pueden revelar funciones incluso cuando cada elemento siga sin traducirse."],["semántica provisional","Toda traducción inicial sería un modelo revisable, no una equivalencia definitiva entre dos mentes."]],"p0":0.46428571,"p1":0.5,"color":[90,198,255],"sound":{"base":90.25,"filter":1786,"noise":0.022,"pulse":0.052,"type":"triangle"}},{"id":"unknown-language","name":"Lenguaje desconocido","className":"Sistema ajeno · forma, función y mente todavía inciertas","metric":"Patrones + contexto + respuestas futuras → gramática tentativa y significado parcial","fact":"Un mensaje puede contener estructura sin parecerse a voz, escritura, imagen ni lenguaje humano.","scene":12,"features":[["múltiples canales","El contenido podría distribuirse simultáneamente entre frecuencia, fase, polarización y tiempo."],["gramática recursiva","Estructuras dentro de estructuras podrían codificar relaciones complejas o simplemente optimizar transmisión."],["conceptos intraducibles","Una mente con otros sentidos o ciclos vitales puede distinguir categorías que no tenemos palabras para expresar."],["referencias ausentes","El mensaje puede asumir conocimiento de lugares, especies o acontecimientos imposibles de observar desde la Tierra."],["traducción automática","Los modelos computacionales pueden buscar regularidades, pero también amplificar supuestos humanos y producir coherencia falsa."],["varias lecturas","Interpretaciones distintas pueden explicar los mismos datos hasta que una respuesta posterior permita discriminarlas."]],"p0":0.5,"p1":0.53571429,"color":[85,235,230],"sound":{"base":93.5,"filter":1868,"noise":0.026,"pulse":0.069,"type":"sine"}},{"id":"cultural-context","name":"Contexto cultural","className":"Mente situada · significado ligado a historia, cuerpo y sociedad","metric":"Biología + ambiente + instituciones + memoria → marco cultural no compartido","fact":"Comprender frases no bastaría si ignoramos qué cuenta como individuo, obligación, peligro, verdad o tiempo para el emisor.","scene":13,"features":[["individualidad","La civilización podría estar compuesta por organismos separados, colonias, redes o una continuidad sin personas discretas."],["tiempo","Un pensamiento puede durar milisegundos, estaciones o siglos, alterando qué significa promesa, urgencia o espera."],["sentidos","Conceptos centrales podrían nacer de campos magnéticos, química, presión o percepciones sin equivalente humano."],["memoria","Una cultura puede conservar el pasado en individuos, genética, máquinas, ecosistemas o estructuras planetarias."],["valores","Cooperación, expansión, conocimiento y supervivencia no tienen por qué ocupar el mismo lugar que en nuestras sociedades."],["metáfora","Una figura construida desde océanos, enjambres o estrellas binarias puede parecer literal cuando desconocemos su experiencia."]],"p0":0.53571429,"p1":0.57142857,"color":[128,248,198],"sound":{"base":96.75,"filter":1950,"noise":0.01,"pulse":0.086,"type":"triangle"}},{"id":"message-received","name":"Mensaje recibido","className":"Contenido auténtico · interpretación todavía incompleta","metric":"Estructura + referencias + contexto inferido → modelo parcial del emisor","fact":"Recibir información no equivale a entenderla ni a confirmar que describe con honestidad el presente de quien la envió.","scene":13,"features":[["descripción del entorno","Espectros, órbitas o mapas podrían revelar las condiciones físicas del sistema de origen."],["autorretrato","El emisor podría representar su cuerpo, red o arquitectura de una forma que confundamos con otra cosa."],["historia","Una cronología transmitida sería una selección cultural, no un registro neutral de todos los acontecimientos."],["conocimiento científico","Modelos verificables localmente ofrecen una vía para comprobar si parte del mensaje se entiende correctamente."],["advertencia","Un aviso puede ser sincero, metafórico, desactualizado, dirigido a otro receptor o interpretado fuera de contexto."],["identidad dudosa","No sabríamos de inmediato si habla una civilización completa, una facción, una máquina, un archivo o un impostor."]],"p0":0.57142857,"p1":0.60714286,"color":[210,244,255],"sound":{"base":100.0,"filter":2032,"noise":0.014,"pulse":0.103,"type":"sine"}},{"id":"decision-to-respond","name":"Decisión de responder","className":"Elección colectiva · ninguna opción es neutral","metric":"Beneficios posibles + riesgos irreversibles + legitimidad → decisión disputada","fact":"Responder, esperar o guardar silencio cambia la relación y plantea quién puede comprometer a generaciones futuras.","scene":14,"features":[["permanecer en silencio","Reduce información enviada, pero también comunica ausencia o incapacidad y deja la iniciativa a actores independientes."],["confirmar recepción","Un acuse breve limita el contenido y demuestra que la señal fue comprendida al menos como comunicación."],["enviar ciencia","Referencias físicas compartidas pueden ser verificables, aunque incluso el conocimiento básico revela capacidades."],["transmitir cultura","Arte, historias y diversidad muestran más que datos, pero seleccionar qué representa a la humanidad es profundamente político."],["revelar ubicación","La respuesta ya puede delatar nuestra dirección; añadir coordenadas precisas aumenta claridad y exposición."],["esperar acuerdo","¿Quién puede hablar en nombre de un planeta que nunca ha hablado con una sola voz? Buscar legitimidad global mejora representación, pero puede retrasar la respuesta."]],"p0":0.60714286,"p1":0.64285714,"color":[255,220,120],"sound":{"base":103.25,"filter":2114,"noise":0.018,"pulse":0.12,"type":"triangle"}},{"id":"transmission-risks","name":"Riesgos de transmisión","className":"Información irreversible · consecuencias difíciles de estimar","metric":"Contenido × alcance × permanencia × incertidumbre del receptor → riesgo de exposición","fact":"Una emisión interestelar no puede retirarse una vez enviada y puede ser recibida por destinatarios distintos del previsto.","scene":14,"features":[["información sensible","Biología, defensas, infraestructura o vulnerabilidades podrían tener usos imposibles de anticipar."],["conocimiento peligroso","Una idea científica puede ser valiosa y también permitir tecnologías destructivas en contextos diferentes."],["señal dirigida","Un haz estrecho reduce exposición, pero necesita conocer con precisión la posición futura del receptor."],["difusión amplia","Una baliza para muchos sistemas maximiza descubrimiento y elimina casi todo control sobre la audiencia."],["suplantación","Otros actores humanos podrían enviar mensajes falsos, contradictorios o diseñados para parecer oficiales."],["desigualdad de voz","Quienes controlen transmisores potentes podrían representar al planeta sin consentimiento de la mayoría."]],"p0":0.64285714,"p1":0.67857143,"color":[255,116,112],"sound":{"base":106.5,"filter":2196,"noise":0.022,"pulse":0.035,"type":"sine"}},{"id":"light-speed-limit","name":"Límites de la velocidad de la luz","className":"Física del canal · ninguna respuesta puede ser inmediata","metric":"Distancia en años luz × trayecto de ida y vuelta → ritmo mínimo del diálogo","fact":"Cada mensaje muestra el pasado del emisor; una conversación de ida y vuelta puede durar décadas, siglos o más.","scene":15,"features":[["años luz","Una señal tarda un año por cada año luz recorrido, incluso en el vacío ideal."],["pasado del emisor","El mensaje recibido describiría el pasado del emisor, no necesariamente su presente."],["movimiento estelar","Durante el viaje, ambos sistemas cambian de posición y el transmisor debe apuntar a un destino futuro."],["dispersión del haz","Incluso una transmisión dirigida se abre con la distancia, reduciendo la energía recibida."],["ruido acumulado","El medio, los receptores y fuentes de fondo degradan la señal y obligan a usar redundancia."],["sin conversación en vivo","No habría turnos inmediatos, gestos compartidos ni aclaraciones rápidas como en una interacción presencial."]],"p0":0.67857143,"p1":0.71428571,"color":[110,177,255],"sound":{"base":109.75,"filter":2278,"noise":0.026,"pulse":0.052,"type":"triangle"}},{"id":"interstellar-wait","name":"Espera interestelar","className":"Continuidad generacional · mantener una pregunta durante siglos","metric":"Archivo + instituciones + traducción + paciencia → memoria capaz de recibir la respuesta","fact":"La civilización que envía una pregunta puede ser cultural y políticamente distinta cuando llegue la respuesta.","scene":15,"features":[["generaciones","Quienes redactan el mensaje quizá nunca conozcan su resultado; otros heredarán la responsabilidad de interpretarlo."],["archivos duraderos","Formatos, claves y contexto deben sobrevivir cambios tecnológicos para que el mensaje futuro siga siendo legible."],["lengua cambiante","Las palabras humanas, instituciones y valores pueden transformarse antes de la siguiente ronda."],["continuidad política","Un acuerdo de respuesta puede perder apoyo, fragmentarse o ser reinterpretado por gobiernos posteriores."],["emisor desaparecido","La fuente podría haber cambiado, migrado o dejado de existir antes de recibir nuestro mensaje."],["paciencia científica","Décadas sin respuesta no distinguen entre silencio deliberado, fallo técnico, distancia mayor o ausencia del receptor."]],"p0":0.71428571,"p1":0.75,"color":[176,143,255],"sound":{"base":113.0,"filter":2360,"noise":0.01,"pulse":0.069,"type":"sine"}},{"id":"first-reply","name":"Primera respuesta","className":"Reconocimiento mutuo · prueba inicial de comprensión","metric":"Referencia compartida + eco transformado + nueva información → comunicación bidireccional","fact":"La primera respuesta convincente probablemente demostraría recepción y comprensión parcial, no amistad ni acuerdo.","scene":16,"features":[["eco verificado","Devolver una parte transformada del mensaje puede demostrar que fue recibido y procesado, no solo reflejado."],["suma de referencia","Añadir un dato predecible, como una posición futura, permite comprobar una operación compartida."],["pregunta simple","Una elección binaria o cantidad concreta reduce ambigüedad y prueba si ambos lados usan el mismo marco."],["corrección","Señalar un error o repetir una sección puede revelar que el canal admite reparación."],["nuevo símbolo","La respuesta puede introducir una convención y mostrarla mediante ejemplos antes de usarla en conceptos mayores."],["ninguna respuesta","El silencio posterior seguiría siendo ambiguo: recepción fallida, decisión política, demora o desaparición."]],"p0":0.75,"p1":0.78571429,"color":[102,234,255],"sound":{"base":116.25,"filter":2442,"noise":0.014,"pulse":0.086,"type":"triangle"}},{"id":"discontinuous-dialogue","name":"Diálogo discontinuo","className":"Comunicación asíncrona · cada turno necesita sostenerse por sí solo","metric":"Mensajes autosuficientes + versiones + contexto acumulado → conversación entre generaciones","fact":"Cada transmisión tendría que anticipar preguntas, explicar su contexto y permitir correcciones que quizá lleguen un siglo después.","scene":17,"features":[["reconocimiento","Ambas partes mantienen identificadores y referencias que enlazan cada mensaje con los anteriores."],["preguntas simples","Los primeros turnos reducen ambigüedad antes de intentar filosofía, historia o tecnología."],["referencias compartidas","Eventos astronómicos y constantes físicas sirven como puntos de sincronización."],["intentos de traducción","Cada lado propone modelos y ejemplos para que el otro confirme o corrija interpretaciones."],["ambigüedad","Una pregunta mal entendida puede contaminar varias generaciones de mensajes antes de detectarse."],["conceptos profundos","Solo tras construir suficiente base podrían abordarse conciencia, ética, arte o identidad."]],"p0":0.78571429,"p1":0.82142857,"color":[126,245,192],"sound":{"base":119.5,"filter":2524,"noise":0.018,"pulse":0.103,"type":"sine"}},{"id":"knowledge-exchange","name":"Intercambio de conocimiento","className":"Aprendizaje mutuo · información valiosa, falible y contextual","metric":"Predicción comprobable + comparación independiente + límites de uso → conocimiento compartido","fact":"La información alienígena no sería automáticamente verdadera, segura ni aplicable a nuestras condiciones.","scene":18,"features":[["astronomía","Observaciones desde otra región de la galaxia podrían revelar perspectivas imposibles desde la Tierra."],["física","Una teoría nueva tendría que producir predicciones verificables, no aceptarse por autoridad del emisor."],["química","Rutas y materiales desconocidos podrían depender de recursos o presiones que no existen aquí."],["biología","Comparar dos historias de vida transformaría la evolución, pero requeriría evitar categorías exclusivamente terrestres."],["tecnología","Una descripción incompleta puede ser inútil o peligrosa si omite infraestructura, materiales o controles culturales."],["arte y advertencias","Estructuras estéticas o relatos de fracaso podrían ser profundamente significativos y extremadamente difíciles de traducir."]],"p0":0.82142857,"p1":0.85714286,"color":[255,210,112],"sound":{"base":122.75,"filter":2606,"noise":0.022,"pulse":0.12,"type":"triangle"}},{"id":"cosmic-misunderstandings","name":"Malentendidos cósmicos","className":"Fallo de interpretación · comprender datos no garantiza comprender intención","metric":"Supuestos ocultos + contexto perdido + demora → errores persistentes","fact":"Un error pequeño puede tardar generaciones en corregirse y adquirir consecuencias políticas antes de ser reconocido.","scene":19,"features":[["sentidos incompatibles","Una descripción basada en percepciones desconocidas puede traducirse como objeto cuando realmente expresa una experiencia."],["individuo distinto","Pronombres o agentes pueden referirse a colonias, linajes o redes, alterando responsabilidad y consentimiento."],["escalas temporales","Una promesa de respuesta pronta puede significar segundos para una mente y siglos para otra."],["metáfora literal","Una imagen cultural puede parecer instrucción física o amenaza cuando se interpreta fuera de su tradición."],["mensaje incompleto","La pérdida de paquetes puede borrar negaciones, condiciones o claves esenciales sin que el receptor lo note."],["engaño deliberado","Una fuente puede ocultar intenciones, exagerar capacidades o probar nuestra conducta mediante información falsa."]],"p0":0.85714286,"p1":0.89285714,"color":[255,145,132],"sound":{"base":126.0,"filter":2688,"noise":0.026,"pulse":0.035,"type":"sine"}},{"id":"trust","name":"Confianza","className":"Relación verificable · cooperación sin certeza total","metric":"Consistencia + reciprocidad + límites respetados + correcciones → confianza gradual","fact":"La confianza interestelar tendría que apoyarse en comportamientos observables durante largos periodos, no en una sola declaración.","scene":20,"features":[["predicciones cumplidas","Información que permite anticipar observaciones fortalece la fiabilidad del canal y de parte del contenido."],["reciprocidad","Compartir riesgos y beneficios de forma equilibrada puede indicar cooperación, aunque medir equilibrio sea difícil."],["correcciones honestas","Reconocer errores ayuda a distinguir aprendizaje conjunto de propaganda infalible."],["límites informativos","Respetar temas que una parte decide no revelar muestra que la cooperación no exige transparencia total."],["silencio explicado","Pausas acompañadas de contexto reducen la tendencia a interpretar ausencia como hostilidad."],["confianza parcial","Puede existir cooperación científica mientras persisten dudas sobre política, identidad o intenciones a largo plazo."]],"p0":0.89285714,"p1":0.92857143,"color":[92,226,196],"sound":{"base":129.25,"filter":2770,"noise":0.01,"pulse":0.052,"type":"triangle"}},{"id":"interstellar-diplomacy","name":"Diplomacia interestelar","className":"Relación política · representación, intereses y protocolos a gran distancia","metric":"Legitimidad + verificación + reciprocidad + memoria → acuerdos de larga duración","fact":"La diplomacia no eliminaría diferencias; crearía procedimientos para convivir con ellas sin interpretación inmediata ni autoridad común.","scene":21,"features":[["representación","Cada mensaje debe aclarar quién habla, a quién compromete y qué grupos quedan fuera."],["protocolos","Formatos, tiempos, autenticación y procedimientos de corrección reducen ambigüedad antes de discutir contenido."],["intereses distintos","Cooperación científica puede coexistir con desacuerdos sobre expansión, recursos o contacto con terceros."],["no interferencia","Limitar información o acciones puede proteger autonomía cultural, aunque definir interferencia sea difícil."],["preservación cultural","El intercambio puede enriquecer y también desplazar conocimientos, lenguas o instituciones más frágiles."],["acuerdos generacionales","Los compromisos deben poder revisarse sin que cada cambio político destruya décadas de confianza."]],"p0":0.92857143,"p1":0.96428571,"color":[192,148,255],"sound":{"base":132.5,"filter":2852,"noise":0.014,"pulse":0.069,"type":"sine"}},{"id":"uncertain-coexistence","name":"Coexistencia incierta","className":"Relación abierta · conocimiento compartido, diferencias persistentes","metric":"Mensajes + memoria + transformación mutua + desacuerdo → historia cósmica compartida","fact":"El contacto maduro no sería unidad perfecta, sino la capacidad de reconocer otra perspectiva y sostener una relación incompleta.","scene":22,"features":[["mensajes en la oscuridad","La relación existiría como señales que cruzan espacios donde ninguna parte puede observar directamente la vida cotidiana de la otra."],["generaciones guardianas","Personas, máquinas e instituciones mantendrían archivos y protocolos que comenzaron antes de su nacimiento."],["significados más claros","La comprensión crecería mediante correcciones, ejemplos y paciencia, sin volverse nunca total."],["desacuerdos duraderos","Dos civilizaciones pueden comprenderse mejor y seguir rechazando las prioridades de la otra."],["historias transformadas","El contacto se convertiría en parte de la ciencia, cultura e identidad de ambos mundos."],["perspectiva no terrestre","El verdadero contacto no ocurriría cuando detectáramos una señal, sino cuando dos civilizaciones lograran reconocer que detrás de sus mensajes existe otra perspectiva sobre la realidad."]],"p0":0.96428571,"p1":1.0,"color":[235,245,255],"sound":{"base":135.75,"filter":2934,"noise":0.018,"pulse":0.086,"type":"triangle"}}];
+
+    let width = 1, height = 1, dpr = 1;
+    let pointerDown = false;
+    let targetX = .5, targetY = .982, pointerX = .5, pointerY = .982;
+    let shownX = .5, shownY = .982;
+    let lastZoneId = "", lastFeature = -1;
+    let hideTimer = 0, speechTimer = 0, lastSpoken = "", speechUnlocked = false;
+    let lastFrame = performance.now(), elapsed = 0, currentProgress = .018, touchEnergy = 0;
+
+    const particles = [], nodes = [], structures = [], packets = [], glyphs = [], bursts = [], waves = [];
+    let audioCtx = null, master = null, droneA = null, droneB = null, droneGain = null;
+    let droneFilter = null, pulseOsc = null, pulseGain = null, noiseSource = null;
+    let noiseGain = null, noiseFilter = null, stereo = null;
+
+    function depthFromY(yNorm) { return clamp(1 - yNorm, 0, 1); }
+    function zoneForDepth(p) {
+      for (const zone of ZONES) if (p >= zone.p0 && p < zone.p1) return zone;
+      return ZONES[ZONES.length - 1];
+    }
+    function featureFor(zone, xNorm) {
+      const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .999999) * zone.features.length));
+      return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+    }
+    function setAccent(zone) { root.style.setProperty("--accent", `${zone.color[0]} ${zone.color[1]} ${zone.color[2]}`); }
+    function setCssPoint(x, y) { root.style.setProperty("--scan-x", `${x}px`); root.style.setProperty("--scan-y", `${y}px`); }
+
+    function buildScene() {
+      particles.length = nodes.length = structures.length = packets.length = glyphs.length = 0;
+      const count = reducedMotion ? 90 : Math.round(clamp(width * height / 4800, 150, 380));
+      for (let i=0;i<count;i++) particles.push({x:seeded(i+1),y:seeded(i+1000),r:.5+seeded(i+2000)*2.4,phase:seeded(i+3000)*TAU,speed:.12+seeded(i+4000)*.9,kind:i%11});
+      for (let i=0;i<70;i++) nodes.push({x:.05+seeded(i+5000)*.9,y:.07+seeded(i+6000)*.86,r:2+seeded(i+7000)*5,phase:seeded(i+8000)*TAU,kind:i%9});
+      for (let i=0;i<46;i++) structures.push({x:.03+seeded(i+9000)*.94,y:.08+seeded(i+10000)*.84,w:.025+seeded(i+11000)*.09,h:.03+seeded(i+12000)*.16,phase:seeded(i+13000)*TAU,kind:i%10});
+      for (let i=0;i<62;i++) packets.push({x1:seeded(i+14000),y1:seeded(i+15000),x2:seeded(i+16000),y2:seeded(i+17000),phase:seeded(i+18000)*TAU,speed:.16+seeded(i+18100)*.55,kind:i%7});
+      const chars='01λΣΔAI{}<>→∞⊕◌⌁✦?';
+      for (let i=0;i<80;i++) glyphs.push({x:.04+seeded(i+19000)*.92,y:.06+seeded(i+20000)*.86,char:chars[i%chars.length],size:9+seeded(i+21000)*22,phase:seeded(i+22000)*TAU,speed:.2+seeded(i+23000)*.9});
+    }
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      width = Math.max(1, rect.width); height = Math.max(1, rect.height);
+      dpr = Math.min(2, devicePixelRatio || 1);
+      canvas.width = Math.round(width*dpr); canvas.height = Math.round(height*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0); buildScene();
+      shownX = targetX*width; shownY = targetY*height; setCssPoint(shownX, shownY);
+    }
+
+    function ensureAudio() {
+      if (audioCtx) { if (audioCtx.state === "suspended") audioCtx.resume().catch(()=>{}); return; }
+      const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
+      audioCtx = new AudioContext(); master = audioCtx.createGain(); master.gain.value = 0;
+      const compressor = audioCtx.createDynamicsCompressor(); compressor.threshold.value=-24; compressor.knee.value=20; compressor.ratio.value=5;
+      master.connect(compressor).connect(audioCtx.destination);
+      droneA=audioCtx.createOscillator(); droneB=audioCtx.createOscillator(); droneGain=audioCtx.createGain(); droneFilter=audioCtx.createBiquadFilter();
+      stereo=audioCtx.createStereoPanner?audioCtx.createStereoPanner():audioCtx.createGain();
+      droneA.type='sine'; droneB.type='triangle'; droneGain.gain.value=.0001; droneFilter.type='lowpass'; droneFilter.frequency.value=850; droneFilter.Q.value=.8;
+      droneA.connect(droneGain); droneB.connect(droneGain); droneGain.connect(droneFilter).connect(stereo).connect(master); droneA.start(); droneB.start();
+      pulseOsc=audioCtx.createOscillator(); pulseGain=audioCtx.createGain(); pulseOsc.type='sine'; pulseGain.gain.value=.0001; pulseOsc.connect(pulseGain).connect(master); pulseOsc.start();
+      const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate), channel=buffer.getChannelData(0);
+      for(let i=0;i<channel.length;i++) channel[i]=Math.random()*2-1;
+      noiseSource=audioCtx.createBufferSource(); noiseSource.buffer=buffer; noiseSource.loop=true;
+      noiseFilter=audioCtx.createBiquadFilter(); noiseFilter.type='bandpass'; noiseFilter.frequency.value=1100; noiseFilter.Q.value=.5;
+      noiseGain=audioCtx.createGain(); noiseGain.gain.value=.0001; noiseSource.connect(noiseFilter).connect(noiseGain).connect(master); noiseSource.start();
+    }
+
+    function setAudioFor(zone,xNorm,progress,active){
+      if(!audioCtx||!master)return; const now=audioCtx.currentTime,s=zone.sound,base=s.base*(.94+xNorm*.13);
+      droneA.type=s.type; droneB.type=s.type==='sawtooth'?'triangle':'sine';
+      droneA.frequency.setTargetAtTime(base,now,.08); droneB.frequency.setTargetAtTime(base*(1.496+progress*.012),now,.1);
+      droneFilter.frequency.setTargetAtTime(s.filter*(.84+xNorm*.3),now,.1); droneGain.gain.setTargetAtTime(active?.010+progress*.006:.0001,now,.09);
+      pulseOsc.frequency.setTargetAtTime(base*(1.985+s.pulse),now,.08); pulseGain.gain.setTargetAtTime(active?.0024+progress*.002:.0001,now,.1);
+      noiseFilter.frequency.setTargetAtTime(s.filter*1.13,now,.1); noiseGain.gain.setTargetAtTime(active?Math.max(.0001,s.noise*.052):.0001,now,.1);
+      if(stereo.pan)stereo.pan.setTargetAtTime((xNorm-.5)*.7,now,.08); master.gain.setTargetAtTime(active?.25:.0001,now,.09);
+    }
+
+    function ping(zone,xNorm,index=0){
+      if(!audioCtx||!master)return; const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),filter=audioCtx.createBiquadFilter();
+      const pan=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null; osc.type=index%3===0?'sine':index%3===1?'triangle':'square';
+      osc.frequency.value=zone.sound.base*(2.05+index*.12); filter.type='lowpass'; filter.frequency.value=1800+zone.scene*105;
+      gain.gain.setValueAtTime(.0001,now); gain.gain.exponentialRampToValueAtTime(.065,now+.012); gain.gain.exponentialRampToValueAtTime(.0001,now+.48);
+      osc.connect(filter).connect(gain); if(pan){pan.pan.value=(xNorm-.5)*1.25;gain.connect(pan).connect(master)}else gain.connect(master); osc.start(now);osc.stop(now+.54);
+    }
+
+    function queueSpeech(label){
+      if(!speechUnlocked||!("speechSynthesis" in window)||!label||label===lastSpoken)return; clearTimeout(speechTimer);
+      speechTimer=setTimeout(()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(label);u.lang='es-ES';u.rate=.86;u.pitch=1;
+        const voices=speechSynthesis.getVoices();const voice=voices.find(v=>/^es(-|_)/i.test(v.lang))||voices.find(v=>/spanish|español/i.test(v.name));if(voice)u.voice=voice;
+        speechSynthesis.speak(u);lastSpoken=label;}catch(_){ }},360);
+    }
+
+    function addRipple(x,y){const node=document.createElement('div');node.className='ripple';node.style.left=`${x}px`;node.style.top=`${y}px`;document.body.appendChild(node);node.addEventListener('animationend',()=>node.remove(),{once:true});}
+    function addBurst(x,y,color){const count=reducedMotion?5:13;for(let i=0;i<count;i++){const a=Math.random()*TAU,s=18+Math.random()*72;bursts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:.8+Math.random()*2.4,life:1,decay:1+Math.random()*.8,color});}waves.push({x,y,radius:5,life:1,color});}
+
+    function updateReadout(x,y,isNewPress=false){
+      const xNorm=clamp(x/width,0,.999999),yNorm=clamp(y/height,0,.999999),progress=depthFromY(yNorm),zone=zoneForDepth(progress),feature=featureFor(zone,xNorm);
+      if(isNewPress){currentProgress=progress;pointerX=xNorm;pointerY=yNorm;}
+      targetX=xNorm;targetY=yNorm;touchEnergy=1;setCssPoint(x,y);setAccent(zone);root.style.setProperty('--progress',`${Math.max(1.2,progress*100)}%`);
+      scaleDot.style.bottom=`${48+progress*Math.max(0,height-96)}px`;touchOrb.style.left=`${x}px`;touchOrb.style.top=`${y}px`;scaleValue.textContent=zone.className;
+      const changed=zone.id!==lastZoneId||feature.index!==lastFeature;
+      if(changed||isNewPress){evidenceClass.textContent=zone.className;zoneName.textContent=zone.name;zoneName.className=zone.name.length>31?'long':zone.name.length>21?'compact':'';
+        featureName.textContent=feature.name;metric.textContent=zone.metric;fact.textContent=feature.fact||zone.fact;ping(zone,xNorm,feature.index);addBurst(x,y,zone.color);queueSpeech(feature.name);lastZoneId=zone.id;lastFeature=feature.index;}
+      readout.classList.add('visible');touchOrb.classList.add('visible');document.body.classList.add('active');hint.style.display='none';setAudioFor(zone,xNorm,progress,true);
+    }
+    function releaseInteraction(delay=1050){clearTimeout(hideTimer);hideTimer=setTimeout(()=>{readout.classList.remove('visible');touchOrb.classList.remove('visible');document.body.classList.remove('active');const z=zoneForDepth(depthFromY(targetY));setAudioFor(z,targetX,depthFromY(targetY),false);},delay);}
+    function endPointer(){pointerDown=false;releaseInteraction();}
+    canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.focus({preventScroll:true});pointerDown=true;speechUnlocked=true;ensureAudio();try{canvas.setPointerCapture(e.pointerId)}catch(_){ }updateReadout(e.clientX,e.clientY,true);addRipple(e.clientX,e.clientY);});
+    canvas.addEventListener('pointermove',e=>{if(!pointerDown&&e.pointerType!=='mouse')return;if(!pointerDown&&e.buttons===0){targetX=clamp(e.clientX/width,0,1);targetY=clamp(e.clientY/height,0,1);return;}e.preventDefault();updateReadout(e.clientX,e.clientY);});
+    canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);canvas.addEventListener('lostpointercapture',endPointer);
+    canvas.addEventListener('keydown',e=>{const keys=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter',' '];if(!keys.includes(e.key))return;e.preventDefault();speechUnlocked=true;ensureAudio();const step=e.shiftKey?.09:.035;
+      if(e.key==='ArrowUp')targetY=clamp(targetY-step,.005,.995);if(e.key==='ArrowDown')targetY=clamp(targetY+step,.005,.995);if(e.key==='ArrowLeft')targetX=clamp(targetX-step,.005,.995);if(e.key==='ArrowRight')targetX=clamp(targetX+step,.005,.995);
+      updateReadout(targetX*width,targetY*height,e.key==='Enter'||e.key===' ');releaseInteraction(1600);});
+
+    function softHalo(cx,cy,radius,color,alpha){const g=ctx.createRadialGradient(cx,cy,0,cx,cy,radius);g.addColorStop(0,rgba(color,alpha));g.addColorStop(.35,rgba(color,alpha*.4));g.addColorStop(1,rgba(color,0));ctx.fillStyle=g;ctx.fillRect(cx-radius,cy-radius,radius*2,radius*2);}
+    function roundedRectPath(x,y,w,h,r){const rr=Math.min(r,w*.5,h*.5);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();}
+    function line(x1,y1,x2,y2,stroke='rgba(255,255,255,.3)',lw=1){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+    function circle(x,y,r,fill='rgba(255,255,255,.5)',stroke=null,lw=1){ctx.fillStyle=fill;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+    function polygon(points,fill,stroke=null,lw=1){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+    function drawGear(cx,cy,r,teeth,color,rotation=0){ctx.save();ctx.translate(cx,cy);ctx.rotate(rotation);ctx.strokeStyle=color;ctx.fillStyle='rgba(0,0,0,.15)';ctx.lineWidth=1.6;ctx.beginPath();for(let i=0;i<teeth*2;i++){const a=i/(teeth*2)*TAU,rr=i%2?r:r*.76;const x=Math.cos(a)*rr,y=Math.sin(a)*rr;if(!i)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.closePath();ctx.fill();ctx.stroke();circle(0,0,r*.27,'rgba(0,0,0,.42)',color,1.2);ctx.restore();}
+    function drawGlobe(cx,cy,r,z,time,network=true){
+      softHalo(cx,cy,r*2.15,z.color,.2);const g=ctx.createRadialGradient(cx-r*.38,cy-r*.43,r*.04,cx,cy,r);g.addColorStop(0,'rgba(205,248,255,.98)');g.addColorStop(.42,'rgba(63,173,222,.94)');g.addColorStop(1,'rgba(8,39,92,.97)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.fill();ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.clip();ctx.fillStyle='rgba(86,186,114,.67)';for(let i=0;i<12;i++){const a=seeded(i+300)*TAU,rr=seeded(i+330)*r*.77,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.78;ctx.beginPath();ctx.ellipse(x,y,r*(.055+seeded(i+350)*.13),r*(.025+seeded(i+370)*.065),a,0,TAU);ctx.fill();}ctx.strokeStyle='rgba(255,255,255,.15)';for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(cx-r*.24+i*r*.075,cy-r*.13+i*r*.035,r*(.47+i*.05),.18,2.55);ctx.stroke();}ctx.restore();ctx.strokeStyle='rgba(190,240,255,.55)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();
+      if(network){for(let i=0;i<27;i++){const a=i/27*TAU+time*.01,x=cx+Math.cos(a)*r*.82,y=cy+Math.sin(a)*r*.82;circle(x,y,1.5+i%3,rgba(i%4?z.color:[255,240,185],.46));}}
+    }
+    function drawBuilding(x,ground,w,h,color,lit=.45){ctx.fillStyle='rgba(8,14,25,.58)';ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.fillRect(x-w*.5,ground-h,w,h);ctx.strokeRect(x-w*.5,ground-h,w,h);let row=0;for(let ry=0;ry<h-w*.2;ry+=Math.max(10,w*.38),row++)for(let c=-1;c<=1;c++){const on=fract(Math.sin((x+row*17+c*31)*12.9898)*43758.5453)<lit;circle(x+c*w*.23,ground-h+w*.22+ry,1.25,on?'rgba(255,230,145,.45)':'rgba(120,220,255,.2)');}}
+    function drawTool(x,y,len,angle,type,color){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.lineCap='round';if(type==='hammer'){line(-len*.42,0,len*.35,0,'rgba(180,120,73,.9)',len*.10);ctx.fillStyle=color;roundedRectPath(len*.17,-len*.18,len*.34,len*.36,len*.05);ctx.fill();}else if(type==='knife'){line(-len*.42,0,-len*.1,0,'rgba(156,96,55,.9)',len*.12);polygon([[-len*.1,-len*.08],[len*.45,-len*.03],[len*.28,len*.12],[-len*.1,len*.08]],'rgba(220,240,250,.75)',color,1);}else if(type==='needle'){line(-len*.45,0,len*.45,0,color,2);circle(-len*.36,0,len*.055,'rgba(0,0,0,.2)',color,1);}else if(type==='rope'){ctx.strokeStyle=color;ctx.lineWidth=len*.045;ctx.beginPath();for(let i=0;i<=30;i++){const xx=-len*.45+i/30*len*.9,yy=Math.sin(i*.7)*len*.04;i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy);}ctx.stroke();}else{line(-len*.42,0,len*.42,0,color,len*.06);circle(len*.34,0,len*.12,'rgba(0,0,0,.2)',color,2);}ctx.restore();}
+
+    function drawBackground(progress,time){
+      const f=clamp(progress*(ZONES.length-1),0,ZONES.length-1),i=Math.floor(f),j=Math.min(ZONES.length-1,i+1),t=smooth(f-i),a=ZONES[i].color,b=ZONES[j].color;
+      const c=a.map((v,k)=>Math.round(mix(v,b[k],t))), dark=c.map(v=>Math.round(v*.09)), mid=c.map(v=>Math.round(v*.29));
+      const g=ctx.createLinearGradient(0,height,0,0);g.addColorStop(0,`rgb(${Math.max(3,dark[0]-4)} ${Math.max(5,dark[1]-2)} ${Math.max(8,dark[2])})`);g.addColorStop(.56,`rgb(${mid[0]} ${mid[1]} ${mid[2]})`);g.addColorStop(1,`rgb(${Math.min(255,c[0]*.62)} ${Math.min(255,c[1]*.62)} ${Math.min(255,c[2]*.62)})`);ctx.fillStyle=g;ctx.fillRect(0,0,width,height);
+      softHalo(width*(.44+.1*Math.sin(time*.05)),height*(.74-progress*.46),Math.max(width,height)*.72,c,.105+progress*.05);
+      for(const p of particles){const x=fract(p.x+time*.0018*p.speed)*width+Math.sin(time*.19+p.phase)*4,y=fract(p.y-time*.0011*p.speed)*height+Math.cos(time*.15+p.phase)*4,col=p.kind%3===0?c:p.kind%3===1?[255,244,215]:[132,226,255];circle(x,y,p.r*(.72+progress*.38),rgba(col,.07+.15*(.5+.5*Math.sin(time*p.speed+p.phase))));}
+      for(let k=1;k<8;k++)line(k/8*width,0,k/8*width,height,'rgba(255,255,255,.016)');
+    }
+
+
+    function drawPlanet(cx,cy,r,z,time,land=true){
+      softHalo(cx,cy,r*2.2,z.color,.18);const g=ctx.createRadialGradient(cx-r*.32,cy-r*.38,r*.03,cx,cy,r);g.addColorStop(0,'rgba(225,250,255,.98)');g.addColorStop(.38,rgba(z.color,.78));g.addColorStop(1,'rgba(7,20,55,.98)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.fill();ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.clip();
+      if(land){ctx.fillStyle='rgba(105,207,145,.58)';for(let i=0;i<10;i++){const a=seeded(i+310)*TAU,rr=seeded(i+340)*r*.72;ctx.beginPath();ctx.ellipse(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.78,r*(.055+seeded(i+370)*.14),r*(.026+seeded(i+390)*.07),a,0,TAU);ctx.fill();}}
+      ctx.strokeStyle='rgba(255,255,255,.13)';for(let i=0;i<6;i++){ctx.beginPath();ctx.ellipse(cx,cy,r*(.35+i*.11),r*(.12+i*.035),time*.006+i*.27,0,TAU);ctx.stroke();}ctx.restore();ctx.strokeStyle='rgba(215,245,255,.55)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();
+    }
+    function drawStar(cx,cy,r,color,time){softHalo(cx,cy,r*3,color,.2);const g=ctx.createRadialGradient(cx-r*.25,cy-r*.3,0,cx,cy,r);g.addColorStop(0,'rgba(255,255,240,1)');g.addColorStop(.38,rgba(color,.96));g.addColorStop(1,rgba([255,128,70],.48));ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r*(1+.025*Math.sin(time*1.8)),0,TAU);ctx.fill();for(let i=0;i<12;i++){const a=i/12*TAU+time*.025,lineR=r*(1.25+(i%3)*.2);line(cx+Math.cos(a)*r*1.05,cy+Math.sin(a)*r*1.05,cx+Math.cos(a)*lineR,cy+Math.sin(a)*lineR,rgba(color,.22),1.3);}}
+    function drawSatellite(x,y,s,z,angle=0){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.fillStyle='rgba(220,235,245,.68)';roundedRectPath(-s*.12,-s*.08,s*.24,s*.16,s*.035);ctx.fill();ctx.strokeStyle=rgba(z.color,.7);ctx.stroke();ctx.fillStyle=rgba(z.color,.28);ctx.fillRect(-s*.42,-s*.07,s*.25,s*.14);ctx.fillRect(s*.17,-s*.07,s*.25,s*.14);line(0,-s*.08,0,-s*.22,'rgba(255,255,255,.52)',1.5);circle(0,-s*.25,s*.025,rgba(z.color,.78));ctx.restore();}
+    function drawHabitat(x,y,s,z,domes=3){line(x-s*.42,y,x+s*.42,y,rgba(z.color,.35),3);for(let i=0;i<domes;i++){const dx=(i-(domes-1)/2)*s*.27,r=s*(.095+(i%2)*.018);ctx.fillStyle=rgba(z.color,.12);ctx.strokeStyle=rgba(z.color,.65);ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(x+dx,y,r,Math.PI,TAU);ctx.lineTo(x+dx+r,y);ctx.lineTo(x+dx-r,y);ctx.closePath();ctx.fill();ctx.stroke();for(let k=-1;k<=1;k++)circle(x+dx+k*r*.38,y-r*.42,1.4,'rgba(255,235,160,.62)');}}
+    function drawNetwork(cx,cy,r,z,time,count=18){for(let i=0;i<count;i++){const a=i/count*TAU+seeded(i+900)*.5,rr=r*(.36+seeded(i+930)*.64),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.72;nodes[i]._x=x;nodes[i]._y=y;circle(x,y,2+i%3,rgba(i%4?z.color:[255,240,180],.68));}for(let i=0;i<count*2;i++){const a=nodes[i%count],b=nodes[(i*7+3)%count];line(a._x,a._y,b._x,b._y,rgba(z.color,.075+(i%4)*.018),1);const p=fract(time*(.07+(i%3)*.012)+i*.053);circle(mix(a._x,b._x,p),mix(a._y,b._y,p),1.3,rgba([255,250,220],.5));}}
+    function drawBranching(originX,originY,targetY,z,time,branches=9,spread=.82){for(let i=0;i<branches;i++){const ex=width*((1-spread)/2+i/(branches-1)*spread),cx=originX+(ex-originX)*.36+Math.sin(i*2.1)*width*.035;ctx.strokeStyle=rgba(i%3===0?[255,170,190]:i%3===1?z.color:[140,255,176],.2+i*.012);ctx.lineWidth=1.7+i%3;ctx.beginPath();ctx.moveTo(originX,originY);ctx.bezierCurveTo(cx,mix(originY,targetY,.32),cx,mix(originY,targetY,.7),ex,targetY);ctx.stroke();const p=fract(time*(.045+i*.004)+i*.09),u=1-p,x=(u*u*u)*originX+3*u*u*p*cx+3*u*p*p*cx+p*p*p*ex,y=(u*u*u)*originY+3*u*u*p*mix(originY,targetY,.32)+3*u*p*p*mix(originY,targetY,.7)+p*p*p*targetY;circle(x,y,2+i%2,rgba([255,250,225],.54));circle(ex,targetY,3+i%3,rgba(i%2?z.color:[255,184,130],.46));}}
+    function drawRiskSymbol(x,y,r,z,type){ctx.strokeStyle=rgba(z.color,.75);ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.stroke();ctx.font=`900 ${r*.95}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=rgba(z.color,.8);ctx.fillText(type,x,y+r*.05);ctx.textBaseline='alphabetic';}
+
+
+    function drawOrbitalRing(cx,cy,rx,ry,angle,color,alpha=.35,lw=1.2){ctx.save();ctx.translate(cx,cy);ctx.rotate(angle);ctx.strokeStyle=rgba(color,alpha);ctx.lineWidth=lw;ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,TAU);ctx.stroke();ctx.restore();}
+    function drawMolecule(cx,cy,r,z,time,count=7){const pts=[];for(let i=0;i<count;i++){const a=i/count*TAU+time*.025,rr=r*(.45+seeded(i+61)*.5);pts.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.7]);}for(let i=0;i<count;i++){const a=pts[i],b=pts[(i*3+2)%count];line(a[0],a[1],b[0],b[1],rgba(z.color,.18),1.6);}pts.forEach((p,i)=>{softHalo(p[0],p[1],r*.18,i%3?z.color:[255,215,130],.09);circle(p[0],p[1],r*(.035+(i%3)*.012),rgba(i%3?z.color:[255,225,155],.68),rgba([255,255,255],.5),1);});}
+    function drawCell(cx,cy,r,z,time,kind=0){softHalo(cx,cy,r*1.8,z.color,.16);ctx.save();ctx.translate(cx,cy);ctx.rotate(time*.015+kind);ctx.fillStyle=rgba(z.color,.16);ctx.strokeStyle=rgba(z.color,.72);ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<=48;i++){const a=i/48*TAU,rr=r*(1+.055*Math.sin(a*(3+kind%4)+time*.7));const x=Math.cos(a)*rr,y=Math.sin(a)*rr*.82;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.closePath();ctx.fill();ctx.stroke();circle(0,0,r*.27,'rgba(10,30,42,.7)',rgba([255,245,185],.55),1.4);for(let i=0;i<10;i++){const a=i/10*TAU+time*.03,rr=r*(.4+seeded(i+201)*.3);circle(Math.cos(a)*rr,Math.sin(a)*rr*.75,r*(.025+i%3*.01),rgba(i%2?z.color:[255,190,130],.52));}ctx.restore();}
+    function drawSpectrum(x,y,w,h,z,time,peaks=8){line(x,y+h,x+w,y+h,'rgba(255,255,255,.32)',1);for(let i=0;i<peaks;i++){const px=x+w*(.07+i/(peaks-1)*.86),ph=h*(.2+seeded(i+300)*.72);line(px,y+h,px,y+h-ph,rgba(i%3?z.color:[255,210,120],.62),1.5+i%2);softHalo(px,y+h-ph,w*.035,z.color,.07);}ctx.strokeStyle=rgba([255,255,255],.2);ctx.beginPath();for(let i=0;i<=60;i++){const u=i/60,yy=y+h*.65-Math.sin(u*TAU*2+time*.2)*h*.05-(.5+.5*Math.sin(u*TAU*7+time*.1))*h*.12;i?ctx.lineTo(x+u*w,yy):ctx.moveTo(x+u*w,yy);}ctx.stroke();}
+    function drawSignal(cx,cy,r,z,time,rings=7){for(let i=0;i<rings;i++){const p=fract(time*.14+i/rings),rr=r*(.12+p),ctxAlpha=(1-p)*.38;ctx.strokeStyle=rgba(z.color,ctxAlpha);ctx.lineWidth=1.1+(i%2);ctx.beginPath();ctx.arc(cx,cy,rr,0,TAU);ctx.stroke();}circle(cx,cy,r*.035,rgba([255,245,200],.8));}
+    function drawIceMoon(cx,cy,r,z,time){drawPlanet(cx,cy,r,{color:[175,225,255]},time,false);ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.clip();ctx.strokeStyle='rgba(255,255,255,.5)';for(let i=0;i<15;i++){const y=cy-r+i*r*.14;ctx.beginPath();ctx.moveTo(cx-r,y);for(let x=cx-r;x<=cx+r;x+=r*.12)ctx.lineTo(x,y+Math.sin(x*.05+i)*r*.025);ctx.stroke();}ctx.restore();}
+    function drawAbstractBody(cx,cy,r,z,time,mode){ctx.save();ctx.translate(cx,cy);ctx.rotate(time*.012+mode*.4);ctx.strokeStyle=rgba(z.color,.62);ctx.fillStyle=rgba(z.color,.12);ctx.lineWidth=1.7;ctx.beginPath();const n=5+mode%5;for(let i=0;i<=n;i++){const a=i/n*TAU,rr=r*(.65+.32*Math.sin(a*(2+mode%4)+mode));const x=Math.cos(a)*rr,y=Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.closePath();ctx.fill();ctx.stroke();for(let i=0;i<n;i++){const a=i/n*TAU+time*.02,rr=r*.48;circle(Math.cos(a)*rr,Math.sin(a)*rr,r*.045,rgba(i%2?z.color:[255,230,160],.58));}ctx.restore();}
+    function footerLabel(text,z){const alpha=footerLabel.alpha||0;if(!footerLabel.pending||alpha>=footerLabel.pending.alpha)footerLabel.pending={text,z,alpha};} function paintFooter(){const item=footerLabel.pending;if(!item)return;const s=Math.min(width,height);ctx.font=`900 ${s*.023}px system-ui`;ctx.textAlign='center';ctx.fillStyle=`rgba(255,255,255,${.57*clamp(item.alpha*1.5,0,1)})`;ctx.fillText(item.text,width*.5,height*.86);}
+
+
+    function drawWaveform(x,y,w,h,z,time,mode=0){
+      ctx.save();ctx.strokeStyle=rgba(z.color,.62);ctx.lineWidth=1.5;ctx.beginPath();
+      for(let i=0;i<=100;i++){const u=i/100;let v=Math.sin(u*TAU*(3+mode)+time*.7)*.18+Math.sin(u*TAU*(11+mode*2)-time*.22)*.07;
+        if(mode===2)v+=(Math.floor(u*18)%2?-.16:.16);if(mode===3)v*=.35+.65*(Math.floor(u*12)%3===0);const px=x+u*w,py=y+h*.5-v*h;i?ctx.lineTo(px,py):ctx.moveTo(px,py);}ctx.stroke();
+      line(x,y+h,x+w,y+h,'rgba(255,255,255,.16)',1);ctx.restore();
+    }
+    function drawDish(x,y,s,z,angle=0,active=true){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.strokeStyle=rgba(z.color,active?.72:.25);ctx.fillStyle=rgba(z.color,active?.12:.04);ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,s*.34,.16*Math.PI,.84*Math.PI);ctx.lineTo(0,s*.03);ctx.closePath();ctx.fill();ctx.stroke();line(0,s*.03,0,s*.34,rgba(z.color,.55),2);line(-s*.17,s*.34,s*.17,s*.34,rgba(z.color,.4),2);circle(0,0,s*.025,rgba([255,245,200],.8));ctx.restore();}
+    function drawPacket(x,y,s,z,label,alpha=.8){softHalo(x,y,s*1.25,z.color,.08*alpha);ctx.fillStyle=rgba(z.color,.12*alpha);ctx.strokeStyle=rgba(z.color,.62*alpha);ctx.lineWidth=1.2;roundedRectPath(x-s*.55,y-s*.25,s*1.1,s*.5,s*.12);ctx.fill();ctx.stroke();ctx.font=`900 ${Math.max(8,s*.19)}px system-ui`;ctx.textAlign='center';ctx.fillStyle=`rgba(255,255,255,${.72*alpha})`;ctx.fillText(label,x,y+s*.065);}
+    function drawGlyphField(x,y,w,h,z,time,variant=0){const chars=['01','λ','Σ','△','○','↔','⊕','⋮','?','∞','⌁','✦'];ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();for(let i=0;i<36;i++){const col=i%6,row=Math.floor(i/6),px=x+(col+.5)*w/6,py=y+(row+.5)*h/6;ctx.font=`800 ${Math.max(10,Math.min(w,h)*(.075+(i%3)*.015))}px system-ui`;ctx.textAlign='center';ctx.fillStyle=rgba(i%4?z.color:[255,235,180],.25+.28*(.5+.5*Math.sin(time*.4+i)));ctx.fillText(chars[(i*3+variant)%chars.length],px,py);}ctx.restore();}
+    function drawChoiceBranches(z,time,labels){const s=Math.min(width,height),selected=Math.min(labels.length-1,Math.floor(pointerX*labels.length));for(let i=0;i<labels.length;i++){const x=width*(.08+(i+.5)*.84/labels.length),chosen=i===selected;ctx.strokeStyle=rgba(chosen?[255,245,195]:z.color,chosen?.72:.18);ctx.lineWidth=chosen?3:1.2;ctx.beginPath();ctx.moveTo(width*.5,height*.72);ctx.quadraticCurveTo(x,height*.48,x,height*.27);ctx.stroke();circle(x,height*.25,s*(chosen?.026:.018),rgba(chosen?[255,245,195]:z.color,chosen?.65:.27));ctx.font=`900 ${Math.max(8,s*.014)}px system-ui`;ctx.textAlign='center';ctx.fillStyle=`rgba(255,255,255,${chosen?.8:.35})`;ctx.fillText(labels[i],x,height*.19);}circle(width*.5,height*.74,s*.025,rgba(z.color,.72));}
+    function drawCivilization(cx,cy,r,z,time,variant=0){softHalo(cx,cy,r*2,z.color,.13);if(variant%3===0){drawNetwork(cx,cy,r,z,time,14);}else if(variant%3===1){for(let i=0;i<9;i++){const a=i/9*TAU+time*.015,rr=r*(.35+(i%3)*.22);circle(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.72,r*.055,rgba(i%2?z.color:[255,225,160],.55));line(cx,cy,cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.72,rgba(z.color,.13),1);}circle(cx,cy,r*.13,rgba(z.color,.45));}else{for(let i=0;i<6;i++){const a=i/6*TAU+time*.01,rr=r*.62;polygon([[cx+Math.cos(a)*rr-r*.09,cy+Math.sin(a)*rr*.65],[cx+Math.cos(a)*rr+r*.09,cy+Math.sin(a)*rr*.65],[cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.65-r*.16]],rgba(z.color,.14),rgba(z.color,.55),1.2);}}}
+
+    function sceneUnresolved(z,time){const s=Math.min(width,height);for(let i=0;i<95;i++){const x=seeded(i+401)*width,y=seeded(i+701)*height,r=.4+seeded(i+901)*2;circle(x,y,r,rgba(i%8?z.color:[255,225,170],.1+.25*seeded(i+1201)));}drawSignal(width*.5,height*.38,s*.16,z,time,9);drawWaveform(width*.12,height*.63,width*.76,height*.16,z,time,z.scene%4);for(let i=0;i<6;i++){const a=i/6*TAU+time*.012;circle(width*.5+Math.cos(a)*s*.25,height*.38+Math.sin(a)*s*.15,2+i%2,rgba(z.color,.42));}footerLabel('ANOMALÍA ≠ CONCLUSIÓN',z);}
+    function sceneDetection(z,time){const s=Math.min(width,height);drawDish(width*.23,height*.68,s*.23,z,-.08,true);drawDish(width*.76,height*.72,s*.18,z,.12,true);drawWaveform(width*.2,height*.18,width*.62,height*.22,z,time,1);for(let i=0;i<6;i++){const x=width*(.16+i*.135);line(x,height*.52,x,height*.58,rgba(z.color,.35),1.2);circle(x,height*.5,3+i%2,rgba([255,240,190],.55));}footerLabel('MEDIR TAMBIÉN SIGNIFICA AUDITAR EL INSTRUMENTO',z);}
+    function sceneInterference(z,time){const s=Math.min(width,height);drawDish(width*.5,height*.72,s*.23,z,0,true);for(let i=0;i<4;i++){const x=width*(.12+i*.25),y=height*(.22+.08*(i%2));drawSatellite(x,y,s*.18,z,time*.03+i);ctx.setLineDash([4,7]);line(x,y,width*.5,height*.61,rgba(i===Math.floor(pointerX*4)?[255,225,170]:z.color,i===Math.floor(pointerX*4)?.55:.14),1.4);ctx.setLineDash([]);}drawWaveform(width*.19,height*.42,width*.62,height*.12,z,time,2);footerLabel('CERCA, REFLEJADO, DIGITAL O CELESTE',z);}
+    function sceneVerification(z,time){const s=Math.min(width,height),sourceX=width*.5,sourceY=height*.22;drawSignal(sourceX,sourceY,s*.1,z,time,6);const sites=[[.15,.72],[.36,.78],[.64,.78],[.85,.72]];sites.forEach((p,i)=>{drawDish(width*p[0],height*p[1],s*.16,z,(i-1.5)*.12,true);ctx.setLineDash([5,7]);line(width*p[0],height*p[1]-s*.08,sourceX,sourceY,rgba(z.color,.18+i*.05),1.2);ctx.setLineDash([]);});drawPacket(width*.5,height*.55,s*.13,z,'MISMA PREDICCIÓN',.75);footerLabel('ERRORES DISTINTOS · RESULTADO COMPATIBLE',z);}
+    function sceneOrigin(z,time){const s=Math.min(width,height);drawStar(width*.72,height*.25,s*.055,[255,220,130],time);drawSignal(width*.72,height*.25,s*.12,z,time,7);drawDish(width*.2,height*.73,s*.2,z,-.05,true);ctx.setLineDash([5,8]);line(width*.25,height*.63,width*.68,height*.29,rgba(z.color,.42),1.6);ctx.setLineDash([]);for(let i=0;i<12;i++){const p=fract(time*.045+i/12),x=mix(width*.68,width*.25,p),y=mix(height*.29,height*.63,p);circle(x,y,1.6+i%2,rgba([255,245,205],.55*(1-p*.3)));}drawWaveform(width*.4,height*.61,width*.45,height*.14,z,time,1);footerLabel('DISTANTE NO SIGNIFICA ARTIFICIAL',z);}
+    function scenePattern(z,time){const s=Math.min(width,height);const primes=[2,3,5,7,11,13,17,19];for(let i=0;i<primes.length;i++){const x=width*(.09+i*.115),h=s*(.03+primes[i]/19*.2);line(x,height*.7,x,height*.7-h,rgba(z.color,.58),2);circle(x,height*.7-h,3,rgba([255,240,180],.75));ctx.font=`900 ${s*.018}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.55)';ctx.fillText(String(primes[i]),x,height*.76);}drawWaveform(width*.14,height*.19,width*.72,height*.24,z,time,2);footerLabel('ORDEN FUNCIONAL · ORIGEN TODAVÍA ABIERTO',z);}
+    function sceneEvidence(z,time){const s=Math.min(width,height);const levels=['INTERESANTE','INEXPLICADA','POSIBLE','PROBABLE','CONFIRMADA'];for(let i=0;i<levels.length;i++){const y=height*(.72-i*.115),w=width*(.28+i*.1),x=(width-w)/2;ctx.fillStyle=rgba(z.color,.045+i*.025);ctx.strokeStyle=rgba(z.color,.18+i*.1);roundedRectPath(x,y,w,s*.07,s*.02);ctx.fill();ctx.stroke();ctx.font=`900 ${s*.014}px system-ui`;ctx.textAlign='center';ctx.fillStyle=`rgba(255,255,255,${.3+i*.11})`;ctx.fillText(levels[i],width*.5,y+s*.044);}for(let i=0;i<8;i++){const p=fract(time*.04+i*.12);circle(width*.5+Math.sin(i*2.2)*width*.2*(1-p),height*.81-p*height*.63,2+i%2,rgba([255,240,185],.5));}footerLabel('EVIDENCIA CONVERGENTE, CONFIANZA REVISABLE',z);}
+    function sceneAnnouncement(z,time){const s=Math.min(width,height);drawGlobe(width*.5,height*.48,s*.2,z,time,true);for(let i=0;i<16;i++){const a=i/16*TAU+time*.008,rr=s*(.29+(i%3)*.04),x=width*.5+Math.cos(a)*rr,y=height*.48+Math.sin(a)*rr*.62;drawPacket(x,y,s*.07,z,i%4===0?'DATOS':i%4===1?'REV':i%4===2?'?':'INFO',.35+.35*(i%3));line(width*.5,height*.48,x,y,rgba(z.color,.08),1);}footerLabel('LO OBSERVADO · LO INFERIDO · LO DESCONOCIDO',z);}
+    function sceneCoordination(z,time){const s=Math.min(width,height);drawGlobe(width*.5,height*.47,s*.18,z,time,true);const labels=['CIENCIA','GOB','GLOBAL','EMP','COM','SOC'];for(let i=0;i<labels.length;i++){const a=i/labels.length*TAU-time*.008,rr=s*.32,x=width*.5+Math.cos(a)*rr,y=height*.47+Math.sin(a)*rr*.58;drawPacket(x,y,s*.085,z,labels[i],i===Math.floor(pointerX*labels.length)?1:.5);line(x,y,width*.5,height*.47,rgba(z.color,.14),1);}footerLabel('NINGUNA VOZ ÚNICA HABLA POR TODO EL PLANETA',z);}
+    function sceneInterpretation(z,time){const s=Math.min(width,height);drawWaveform(width*.08,height*.18,width*.84,height*.16,z,time,3);drawGlyphField(width*.12,height*.39,width*.76,height*.3,z,time,1);for(let i=0;i<7;i++){const x=width*(.14+i*.12);line(x,height*.35,x,height*.72,rgba(z.color,i===Math.floor(pointerX*7)?.55:.1),i===Math.floor(pointerX*7)?2:1);}footerLabel('PRIMERO ESTRUCTURA · DESPUÉS SIGNIFICADO',z);}
+    function sceneMath(z,time){const s=Math.min(width,height);const cx=width*.5,cy=height*.46;ctx.strokeStyle=rgba(z.color,.55);ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,s*.17,0,TAU);ctx.stroke();polygon([[cx,cy-s*.2],[cx-s*.18,cy+s*.14],[cx+s*.18,cy+s*.14]],rgba(z.color,.06),rgba([255,235,170],.5),2);for(let i=0;i<9;i++){const a=i/9*TAU+time*.01;circle(cx+Math.cos(a)*s*.29,cy+Math.sin(a)*s*.18,2+i%3,rgba(i%2?z.color:[255,230,150],.68));}ctx.font=`900 ${s*.04}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.58)';ctx.fillText('2 · 3 · 5 · 7 · 11',cx,height*.8);footerLabel('REFERENCIAS COMUNES · NO UN LENGUAJE COMPLETO',z);}
+    function sceneMeaning(z,time){const s=Math.min(width,height);const leftX=width*.25,rightX=width*.75;drawGlyphField(width*.07,height*.28,width*.34,height*.38,z,time,2);for(let i=0;i<6;i++){const y=height*(.31+i*.065);const shape=i%3===0?'○':i%3===1?'△':'↔';ctx.font=`900 ${s*.038}px system-ui`;ctx.textAlign='center';ctx.fillStyle=rgba([255,235,180],.65);ctx.fillText(shape,rightX,y);ctx.setLineDash([4,7]);line(width*.41,y,width*.68,y,rgba(z.color,i===Math.floor(pointerX*6)?.65:.16),1.5);ctx.setLineDash([]);}drawPacket(width*.5,height*.73,s*.12,z,'MODELO REVISABLE',.75);footerLabel('EJEMPLO → CONTRASTE → RELACIÓN → CONCEPTO',z);}
+    function sceneLanguage(z,time){const s=Math.min(width,height);drawGlyphField(width*.08,height*.15,width*.84,height*.52,z,time,Math.floor(pointerX*6));for(let i=0;i<5;i++){const y=height*(.25+i*.095);ctx.strokeStyle=rgba(i%2?z.color:[255,235,170],.16+i*.05);ctx.strokeRect(width*.13,y,width*.74,height*.055);}drawWaveform(width*.17,height*.72,width*.66,height*.1,z,time,3);footerLabel('ESTRUCTURA SIN VOZ, ESCRITURA NI IMAGEN HUMANA',z);}
+    function sceneCulture(z,time){const s=Math.min(width,height);const centers=[[.2,.45],[.5,.32],[.78,.55]];centers.forEach((p,i)=>drawCivilization(width*p[0],height*p[1],s*.15,z,time,i));for(let i=0;i<3;i++){ctx.setLineDash([4,8]);line(width*centers[i][0],height*centers[i][1],width*.5,height*.76,rgba(z.color,.16),1.2);ctx.setLineDash([]);}drawPacket(width*.5,height*.78,s*.13,z,'CONTEXTO',.78);footerLabel('MISMA FÍSICA · HISTORIAS MENTALES DISTINTAS',z);}
+    function sceneDecision(z,time){const labels=['SILENCIO','RECIBIDO','CIENCIA','CULTURA','UBICACIÓN','ACUERDO'];drawChoiceBranches(z,time,labels);const selected=Math.min(labels.length-1,Math.floor(pointerX*labels.length));drawPacket(width*.5,height*.82,Math.min(width,height)*.13,z,labels[selected],.9);footerLabel('RESPONDER, ESPERAR O CALLAR CAMBIA LA RELACIÓN',z);}
+    function sceneDistance(z,time){const s=Math.min(width,height),ax=width*.16,ay=height*.32,bx=width*.84,by=height*.62;drawStar(ax,ay,s*.045,[255,220,130],time);drawStar(bx,by,s*.045,[145,205,255],time);ctx.setLineDash([6,10]);line(ax+s*.05,ay,bx-s*.05,by,rgba(z.color,.28),1.5);ctx.setLineDash([]);for(let i=0;i<9;i++){const p=fract(time*.025+i/9),x=mix(ax+s*.06,bx-s*.06,p),y=mix(ay,by,p);drawPacket(x,y,s*.045,z,i%2?'·':'1',.25+.55*(1-p));}for(let i=0;i<5;i++){ctx.strokeStyle=rgba(z.color,.1+i*.035);ctx.beginPath();ctx.arc(width*.5,height*.47,s*(.08+i*.055),0,TAU);ctx.stroke();}footerLabel('EL MENSAJE DESCRIBE EL PASADO DEL EMISOR',z);}
+    function sceneFirstReply(z,time){const s=Math.min(width,height);drawCivilization(width*.2,height*.55,s*.13,z,time,0);drawCivilization(width*.8,height*.42,s*.13,z,-time,1);ctx.setLineDash([5,8]);line(width*.3,height*.53,width*.7,height*.44,rgba(z.color,.35),1.5);ctx.setLineDash([]);for(let i=0;i<5;i++){const p=fract(time*.04+i*.2),x=mix(width*.3,width*.7,p),y=mix(height*.53,height*.44,p);drawPacket(x,y,s*.055,z,i===0?'✓':i===1?'+':i===2?'?':'↔',.4+.45*(1-p));}drawSignal(width*.8,height*.42,s*.08,z,time,6);footerLabel('RECEPCIÓN DEMOSTRADA · COMPRENSIÓN TODAVÍA PARCIAL',z);}
+    function sceneDialogue(z,time){const s=Math.min(width,height);drawCivilization(width*.18,height*.5,s*.11,z,time,0);drawCivilization(width*.82,height*.5,s*.11,z,-time,2);for(let i=0;i<7;i++){const y=height*(.18+i*.09),left=i%2===0,x1=left?width*.28:width*.72,x2=left?width*.72:width*.28;ctx.setLineDash([5,9]);line(x1,y,x2,y+height*.035,rgba(z.color,.14+i*.035),1.2);ctx.setLineDash([]);drawPacket(mix(x1,x2,fract(time*.025+i*.13)),mix(y,y+height*.035,fract(time*.025+i*.13)),s*.045,z,i<2?'REF':i<4?'?':'CTX',.5);}footerLabel('CADA TURNO PUEDE PERTENECER A OTRA GENERACIÓN',z);}
+    function sceneKnowledge(z,time){const s=Math.min(width,height);const labels=['ASTRO','FÍS','QUÍM','BIO','TEC','ARTE'];for(let i=0;i<labels.length;i++){const x=width*(.1+i*.16),y=height*(.3+.16*(i%2));drawPacket(x,y,s*.085,z,labels[i],.65);for(let k=0;k<3;k++){const p=fract(time*.035+i*.12+k*.22);circle(mix(x,width*.5,p),mix(y,height*.74,p),2,rgba([255,240,180],.55));}}drawPacket(width*.5,height*.76,s*.15,z,'VERIFICAR',.85);footerLabel('CONOCIMIENTO AJENO · AUTORIDAD NO AUTOMÁTICA',z);}
+    function sceneMisunderstanding(z,time){const s=Math.min(width,height);drawGlyphField(width*.08,height*.18,width*.33,height*.42,z,time,3);drawGlyphField(width*.59,height*.18,width*.33,height*.42,z,-time,6);for(let i=0;i<6;i++){const y=height*(.24+i*.065),offset=Math.sin(i*2.4)*height*.08;ctx.setLineDash([3,8]);line(width*.41,y,width*.59,y+offset,rgba(i===Math.floor(pointerX*6)?[255,150,130]:z.color,i===Math.floor(pointerX*6)?.65:.16),i===Math.floor(pointerX*6)?2.5:1);ctx.setLineDash([]);}ctx.font=`900 ${s*.12}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.1)';ctx.fillText('?',width*.5,height*.78);footerLabel('DATOS ENTENDIDOS · INTENCIÓN TODAVÍA AMBIGUA',z);}
+    function sceneTrust(z,time){const s=Math.min(width,height);drawCivilization(width*.22,height*.46,s*.13,z,time,0);drawCivilization(width*.78,height*.46,s*.13,z,-time,1);for(let i=0;i<5;i++){const y=height*(.27+i*.11),p=.5+.45*Math.sin(time*.25+i);ctx.strokeStyle=rgba(i%2?z.color:[255,230,160],.16+.23*p);ctx.lineWidth=1+i*.25;ctx.beginPath();ctx.moveTo(width*.34,y);ctx.bezierCurveTo(width*.45,y-height*.05,width*.55,y+height*.05,width*.66,y);ctx.stroke();circle(width*.5,y,2+i%2,rgba([255,245,200],.42+.25*p));}drawPacket(width*.5,height*.79,s*.12,z,'CONSISTENCIA',.78);footerLabel('CONFIANZA PARCIAL · VERIFICACIÓN CONTINUA',z);}
+    function sceneDiplomacy(z,time){const s=Math.min(width,height);drawCivilization(width*.18,height*.48,s*.11,z,time,0);drawCivilization(width*.82,height*.48,s*.11,z,-time,2);drawGlobe(width*.5,height*.48,s*.12,z,time,false);const labels=['QUIÉN','PROTO','INTERÉS','LÍMITE','CULTURA','REVISAR'];for(let i=0;i<labels.length;i++){const a=i/labels.length*TAU+time*.006,x=width*.5+Math.cos(a)*s*.28,y=height*.48+Math.sin(a)*s*.18;drawPacket(x,y,s*.065,z,labels[i],.5);line(x,y,width*.5,height*.48,rgba(z.color,.1),1);}footerLabel('PROCEDIMIENTOS PARA CONVIVIR CON EL DESACUERDO',z);}
+    function sceneCoexistence(z,time){const s=Math.min(width,height);drawCivilization(width*.2,height*.48,s*.15,z,time,0);drawCivilization(width*.8,height*.48,s*.15,z,-time,2);for(let i=0;i<11;i++){const y=height*(.18+i*.055),bend=Math.sin(i*1.7)*height*.045;ctx.strokeStyle=rgba(i%3?z.color:[255,230,175],.08+i*.025);ctx.lineWidth=1+i%3*.55;ctx.beginPath();ctx.moveTo(width*.33,y);ctx.bezierCurveTo(width*.43,y+bend,width*.57,y-bend,width*.67,y);ctx.stroke();const p=fract(time*.02+i*.09);circle(mix(width*.33,width*.67,p),y+bend*Math.sin(p*Math.PI),1.5+i%2,rgba([255,245,205],.46));}softHalo(width*.5,height*.48,s*.23,z.color,.08);ctx.font=`900 ${s*.13}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.09)';ctx.fillText('≠',width*.5,height*.53);footerLabel('MÁS ALLÁ: PERSPECTIVAS CÓSMICAS',z);}
+
+    const SCENES=[sceneUnresolved,sceneDetection,sceneInterference,sceneVerification,sceneOrigin,scenePattern,sceneEvidence,sceneAnnouncement,sceneCoordination,sceneInterpretation,sceneMath,sceneMeaning,sceneLanguage,sceneCulture,sceneDecision,sceneDistance,sceneFirstReply,sceneDialogue,sceneKnowledge,sceneMisunderstanding,sceneTrust,sceneDiplomacy,sceneCoexistence];
+
+
+    function zoneWeight(progress,p0,p1,feather=.035){const enter=smooth(clamp((progress-(p0-feather))/feather,0,1)),exit=1-smooth(clamp((progress-p1)/feather,0,1));return enter*exit;}
+    function drawScene(progress,time){footerLabel.pending=null;for(const z of ZONES){const alpha=zoneWeight(progress,z.p0,z.p1,.012);if(alpha<.003)continue;footerLabel.alpha=alpha;ctx.save();ctx.globalAlpha=alpha;SCENES[z.scene](z,time);ctx.restore();}paintFooter();}
+    function drawBursts(dt){for(let i=bursts.length-1;i>=0;i--){const p=bursts[i];p.life-=dt*p.decay;if(p.life<=0){bursts.splice(i,1);continue}p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.94,dt*60);p.vy*=Math.pow(.94,dt*60);circle(p.x,p.y,p.r*(.5+p.life),rgba(p.color,p.life*.55));}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.life-=dt*1.05;if(w.life<=0){waves.splice(i,1);continue}w.radius+=dt*Math.min(width,height)*.24;ctx.strokeStyle=rgba(w.color,w.life*.25);ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(w.x,w.y,w.radius,0,TAU);ctx.stroke();}}
+
+    function render(now){const dt=Math.min(.04,Math.max(.001,(now-lastFrame)/1000));lastFrame=now;elapsed+=reducedMotion?dt*.24:dt;pointerX+=(targetX-pointerX)*(1-Math.pow(.001,dt));pointerY+=(targetY-pointerY)*(1-Math.pow(.001,dt));currentProgress+=(depthFromY(pointerY)-currentProgress)*(1-Math.pow(.005,dt));shownX+=(pointerX*width-shownX)*(1-Math.pow(.001,dt));shownY+=(pointerY*height-shownY)*(1-Math.pow(.001,dt));touchEnergy*=Math.pow(.075,dt);
+      drawBackground(currentProgress,elapsed);drawScene(currentProgress,elapsed);drawBursts(dt);if(!pointerDown)setAccent(zoneForDepth(currentProgress));requestAnimationFrame(render);}
+    window.addEventListener('resize',resize,{passive:true});window.addEventListener('orientationchange',()=>setTimeout(resize,120),{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden&&audioCtx&&audioCtx.state==='running')audioCtx.suspend().catch(()=>{});});
+    resize();setAccent(ZONES[0]);requestAnimationFrame(render);
+  })();
+</script>
+<div id="final-transition" hidden>Más allá: comunicarnos con otra civilización no solo ampliaría nuestro conocimiento. Nos obligaría a contemplar el universo desde una perspectiva que no surgió de la Tierra, de la humanidad ni de nuestra historia. Siguiente: Espectro de las Perspectivas Cósmicas: de una Visión Humana a Muchas Formas de Comprender el Universo.</div>
+</body>
+</html>
