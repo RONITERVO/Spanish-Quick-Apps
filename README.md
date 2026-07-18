@@ -1,0 +1,1 @@
+Collection of quick apps to study spanish basics. All of them are single page html with simple click interaction and no visible ui other than the touch area that displays the concept as full sceen spectrum. It all fits on a full phone screen, no scroll, no navigation.
