@@ -1,0 +1,1261 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#03030a">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora desde la estructura a gran escala hasta el horizonte del universo observable, en español.">
+  <meta name="application-name" content="Espectro del Universo Observable: de la Red Cósmica al Horizonte Cósmico">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro del Universo Observable">
+  <meta property="og:description" content="Toca y viaja hacia atrás en el tiempo, desde la red cósmica hasta la luz más antigua que podemos observar.">
+  <title>Espectro del Universo Observable: de la Red Cósmica al Horizonte Cósmico</title>
+  <style>
+
+    :root {
+      --accent: rgb(130 205 255);
+      --accent-soft: rgb(130 205 255 / .34);
+      --ink: rgb(255 255 255);
+      --panel: rgb(3 6 17 / .52);
+      --scan-x: 50vw;
+      --scan-y: 88vh;
+      --progress: 6%;
+      --home-y: 90vh;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #02030a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: white;
+      font-family:
+        Inter, ui-rounded, "SF Pro Rounded", "Segoe UI",
+        system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #observable-universe-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background:
+        radial-gradient(circle at var(--scan-x) var(--scan-y),
+          color-mix(in srgb, var(--accent) 66%, transparent) 0%,
+          color-mix(in srgb, var(--accent) 20%, transparent) 12%,
+          transparent 35%);
+      mix-blend-mode: screen;
+    }
+
+    body.active #light-field { opacity: .88; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 160ms ease;
+      background:
+        linear-gradient(90deg,
+          transparent calc(var(--scan-x) - 1px),
+          color-mix(in srgb, var(--accent) 70%, transparent) var(--scan-x),
+          transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg,
+          transparent calc(var(--scan-y) - 1px),
+          color-mix(in srgb, var(--accent) 42%, transparent) var(--scan-y),
+          transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+
+    body.active #scan-line { opacity: .28; }
+
+    #grain {
+      z-index: 4;
+      opacity: .048;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 42%, rgb(0 0 0 / .24) 75%, rgb(0 0 0 / .75) 122%),
+        linear-gradient(90deg, rgb(0 0 0 / .32), transparent 13%, transparent 87%, rgb(0 0 0 / .36));
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 48%;
+      width: min(92vw, 800px);
+      padding: clamp(16px, 3.3vw, 28px) clamp(20px, 5vw, 50px) clamp(18px, 3.8vw, 34px);
+      border: 1px solid rgb(255 255 255 / .24);
+      border-radius: clamp(26px, 6vw, 52px);
+      color: var(--ink);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        var(--panel);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .42),
+        0 0 78px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .28),
+        inset 0 -1px 0 rgb(0 0 0 / .2);
+      backdrop-filter: blur(23px) saturate(1.38);
+      -webkit-backdrop-filter: blur(23px) saturate(1.38);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear,
+        background 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.8vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow:
+        0 0 30px var(--accent-soft),
+        0 5px 24px rgb(0 0 0 / .48);
+    }
+
+    #zone-name.compact {
+      font-size: clamp(1.75rem, 7.6vw, 5.8rem);
+      letter-spacing: -.048em;
+      line-height: .89;
+    }
+
+    #zone-name.long {
+      font-size: clamp(1.52rem, 6.8vw, 4.9rem);
+      letter-spacing: -.038em;
+      line-height: .93;
+    }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 860;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+      opacity: .97;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(11px, 2vw, 18px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.7rem, 2.25vw, .95rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .18);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .12);
+    }
+
+    #fact {
+      display: block;
+      max-width: 630px;
+      margin: clamp(11px, 2.3vw, 18px) auto 0;
+      font-size: clamp(.85rem, 2.68vw, 1.12rem);
+      font-weight: 630;
+      line-height: 1.28;
+      letter-spacing: -.012em;
+      text-wrap: balance;
+      opacity: .84;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.35);
+      background: radial-gradient(circle, rgb(255 255 255 / .18), transparent 67%);
+      box-shadow:
+        0 0 0 1px rgb(0 0 0 / .24),
+        0 0 21px var(--accent),
+        0 0 54px var(--accent-soft),
+        inset 0 0 18px rgb(255 255 255 / .25);
+      transition:
+        opacity 120ms ease,
+        transform 280ms cubic-bezier(.16, 1, .3, 1),
+        border-color 110ms linear,
+        box-shadow 110ms linear;
+      will-change: transform, opacity;
+    }
+
+    #touch-orb.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 8;
+      top: max(18px, env(safe-area-inset-top));
+      right: max(10px, env(safe-area-inset-right));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: 42px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(14px);
+      transition: opacity 180ms ease, transform 300ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    #journey-scale.visible {
+      opacity: .92;
+      transform: translateX(0);
+    }
+
+    #scale-track {
+      position: absolute;
+      top: 20px;
+      right: 11px;
+      bottom: 20px;
+      width: 2px;
+      border-radius: 999px;
+      background: rgb(255 255 255 / .2);
+      box-shadow: 0 0 18px rgb(255 255 255 / .08);
+      overflow: hidden;
+    }
+
+    #scale-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(0deg, rgb(255 194 92), var(--accent));
+      box-shadow: 0 0 16px var(--accent);
+    }
+
+    #scale-dot {
+      position: absolute;
+      right: 5px;
+      bottom: 20px;
+      width: 14px;
+      height: 14px;
+      border: 2px solid white;
+      border-radius: 999px;
+      transform: translateY(50%);
+      background: var(--accent);
+      box-shadow: 0 0 16px var(--accent), 0 0 30px var(--accent-soft);
+    }
+
+    #scale-bottom,
+    #scale-top,
+    #scale-value {
+      position: absolute;
+      right: 1px;
+      font-size: clamp(.5rem, 1.52vw, .64rem);
+      font-weight: 850;
+      letter-spacing: .12em;
+      line-height: 1;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px rgb(0 0 0 / .9);
+      white-space: nowrap;
+    }
+
+    #scale-bottom { bottom: 0; }
+    #scale-top { top: 0; }
+    #scale-value {
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right center;
+      opacity: .86;
+    }
+
+    #scale-home {
+      position: absolute;
+      right: 1px;
+      bottom: 5%;
+      padding-right: 15px;
+      font-size: clamp(.46rem, 1.35vw, .59rem);
+      font-weight: 900;
+      letter-spacing: .1em;
+      line-height: 1;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px rgb(0 0 0 / .92);
+      white-space: nowrap;
+      color: rgb(225 190 255);
+    }
+
+    #scale-home::after {
+      content: "";
+      position: absolute;
+      right: 7px;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      border: 1px solid white;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      background: rgb(205 158 255);
+      box-shadow: 0 0 10px rgb(205 158 255);
+    }
+
+    #hint {
+      position: fixed;
+      z-index: 7;
+      left: 50%;
+      top: var(--home-y);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      animation: hint-in 900ms 650ms ease forwards, hint-pulse 2.8s 1.6s ease-in-out infinite;
+      transition: opacity 360ms ease;
+    }
+
+    #hint.hidden {
+      opacity: 0 !important;
+      animation: none;
+    }
+
+    #hint-ring {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border: 2px solid rgb(255 255 255 / .76);
+      border-radius: 999px;
+      box-shadow: 0 0 20px rgb(205 158 255 / .58), inset 0 0 12px rgb(255 255 255 / .14);
+    }
+
+    #hint-ring::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2px;
+      height: 70px;
+      border-radius: 999px;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(180deg, transparent, rgb(255 255 255 / .68), transparent);
+      animation: hint-swipe 2.2s ease-in-out infinite;
+    }
+
+    #hint-text {
+      max-width: min(84vw, 460px);
+      font-size: .67rem;
+      font-weight: 850;
+      letter-spacing: .18em;
+      line-height: 1.3;
+      text-align: center;
+      text-transform: uppercase;
+      text-shadow: 0 2px 12px rgb(0 0 0 / .76);
+      opacity: .82;
+    }
+
+    #hint-subtext {
+      max-width: min(84vw, 440px);
+      font-size: .58rem;
+      font-weight: 700;
+      line-height: 1.36;
+      letter-spacing: .08em;
+      text-align: center;
+      text-transform: uppercase;
+      text-shadow: 0 2px 12px rgb(0 0 0 / .86);
+      opacity: .65;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .ripple {
+      position: fixed;
+      z-index: 7;
+      width: 44px;
+      height: 44px;
+      border: 2px solid var(--accent);
+      border-radius: 999px;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(.35);
+      box-shadow: 0 0 28px var(--accent-soft);
+      animation: ripple 850ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple {
+      to { opacity: 0; transform: translate(-50%, -50%) scale(5.8); }
+    }
+
+    @keyframes hint-in { to { opacity: .84; } }
+
+    @keyframes hint-pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: .7; }
+      50% { transform: translate(-50%, -50%) scale(1.08); opacity: .98; }
+    }
+
+    @keyframes hint-swipe {
+      0%, 100% { transform: translate(-50%, -38%) scaleY(.45); opacity: .25; }
+      50% { transform: translate(-50%, -62%) scaleY(1); opacity: .9; }
+    }
+
+    @media (max-width: 560px) {
+      #readout { width: min(90vw, 560px); top: 47%; }
+      #fact { max-width: 80vw; }
+      #journey-scale { right: max(7px, env(safe-area-inset-right)); width: 36px; }
+      #scale-value { right: 17px; font-size: .53rem; }
+    }
+
+    @media (max-height: 520px) and (orientation: landscape) {
+      #readout {
+        top: 49%;
+        width: min(86vw, 800px);
+        padding: 10px 28px 12px;
+        border-radius: 34px;
+      }
+      #zone-name { font-size: clamp(2.1rem, 13.5vh, 4rem); line-height: .88; }
+      #zone-name.compact {
+      font-size: clamp(1.75rem, 7.6vw, 5.8rem);
+      letter-spacing: -.048em;
+      line-height: .89;
+    }
+
+    #zone-name.long {
+      font-size: clamp(1.52rem, 6.8vw, 4.9rem);
+      letter-spacing: -.038em;
+      line-height: .93;
+    }
+
+    #feature-name { margin-top: 5px; font-size: clamp(.76rem, 4vh, 1.15rem); }
+      #metric { min-height: 24px; margin-top: 7px; padding: 5px 10px 6px; font-size: clamp(.6rem, 2.5vh, .76rem); }
+      #fact { max-width: 660px; margin-top: 7px; font-size: clamp(.7rem, 3vh, .88rem); line-height: 1.16; }
+      #journey-scale { top: max(8px, env(safe-area-inset-top)); bottom: max(8px, env(safe-area-inset-bottom)); }
+      #hint { top: 78%; gap: 4px; }
+      #hint-ring { width: 38px; height: 38px; }
+      #hint-subtext { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #readout,
+      #touch-orb,
+      #journey-scale,
+      #light-field,
+      #scan-line { transition-duration: 70ms; }
+      #hint,
+      .ripple,
+      #hint-ring::after { animation: none; }
+      #hint { opacity: .75; }
+    }
+  
+  </style>
+</head>
+<body>
+  <canvas id="observable-universe-spectrum" role="application" tabindex="0" aria-describedby="instructions" aria-label="Mapa táctil desde la estructura a gran escala hasta el límite del universo observable"></canvas>
+  <p id="instructions" class="sr-only">La aventura continúa exactamente en la estructura a gran escala. Toca o arrastra hacia arriba para explorar el universo profundo, el tiempo de retrospección, las galaxias lejanas, la era de los cuásares, las primeras galaxias, la reionización, las edades oscuras, el fondo cósmico de microondas y el horizonte observable. Cuanto más lejos observamos, más antigua es la luz que recibimos. Arrastra horizontalmente para descubrir palabras distintas dentro de cada región. También puedes usar las flechas del teclado.</p>
+
+  <div id="light-field" aria-hidden="true"></div>
+  <div id="scan-line" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <div id="hint" aria-hidden="true">
+    <div id="hint-ring"></div>
+    <div id="hint-text">La red cósmica queda debajo</div>
+    <div id="hint-subtext">Asciende en distancia · retrocede en el tiempo</div>
+  </div>
+
+  <div id="readout" aria-live="polite" aria-atomic="true">
+    <span id="zone-name"></span>
+    <span id="feature-name"></span>
+    <span id="metric"></span>
+    <span id="fact"></span>
+  </div>
+
+  <div id="touch-orb" aria-hidden="true"></div>
+
+  <div id="journey-scale" aria-hidden="true">
+    <div id="scale-track"><div id="scale-fill"></div></div>
+    <div id="scale-dot"></div>
+    <span id="scale-bottom">Estructura a gran escala</span>
+    <span id="scale-home">Ahora</span>
+    <span id="scale-value">Más distancia · luz más antigua</span>
+    <span id="scale-top">Horizonte observable</span>
+  </div>
+
+  <!--
+    Visualización educativa sin dependencias externas.
+    La altura combina distancia comóvil, corrimiento al rojo y tiempo de retrospección de forma
+    deliberadamente comprimida: no es una regla lineal ni un mapa métrico. El horizonte observable
+    no es una pared física. El fondo cósmico de microondas es la luz electromagnética más antigua
+    que podemos recibir directamente, liberada cuando el plasma primordial se volvió transparente.
+  -->
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.getElementById("observable-universe-spectrum");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const root = document.documentElement;
+      const readout = document.getElementById("readout");
+      const zoneName = document.getElementById("zone-name");
+      const featureName = document.getElementById("feature-name");
+      const metric = document.getElementById("metric");
+      const fact = document.getElementById("fact");
+      const touchOrb = document.getElementById("touch-orb");
+      const journeyScale = document.getElementById("journey-scale");
+      const scaleValue = document.getElementById("scale-value");
+      const scaleDot = document.getElementById("scale-dot");
+      const hint = document.getElementById("hint");
+
+      const TAU = Math.PI * 2;
+      const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const ZONES = [
+        {
+          id: "large-scale-structure", name: "Estructura a gran escala", p0: 0, p1: .065,
+          color: [126, 204, 255], metric: "Continuidad · la red cósmica en el universo cercano",
+          fact: "El recorrido comienza exactamente donde terminó el anterior: filamentos, nodos, paredes y vacíos aún forman una red tridimensional reconocible.",
+          sound: { base: 66, filter: 820, noise: .055, pulse: .30, type: "triangle" },
+          features: [
+            ["red cósmica", "La materia se distribuye en filamentos, nodos, paredes y grandes vacíos; los trazos luminosos no son tubos físicos."],
+            ["universo cercano", "Esta zona representa estructuras cuya luz llega desde épocas relativamente recientes de la historia cósmica."],
+            ["escala ampliada", "Al ascender, la misma red ocupa una fracción cada vez menor del campo y se mezcla con capas más lejanas."],
+            ["luz en viaje", "Cada galaxia aparece como era cuando emitió la luz que finalmente alcanza nuestros telescopios."],
+            ["punto de partida", "La exploración deja de ser solo un aumento de tamaño: a partir de aquí también retrocede en el tiempo."]
+          ]
+        },
+        {
+          id: "deep-universe", name: "Universo profundo", p0: .065, p1: .155,
+          color: [97, 169, 244], metric: "Campo profundo · muchas épocas en una misma mirada",
+          fact: "Un campo profundo reúne galaxias situadas a distancias muy distintas. Las más tenues suelen mostrarnos etapas más antiguas del universo.",
+          sound: { base: 73, filter: 980, noise: .065, pulse: .27, type: "sine" },
+          features: [
+            ["campo profundo", "Una exposición prolongada revela miles de galaxias en una porción diminuta del cielo."],
+            ["capas de distancia", "Objetos próximos y remotos se proyectan en la misma imagen aunque estén separados por enormes profundidades."],
+            ["galaxia tenue", "La debilidad aparente puede deberse a gran distancia, poca luminosidad o ambas cosas."],
+            ["lente gravitatoria", "La masa intermedia puede ampliar y deformar la luz de galaxias todavía más lejanas."],
+            ["universo en evolución", "Comparar distintas profundidades permite estudiar cómo cambian las galaxias a lo largo del tiempo cósmico."]
+          ]
+        },
+        {
+          id: "lookback-time", name: "Tiempo de retrospección", p0: .155, p1: .245,
+          color: [127, 139, 255], metric: "Distancia y pasado · observamos luz, no el presente remoto",
+          fact: "Cuanto más lejos observamos, más antigua es la luz que recibimos. Mirar profundamente en el espacio es mirar profundamente en el pasado.",
+          sound: { base: 82, filter: 1180, noise: .07, pulse: .24, type: "triangle" },
+          features: [
+            ["tiempo de viaje", "La luz tarda tiempo en cruzar el espacio; una galaxia distante se ve como era al emitir sus fotones."],
+            ["año luz", "Es una unidad de distancia: lo que la luz recorre en un año, no una unidad de tiempo."],
+            ["corrimiento al rojo", "La expansión estira la longitud de onda de la luz y ayuda a ordenar las observaciones por época cósmica."],
+            ["cono de luz pasado", "Solo recibimos señales procedentes de regiones y momentos capaces de conectarse causalmente con nosotros."],
+            ["sin presente simultáneo", "No existe una fotografía instantánea accesible de todo el universo lejano tal como es ahora."]
+          ]
+        },
+        {
+          id: "distant-galaxies", name: "Galaxias lejanas", p0: .245, p1: .345,
+          color: [179, 129, 255], metric: "Universo más joven · formas pequeñas, turbulentas y compactas",
+          fact: "Las galaxias lejanas suelen verse más jóvenes, compactas e irregulares. Su luz revela etapas en las que todavía estaban ensamblando estrellas y estructura.",
+          sound: { base: 93, filter: 1450, noise: .06, pulse: .20, type: "triangle" },
+          features: [
+            ["galaxia joven", "Muchas todavía no han desarrollado los discos y brazos espirales tranquilos comunes en épocas posteriores."],
+            ["formación estelar", "Nubes de gas producen estrellas con gran intensidad y llenan las galaxias de regiones luminosas."],
+            ["fusión galáctica", "Las interacciones y fusiones contribuyen a construir sistemas mayores y a transformar sus formas."],
+            ["metallicidad baja", "Las primeras generaciones estelares habían enriquecido menos el gas con elementos pesados."],
+            ["imagen estirada", "La expansión, el corrimiento al rojo y los instrumentos determinan qué parte de su luz podemos detectar."]
+          ]
+        },
+        {
+          id: "quasar-era", name: "Era de los cuásares", p0: .345, p1: .45,
+          color: [255, 151, 103], metric: "Núcleos activos · un universo joven y extremadamente energético",
+          fact: "En una época temprana abundaron los cuásares: núcleos galácticos alimentados por agujeros negros supermasivos, visibles a través de distancias inmensas.",
+          sound: { base: 116, filter: 2380, noise: .045, pulse: .14, type: "sawtooth" },
+          features: [
+            ["cuásar", "Un núcleo galáctico activo tan luminoso que puede superar el brillo combinado de su galaxia anfitriona."],
+            ["disco de acreción", "Gas muy caliente gira y cae hacia un agujero negro supermasivo, liberando enorme energía antes de cruzar el horizonte."],
+            ["chorro relativista", "Algunos núcleos lanzan haces de plasma a velocidades cercanas a la de la luz."],
+            ["galaxia anfitriona", "El cuásar no es una estrella aislada: ocupa el centro de una galaxia en crecimiento."],
+            ["baliza cósmica", "Su gran luminosidad permite estudiar gas y materia situados entre el cuásar y nosotros."]
+          ]
+        },
+        {
+          id: "first-galaxies", name: "Primeras galaxias", p0: .45, p1: .555,
+          color: [255, 197, 125], metric: "Amanecer cósmico · nacen estrellas, cúmulos y galaxias",
+          fact: "Las primeras galaxias surgieron de pequeñas concentraciones de materia. Eran menos maduras y ayudaron a transformar el gas neutro del universo temprano.",
+          sound: { base: 132, filter: 2860, noise: .052, pulse: .12, type: "triangle" },
+          features: [
+            ["amanecer cósmico", "Es la etapa en la que aparecen las primeras estrellas y galaxias después de las edades oscuras."],
+            ["halo primordial", "La gravedad concentra materia oscura y gas en pequeñas regiones donde puede comenzar la formación estelar."],
+            ["estrella primitiva", "Las primeras estrellas se formaron con hidrógeno, helio y trazas de litio, antes del enriquecimiento químico posterior."],
+            ["ensamblaje", "Sistemas pequeños se fusionan y alimentan para construir galaxias progresivamente mayores."],
+            ["luz ultravioleta", "La radiación de estrellas jóvenes y núcleos activos empieza a cambiar el estado del gas intergaláctico."]
+          ]
+        },
+        {
+          id: "reionization", name: "Época de reionización", p0: .555, p1: .665,
+          color: [255, 112, 169], metric: "Burbujas ionizadas · la luz transforma el hidrógeno neutro",
+          fact: "La radiación de las primeras fuentes abrió burbujas ionizadas en el hidrógeno neutro. Estas regiones crecieron y se unieron hasta volver transparente gran parte del medio intergaláctico.",
+          sound: { base: 145, filter: 3260, noise: .075, pulse: .11, type: "sine" },
+          features: [
+            ["burbuja ionizada", "Una región donde fotones energéticos han separado electrones de átomos de hidrógeno."],
+            ["hidrógeno neutro", "Fuera de las burbujas, gran parte del gas conserva sus electrones y absorbe ciertas longitudes de onda."],
+            ["frente de ionización", "El límite entre gas neutro e ionizado avanza alrededor de las primeras fuentes luminosas."],
+            ["solapamiento", "Las burbujas crecen, se conectan y cambian globalmente el medio intergaláctico."],
+            ["transición gradual", "La reionización no ocurrió de golpe ni exactamente al mismo tiempo en todas partes."]
+          ]
+        },
+        {
+          id: "dark-ages", name: "Edades oscuras", p0: .665, p1: .765,
+          color: [76, 91, 145], metric: "Antes de las estrellas · gas neutro en un universo en expansión",
+          fact: "Después de liberarse el fondo cósmico y antes de encenderse las primeras estrellas, el universo atravesó una etapa sin fuentes visibles de luz estelar.",
+          sound: { base: 58, filter: 520, noise: .12, pulse: .38, type: "sine" },
+          features: [
+            ["oscuridad cósmica", "No significa ausencia de materia o radiación: todavía existe gas, materia oscura y el fondo cósmico enfriándose."],
+            ["gas neutro", "El hidrógeno y el helio llenan el espacio mientras pequeñas variaciones de densidad crecen por gravedad."],
+            ["semillas de estructura", "Las irregularidades iniciales evolucionan hacia los halos que más tarde alojarán estrellas y galaxias."],
+            ["línea de 21 centímetros", "La señal del hidrógeno neutro puede ofrecer una futura cartografía de esta etapa difícil de observar."],
+            ["antes del amanecer", "La zona termina cuando las primeras fuentes luminosas comienzan a encender el universo."]
+          ]
+        },
+        {
+          id: "cmb", name: "Fondo cósmico de microondas", p0: .765, p1: .875,
+          color: [255, 205, 142], metric: "Luz fósil · universo de unos 380 000 años",
+          fact: "El fondo cósmico de microondas es la luz electromagnética más antigua que podemos observar directamente. Sus pequeñas variaciones conservan las semillas de la estructura posterior.",
+          sound: { base: 74, filter: 910, noise: .19, pulse: .31, type: "sine" },
+          features: [
+            ["última dispersión", "La luz dejó de rebotar continuamente cuando el plasma se enfrió y los electrones se unieron a los núcleos."],
+            ["recombinación", "El universo se volvió mayormente transparente a los fotones que hoy detectamos como microondas."],
+            ["anisotropía", "Diferencias diminutas de temperatura indican pequeñas variaciones de densidad en el universo temprano."],
+            ["superficie aparente", "La vemos alrededor de nosotros en todas direcciones, como una capa de tiempo pasado, no como una esfera material centrada en la Tierra."],
+            ["luz estirada", "La expansión transformó aquella radiación caliente en el tenue fondo de microondas actual."]
+          ]
+        },
+        {
+          id: "cosmological-horizon", name: "Horizonte cosmológico", p0: .875, p1: .955,
+          color: [240, 225, 204], metric: "Límite causal · solo llega la luz con tiempo para alcanzarnos",
+          fact: "El horizonte cosmológico marca una frontera de observabilidad, no una pared. Depende de la historia de expansión y de cuánto tiempo ha podido viajar la luz.",
+          sound: { base: 86, filter: 1240, noise: .16, pulse: .28, type: "triangle" },
+          features: [
+            ["horizonte de partículas", "Es la máxima distancia desde la que una señal pudo alcanzarnos desde el comienzo de la evolución cósmica observable."],
+            ["límite causal", "Regiones más allá no han tenido tiempo de enviarnos información, aunque puedan formar parte de un universo mayor."],
+            ["expansión cósmica", "El espacio cambió mientras la luz viajaba; por eso distancia actual y tiempo de viaje no son la misma cifra."],
+            ["no es una pared", "No encontraríamos una superficie sólida al viajar hacia allí; el horizonte depende del observador y del tiempo."],
+            ["más allá del fondo", "Podemos inferir física anterior al fondo cósmico, pero no verla con luz electromagnética ordinaria."]
+          ]
+        },
+        {
+          id: "observable-limit", name: "Límite del universo observable", p0: .955, p1: 1,
+          color: [255, 240, 218], metric: "Borde de nuestro mapa · no borde físico del universo",
+          fact: "Aquí termina lo que puede mostrarnos la luz disponible. El universo completo puede extenderse mucho más, pero esa región no es actualmente visible de forma directa.",
+          sound: { base: 96, filter: 1500, noise: .14, pulse: .25, type: "sine" },
+          features: [
+            ["universo observable", "Es la región desde la que alguna señal ha podido llegar hasta nosotros durante la historia cósmica."],
+            ["sin borde físico", "El límite pertenece a nuestra observación; no demuestra que el espacio termine allí."],
+            ["edad finita", "La historia cósmica disponible impone un tiempo máximo para el viaje de cualquier señal."],
+            ["plasma opaco", "Antes de la última dispersión, la luz electromagnética no podía propagarse libremente a través del plasma primordial."],
+            ["conocimiento indirecto", "Modelos, abundancias, ondas gravitacionales futuras y otras huellas pueden informar sobre épocas que la luz no muestra directamente."]
+          ]
+        }
+      ];
+
+      const stars = [];
+      const galaxies = [];
+      const webNodes = [];
+      const webEdges = [];
+      const quasars = [];
+      const protoGalaxies = [];
+      const ionizedBubbles = [];
+      const densitySeeds = [];
+      const cmbSpots = [];
+      const particles = [];
+      const waves = [];
+
+      let width = 1;
+      let height = 1;
+      let dpr = 1;
+      let activePointer = null;
+      let pointerX = .5;
+      let pointerY = .94;
+      let targetX = .5;
+      let targetY = .94;
+      let lastZoneId = "";
+      let lastFeature = -1;
+      let hideTimer = 0;
+      let lastTime = performance.now();
+      let raf = 0;
+
+      let audioCtx = null;
+      let master = null;
+      let droneA = null;
+      let droneB = null;
+      let droneGain = null;
+      let droneFilter = null;
+      let pulseOsc = null;
+      let pulseGain = null;
+      let noiseSource = null;
+      let noiseGain = null;
+      let noiseFilter = null;
+      let stereo = null;
+
+      function clamp(value, min = 0, max = 1) { return Math.min(max, Math.max(min, value)); }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function smoothstep(a, b, x) {
+        const t = clamp((x - a) / Math.max(.00001, b - a));
+        return t * t * (3 - 2 * t);
+      }
+      function seeded(seed) {
+        let value = seed >>> 0;
+        return () => {
+          value += 0x6D2B79F5;
+          let t = value;
+          t = Math.imul(t ^ t >>> 15, t | 1);
+          t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+      }
+      function seededPoint(seed) {
+        const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+        return x - Math.floor(x);
+      }
+      function journeyFromY(yNorm) { return clamp(1 - yNorm); }
+      function zoneForJourney(progress) {
+        const p = clamp(progress, 0, .999999);
+        return ZONES.find(zone => p >= zone.p0 && p < zone.p1) || ZONES.at(-1);
+      }
+      function featureFor(zone, xNorm) {
+        const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .999999) * zone.features.length));
+        return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+      }
+      function sceneScale() { return Math.sqrt(Math.min(width, height) / 720); }
+
+      function setCssPoint(x, y) {
+        root.style.setProperty("--scan-x", `${x}px`);
+        root.style.setProperty("--scan-y", `${y}px`);
+      }
+      function setAccent(zone) {
+        const [r, g, b] = zone.color;
+        root.style.setProperty("--accent", `rgb(${r} ${g} ${b})`);
+        root.style.setProperty("--accent-soft", `rgb(${r} ${g} ${b} / .34)`);
+      }
+
+      function buildStaticScene() {
+        stars.length = galaxies.length = webNodes.length = webEdges.length = quasars.length = 0;
+        protoGalaxies.length = ionizedBubbles.length = densitySeeds.length = cmbSpots.length = 0;
+        const random = seeded(18072643);
+
+        const starCount = Math.max(95, Math.round(width * height / 7600));
+        for (let i = 0; i < starCount; i++) {
+          stars.push({
+            x: random(), y: .18 + random() * .82,
+            r: .25 + random() * 1.15,
+            a: .08 + random() * .44,
+            phase: random() * TAU,
+            speed: .45 + random() * 1.6
+          });
+        }
+
+        const anchors = [
+          [.02,.95],[.15,.87],[.29,.94],[.44,.84],[.58,.94],[.72,.86],[.91,.93],
+          [.08,.77],[.25,.73],[.41,.78],[.61,.71],[.78,.76],[.97,.69],
+          [.18,.64],[.37,.62],[.54,.65],[.72,.59],[.9,.62]
+        ];
+        for (let i = 0; i < anchors.length; i++) {
+          const [ax, ay] = anchors[i];
+          webNodes.push({
+            x: clamp(ax + (random()-.5)*.045, -.03, 1.03),
+            y: clamp(ay + (random()-.5)*.035, .55, 1.03),
+            mass: .65 + random() * 1.25,
+            phase: random() * TAU,
+            warm: random()
+          });
+        }
+        for (let i = 0; i < webNodes.length; i++) {
+          const near = [];
+          for (let j = 0; j < webNodes.length; j++) if (i !== j) {
+            const dx = webNodes[i].x - webNodes[j].x;
+            const dy = (webNodes[i].y - webNodes[j].y) * 1.45;
+            near.push({ j, d: Math.hypot(dx,dy) });
+          }
+          near.sort((a,b)=>a.d-b.d);
+          for (const item of near.slice(0, i % 3 === 0 ? 3 : 2)) {
+            const a = Math.min(i,item.j), b = Math.max(i,item.j);
+            if (!webEdges.some(e=>e.a===a&&e.b===b) && item.d < .32) {
+              webEdges.push({a,b,bend:(random()-.5)*.055,phase:random()*TAU,strength:.45+random()*.55});
+            }
+          }
+        }
+
+        const galaxyCount = Math.max(150, Math.round(width * height / 4300));
+        for (let i=0;i<galaxyCount;i++) {
+          const y = .24 + Math.pow(random(), .74) * .52;
+          const age = clamp((.76-y)/.52);
+          galaxies.push({
+            x: random(), y,
+            size: (.65 + random()*2.7) * (1-age*.45),
+            a: .18 + random()*.58,
+            angle: random()*TAU,
+            hue: random(),
+            irregular: age * (.35 + random()*.65),
+            phase: random()*TAU
+          });
+        }
+
+        for (let i=0;i<18;i++) {
+          quasars.push({
+            x: .035+random()*.93, y:.55+random()*.105,
+            r: 1.2+random()*2.8, a:.52+random()*.42,
+            beam: random()>.56, angle: random()*TAU, phase: random()*TAU
+          });
+        }
+
+        for (let i=0;i<48;i++) {
+          protoGalaxies.push({
+            x:.025+random()*.95, y:.435+random()*.13,
+            r:.55+random()*1.7, a:.22+random()*.48,
+            pieces:2+Math.floor(random()*4), phase:random()*TAU
+          });
+        }
+
+        for (let i=0;i<19;i++) {
+          ionizedBubbles.push({
+            x:-.05+random()*1.1, y:.335+random()*.115,
+            rx:.035+random()*.105, ry:.018+random()*.055,
+            a:.045+random()*.11, phase:random()*TAU,
+            warm:random()
+          });
+        }
+
+        for (let i=0;i<75;i++) {
+          densitySeeds.push({
+            x:random(), y:.225+random()*.115,
+            r:.25+random()*1.05, a:.05+random()*.16,
+            phase:random()*TAU
+          });
+        }
+
+        const cols = Math.max(16, Math.round(width/28));
+        const rows = Math.max(8, Math.round(height*.205/22));
+        for (let row=0;row<rows;row++) {
+          for (let col=0;col<cols;col++) {
+            const seed = row*997+col*37;
+            const x=(col+.5+(seededPoint(seed)-.5)*.85)/cols;
+            const y=.018+(row+.5+(seededPoint(seed+7)-.5)*.75)/rows*.205;
+            const v=seededPoint(seed+21);
+            cmbSpots.push({x,y,rx:(.7+seededPoint(seed+31)*1.8)/cols,ry:(.6+seededPoint(seed+41)*1.5)/rows*.18,v,phase:seededPoint(seed+51)*TAU});
+          }
+        }
+      }
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
+        dpr = Math.min(2, devicePixelRatio || 1);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildStaticScene();
+        setCssPoint(targetX*width,targetY*height);
+      }
+
+      function ensureAudio() {
+        if (audioCtx) {
+          if (audioCtx.state === "suspended") audioCtx.resume().catch(()=>{});
+          return;
+        }
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        audioCtx = new AudioContext();
+        master = audioCtx.createGain();
+        master.gain.value = 0;
+        const compressor = audioCtx.createDynamicsCompressor();
+        compressor.threshold.value=-22; compressor.knee.value=18; compressor.ratio.value=6;
+        master.connect(compressor).connect(audioCtx.destination);
+
+        droneA=audioCtx.createOscillator(); droneB=audioCtx.createOscillator();
+        droneA.type="sine"; droneB.type="triangle";
+        droneGain=audioCtx.createGain(); droneGain.gain.value=.0001;
+        droneFilter=audioCtx.createBiquadFilter(); droneFilter.type="lowpass"; droneFilter.frequency.value=900; droneFilter.Q.value=.8;
+        stereo=audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : audioCtx.createGain();
+        droneA.connect(droneGain); droneB.connect(droneGain); droneGain.connect(droneFilter).connect(stereo).connect(master);
+        droneA.start(); droneB.start();
+
+        pulseOsc=audioCtx.createOscillator(); pulseOsc.type="sine";
+        pulseGain=audioCtx.createGain(); pulseGain.gain.value=.0001;
+        pulseOsc.connect(pulseGain).connect(master); pulseOsc.start();
+
+        const noiseBuffer=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate);
+        const ch=noiseBuffer.getChannelData(0);
+        for(let i=0;i<ch.length;i++) ch[i]=Math.random()*2-1;
+        noiseSource=audioCtx.createBufferSource(); noiseSource.buffer=noiseBuffer; noiseSource.loop=true;
+        noiseGain=audioCtx.createGain(); noiseGain.gain.value=.0001;
+        noiseFilter=audioCtx.createBiquadFilter(); noiseFilter.type="bandpass"; noiseFilter.frequency.value=1200; noiseFilter.Q.value=.55;
+        noiseSource.connect(noiseFilter).connect(noiseGain).connect(master); noiseSource.start();
+      }
+
+      function setAudioFor(zone,xNorm,yNorm,active) {
+        if(!audioCtx||!master)return;
+        const now=audioCtx.currentTime, s=zone.sound;
+        const vertical=.91+(1-yNorm)*.34, horizontal=.94+xNorm*.13;
+        const base=s.base*vertical*horizontal;
+        droneA.type=s.type; droneB.type=s.type==="sawtooth"?"triangle":"sine";
+        droneA.frequency.setTargetAtTime(base,now,.055);
+        droneB.frequency.setTargetAtTime(base*1.503,now,.07);
+        droneFilter.frequency.setTargetAtTime(s.filter*(.82+xNorm*.35),now,.08);
+        droneGain.gain.setTargetAtTime(active?.024:.0001,now,.07);
+        pulseOsc.frequency.setTargetAtTime(base*(2.01+s.pulse),now,.05);
+        pulseGain.gain.setTargetAtTime(active?.0065:.0001,now,.08);
+        noiseFilter.frequency.setTargetAtTime(s.filter*1.28,now,.08);
+        noiseGain.gain.setTargetAtTime(active*s.noise*.12||.0001,now,.08);
+        if(stereo.pan) stereo.pan.setTargetAtTime((xNorm-.5)*.8,now,.05);
+        master.gain.setTargetAtTime(active?.34:.0001,now,.07);
+      }
+
+      function ping(zone,xNorm,featureIndex=0) {
+        if(!audioCtx||!master)return;
+        const now=audioCtx.currentTime;
+        const osc=audioCtx.createOscillator(), gain=audioCtx.createGain(), filter=audioCtx.createBiquadFilter();
+        const pan=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null;
+        const scale=[1,1.125,1.25,1.5,1.6875][featureIndex%5];
+        osc.type=zone.sound.type;
+        osc.frequency.setValueAtTime(zone.sound.base*4.2*scale,now);
+        osc.frequency.exponentialRampToValueAtTime(Math.max(45,zone.sound.base*1.7),now+.42);
+        filter.type="lowpass"; filter.frequency.value=zone.sound.filter*1.8;
+        gain.gain.setValueAtTime(.0001,now); gain.gain.exponentialRampToValueAtTime(.045,now+.012); gain.gain.exponentialRampToValueAtTime(.0001,now+.5);
+        osc.connect(filter).connect(gain);
+        if(pan){pan.pan.value=(xNorm-.5)*1.5;gain.connect(pan).connect(master);}else gain.connect(master);
+        osc.start(now);osc.stop(now+.55);
+      }
+
+      function addRipple(x,y) {
+        const node=document.createElement("div"); node.className="ripple";
+        node.style.left=`${x}px`;node.style.top=`${y}px`;document.body.appendChild(node);
+        node.addEventListener("animationend",()=>node.remove(),{once:true});
+      }
+      function addBurst(x,y,zone) {
+        const count=reducedMotion?5:14;
+        for(let i=0;i<count;i++){
+          const a=Math.random()*TAU,s=20+Math.random()*90;
+          particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:1+Math.random()*2.6,life:1,decay:1.1+Math.random()*.7,color:zone.color});
+        }
+        waves.push({x,y,radius:5,life:1,color:zone.color});
+      }
+
+      function updateReadout(x,y,isNewPress=false) {
+        const xNorm=clamp(x/width,0,.999999), yNorm=clamp(y/height,0,.999999);
+        const progress=journeyFromY(yNorm), zone=zoneForJourney(progress), feature=featureFor(zone,xNorm);
+        targetX=xNorm;targetY=yNorm;setCssPoint(x,y);setAccent(zone);
+        root.style.setProperty("--progress",`${progress*100}%`);
+        root.style.setProperty("--home-y",`${y}px`);
+        scaleDot.style.top=`${(1-progress)*100}%`;
+        scaleValue.textContent = progress < .16 ? "La red cercana se reduce" : progress < .55 ? "Más distancia · luz más antigua" : progress < .77 ? "Antes de las galaxias maduras" : progress < .9 ? "Luz fósil del universo temprano" : "Límite de observación · no pared física";
+
+        zoneName.textContent=zone.name;
+        zoneName.className=zone.name.length>26?"long":zone.name.length>18?"compact":"";
+        featureName.textContent=feature.name;
+        metric.textContent=zone.metric;
+        fact.textContent=feature.fact;
+        readout.classList.add("visible");touchOrb.classList.add("visible");journeyScale.classList.add("visible");
+        touchOrb.style.left=`${x}px`;touchOrb.style.top=`${y}px`;
+        document.body.classList.add("active");hint.classList.add("hidden");
+
+        const zoneChanged=zone.id!==lastZoneId, featureChanged=feature.index!==lastFeature;
+        if(isNewPress||zoneChanged||featureChanged){ ping(zone,xNorm,feature.index); if(isNewPress)addBurst(x,y,zone); }
+        setAudioFor(zone,xNorm,yNorm,true);
+        lastZoneId=zone.id;lastFeature=feature.index;
+        clearTimeout(hideTimer);
+      }
+
+      function releaseInteraction(delay=900) {
+        clearTimeout(hideTimer);
+        hideTimer=setTimeout(()=>{
+          readout.classList.remove("visible");touchOrb.classList.remove("visible");journeyScale.classList.remove("visible");document.body.classList.remove("active");
+          if(audioCtx)setAudioFor(zoneForJourney(journeyFromY(targetY)),targetX,targetY,false);
+        },delay);
+      }
+      function pointerPosition(event) {
+        const rect=canvas.getBoundingClientRect();return{x:clamp(event.clientX-rect.left,0,width),y:clamp(event.clientY-rect.top,0,height)};
+      }
+      canvas.addEventListener("pointerdown",event=>{
+        activePointer=event.pointerId;canvas.setPointerCapture?.(event.pointerId);ensureAudio();
+        const p=pointerPosition(event);addRipple(p.x,p.y);updateReadout(p.x,p.y,true);event.preventDefault();
+      });
+      canvas.addEventListener("pointermove",event=>{
+        if(activePointer!==event.pointerId)return;const p=pointerPosition(event);updateReadout(p.x,p.y,false);event.preventDefault();
+      });
+      function endPointer(event){if(activePointer!==event.pointerId)return;activePointer=null;canvas.releasePointerCapture?.(event.pointerId);releaseInteraction();}
+      canvas.addEventListener("pointerup",endPointer);canvas.addEventListener("pointercancel",endPointer);canvas.addEventListener("lostpointercapture",()=>{activePointer=null;releaseInteraction();});
+      canvas.addEventListener("contextmenu",e=>e.preventDefault());
+      canvas.addEventListener("keydown",event=>{
+        const step=event.shiftKey?.09:.035;let handled=true;
+        if(event.key==="ArrowUp")targetY=clamp(targetY-step,0,1);
+        else if(event.key==="ArrowDown")targetY=clamp(targetY+step,0,1);
+        else if(event.key==="ArrowLeft")targetX=clamp(targetX-step,0,1);
+        else if(event.key==="ArrowRight")targetX=clamp(targetX+step,0,1);
+        else if(event.key===" "||event.key==="Enter"){} else handled=false;
+        if(handled){ensureAudio();updateReadout(targetX*width,targetY*height,event.key===" "||event.key==="Enter");releaseInteraction(1500);event.preventDefault();}
+      });
+
+      function glow(x,y,r,core,mid,edge="rgba(0,0,0,0)") {
+        const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,core);g.addColorStop(.2,core);g.addColorStop(.52,mid);g.addColorStop(1,edge);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();
+      }
+
+      function drawBackground(time) {
+        const bg=ctx.createLinearGradient(0,height,0,0);
+        bg.addColorStop(0,"#020613");bg.addColorStop(.22,"#05071b");bg.addColorStop(.42,"#080818");bg.addColorStop(.58,"#08050f");bg.addColorStop(.73,"#02040b");bg.addColorStop(.82,"#171119");bg.addColorStop(1,"#3f3027");
+        ctx.fillStyle=bg;ctx.fillRect(0,0,width,height);
+
+        const bottom=ctx.createRadialGradient(width*.5,height*1.02,0,width*.5,height*1.02,Math.max(width,height)*.68);
+        bottom.addColorStop(0,"rgba(60,126,210,.18)");bottom.addColorStop(.42,"rgba(63,58,151,.08)");bottom.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=bottom;ctx.fillRect(0,0,width,height);
+
+        for(const s of stars){
+          const tw=reducedMotion?1:.78+Math.sin(time*.001*s.speed+s.phase)*.22;
+          ctx.fillStyle=`rgba(210,229,255,${s.a*tw})`;ctx.beginPath();ctx.arc(s.x*width,s.y*height,s.r*sceneScale(),0,TAU);ctx.fill();
+        }
+      }
+
+      function project(x,y,z,time,phase=0) {
+        const px=(pointerX-.5)*(z-.5)*width*.035;
+        const py=(pointerY-.5)*(z-.5)*height*.018;
+        const drift=reducedMotion?0:Math.sin(time*.00013+phase)*1.5*z;
+        return{x:x*width+px+drift,y:y*height+py};
+      }
+
+      function drawCosmicWeb(time) {
+        ctx.save();ctx.globalCompositeOperation="screen";
+        const points=webNodes.map((n,i)=>project(n.x,n.y,.88,time,n.phase));
+        for(const e of webEdges){
+          const a=points[e.a],b=points[e.b],dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
+          const nx=-dy/len,ny=dx/len,bend=e.bend*Math.min(width,height);
+          const cx=(a.x+b.x)/2+nx*bend,cy=(a.y+b.y)/2+ny*bend;
+          const shimmer=reducedMotion?1:.84+Math.sin(time*.00042+e.phase)*.16;
+          ctx.strokeStyle=`rgba(92,177,255,${.09*e.strength*shimmer})`;ctx.lineWidth=4.5*sceneScale();ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(cx,cy,b.x,b.y);ctx.stroke();
+          ctx.strokeStyle=`rgba(179,224,255,${.28*e.strength*shimmer})`;ctx.lineWidth=.7*sceneScale();ctx.stroke();
+        }
+        webNodes.forEach((n,i)=>{
+          const p=points[i],pulse=reducedMotion?1:.94+Math.sin(time*.0007+n.phase)*.06,r=(2+n.mass*3.2)*sceneScale()*pulse;
+          const warm=n.warm>.72;
+          glow(p.x,p.y,r*3, warm?"rgba(255,236,210,.42)":"rgba(230,247,255,.48)",warm?"rgba(255,157,98,.12)":"rgba(87,184,255,.16)");
+        });
+        ctx.restore();
+      }
+
+      function drawGalaxies(time) {
+        ctx.save();ctx.globalCompositeOperation="screen";
+        for(const g of galaxies){
+          const depth=clamp((g.y-.24)/.52),p=project(g.x,g.y,.35+depth*.45,time,g.phase);
+          const pulse=reducedMotion?1:.94+Math.sin(time*.00034+g.phase)*.06;
+          const r=g.size*sceneScale()*pulse;
+          const early=clamp((.58-g.y)/.34);
+          ctx.save();ctx.translate(p.x,p.y);ctx.rotate(g.angle+(reducedMotion?0:Math.sin(time*.00007+g.phase)*.03));
+          if(g.irregular>.42){
+            for(let k=0;k<3;k++){
+              const a=k*2.19+g.phase,rr=r*(.25+k*.31);
+              glow(Math.cos(a)*rr,Math.sin(a)*rr*.55,r*(.65-k*.1),`rgba(235,221,255,${g.a*.7})`,`rgba(158,99,255,${g.a*.14})`);
+            }
+          }else{
+            ctx.scale(1,.42+early*.18);glow(0,0,r*2.6,`rgba(247,241,224,${g.a*.72})`,g.hue>.5?`rgba(133,160,255,${g.a*.14})`:`rgba(255,159,112,${g.a*.12})`);
+            ctx.strokeStyle=`rgba(214,229,255,${g.a*.22})`;ctx.lineWidth=.45;ctx.beginPath();ctx.ellipse(0,0,r*2.2,r*.72,0,0,TAU);ctx.stroke();
+          }
+          ctx.restore();
+        }
+        ctx.restore();
+      }
+
+      function drawQuasars(time) {
+        ctx.save();ctx.globalCompositeOperation="screen";
+        for(const q of quasars){
+          const p=project(q.x,q.y,.42,time,q.phase),pulse=reducedMotion?1:.82+Math.sin(time*.002+q.phase)*.18,r=q.r*sceneScale()*pulse;
+          glow(p.x,p.y,r*7,`rgba(255,250,225,${q.a})`,`rgba(255,133,63,${q.a*.17})`);
+          ctx.fillStyle=`rgba(255,255,245,${q.a})`;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(.7,r*.42),0,TAU);ctx.fill();
+          if(q.beam){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(q.angle);const beam=ctx.createLinearGradient(-r*18,0,r*18,0);beam.addColorStop(0,"rgba(111,171,255,0)");beam.addColorStop(.5,`rgba(214,238,255,${q.a*.16})`);beam.addColorStop(1,"rgba(111,171,255,0)");ctx.fillStyle=beam;ctx.fillRect(-r*18,-r*.18,r*36,r*.36);ctx.restore();}
+        }
+        ctx.restore();
+      }
+
+      function drawProtoGalaxies(time) {
+        ctx.save();ctx.globalCompositeOperation="screen";
+        for(const g of protoGalaxies){
+          const p=project(g.x,g.y,.34,time,g.phase),pulse=reducedMotion?1:.9+Math.sin(time*.0008+g.phase)*.1;
+          for(let k=0;k<g.pieces;k++){
+            const a=k*2.399+g.phase,rr=g.r*(.3+k*.22)*sceneScale();
+            glow(p.x+Math.cos(a)*rr,p.y+Math.sin(a)*rr*.6,g.r*2.1*sceneScale()*pulse,`rgba(255,236,191,${g.a*.5})`,`rgba(255,143,83,${g.a*.11})`);
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawReionization(time) {
+        ctx.save();ctx.globalCompositeOperation="screen";
+        for(const b of ionizedBubbles){
+          const pulse=reducedMotion?1:.96+Math.sin(time*.00043+b.phase)*.04;
+          const x=b.x*width,y=b.y*height,rx=b.rx*width*pulse,ry=b.ry*height*pulse;
+          ctx.save();ctx.translate(x,y);const grad=ctx.createRadialGradient(0,0,0,0,0,Math.max(rx,ry));
+          const c=b.warm>.5?"255,128,176":"124,170,255";grad.addColorStop(0,`rgba(${c},${b.a*.72})`);grad.addColorStop(.68,`rgba(${c},${b.a*.2})`);grad.addColorStop(1,`rgba(${c},0)`);ctx.fillStyle=grad;ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,TAU);ctx.fill();
+          ctx.strokeStyle=`rgba(${c},${b.a*.55})`;ctx.lineWidth=.65;ctx.setLineDash([2,6]);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+        }
+        const neutral=ctx.createLinearGradient(0,height*.325,0,height*.46);neutral.addColorStop(0,"rgba(3,8,20,.56)");neutral.addColorStop(.5,"rgba(10,6,18,.12)");neutral.addColorStop(1,"rgba(0,0,0,0)");ctx.globalCompositeOperation="source-over";ctx.fillStyle=neutral;ctx.fillRect(0,height*.325,width,height*.14);ctx.restore();
+      }
+
+      function drawDarkAges(time) {
+        const top=height*.225,bottom=height*.335;
+        const veil=ctx.createLinearGradient(0,top,0,bottom);veil.addColorStop(0,"rgba(0,1,7,.58)");veil.addColorStop(.48,"rgba(0,1,8,.86)");veil.addColorStop(1,"rgba(2,5,14,.46)");ctx.fillStyle=veil;ctx.fillRect(0,top,width,bottom-top);
+        ctx.save();ctx.globalCompositeOperation="screen";
+        for(const s of densitySeeds){const pulse=reducedMotion?1:.88+Math.sin(time*.0004+s.phase)*.12;glow(s.x*width,s.y*height,s.r*3*sceneScale(),`rgba(124,151,204,${s.a*.55*pulse})`,`rgba(77,94,155,${s.a*.1})`);}ctx.restore();
+      }
+
+      function drawCMB(time) {
+        const top=0,bottom=height*.235;
+        const base=ctx.createLinearGradient(0,top,0,bottom);base.addColorStop(0,"#5c4737");base.addColorStop(.48,"#3d2e2b");base.addColorStop(1,"rgba(22,15,21,.96)");ctx.fillStyle=base;ctx.fillRect(0,0,width,bottom);
+        ctx.save();ctx.globalCompositeOperation="screen";
+        for(const s of cmbSpots){
+          const pulse=reducedMotion?1:.96+Math.sin(time*.00018+s.phase)*.04;
+          const x=s.x*width,y=s.y*height,rx=s.rx*width*1.4,ry=s.ry*height*1.3;
+          ctx.save();ctx.translate(x,y);ctx.scale(1,ry/Math.max(1,rx));
+          const warm=s.v>.52,c=warm?"255,190,112":"104,152,229",a=(.035+Math.abs(s.v-.5)*.11)*pulse;
+          const g=ctx.createRadialGradient(0,0,0,0,0,rx);g.addColorStop(0,`rgba(${c},${a})`);g.addColorStop(.72,`rgba(${c},${a*.45})`);g.addColorStop(1,`rgba(${c},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,rx,0,TAU);ctx.fill();ctx.restore();
+        }
+        ctx.restore();
+        const fade=ctx.createLinearGradient(0,height*.17,0,height*.25);fade.addColorStop(0,"rgba(57,40,37,0)");fade.addColorStop(1,"rgba(1,3,9,1)");ctx.fillStyle=fade;ctx.fillRect(0,height*.17,width,height*.09);
+      }
+
+      function drawHorizonCue(time) {
+        ctx.save();ctx.globalCompositeOperation="screen";
+        const pulse=reducedMotion?1:.92+Math.sin(time*.00045)*.08;
+        for(let i=0;i<4;i++){
+          const y=height*(.012+i*.014),alpha=(.12-i*.022)*pulse;
+          const g=ctx.createLinearGradient(0,y,width,y);g.addColorStop(0,"rgba(255,231,202,0)");g.addColorStop(.5,`rgba(255,234,207,${alpha})`);g.addColorStop(1,"rgba(255,231,202,0)");ctx.strokeStyle=g;ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(0,y);ctx.quadraticCurveTo(width*.5,y+Math.sin(i)*2,width,y);ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawScientificCues() {
+        ctx.save();ctx.textAlign="center";ctx.textBaseline="middle";
+        ctx.fillStyle="rgba(208,223,255,.17)";ctx.font=`700 ${Math.max(7,Math.min(9,width*.018))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("CUANTO MÁS LEJOS OBSERVAMOS, MÁS ANTIGUA ES LA LUZ",width*.5,height*.515);
+        ctx.fillStyle="rgba(255,232,205,.22)";ctx.fillText("EL HORIZONTE ES UN LÍMITE DE OBSERVACIÓN · NO UNA PARED",width*.5,height*.105);
+        ctx.restore();
+      }
+
+      function drawBottomContinuity() {
+        ctx.save();ctx.textAlign="center";ctx.textBaseline="bottom";ctx.shadowBlur=12;ctx.shadowColor="rgba(86,179,255,.3)";
+        ctx.fillStyle="rgba(191,224,255,.48)";ctx.font=`800 ${Math.max(8,Math.min(11,width*.023))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("LA RED CÓSMICA CONTINÚA DEBAJO",width*.5,height-Math.max(8,height*.012));ctx.restore();
+      }
+
+      function drawTopTransition() {
+        ctx.save();ctx.textAlign="center";ctx.textBaseline="top";ctx.shadowBlur=15;ctx.shadowColor="rgba(255,219,180,.36)";
+        ctx.fillStyle="rgba(255,236,215,.6)";ctx.font=`800 ${Math.max(8,Math.min(11,width*.023))}px Inter,system-ui,sans-serif`;ctx.fillText("MÁS ALLÁ DE LA LUZ",width*.5,Math.max(8,height*.008));
+        ctx.fillStyle="rgba(255,245,229,.76)";ctx.font=`900 ${Math.max(8,Math.min(12,width*.026))}px Inter,system-ui,sans-serif`;ctx.fillText("INFLACIÓN · ORIGEN CÓSMICO",width*.5,Math.max(22,height*.03));
+        ctx.fillStyle="rgba(244,225,207,.55)";ctx.font=`760 ${Math.max(7,Math.min(10,width*.021))}px Inter,system-ui,sans-serif`;ctx.fillText("UNIVERSO NO OBSERVABLE · INFERENCIA, NO DESTINO ESPACIAL",width*.5,Math.max(39,height*.052));ctx.restore();
+      }
+
+      function drawParticles(dt) {
+        ctx.save();ctx.globalCompositeOperation="screen";
+        for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.life-=p.decay*dt;if(p.life<=0){particles.splice(i,1);continue;}p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.09,dt);p.vy*=Math.pow(.09,dt);const[r,g,b]=p.color;ctx.fillStyle=`rgba(${r},${g},${b},${p.life*.7})`;ctx.beginPath();ctx.arc(p.x,p.y,p.r*(.4+p.life),0,TAU);ctx.fill();}
+        for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.life-=dt*1.25;if(w.life<=0){waves.splice(i,1);continue;}w.radius+=dt*128;const[r,g,b]=w.color;ctx.strokeStyle=`rgba(${r},${g},${b},${w.life*.4})`;ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(w.x,w.y,w.radius,0,TAU);ctx.stroke();}
+        ctx.restore();
+      }
+
+      function draw(time) {
+        const dt=Math.min(.05,Math.max(0,(time-lastTime)/1000));lastTime=time;
+        if(!reducedMotion){pointerX+=(targetX-pointerX)*.08;pointerY+=(targetY-pointerY)*.08;}else{pointerX=targetX;pointerY=targetY;}
+        drawBackground(time);
+        drawCosmicWeb(time);
+        drawGalaxies(time);
+        drawQuasars(time);
+        drawProtoGalaxies(time);
+        drawReionization(time);
+        drawDarkAges(time);
+        drawCMB(time);
+        drawHorizonCue(time);
+        drawScientificCues();
+        drawBottomContinuity();
+        drawTopTransition();
+        drawParticles(dt);
+        raf=requestAnimationFrame(draw);
+      }
+
+      function init() {
+        resize();addEventListener("resize",resize,{passive:true});addEventListener("orientationchange",()=>setTimeout(resize,120),{passive:true});
+        document.addEventListener("visibilitychange",()=>{if(document.hidden&&audioCtx?.state==="running")audioCtx.suspend().catch(()=>{});});
+        canvas.focus({preventScroll:true});raf=requestAnimationFrame(draw);
+      }
+      init();
+    })();
+  </script>
+</body>
+</html>
