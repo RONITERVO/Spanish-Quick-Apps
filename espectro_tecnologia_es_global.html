@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#05070a">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora de la tecnología: desde la civilización planetaria y las herramientas hasta la inteligencia artificial, los sistemas autónomos y los futuros tecnológicos.">
+  <meta name="application-name" content="Espectro de la Tecnología: de las Herramientas a la Inteligencia Artificial">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro de la Tecnología">
+  <meta property="og:description" content="Toca y asciende desde la civilización planetaria hasta los futuros tecnológicos.">
+  <title>Espectro de la Tecnología: de las Herramientas a la Inteligencia Artificial</title>
+  <style>
+    :root {
+      --accent: 116 228 255;
+      --accent-soft: rgb(var(--accent) / .34);
+      --ink: 255 255 255;
+      --panel: 8 9 14;
+      --scan-x: 50vw;
+      --scan-y: 96vh;
+      --progress: 2%;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #05070a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: rgb(var(--ink));
+      font-family: Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #technology-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette,
+    #top-bloom,
+    #bottom-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background: radial-gradient(circle at var(--scan-x) var(--scan-y), rgb(var(--accent) / .56) 0, rgb(var(--accent) / .15) 11%, transparent 35%);
+      mix-blend-mode: screen;
+    }
+    body.active #light-field { opacity: .82; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg, transparent calc(var(--scan-x) - 1px), rgb(var(--accent) / .52) var(--scan-x), transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg, transparent calc(var(--scan-y) - 1px), rgb(var(--accent) / .32) var(--scan-y), transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+    body.active #scan-line { opacity: .17; }
+
+    #grain {
+      z-index: 4;
+      opacity: .042;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 38%, rgb(0 0 0 / .22) 72%, rgb(0 0 0 / .84) 128%),
+        linear-gradient(90deg, rgb(0 0 0 / .47), transparent 13%, transparent 87%, rgb(0 0 0 / .45));
+    }
+
+    #top-bloom {
+      z-index: 1;
+      opacity: .5;
+      background: radial-gradient(ellipse at 50% -10%, rgb(255 243 216 / .34), transparent 49%);
+      mix-blend-mode: screen;
+    }
+
+    #bottom-glow {
+      z-index: 1;
+      opacity: .46;
+      background: radial-gradient(ellipse at 50% 110%, rgb(255 173 92 / .24), transparent 48%);
+      mix-blend-mode: screen;
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 49%;
+      width: min(92vw, 860px);
+      padding: clamp(15px, 3.2vw, 27px) clamp(19px, 5vw, 52px) clamp(18px, 3.7vw, 33px);
+      border: 1px solid rgb(255 255 255 / .22);
+      border-radius: clamp(25px, 6vw, 52px);
+      color: white;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        rgb(var(--panel) / .66);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .58),
+        0 0 86px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .26),
+        inset 0 -1px 0 rgb(0 0 0 / .25);
+      backdrop-filter: blur(23px) saturate(1.36);
+      -webkit-backdrop-filter: blur(23px) saturate(1.36);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #evidence-class {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 27px;
+      margin-bottom: clamp(9px, 2vw, 15px);
+      padding: 6px 13px 7px;
+      border: 1px solid rgb(var(--accent) / .62);
+      border-radius: 999px;
+      color: rgb(var(--accent));
+      font-size: clamp(.62rem, 2.1vw, .87rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: rgb(var(--accent) / .09);
+      box-shadow: 0 0 25px var(--accent-soft), inset 0 1px 0 rgb(255 255 255 / .1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.5vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow: 0 0 30px var(--accent-soft), 0 5px 24px rgb(0 0 0 / .5);
+    }
+    #zone-name.compact { font-size: clamp(1.7rem, 7.15vw, 5.55rem); letter-spacing: -.046em; line-height: .9; }
+    #zone-name.long { font-size: clamp(1.38rem, 5.9vw, 4.45rem); letter-spacing: -.034em; line-height: .94; }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 880;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(10px, 2vw, 17px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.67rem, 2.2vw, .92rem);
+      font-weight: 820;
+      line-height: 1.12;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .2);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .11);
+    }
+
+    #fact {
+      display: block;
+      max-width: 700px;
+      margin: clamp(10px, 2.25vw, 17px) auto 0;
+      font-size: clamp(.82rem, 2.63vw, 1.1rem);
+      font-weight: 600;
+      line-height: 1.42;
+      letter-spacing: .005em;
+      color: rgb(255 255 255 / .91);
+      text-wrap: pretty;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 93%;
+      width: clamp(58px, 15vw, 104px);
+      aspect-ratio: 1;
+      border: 1px solid rgb(var(--accent) / .82);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(.4);
+      background: radial-gradient(circle, rgb(255 255 255 / .82) 0 2%, rgb(var(--accent) / .34) 7%, rgb(var(--accent) / .09) 36%, transparent 70%);
+      box-shadow: 0 0 18px rgb(var(--accent) / .58), 0 0 62px rgb(var(--accent) / .42), inset 0 0 26px rgb(var(--accent) / .19);
+      transition: opacity 150ms ease, transform 260ms cubic-bezier(.16, 1, .3, 1);
+    }
+    #touch-orb.visible { opacity: .9; transform: translate(-50%, -50%) scale(1); }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(10px, env(safe-area-inset-right));
+      top: max(19px, env(safe-area-inset-top));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: clamp(50px, 10vw, 78px);
+      pointer-events: none;
+      opacity: .58;
+      transition: opacity 180ms ease;
+    }
+    body.active #journey-scale { opacity: .9; }
+
+    #scale-track {
+      position: absolute;
+      right: 11px;
+      top: 48px;
+      bottom: 48px;
+      width: 3px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgb(255 255 255 / .14);
+      box-shadow: 0 0 12px rgb(0 0 0 / .5);
+    }
+    #scale-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(to top, rgb(94 214 164 / .68), rgb(var(--accent)));
+      box-shadow: 0 0 14px rgb(var(--accent) / .72);
+    }
+    #scale-dot {
+      position: absolute;
+      right: 6px;
+      bottom: 48px;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgb(255 255 255 / .84);
+      border-radius: 50%;
+      transform: translateY(50%);
+      background: rgb(var(--accent));
+      box-shadow: 0 0 17px rgb(var(--accent) / .85);
+    }
+    #scale-bottom,
+    #scale-top {
+      position: absolute;
+      right: 0;
+      width: 74px;
+      font-size: clamp(.49rem, 1.6vw, .61rem);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: .11em;
+      text-align: right;
+      text-transform: uppercase;
+      color: rgb(255 255 255 / .65);
+    }
+    #scale-top { top: 0; }
+    #scale-bottom { bottom: 0; }
+    #scale-value {
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      width: min(34vh, 250px);
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right center;
+      font-size: clamp(.54rem, 1.7vw, .66rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .14em;
+      text-align: center;
+      text-transform: uppercase;
+      color: rgb(var(--accent));
+      text-shadow: 0 0 14px rgb(var(--accent) / .6);
+      white-space: nowrap;
+    }
+
+    #hint {
+      position: fixed;
+      z-index: 6;
+      left: 50%;
+      bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+      width: min(78vw, 530px);
+      transform: translateX(-50%);
+      color: rgb(255 255 255 / .78);
+      text-align: center;
+      pointer-events: none;
+      font-size: clamp(.7rem, 2.4vw, .94rem);
+      font-weight: 800;
+      line-height: 1.34;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 16px rgb(0 0 0 / .8);
+      animation: breathe 3.2s ease-in-out infinite;
+    }
+    #hint strong { color: rgb(var(--accent)); }
+
+    .ripple {
+      position: fixed;
+      z-index: 7;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgb(var(--accent) / .78);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 22px rgb(var(--accent) / .52), inset 0 0 15px rgb(var(--accent) / .2);
+      animation: ripple 920ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple { to { width: min(72vw, 560px); height: min(72vw, 560px); opacity: 0; } }
+    @keyframes breathe {
+      0%, 100% { opacity: .4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: .95; transform: translateX(-50%) translateY(-3px); }
+    }
+
+    @media (max-height: 620px) {
+      #readout { width: min(88vw, 760px); padding-top: 12px; padding-bottom: 14px; }
+      #evidence-class { margin-bottom: 7px; }
+      #fact { margin-top: 8px; line-height: 1.32; }
+      #metric { margin-top: 7px; }
+      #journey-scale { opacity: .46; }
+    }
+
+    @media (max-width: 460px) {
+      #readout { width: 91vw; }
+      #journey-scale { right: 3px; }
+      #scale-value { display: none; }
+      #scale-bottom, #scale-top { width: 54px; font-size: .45rem; }
+      #hint { width: 72vw; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #hint { animation: none; }
+      .ripple { animation-duration: 1ms; }
+      #readout, #touch-orb, #light-field, #scan-line { transition-duration: 1ms; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="technology-spectrum" tabindex="0" role="application" aria-label="Exploración táctil de la tecnología, desde la civilización planetaria en la parte inferior hasta los futuros tecnológicos en la parte superior. Toca, arrastra o usa las flechas del teclado."></canvas>
+  <div id="top-bloom" aria-hidden="true"></div><div id="bottom-glow" aria-hidden="true"></div><div id="light-field" aria-hidden="true"></div><div id="scan-line" aria-hidden="true"></div><div id="grain" aria-hidden="true"></div><div id="vignette" aria-hidden="true"></div>
+  <div id="hint" aria-hidden="true"><strong>Toca y asciende</strong> · de la civilización a la autonomía</div>
+  <div id="readout" aria-live="polite" aria-atomic="true"><span id="evidence-class"></span><strong id="zone-name"></strong><span id="feature-name"></span><span id="metric"></span><span id="fact"></span></div>
+  <div id="touch-orb" aria-hidden="true"></div>
+  <div id="journey-scale" aria-hidden="true"><span id="scale-top">Futuros tecnológicos</span><div id="scale-track"><div id="scale-fill"></div></div><div id="scale-dot"></div><span id="scale-value">Civilización planetaria</span><span id="scale-bottom">Civilización planetaria</span></div>
+
+  <!--
+    Visualización educativa conceptual, táctil y sin dependencias externas.
+
+    La escala vertical representa capas de capacidad técnica, coordinación y autonomía; no una cronología
+    universal ni una escalera inevitable de progreso. Herramientas antiguas y sistemas recientes coexisten,
+    las trayectorias históricas fueron diversas y toda tecnología depende de personas, materiales, energía,
+    mantenimiento, instituciones y decisiones políticas.
+
+    El recorrido distingue capacidad técnica, viabilidad, distribución de beneficios, legitimidad y riesgo.
+    No afirma que la automatización elimine la responsabilidad humana, que la inteligencia artificial posea
+    conciencia o juicio fiable, que la innovación sea neutral ni que una civilización conectada controle los
+    sistemas que construye. Las imágenes son metáforas interactivas, no reconstrucciones históricas literales.
+  -->
+
+  <script>
+  (() => {
+    "use strict";
+
+    const canvas = document.getElementById("technology-spectrum");
+    const ctx = canvas.getContext("2d", { alpha: false });
+    const root = document.documentElement;
+    const readout = document.getElementById("readout");
+    const evidenceClass = document.getElementById("evidence-class");
+    const zoneName = document.getElementById("zone-name");
+    const featureName = document.getElementById("feature-name");
+    const metric = document.getElementById("metric");
+    const fact = document.getElementById("fact");
+    const touchOrb = document.getElementById("touch-orb");
+    const scaleValue = document.getElementById("scale-value");
+    const scaleDot = document.getElementById("scale-dot");
+    const hint = document.getElementById("hint");
+
+    const TAU = Math.PI * 2;
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const mix = (a, b, t) => a + (b - a) * t;
+    const smooth = t => t * t * (3 - 2 * t);
+    const fract = v => v - Math.floor(v);
+    const seeded = n => fract(Math.sin(n * 127.1 + 311.7) * 43758.5453123);
+    const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+    const ZONES = [{"id":"planetary-civilization","name":"Civilización planetaria","className":"Punto de partida · interdependencia tecnológica global","color":[116,228,255],"metric":"Ciudades + redes + satélites + ciencia + industria → capacidad planetaria desigual","fact":"Una civilización tecnológicamente conectada no controla por completo los sistemas que ha creado ni distribuye sus beneficios de manera uniforme.","features":[["ciudades","Las ciudades concentran personas, conocimiento, servicios e infraestructuras, pero también consumo, vulnerabilidad y desigualdad."],["redes energéticas","Generación, transmisión, almacenamiento y demanda deben coordinarse continuamente para sostener la vida moderna."],["satélites","Los satélites permiten navegación, observación, ciencia y comunicación, pero también crean dependencia orbital y residuos."],["transporte","Carreteras, puertos, ferrocarriles y aviación conectan economías mientras consumen materiales y energía."],["instituciones científicas","La ciencia organizada combina instrumentos, datos, crítica, financiación y cooperación internacional."],["comunicación global","Mensajes y datos cruzan el planeta casi al instante, aunque el acceso y el control siguen siendo desiguales."],["producción industrial","La producción masiva transforma materias primas en bienes mediante cadenas extensas de energía, trabajo y logística."],["observación ambiental","Sensores terrestres y orbitales revelan cambios planetarios que ninguna persona podría observar por sí sola."]],"p0":0.0,"p1":0.05,"scene":0,"sound":{"base":54.0,"filter":720,"noise":0.017,"pulse":0.055,"type":"sine"}},{"id":"manual-tools","name":"Herramientas manuales","className":"Extensión directa del cuerpo","color":[255,196,117],"metric":"Cuerpo + material + forma diseñada → acción ampliada","fact":"Una herramienta transforma la relación entre el cuerpo, los materiales y el entorno.","features":[["cuchillo","Un filo concentra fuerza en un borde estrecho para cortar, tallar o separar materiales."],["martillo","La masa y el mango convierten el movimiento del brazo en un impacto controlado."],["cuerda","Fibras reunidas permiten tensar, unir, elevar, medir y transmitir fuerza."],["aguja","Una punta fina y un ojo pequeño hacen posible perforar y unir materiales flexibles."],["recipiente","Contener líquidos, granos o calor amplía la capacidad humana de almacenar, transportar y cocinar."],["palanca","Una barra apoyada puede multiplicar fuerza o cambiar su dirección."],["taladro","La rotación concentrada abre cavidades y permite ensamblajes más precisos."],["mantenimiento","Una herramienta útil depende de afilado, reparación, habilidad y acceso a materiales."]],"p0":0.05,"p1":0.1,"scene":1,"sound":{"base":58.65,"filter":832,"noise":0.0215,"pulse":0.079,"type":"triangle"}},{"id":"simple-machines","name":"Máquinas simples","className":"Transformación mecánica de fuerza y movimiento","color":[255,145,101],"metric":"Fuerza aplicada × distancia recorrida → trabajo redirigido con pérdidas","fact":"Las máquinas simples no crean trabajo gratis: intercambian fuerza, distancia, velocidad o dirección.","features":[["palanca","La posición del punto de apoyo determina cuánto se multiplica la fuerza y cuánto debe moverse el brazo."],["rueda y eje","Una rueda reduce fricción de deslizamiento y el eje transmite rotación."],["polea","Una cuerda sobre una rueda cambia la dirección de la fuerza; varias poleas pueden repartir la carga."],["plano inclinado","Subir una carga por una pendiente requiere menos fuerza a cambio de recorrer más distancia."],["cuña","Dos planos inclinados unidos convierten avance en fuerzas laterales para separar o fijar."],["tornillo","Una rampa helicoidal transforma giro en avance preciso y gran presión."],["engranajes","Dientes acoplados intercambian velocidad, par y dirección entre ejes."],["fricción","Toda máquina real pierde parte de la energía útil en calor, deformación, sonido y desgaste."]],"p0":0.1,"p1":0.15,"scene":2,"sound":{"base":63.3,"filter":944,"noise":0.026,"pulse":0.103,"type":"sine"}},{"id":"measurement","name":"Medición y precisión","className":"Comparación estandarizada y reproducible","color":[255,226,122],"metric":"Propiedad + unidad + instrumento + incertidumbre → valor comparable","fact":"Medir permite comparar, reproducir y coordinar acciones entre personas que no están en el mismo lugar.","features":[["longitud","Reglas y patrones de longitud hacen posible fabricar piezas compatibles y describir distancias."],["masa","Comparar masas ayuda a comerciar, formular materiales y controlar procesos."],["tiempo","Relojes compartidos coordinan navegación, industria, comunicaciones y experimentos."],["ángulo","La medición angular sostiene construcción, cartografía, astronomía y control de máquinas."],["temperatura","Un termómetro relaciona cambios físicos observables con una escala acordada."],["mapas","Un mapa convierte relaciones espaciales complejas en un modelo simbólico utilizable."],["calibración","Comparar un instrumento con una referencia conocida reduce errores sistemáticos."],["incertidumbre","Toda medición tiene límites; informar la incertidumbre evita confundir precisión aparente con certeza."]],"p0":0.15,"p1":0.2,"scene":3,"sound":{"base":67.95,"filter":1056,"noise":0.0305,"pulse":0.127,"type":"triangle"}},{"id":"materials","name":"Materiales y metalurgia","className":"Propiedades diseñadas mediante estructura y proceso","color":[234,177,255],"metric":"Composición + microestructura + proceso → propiedades del material","fact":"La tecnología de materiales no solo encuentra sustancias: modifica su estructura para obtener propiedades específicas.","features":[["piedra","Dureza, fractura y disponibilidad hicieron de la piedra una plataforma tecnológica duradera."],["arcilla y vidrio","Calor y composición transforman minerales en cerámicas resistentes o vidrios transparentes."],["cobre y bronce","Metales y aleaciones permitieron formas reutilizables, conductoras y reparables."],["hierro y acero","El control del carbono, la temperatura y el enfriamiento produce aceros con comportamientos muy distintos."],["aleaciones","Mezclar elementos puede mejorar resistencia, corrosión, peso o temperatura de servicio."],["polímeros","Cadenas moleculares largas permiten materiales ligeros y moldeables, pero plantean persistencia ambiental."],["compuestos","Combinar materiales distintos reúne propiedades que ninguno ofrece por separado."],["ciclo de vida","Extracción, fabricación, uso, reparación, reciclaje y desecho forman una sola historia material."]],"p0":0.2,"p1":0.25,"scene":4,"sound":{"base":72.6,"filter":1168,"noise":0.035,"pulse":0.151,"type":"sine"}},{"id":"technological-agriculture","name":"Agricultura tecnológica","className":"Sistemas de producción biológica y control ambiental","color":[139,234,139],"metric":"Suelo + agua + organismos + herramientas + conocimiento → alimento y efectos ecológicos","fact":"La tecnología agrícola aumentó la producción, pero también puede concentrar poder, degradar ecosistemas y aumentar dependencias.","features":[["arado","Remover el suelo facilita ciertos cultivos, aunque también puede acelerar erosión y pérdida de carbono."],["riego","Canales, bombas y sensores desplazan agua hacia cultivos, creando productividad y nuevas presiones hídricas."],["terrazas","Modificar pendientes reduce erosión y conserva agua mediante conocimiento local acumulado."],["molinos","Viento, agua o motores convierten energía ambiental en molienda y procesamiento."],["selección","Elegir semillas y animales cambia poblaciones durante generaciones, mucho antes de la genética moderna."],["fertilizantes","Añadir nutrientes puede elevar cosechas, pero el exceso contamina aguas y altera ciclos globales."],["conservación","Secado, salado, frío, fermentación y envasado reducen pérdidas y amplían distribución."],["cosecha mecanizada","Máquinas aceleran trabajo agrícola, pero requieren capital, combustible, mantenimiento y adaptación social."]],"p0":0.25,"p1":0.3,"scene":5,"sound":{"base":77.25,"filter":1280,"noise":0.017,"pulse":0.175,"type":"sawtooth"}},{"id":"engines","name":"Motores","className":"Conversión controlada de energía en movimiento","color":[255,122,112],"metric":"Energía de entrada → movimiento útil + calor + sonido + pérdidas","fact":"Un motor no crea energía: transforma una forma de energía en movimiento útil, siempre con pérdidas.","features":[["músculo","Los músculos convierten energía química en fuerza mediante sistemas biológicos autorreparables y limitados."],["viento","Velas y rotores capturan parte del movimiento del aire."],["agua","Ruedas y turbinas aprovechan caudal y desnivel para producir rotación."],["vapor","El calor genera presión que puede mover pistones o turbinas."],["combustión","Quemar combustible dentro de una máquina produce expansión rápida, movimiento y emisiones."],["turbina","Un flujo continuo de vapor, gas, agua o aire hace girar álabes."],["motor eléctrico","Campos magnéticos convierten corriente eléctrica en par con alta eficiencia y control preciso."],["cohete","Expulsar masa a gran velocidad produce empuje incluso en el vacío."]],"p0":0.3,"p1":0.35,"scene":6,"sound":{"base":81.9,"filter":1392,"noise":0.0215,"pulse":0.199,"type":"sine"}},{"id":"industry","name":"Industria","className":"Producción coordinada a gran escala","color":[255,156,86],"metric":"Máquinas + energía + trabajo + normas + logística → producción repetible","fact":"La industria es una red de personas, materiales, energía, organización y mantenimiento, no solo un conjunto de máquinas.","features":[["fábrica","Reunir procesos en un lugar permite coordinación y escala, pero también concentra riesgos y poder."],["máquina-herramienta","Tornos, fresadoras y prensas fabrican piezas precisas para construir otras máquinas."],["estandarización","Dimensiones y procedimientos comunes permiten intercambiabilidad y cooperación entre fabricantes."],["línea de montaje","Dividir una secuencia en tareas repetidas aumenta ritmo y reduce flexibilidad del trabajo."],["ferrocarril","Vías, locomotoras y horarios integran producción y transporte terrestre."],["producción masiva","Grandes volúmenes reducen coste unitario mientras elevan demanda material y residuos."],["mantenimiento","Inspección, lubricación, repuestos y conocimiento técnico sostienen la capacidad productiva real."],["trabajo industrial","La productividad depende de habilidades, seguridad, negociación, salud y distribución de beneficios."]],"p0":0.35,"p1":0.4,"scene":7,"sound":{"base":86.55,"filter":1504,"noise":0.026,"pulse":0.055,"type":"triangle"}},{"id":"electricity","name":"Electricidad","className":"Infraestructura invisible de energía y control","color":[118,198,255],"metric":"Generación → transformación → transmisión → uso → pérdidas y equilibrio instantáneo","fact":"La electricidad conecta fuentes y usos distantes, pero la red debe equilibrar producción y consumo continuamente.","features":[["generador","El movimiento relativo entre conductores y campos magnéticos puede producir tensión eléctrica."],["circuito","La corriente necesita un camino cerrado y componentes con funciones definidas."],["tensión","La tensión describe diferencia de potencial eléctrico, no una sustancia almacenada dentro del cable."],["corriente","La corriente mide flujo de carga por unidad de tiempo."],["transformador","Campos magnéticos variables permiten cambiar niveles de tensión en corriente alterna."],["motor","La electricidad puede volver a convertirse en movimiento mediante fuerzas electromagnéticas."],["red eléctrica","Centrales, líneas, subestaciones, protecciones y control forman un sistema interdependiente."],["almacenamiento","Baterías, bombeo y otras tecnologías desplazan energía en el tiempo, con límites de coste y materiales."]],"p0":0.4,"p1":0.45,"scene":8,"sound":{"base":91.2,"filter":1616,"noise":0.0305,"pulse":0.079,"type":"sine"}},{"id":"telecommunications","name":"Telecomunicaciones","className":"Información separada del transporte físico","color":[103,230,223],"metric":"Mensaje → codificación → señal → canal → decodificación","fact":"La comunicación tecnológica separó progresivamente la velocidad de la información de la velocidad del transporte físico.","features":[["telégrafo","Pulsos eléctricos codificados permitieron enviar símbolos a gran distancia casi de inmediato."],["teléfono","Convertir sonido en señal eléctrica hizo posible transportar la voz."],["radio","Ondas electromagnéticas llevan información sin un cable continuo entre emisor y receptor."],["televisión","Imagen y sonido se codifican, transmiten y reconstruyen en secuencias rápidas."],["fibra óptica","Pulsos de luz guiados por vidrio transportan enormes cantidades de datos con bajas pérdidas."],["red inalámbrica","Radio, antenas, espectro compartido y protocolos coordinan dispositivos móviles."],["satélite","Enlaces orbitales cubren grandes regiones, aunque introducen distancia, coste y dependencia espacial."],["señal digital","Representar información con estados discretos facilita corrección, copia y procesamiento."]],"p0":0.45,"p1":0.5,"scene":9,"sound":{"base":95.85,"filter":1728,"noise":0.035,"pulse":0.103,"type":"triangle"}},{"id":"electronics","name":"Electrónica","className":"Control de señales mediante componentes microscópicos","color":[121,255,182],"metric":"Sensores + semiconductores + circuitos → detección, decisión y control","fact":"La electrónica transforma señales débiles en medición, comunicación, memoria y acción controlada.","features":[["válvula de vacío","Controlar electrones en un recipiente evacuado permitió amplificar y conmutar señales tempranas."],["transistor","Una señal pequeña puede controlar una corriente mayor dentro de un semiconductor."],["diodo","Una unión semiconductor conduce de forma distinta según dirección y condiciones."],["sensor","Un sensor convierte una propiedad física o química en una señal interpretable."],["circuito integrado","Muchos componentes fabricados juntos reducen tamaño, coste y distancia de señal."],["microcontrolador","Procesador, memoria y periféricos reunidos controlan máquinas específicas."],["pantalla","Señales eléctricas modulan luz para convertir datos en imágenes visibles."],["procesamiento de señal","Filtrar, muestrear y transformar señales revela información oculta por ruido o escala."]],"p0":0.5,"p1":0.55,"scene":10,"sound":{"base":100.5,"filter":1840,"noise":0.017,"pulse":0.127,"type":"sine"}},{"id":"computing","name":"Computación","className":"Manipulación física de símbolos según reglas","color":[150,168,255],"metric":"Estados físicos + lógica + memoria + instrucciones → cómputo","fact":"Una computadora no comprende automáticamente lo que procesa: ejecuta operaciones físicas que representan símbolos según reglas diseñadas.","features":[["estados binarios","Dos rangos físicos diferenciables pueden representar 0 y 1 de manera robusta."],["puerta lógica","Transistores conectados implementan relaciones como Y, O y NO."],["memoria","Estados físicos persistentes conservan datos e instrucciones durante distintos intervalos."],["procesador","Un procesador coordina operaciones elementales a gran velocidad."],["entrada","Teclados, sensores, cámaras y redes convierten acontecimientos externos en datos."],["salida","Pantallas, motores, sonidos y mensajes convierten resultados digitales en efectos observables."],["algoritmo","Un algoritmo especifica pasos y decisiones para transformar una entrada en una salida."],["programa almacenado","Guardar instrucciones en memoria permite que la misma máquina ejecute tareas diferentes."]],"p0":0.55,"p1":0.6,"scene":11,"sound":{"base":105.15,"filter":1952,"noise":0.0215,"pulse":0.151,"type":"sawtooth"}},{"id":"software","name":"Software","className":"Capas de instrucciones y modelos ejecutables","color":[194,144,255],"metric":"Código + datos + abstracciones + hardware → comportamiento programable","fact":"El software oculta detalles para permitir nuevas capacidades, pero cada capa añade supuestos, errores y dependencias.","features":[["código máquina","Instrucciones numéricas controlan operaciones concretas del procesador."],["sistema operativo","El sistema operativo reparte memoria, tiempo de procesador, archivos y acceso a dispositivos."],["aplicación","Una aplicación organiza funciones técnicas alrededor de una tarea humana."],["base de datos","Estructuras y consultas permiten conservar, relacionar y recuperar grandes colecciones de información."],["simulación","Un modelo computacional explora cómo podría comportarse un sistema bajo supuestos definidos."],["interfaz","Una interfaz traduce capacidades internas en acciones y señales comprensibles para personas u otros sistemas."],["biblioteca","Código reutilizable acelera desarrollo y transmite decisiones técnicas entre proyectos."],["mundo virtual","Reglas de software pueden construir espacios interactivos que no obedecen todas las limitaciones físicas del mundo real."]],"p0":0.6,"p1":0.65,"scene":12,"sound":{"base":109.8,"filter":2064,"noise":0.026,"pulse":0.175,"type":"sine"}},{"id":"internet","name":"Internet","className":"Sistema distribuido de redes interoperables","color":[105,170,255],"metric":"Paquetes + direcciones + rutas + protocolos + infraestructura física → red mundial","fact":"Internet no es una nube en el cielo: depende de cables, radioenlaces, centros de datos, energía y protocolos acordados.","features":[["paquete","Los datos se dividen en unidades que pueden viajar por rutas distintas y reunirse al final."],["dirección","Identificadores permiten localizar interfaces y servicios dentro de redes cambiantes."],["router","Un router elige el siguiente salto para cada paquete usando información de red."],["servidor","Un servidor ofrece datos o funciones a otros equipos, desde una habitación o un centro de datos."],["protocolo","Reglas compartidas permiten que sistemas diseñados por organizaciones distintas se entiendan."],["sitio web","Documentos, estilos, programas y servicios se combinan para formar experiencias navegables."],["nube","La nube es computación remota distribuida en instalaciones físicas, no un lugar sin materia."],["plataforma social","Las plataformas coordinan publicación y atención, pero sus reglas y algoritmos concentran poder."]],"p0":0.65,"p1":0.7,"scene":13,"sound":{"base":114.45,"filter":2176,"noise":0.0305,"pulse":0.199,"type":"triangle"}},{"id":"robotics","name":"Robótica","className":"Información digital convertida en acción física","color":[101,242,206],"metric":"Sensores → estimación → control → actuadores → entorno → nuevos sensores","fact":"Un robot conecta información digital con acciones físicas en el mundo.","features":[["sensor","El robot necesita medir su propio estado y aspectos relevantes del entorno."],["actuador","Motores, válvulas y materiales activos convierten señales en fuerza o movimiento."],["bucle de control","Comparar objetivo y resultado permite corregir continuamente una acción."],["navegación","Localización, mapas y planificación ayudan a moverse entre obstáculos e incertidumbre."],["manipulación","Brazos y pinzas deben controlar posición, fuerza y contacto con objetos variados."],["robot industrial","Movimientos repetibles aceleran tareas estructuradas, pero exigen diseño seguro del espacio."],["dron","Un vehículo aéreo combina sustentación, sensores, comunicación y control rápido."],["máquina asistiva","La robótica puede ampliar movilidad e independencia cuando se diseña con las personas usuarias."]],"p0":0.7,"p1":0.75,"scene":14,"sound":{"base":119.1,"filter":2288,"noise":0.035,"pulse":0.055,"type":"sine"}},{"id":"biotechnology","name":"Biotecnología","className":"Sistemas vivos como medio técnico","color":[151,255,128],"metric":"Organismos + información biológica + ambiente + intervención → función modificada","fact":"Modificar organismos no comenzó con la genética moderna, pero las herramientas actuales aumentaron enormemente precisión, velocidad y consecuencias posibles.","features":[["fermentación","Microorganismos transforman alimentos y materiales mediante metabolismos aprovechados por culturas humanas."],["selección artificial","Elegir qué organismos se reproducen cambia rasgos poblacionales durante generaciones."],["vacuna","Entrenar al sistema inmunitario reduce riesgo de enfermedad sin requerir padecerla plenamente."],["secuenciación de ADN","Leer secuencias genéticas permite comparar organismos, rastrear variantes y diseñar experimentos."],["edición genética","Herramientas moleculares modifican lugares concretos del genoma, con resultados y riesgos dependientes del contexto."],["biología sintética","Componentes biológicos se reorganizan para producir funciones nuevas o controladas."],["ingeniería de tejidos","Células, soportes y señales se combinan para reparar o construir estructuras biológicas."],["fabricación biológica","Organismos pueden producir fármacos, alimentos, enzimas y materiales mediante procesos vivos."]],"p0":0.75,"p1":0.8,"scene":15,"sound":{"base":123.75,"filter":2400,"noise":0.017,"pulse":0.079,"type":"triangle"}},{"id":"artificial-intelligence","name":"Inteligencia artificial","className":"Modelos que aprenden regularidades de datos","color":[255,135,231],"metric":"Datos + objetivo + modelo + cómputo + evaluación → comportamiento aprendido","fact":"La inteligencia artificial puede producir resultados complejos sin poseer necesariamente conciencia, comprensión humana o juicio fiable.","features":[["clasificación","Un modelo asigna entradas a categorías aprendidas, con errores que reflejan datos, objetivo y contexto."],["predicción","Regularidades pasadas se usan para estimar resultados futuros, sin garantizar que las condiciones permanezcan iguales."],["modelo de lenguaje","Un modelo de lenguaje estima continuaciones plausibles de símbolos y puede generar texto coherente sin verificar por sí mismo su verdad."],["reconocimiento de imágenes","Patrones visuales se transforman en etiquetas, posiciones o representaciones internas."],["recomendación","Sistemas ordenan opciones según señales de preferencia, pero también moldean atención y comportamiento."],["planificación","Un sistema compara acciones posibles para acercarse a un objetivo definido."],["generación","Modelos producen texto, imágenes, audio, código u otras estructuras a partir de patrones aprendidos."],["aprendizaje por refuerzo","La retroalimentación sobre acciones guía estrategias, aunque la recompensa elegida puede no representar el objetivo humano real."]],"p0":0.8,"p1":0.85,"scene":16,"sound":{"base":128.4,"filter":2512,"noise":0.0215,"pulse":0.103,"type":"sine"}},{"id":"autonomous-systems","name":"Sistemas autónomos","className":"Acción sostenida con menor supervisión directa","color":[255,110,175],"metric":"Percepción + objetivos + decisiones + acción + supervisión → autonomía limitada","fact":"La autonomía técnica no elimina la responsabilidad humana: la desplaza hacia quienes diseñan, entrenan, despliegan y gobiernan el sistema.","features":[["vehículo autónomo","Sensores y modelos deben interpretar tráfico cambiante mientras los límites operativos siguen siendo decisivos."],["laboratorio automatizado","Robots y software pueden ejecutar, medir y ajustar experimentos de manera continua."],["sistema de negociación","Algoritmos actúan en mercados a velocidades que pueden amplificar errores e interacciones inesperadas."],["flota robótica","Múltiples máquinas coordinadas reparten tareas y comparten información."],["apoyo a decisiones","Un sistema puede resumir evidencia o estimar riesgo, pero no sustituye automáticamente responsabilidad ni contexto."],["infraestructura adaptativa","Redes eléctricas, edificios o tráfico ajustan operación según demanda y condiciones."],["arma autónoma","Delegar selección o ataque a máquinas crea riesgos extremos de control, atribución y escalada."],["red autorreparable","Detección automática y rutas alternativas pueden mantener servicios, aunque no eliminan fallos sistémicos."]],"p0":0.85,"p1":0.9,"scene":17,"sound":{"base":133.05,"filter":2624,"noise":0.026,"pulse":0.127,"type":"sawtooth"}},{"id":"planetary-technologies","name":"Tecnologías planetarias","className":"Intervención sobre sistemas de escala terrestre","color":[90,224,255],"metric":"Capacidad técnica ≠ viabilidad económica ≠ aceptación social ≠ legitimidad política","fact":"Actuar a escala planetaria exige distinguir lo físicamente posible de lo gobernable, justo y aceptable.","features":[["red energética global","Interconexiones extensas podrían compartir recursos variables, pero requieren seguridad, acuerdos y distribución justa."],["observación climática","Satélites, boyas, estaciones y modelos integran señales de toda la Tierra."],["computación planetaria","Centros de datos y redes coordinan información global mientras consumen energía, agua y materiales."],["eliminación de carbono","Capturar y almacenar dióxido de carbono puede complementar reducciones, no reemplazar automáticamente el abandono de emisiones."],["geoingeniería","Intervenir deliberadamente en el clima plantea incertidumbres, efectos transfronterizos y problemas de legitimidad."],["constelación satelital","Miles de satélites amplían conectividad y observación, pero alteran órbitas, cielos y riesgos de colisión."],["logística mundial","Puertos, contenedores, software y transporte sincronizan cadenas de suministro vulnerables a perturbaciones."],["vigilancia de la biosfera","Sensores y genética ambiental pueden detectar cambios ecológicos, siempre bajo decisiones sobre acceso y uso de datos."]],"p0":0.9,"p1":0.95,"scene":18,"sound":{"base":137.7,"filter":2736,"noise":0.0305,"pulse":0.151,"type":"sine"}},{"id":"technological-futures","name":"Futuros tecnológicos","className":"Ramas abiertas · no un destino único","color":[230,240,255],"metric":"Capacidades + objetivos + poder + gobernanza + azar → futuros divergentes","fact":"El futuro dependerá no solo de lo que podamos construir, sino de qué objetivos elijamos, quién controle los sistemas y cómo gobernemos sus consecuencias.","features":[["energía limpia abundante","Sistemas bajos en carbono podrían ampliar bienestar si materiales, redes y acceso se distribuyen con justicia."],["vigilancia","Sensores y análisis ubicuos pueden aumentar seguridad o concentrar control sobre la vida cotidiana."],["automatización","Máquinas pueden reducir trabajo peligroso o desplazar ingresos y poder sin instituciones adaptadas."],["mejora médica","Terapias avanzadas podrían reparar cuerpos y ampliar capacidades, con profundas preguntas de acceso e identidad."],["restauración ecológica","Biología, sensores y energía pueden apoyar recuperación de ecosistemas si las causas de degradación también cambian."],["inteligencia avanzada","Sistemas más generales podrían acelerar ciencia o crear riesgos difíciles de controlar y evaluar."],["industria espacial","Recursos y asentamientos fuera de la Tierra podrían ampliar opciones sin eliminar conflictos humanos."],["colaboración humano-máquina","Las herramientas futuras pueden complementar juicio y creatividad cuando sus límites, incentivos y control permanecen visibles."],["más allá","Cuando una civilización puede transformar planetas, crear inteligencias no biológicas y expandirse fuera de su mundo natal, surge una pregunta mayor: ¿qué caminos puede seguir en el futuro?"]],"p0":0.95,"p1":1.0,"scene":19,"sound":{"base":142.35,"filter":2848,"noise":0.035,"pulse":0.175,"type":"triangle"}}];
+
+    let width = 1, height = 1, dpr = 1;
+    let pointerDown = false;
+    let targetX = .5, targetY = .982, pointerX = .5, pointerY = .982;
+    let shownX = .5, shownY = .982;
+    let lastZoneId = "", lastFeature = -1;
+    let hideTimer = 0, speechTimer = 0, lastSpoken = "", speechUnlocked = false;
+    let lastFrame = performance.now(), elapsed = 0, currentProgress = .018, touchEnergy = 0;
+
+    const particles = [], nodes = [], structures = [], packets = [], glyphs = [], bursts = [], waves = [];
+    let audioCtx = null, master = null, droneA = null, droneB = null, droneGain = null;
+    let droneFilter = null, pulseOsc = null, pulseGain = null, noiseSource = null;
+    let noiseGain = null, noiseFilter = null, stereo = null;
+
+    function depthFromY(yNorm) { return clamp(1 - yNorm, 0, 1); }
+    function zoneForDepth(p) {
+      for (const zone of ZONES) if (p >= zone.p0 && p < zone.p1) return zone;
+      return ZONES[ZONES.length - 1];
+    }
+    function featureFor(zone, xNorm) {
+      const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .999999) * zone.features.length));
+      return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+    }
+    function setAccent(zone) { root.style.setProperty("--accent", `${zone.color[0]} ${zone.color[1]} ${zone.color[2]}`); }
+    function setCssPoint(x, y) { root.style.setProperty("--scan-x", `${x}px`); root.style.setProperty("--scan-y", `${y}px`); }
+
+    function buildScene() {
+      particles.length = nodes.length = structures.length = packets.length = glyphs.length = 0;
+      const count = reducedMotion ? 90 : Math.round(clamp(width * height / 4800, 150, 380));
+      for (let i=0;i<count;i++) particles.push({x:seeded(i+1),y:seeded(i+1000),r:.5+seeded(i+2000)*2.4,phase:seeded(i+3000)*TAU,speed:.12+seeded(i+4000)*.9,kind:i%11});
+      for (let i=0;i<70;i++) nodes.push({x:.05+seeded(i+5000)*.9,y:.07+seeded(i+6000)*.86,r:2+seeded(i+7000)*5,phase:seeded(i+8000)*TAU,kind:i%9});
+      for (let i=0;i<46;i++) structures.push({x:.03+seeded(i+9000)*.94,y:.08+seeded(i+10000)*.84,w:.025+seeded(i+11000)*.09,h:.03+seeded(i+12000)*.16,phase:seeded(i+13000)*TAU,kind:i%10});
+      for (let i=0;i<62;i++) packets.push({x1:seeded(i+14000),y1:seeded(i+15000),x2:seeded(i+16000),y2:seeded(i+17000),phase:seeded(i+18000)*TAU,speed:.16+seeded(i+18100)*.55,kind:i%7});
+      const chars='01λΣΔAI{}<>→∞⊕◌⌁';
+      for (let i=0;i<80;i++) glyphs.push({x:.04+seeded(i+19000)*.92,y:.06+seeded(i+20000)*.86,char:chars[i%chars.length],size:9+seeded(i+21000)*22,phase:seeded(i+22000)*TAU,speed:.2+seeded(i+23000)*.9});
+    }
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      width = Math.max(1, rect.width); height = Math.max(1, rect.height);
+      dpr = Math.min(2, devicePixelRatio || 1);
+      canvas.width = Math.round(width*dpr); canvas.height = Math.round(height*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0); buildScene();
+      shownX = targetX*width; shownY = targetY*height; setCssPoint(shownX, shownY);
+    }
+
+    function ensureAudio() {
+      if (audioCtx) { if (audioCtx.state === "suspended") audioCtx.resume().catch(()=>{}); return; }
+      const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
+      audioCtx = new AudioContext(); master = audioCtx.createGain(); master.gain.value = 0;
+      const compressor = audioCtx.createDynamicsCompressor(); compressor.threshold.value=-24; compressor.knee.value=20; compressor.ratio.value=5;
+      master.connect(compressor).connect(audioCtx.destination);
+      droneA=audioCtx.createOscillator(); droneB=audioCtx.createOscillator(); droneGain=audioCtx.createGain(); droneFilter=audioCtx.createBiquadFilter();
+      stereo=audioCtx.createStereoPanner?audioCtx.createStereoPanner():audioCtx.createGain();
+      droneA.type='sine'; droneB.type='triangle'; droneGain.gain.value=.0001; droneFilter.type='lowpass'; droneFilter.frequency.value=850; droneFilter.Q.value=.8;
+      droneA.connect(droneGain); droneB.connect(droneGain); droneGain.connect(droneFilter).connect(stereo).connect(master); droneA.start(); droneB.start();
+      pulseOsc=audioCtx.createOscillator(); pulseGain=audioCtx.createGain(); pulseOsc.type='sine'; pulseGain.gain.value=.0001; pulseOsc.connect(pulseGain).connect(master); pulseOsc.start();
+      const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate), channel=buffer.getChannelData(0);
+      for(let i=0;i<channel.length;i++) channel[i]=Math.random()*2-1;
+      noiseSource=audioCtx.createBufferSource(); noiseSource.buffer=buffer; noiseSource.loop=true;
+      noiseFilter=audioCtx.createBiquadFilter(); noiseFilter.type='bandpass'; noiseFilter.frequency.value=1100; noiseFilter.Q.value=.5;
+      noiseGain=audioCtx.createGain(); noiseGain.gain.value=.0001; noiseSource.connect(noiseFilter).connect(noiseGain).connect(master); noiseSource.start();
+    }
+
+    function setAudioFor(zone,xNorm,progress,active){
+      if(!audioCtx||!master)return; const now=audioCtx.currentTime,s=zone.sound,base=s.base*(.94+xNorm*.13);
+      droneA.type=s.type; droneB.type=s.type==='sawtooth'?'triangle':'sine';
+      droneA.frequency.setTargetAtTime(base,now,.08); droneB.frequency.setTargetAtTime(base*(1.496+progress*.012),now,.1);
+      droneFilter.frequency.setTargetAtTime(s.filter*(.84+xNorm*.3),now,.1); droneGain.gain.setTargetAtTime(active?.010+progress*.006:.0001,now,.09);
+      pulseOsc.frequency.setTargetAtTime(base*(1.985+s.pulse),now,.08); pulseGain.gain.setTargetAtTime(active?.0024+progress*.002:.0001,now,.1);
+      noiseFilter.frequency.setTargetAtTime(s.filter*1.13,now,.1); noiseGain.gain.setTargetAtTime(active?Math.max(.0001,s.noise*.052):.0001,now,.1);
+      if(stereo.pan)stereo.pan.setTargetAtTime((xNorm-.5)*.7,now,.08); master.gain.setTargetAtTime(active?.25:.0001,now,.09);
+    }
+
+    function ping(zone,xNorm,index=0){
+      if(!audioCtx||!master)return; const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),filter=audioCtx.createBiquadFilter();
+      const pan=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null; osc.type=index%3===0?'sine':index%3===1?'triangle':'square';
+      osc.frequency.value=zone.sound.base*(2.05+index*.12); filter.type='lowpass'; filter.frequency.value=1800+zone.scene*105;
+      gain.gain.setValueAtTime(.0001,now); gain.gain.exponentialRampToValueAtTime(.065,now+.012); gain.gain.exponentialRampToValueAtTime(.0001,now+.48);
+      osc.connect(filter).connect(gain); if(pan){pan.pan.value=(xNorm-.5)*1.25;gain.connect(pan).connect(master)}else gain.connect(master); osc.start(now);osc.stop(now+.54);
+    }
+
+    function queueSpeech(label){
+      if(!speechUnlocked||!("speechSynthesis" in window)||!label||label===lastSpoken)return; clearTimeout(speechTimer);
+      speechTimer=setTimeout(()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(label);u.lang='es-ES';u.rate=.86;u.pitch=1;
+        const voices=speechSynthesis.getVoices();const voice=voices.find(v=>/^es(-|_)/i.test(v.lang))||voices.find(v=>/spanish|español/i.test(v.name));if(voice)u.voice=voice;
+        speechSynthesis.speak(u);lastSpoken=label;}catch(_){ }},360);
+    }
+
+    function addRipple(x,y){const node=document.createElement('div');node.className='ripple';node.style.left=`${x}px`;node.style.top=`${y}px`;document.body.appendChild(node);node.addEventListener('animationend',()=>node.remove(),{once:true});}
+    function addBurst(x,y,color){const count=reducedMotion?5:13;for(let i=0;i<count;i++){const a=Math.random()*TAU,s=18+Math.random()*72;bursts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:.8+Math.random()*2.4,life:1,decay:1+Math.random()*.8,color});}waves.push({x,y,radius:5,life:1,color});}
+
+    function updateReadout(x,y,isNewPress=false){
+      const xNorm=clamp(x/width,0,.999999),yNorm=clamp(y/height,0,.999999),progress=depthFromY(yNorm),zone=zoneForDepth(progress),feature=featureFor(zone,xNorm);
+      if(isNewPress){currentProgress=progress;pointerX=xNorm;pointerY=yNorm;}
+      targetX=xNorm;targetY=yNorm;touchEnergy=1;setCssPoint(x,y);setAccent(zone);root.style.setProperty('--progress',`${Math.max(1.2,progress*100)}%`);
+      scaleDot.style.bottom=`${48+progress*Math.max(0,height-96)}px`;touchOrb.style.left=`${x}px`;touchOrb.style.top=`${y}px`;scaleValue.textContent=zone.className;
+      const changed=zone.id!==lastZoneId||feature.index!==lastFeature;
+      if(changed||isNewPress){evidenceClass.textContent=zone.className;zoneName.textContent=zone.name;zoneName.className=zone.name.length>31?'long':zone.name.length>21?'compact':'';
+        featureName.textContent=feature.name;metric.textContent=zone.metric;fact.textContent=feature.fact||zone.fact;ping(zone,xNorm,feature.index);addBurst(x,y,zone.color);queueSpeech(feature.name);lastZoneId=zone.id;lastFeature=feature.index;}
+      readout.classList.add('visible');touchOrb.classList.add('visible');document.body.classList.add('active');hint.style.display='none';setAudioFor(zone,xNorm,progress,true);
+    }
+    function releaseInteraction(delay=1050){clearTimeout(hideTimer);hideTimer=setTimeout(()=>{readout.classList.remove('visible');touchOrb.classList.remove('visible');document.body.classList.remove('active');const z=zoneForDepth(depthFromY(targetY));setAudioFor(z,targetX,depthFromY(targetY),false);},delay);}
+    function endPointer(){pointerDown=false;releaseInteraction();}
+    canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.focus({preventScroll:true});pointerDown=true;speechUnlocked=true;ensureAudio();try{canvas.setPointerCapture(e.pointerId)}catch(_){ }updateReadout(e.clientX,e.clientY,true);addRipple(e.clientX,e.clientY);});
+    canvas.addEventListener('pointermove',e=>{if(!pointerDown&&e.pointerType!=='mouse')return;if(!pointerDown&&e.buttons===0){targetX=clamp(e.clientX/width,0,1);targetY=clamp(e.clientY/height,0,1);return;}e.preventDefault();updateReadout(e.clientX,e.clientY);});
+    canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);canvas.addEventListener('lostpointercapture',endPointer);
+    canvas.addEventListener('keydown',e=>{const keys=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter',' '];if(!keys.includes(e.key))return;e.preventDefault();speechUnlocked=true;ensureAudio();const step=e.shiftKey?.09:.035;
+      if(e.key==='ArrowUp')targetY=clamp(targetY-step,.005,.995);if(e.key==='ArrowDown')targetY=clamp(targetY+step,.005,.995);if(e.key==='ArrowLeft')targetX=clamp(targetX-step,.005,.995);if(e.key==='ArrowRight')targetX=clamp(targetX+step,.005,.995);
+      updateReadout(targetX*width,targetY*height,e.key==='Enter'||e.key===' ');releaseInteraction(1600);});
+
+    function softHalo(cx,cy,radius,color,alpha){const g=ctx.createRadialGradient(cx,cy,0,cx,cy,radius);g.addColorStop(0,rgba(color,alpha));g.addColorStop(.35,rgba(color,alpha*.4));g.addColorStop(1,rgba(color,0));ctx.fillStyle=g;ctx.fillRect(cx-radius,cy-radius,radius*2,radius*2);}
+    function roundedRectPath(x,y,w,h,r){const rr=Math.min(r,w*.5,h*.5);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();}
+    function line(x1,y1,x2,y2,stroke='rgba(255,255,255,.3)',lw=1){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+    function circle(x,y,r,fill='rgba(255,255,255,.5)',stroke=null,lw=1){ctx.fillStyle=fill;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+    function polygon(points,fill,stroke=null,lw=1){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+    function drawGear(cx,cy,r,teeth,color,rotation=0){ctx.save();ctx.translate(cx,cy);ctx.rotate(rotation);ctx.strokeStyle=color;ctx.fillStyle='rgba(0,0,0,.15)';ctx.lineWidth=1.6;ctx.beginPath();for(let i=0;i<teeth*2;i++){const a=i/(teeth*2)*TAU,rr=i%2?r:r*.76;const x=Math.cos(a)*rr,y=Math.sin(a)*rr;if(!i)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.closePath();ctx.fill();ctx.stroke();circle(0,0,r*.27,'rgba(0,0,0,.42)',color,1.2);ctx.restore();}
+    function drawGlobe(cx,cy,r,z,time,network=true){
+      softHalo(cx,cy,r*2.15,z.color,.2);const g=ctx.createRadialGradient(cx-r*.38,cy-r*.43,r*.04,cx,cy,r);g.addColorStop(0,'rgba(205,248,255,.98)');g.addColorStop(.42,'rgba(63,173,222,.94)');g.addColorStop(1,'rgba(8,39,92,.97)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.fill();ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.clip();ctx.fillStyle='rgba(86,186,114,.67)';for(let i=0;i<12;i++){const a=seeded(i+300)*TAU,rr=seeded(i+330)*r*.77,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.78;ctx.beginPath();ctx.ellipse(x,y,r*(.055+seeded(i+350)*.13),r*(.025+seeded(i+370)*.065),a,0,TAU);ctx.fill();}ctx.strokeStyle='rgba(255,255,255,.15)';for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(cx-r*.24+i*r*.075,cy-r*.13+i*r*.035,r*(.47+i*.05),.18,2.55);ctx.stroke();}ctx.restore();ctx.strokeStyle='rgba(190,240,255,.55)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();
+      if(network){for(let i=0;i<27;i++){const a=i/27*TAU+time*.01,x=cx+Math.cos(a)*r*.82,y=cy+Math.sin(a)*r*.82;circle(x,y,1.5+i%3,rgba(i%4?z.color:[255,240,185],.46));}}
+    }
+    function drawBuilding(x,ground,w,h,color,lit=.45){ctx.fillStyle='rgba(8,14,25,.58)';ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.fillRect(x-w*.5,ground-h,w,h);ctx.strokeRect(x-w*.5,ground-h,w,h);let row=0;for(let ry=0;ry<h-w*.2;ry+=Math.max(10,w*.38),row++)for(let c=-1;c<=1;c++){const on=fract(Math.sin((x+row*17+c*31)*12.9898)*43758.5453)<lit;circle(x+c*w*.23,ground-h+w*.22+ry,1.25,on?'rgba(255,230,145,.45)':'rgba(120,220,255,.2)');}}
+    function drawTool(x,y,len,angle,type,color){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.lineCap='round';if(type==='hammer'){line(-len*.42,0,len*.35,0,'rgba(180,120,73,.9)',len*.10);ctx.fillStyle=color;roundedRectPath(len*.17,-len*.18,len*.34,len*.36,len*.05);ctx.fill();}else if(type==='knife'){line(-len*.42,0,-len*.1,0,'rgba(156,96,55,.9)',len*.12);polygon([[-len*.1,-len*.08],[len*.45,-len*.03],[len*.28,len*.12],[-len*.1,len*.08]],'rgba(220,240,250,.75)',color,1);}else if(type==='needle'){line(-len*.45,0,len*.45,0,color,2);circle(-len*.36,0,len*.055,'rgba(0,0,0,.2)',color,1);}else if(type==='rope'){ctx.strokeStyle=color;ctx.lineWidth=len*.045;ctx.beginPath();for(let i=0;i<=30;i++){const xx=-len*.45+i/30*len*.9,yy=Math.sin(i*.7)*len*.04;i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy);}ctx.stroke();}else{line(-len*.42,0,len*.42,0,color,len*.06);circle(len*.34,0,len*.12,'rgba(0,0,0,.2)',color,2);}ctx.restore();}
+
+    function drawBackground(progress,time){
+      const f=clamp(progress*(ZONES.length-1),0,ZONES.length-1),i=Math.floor(f),j=Math.min(ZONES.length-1,i+1),t=smooth(f-i),a=ZONES[i].color,b=ZONES[j].color;
+      const c=a.map((v,k)=>Math.round(mix(v,b[k],t))), dark=c.map(v=>Math.round(v*.09)), mid=c.map(v=>Math.round(v*.29));
+      const g=ctx.createLinearGradient(0,height,0,0);g.addColorStop(0,`rgb(${Math.max(3,dark[0]-4)} ${Math.max(5,dark[1]-2)} ${Math.max(8,dark[2])})`);g.addColorStop(.56,`rgb(${mid[0]} ${mid[1]} ${mid[2]})`);g.addColorStop(1,`rgb(${Math.min(255,c[0]*.62)} ${Math.min(255,c[1]*.62)} ${Math.min(255,c[2]*.62)})`);ctx.fillStyle=g;ctx.fillRect(0,0,width,height);
+      softHalo(width*(.44+.1*Math.sin(time*.05)),height*(.74-progress*.46),Math.max(width,height)*.72,c,.105+progress*.05);
+      for(const p of particles){const x=fract(p.x+time*.0018*p.speed)*width+Math.sin(time*.19+p.phase)*4,y=fract(p.y-time*.0011*p.speed)*height+Math.cos(time*.15+p.phase)*4,col=p.kind%3===0?c:p.kind%3===1?[255,244,215]:[132,226,255];circle(x,y,p.r*(.72+progress*.38),rgba(col,.07+.15*(.5+.5*Math.sin(time*p.speed+p.phase))));}
+      for(let k=1;k<8;k++)line(k/8*width,0,k/8*width,height,'rgba(255,255,255,.016)');
+    }
+
+    function scenePlanetary(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.51,r=s*.25;drawGlobe(cx,cy,r,z,time,true);for(let i=0;i<5;i++){const a=time*(.065+i*.012)+i*TAU/5,rr=r*(1.35+i*.1),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.58;circle(x,y,3+i*.5,rgba([255,248,220],.78));line(x,y,cx+Math.cos(a)*r,cy+Math.sin(a)*r*.58,rgba(z.color,.16));}const ground=height*.9;for(let i=0;i<12;i++)drawBuilding(width*(.04+i*.085),ground,s*(.035+(i%3)*.012),s*(.08+(i%6)*.024),rgba(z.color,.24),.35);}
+    function sceneTools(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.51;softHalo(cx,cy,s*.48,z.color,.18);for(let i=0;i<8;i++){const a=i/8*TAU+Math.sin(time*.35+i)*.05,rr=s*(.15+(i%2)*.08),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.72;drawTool(x,y,s*.22,a+Math.PI*.5,['knife','hammer','rope','needle','lever'][i%5],rgba(i%3?z.color:[235,246,255],.72));}circle(cx,cy,s*.07,'rgba(255,230,185,.19)',rgba(z.color,.62),2);for(let i=0;i<5;i++)line(cx,cy,cx+Math.cos(i/5*TAU)*s*.28,cy+Math.sin(i/5*TAU)*s*.2,rgba(z.color,.12));}
+    function sceneMachines(z,time){const s=Math.min(width,height),ground=height*.74;line(width*.08,ground,width*.92,ground,rgba(z.color,.32),3);drawGear(width*.62,height*.51,s*.12,14,rgba(z.color,.7),time*.22);drawGear(width*.77,height*.58,s*.075,11,'rgba(255,235,190,.55)',-time*.34);const pivot=[width*.28,ground-s*.03];polygon([[pivot[0]-s*.05,ground],[pivot[0],ground-s*.1],[pivot[0]+s*.05,ground]],'rgba(0,0,0,.28)',rgba(z.color,.55),1.5);ctx.save();ctx.translate(...pivot);ctx.rotate(Math.sin(time*.8)*.08-.08);line(-s*.25,0,s*.28,0,'rgba(230,204,153,.75)',s*.035);circle(-s*.22,-s*.035,s*.055,'rgba(104,129,154,.7)',rgba(z.color,.5));circle(s*.25,-s*.055,s*.025,'rgba(255,225,155,.7)');ctx.restore();for(let i=0;i<3;i++){const x=width*(.15+i*.12),top=height*.24;circle(x,top,s*.045,'rgba(0,0,0,.25)',rgba(z.color,.56),2);line(x-s*.035,top,x-s*.035,ground-s*.13,rgba(z.color,.4),2);line(x+s*.035,top,x+s*.035,ground-s*.06,rgba(z.color,.4),2);}}
+    function sceneMeasurement(z,time){const s=Math.min(width,height),m=s*.08;for(let x=m;x<width-m;x+=s*.055)line(x,height*.18,x,height*.82,'rgba(255,255,255,.035)');for(let y=height*.18;y<height*.82;y+=s*.055)line(m,y,width-m,y,'rgba(255,255,255,.035)');const cx=width*.5,cy=height*.5,r=s*.25;ctx.strokeStyle=rgba(z.color,.68);ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,r,Math.PI,TAU);ctx.stroke();for(let i=0;i<=18;i++){const a=Math.PI+i/18*Math.PI,x1=cx+Math.cos(a)*r,y1=cy+Math.sin(a)*r,x2=cx+Math.cos(a)*(r-s*(i%3? .015:.03)),y2=cy+Math.sin(a)*(r-s*(i%3? .015:.03));line(x1,y1,x2,y2,rgba(z.color,.55),1.2);}line(cx,cy,cx+Math.cos(-.65+Math.sin(time*.3)*.1)*r*.8,cy+Math.sin(-.65+Math.sin(time*.3)*.1)*r*.8,'rgba(255,248,220,.85)',3);for(let i=0;i<8;i++){const x=width*.12+i/7*width*.76;line(x,height*.78,x,height*.78-s*(i%2?.025:.045),rgba(z.color,.7),2);}ctx.font=`800 ${s*.035}px ui-monospace, monospace`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.68)';ctx.fillText('± 0,01',cx,height*.74);}
+    function sceneMaterials(z,time){const s=Math.min(width,height),base=height*.73;for(let i=0;i<7;i++){const x=width*(.11+i*.13),w=s*.095,h=s*(.15+(i%3)*.035),col=i%3===0?[170,185,200]:i%3===1?z.color:[234,168,95];const g=ctx.createLinearGradient(x-w*.5,base-h,x+w*.5,base);g.addColorStop(0,rgba([255,255,255],.36));g.addColorStop(.25,rgba(col,.72));g.addColorStop(1,rgba(col,.2));ctx.fillStyle=g;polygon([[x-w*.5,base],[x-w*.42,base-h*.7],[x-w*.08,base-h],[x+w*.42,base-h*.76],[x+w*.5,base]],ctx.fillStyle,rgba(col,.65),1.4);for(let k=0;k<5;k++)circle(x+(seeded(i*20+k)-.5)*w*.7,base-h*(.2+seeded(i*30+k)*.65),1.5+k%2,rgba([255,245,218],.38));}for(let i=0;i<18;i++){const a=seeded(i+800)*TAU,rr=s*(.14+seeded(i+830)*.18),x=width*.5+Math.cos(a)*rr,y=height*.28+Math.sin(a)*rr*.28+Math.sin(time*2+i)*2;circle(x,y,1+i%3,rgba([255,208,119],.55));}}
+    function sceneAgriculture(z,time){const s=Math.min(width,height),horizon=height*.36;const sky=ctx.createLinearGradient(0,horizon,0,height);sky.addColorStop(0,rgba(z.color,.03));sky.addColorStop(1,rgba(z.color,.22));ctx.fillStyle=sky;ctx.fillRect(0,horizon,width,height-horizon);for(let i=0;i<18;i++){const x=i/17*width,spread=(i-8.5)/8.5;line(width*.5,horizon,x,height,rgba([191,151,83],.19),2);for(let j=0;j<9;j++){const y=horizon+(j/9)*(height-horizon),xx=width*.5+(x-width*.5)*(j/9);circle(xx,y,1.7+j*.12,rgba(i%2?z.color:[255,225,117],.38));}}const canalY=height*.63;ctx.strokeStyle=rgba([106,211,255],.6);ctx.lineWidth=s*.045;ctx.beginPath();ctx.moveTo(width*.06,canalY);ctx.bezierCurveTo(width*.35,canalY-s*.06,width*.62,canalY+s*.07,width*.94,canalY-s*.02);ctx.stroke();for(let i=0;i<5;i++){const x=width*(.14+i*.18),y=horizon-s*.025;line(x,y,x,height*.28,rgba([205,205,215],.5),2);ctx.save();ctx.translate(x,height*.28);ctx.rotate(time*.22+i);for(let k=0;k<3;k++){ctx.rotate(TAU/3);line(0,0,s*.09,0,rgba([255,248,220],.68),3);}ctx.restore();}}
+    function sceneEngines(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.51;softHalo(cx,cy,s*.5,z.color,.18);for(let i=0;i<7;i++){const a=i/7*TAU+time*.36,rr=s*.2,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;polygon([[cx,cy],[x+Math.cos(a+.65)*s*.055,y+Math.sin(a+.65)*s*.055],[x+Math.cos(a-.65)*s*.055,y+Math.sin(a-.65)*s*.055]],rgba(z.color,.24),rgba(z.color,.58),1);}circle(cx,cy,s*.075,'rgba(8,12,18,.72)',rgba([255,245,215],.68),2);for(let i=0;i<26;i++){const t=fract(time*.2+i/26),a=t*TAU,x=cx+Math.cos(a)*s*(.31+t*.15),y=cy+Math.sin(a)*s*(.17+t*.07);circle(x,y,1.5+i%3,rgba(i%2?z.color:[255,203,98],.44*(1-t)));}for(let i=0;i<4;i++){const y=height*(.25+i*.16);line(width*.07,y,width*.27,y,rgba([255,255,255],.12),s*.02);circle(width*.29,y,s*.022,rgba(i%2?z.color:[255,225,140],.6));}}
+    function sceneIndustry(z,time){const s=Math.min(width,height),ground=height*.78;ctx.fillStyle='rgba(9,13,18,.65)';for(let i=0;i<10;i++){const x=width*(.03+i*.105),w=s*(.055+(i%3)*.012),h=s*(.11+(i%5)*.045);ctx.fillRect(x,ground-h,w,h);ctx.strokeStyle=rgba(z.color,.25);ctx.strokeRect(x,ground-h,w,h);}for(let i=0;i<3;i++){const x=width*(.18+i*.29);ctx.fillRect(x,ground-s*.34,s*.045,s*.34);for(let k=0;k<6;k++)circle(x+s*.022+Math.sin(time*.35+k)*s*.02,ground-s*.37-k*s*.04,s*(.016+k*.004),rgba([220,225,230],.05+k*.012));}drawGear(width*.43,height*.58,s*.115,14,rgba(z.color,.62),time*.2);drawGear(width*.61,height*.61,s*.08,11,rgba([255,224,175],.5),-time*.28);line(0,ground+s*.045,width,ground+s*.045,rgba([255,205,95],.25),s*.032);for(let i=0;i<12;i++){const x=fract(time*.08+i/12)*width;roundedRectPath(x-s*.025,ground+s*.018,s*.05,s*.04,3);ctx.fillStyle=rgba(i%3?z.color:[255,220,140],.42);ctx.fill();}}
+    function sceneElectricity(z,time){const s=Math.min(width,height),left=width*.13,right=width*.87,mid=height*.5;for(let i=0;i<5;i++){const y=height*(.22+i*.14);line(left,y,right,y,rgba(z.color,.12+i*.025),1+i*.2);for(let k=0;k<7;k++){const x=left+k/6*(right-left),phase=fract(time*.35+i*.13+k*.1);circle(x+phase*(right-left)/6,y,2+i%2,rgba([255,249,205],.5));}}for(let i=0;i<4;i++){const x=width*(.2+i*.2),base=height*.82,top=height*.25+(i%2)*s*.05;line(x,base,x,top,rgba([210,230,245],.5),3);line(x-s*.06,top+s*.05,x+s*.06,top+s*.05,rgba([210,230,245],.5),2);line(x-s*.045,top+s*.1,x+s*.045,top+s*.1,rgba([210,230,245],.5),2);}const cx=width*.5,cy=mid;ctx.strokeStyle=rgba(z.color,.75);ctx.lineWidth=3;ctx.beginPath();for(let i=0;i<=100;i++){const x=width*.22+i/100*width*.56,y=cy+Math.sin(i/100*TAU*3-time*2.2)*s*.05;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.stroke();circle(cx,cy,s*.05,'rgba(10,20,35,.7)',rgba([255,249,210],.75),2);ctx.font=`900 ${s*.035}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.65)';ctx.fillText('GENERACIÓN  →  RED  →  USO',cx,height*.91);}
+    function sceneTelecom(z,time){const s=Math.min(width,height),cx=width*.5,base=height*.74,top=height*.28;line(cx,base,cx,top,rgba([225,235,245],.68),4);for(let i=0;i<4;i++){const y=top+i*s*.08,w=s*(.04+i*.025);line(cx-w,y,cx+w,y,rgba([225,235,245],.55),2);}for(let r=1;r<8;r++){ctx.strokeStyle=rgba(z.color,.28/r*.9);ctx.lineWidth=1.8;ctx.beginPath();ctx.arc(cx,top,s*(.045+r*.05),Math.PI*1.08,Math.PI*1.92);ctx.stroke();}for(let i=0;i<10;i++){const a=i/10*TAU,x=cx+Math.cos(a)*s*.32,y=height*.55+Math.sin(a)*s*.2;circle(x,y,3+i%3,rgba(i%2?z.color:[255,242,215],.66));const p=fract(time*.3+i*.13);line(cx+(x-cx)*p,top+(y-top)*p,cx+(x-cx)*(p+.02),top+(y-top)*(p+.02),rgba([255,255,255],.78),3);}line(width*.08,height*.86,width*.92,height*.86,rgba([115,211,255],.45),s*.018);}
+    function sceneElectronics(z,time){const s=Math.min(width,height),mx=width*.08,my=height*.16,bw=width*.84,bh=height*.68;ctx.fillStyle='rgba(7,43,37,.46)';roundedRectPath(mx,my,bw,bh,s*.03);ctx.fill();ctx.strokeStyle=rgba(z.color,.4);ctx.lineWidth=2;ctx.stroke();for(let i=0;i<packets.length;i++){const p=packets[i],x1=mx+p.x1*bw,y1=my+p.y1*bh,x2=mx+p.x2*bw,y2=my+p.y2*bh;ctx.strokeStyle=rgba(z.color,.055+(i%3)*.03);ctx.lineWidth=1+(i%4===0);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y1);ctx.lineTo(x2,y2);ctx.stroke();}for(let i=0;i<18;i++){const n=nodes[i],x=mx+n.x*bw,y=my+n.y*bh,r=s*(.012+(i%3)*.007);ctx.fillStyle=i%4?'rgba(18,25,35,.7)':rgba(z.color,.22);roundedRectPath(x-r*1.7,y-r,r*3.4,r*2,3);ctx.fill();ctx.strokeStyle=rgba(i%3?z.color:[255,225,150],.6);ctx.stroke();for(let k=-1;k<=1;k++){line(x-r*2,y+k*r*.55,x-r*1.7,y+k*r*.55,rgba([220,235,240],.55),1);line(x+r*1.7,y+k*r*.55,x+r*2,y+k*r*.55,rgba([220,235,240],.55),1);}}const pulse=fract(time*.5);circle(mx+pulse*bw,my+bh*.48,s*.012,rgba([255,250,210],.85));}
+    function sceneComputing(z,time){const s=Math.min(width,height),mx=width*.08,my=height*.15,bw=width*.84,bh=height*.7;for(let i=0;i<9;i++){const n=nodes[i],x=mx+(i%3+.5)/3*bw,y=my+(Math.floor(i/3)+.5)/3*bh,w=s*.12,h=s*.075;ctx.fillStyle='rgba(5,12,26,.5)';roundedRectPath(x-w*.5,y-h*.5,w,h,h*.24);ctx.fill();ctx.strokeStyle=rgba(i%2?z.color:[255,238,195],.58);ctx.lineWidth=1.5;ctx.stroke();ctx.font=`900 ${s*.026}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='rgba(255,255,255,.72)';ctx.fillText(['AND','OR','NOT','XOR','MEM','CPU','IN','OUT','ALG'][i],x,y);if(i<8){const x2=mx+((i+1)%3+.5)/3*bw,y2=my+(Math.floor((i+1)/3)+.5)/3*bh;line(x+w*.5,y,x2-w*.5,y2,rgba(z.color,.18),2);const p=fract(time*.32+i*.11),px=mix(x+w*.5,x2-w*.5,p),py=mix(y,y2,p);circle(px,py,s*.009,rgba([255,250,212],.82));}}for(let i=0;i<24;i++){ctx.font=`800 ${s*.022}px ui-monospace, monospace`;ctx.fillStyle=rgba(i%2?z.color:[255,255,255],.13);ctx.fillText(i%2?'1':'0',width*(.03+seeded(i)*.94),height*(.04+seeded(i+33)*.92));}}
+    function sceneSoftware(z,time){const s=Math.min(width,height),cx=width*.5,base=height*.78;for(let i=0;i<7;i++){const w=s*(.54-i*.045),h=s*.075,y=base-i*s*.075,x=cx-w*.5;ctx.fillStyle=rgba(i%2?z.color:[115,180,255],.08+i*.035);roundedRectPath(x,y-h,w,h,h*.18);ctx.fill();ctx.strokeStyle=rgba(i%2?z.color:[255,235,205],.25+i*.04);ctx.lineWidth=1.3;ctx.stroke();ctx.font=`800 ${s*.024}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.62)';ctx.fillText(['HARDWARE','CÓDIGO MÁQUINA','SISTEMA OPERATIVO','BIBLIOTECAS','DATOS','APLICACIONES','INTERFAZ'][i],cx,y-h*.35);}for(let i=0;i<16;i++){const a=i/16*TAU+time*.08,rr=s*.35,x=cx+Math.cos(a)*rr,y=height*.45+Math.sin(a)*rr*.35;ctx.font=`850 ${s*.025}px ui-monospace, monospace`;ctx.fillStyle=rgba(i%2?z.color:[255,255,255],.22);ctx.fillText(glyphs[i].char,x,y);}}
+    function sceneInternet(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5,r=s*.29;ctx.strokeStyle=rgba(z.color,.28);ctx.lineWidth=1.4;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();for(let i=0;i<22;i++){const a=seeded(i+50)*TAU,rr=Math.sqrt(seeded(i+90))*r*.92,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.72;nodes[i]._x=x;nodes[i]._y=y;circle(x,y,2+i%3,rgba(i%4?z.color:[255,240,205],.72));}for(let i=0;i<36;i++){const a=nodes[i%22],b=nodes[(i*7+5)%22];ctx.strokeStyle=rgba(z.color,.08+(i%4)*.023);ctx.beginPath();ctx.moveTo(a._x,a._y);ctx.quadraticCurveTo(cx+Math.sin(i)*r*.2,cy+Math.cos(i)*r*.15,b._x,b._y);ctx.stroke();const p=fract(time*(.18+(i%3)*.04)+i*.071),x=mix(a._x,b._x,p),y=mix(a._y,b._y,p);circle(x,y,1.8+i%2,rgba([255,250,218],.6));}for(let i=0;i<6;i++){const x=width*(.07+i*.17),y=height*.87,w=s*.09,h=s*.06;ctx.fillStyle='rgba(5,12,28,.5)';roundedRectPath(x,y,w,h,5);ctx.fill();ctx.strokeStyle=rgba(z.color,.4);ctx.stroke();}}
+    function sceneRobotics(z,time){const s=Math.min(width,height),base=height*.78,cx=width*.48;ctx.save();ctx.lineCap='round';const joints=[[cx-s*.18,base],[cx-s*.16,base-s*.18],[cx+s*.02,base-s*.29],[cx+s*.18,base-s*.19]];for(let i=0;i<joints.length-1;i++)line(joints[i][0],joints[i][1],joints[i+1][0],joints[i+1][1],rgba([220,230,240],.66),s*.055);for(const p of joints)circle(p[0],p[1],s*.045,'rgba(12,24,34,.75)',rgba(z.color,.74),2);ctx.restore();ctx.save();ctx.translate(joints[3][0],joints[3][1]);ctx.rotate(Math.sin(time*.8)*.15);line(0,0,s*.09,-s*.055,rgba(z.color,.75),s*.025);line(0,0,s*.09,s*.055,rgba(z.color,.75),s*.025);ctx.restore();for(let i=0;i<5;i++){const a=time*(.18+i*.02)+i*TAU/5,x=width*.5+Math.cos(a)*s*.32,y=height*.35+Math.sin(a)*s*.13;polygon([[x-s*.035,y],[x+s*.035,y],[x+s*.055,y+s*.015],[x-s*.055,y+s*.015]],rgba(z.color,.28),rgba([255,255,255],.55),1);for(let k=-1;k<=1;k+=2){line(x+k*s*.04,y,x+k*s*.08,y-s*.018,rgba(z.color,.5),2);line(x+k*s*.04,y,x+k*s*.08,y+s*.018,rgba(z.color,.5),2);}}line(width*.08,base+s*.045,width*.92,base+s*.045,rgba(z.color,.2),3);}
+    function sceneBiotech(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5,r=s*.24;for(let i=0;i<=36;i++){const t=i/36,yy=cy-r+t*r*2,phase=t*TAU*2.5+time*.5,x1=cx+Math.sin(phase)*r*.42,x2=cx-Math.sin(phase)*r*.42;circle(x1,yy,s*.012,rgba(z.color,.7));circle(x2,yy,s*.012,rgba([255,210,245],.65));if(i%3===0)line(x1,yy,x2,yy,rgba([255,255,255],.22),1.4);}for(let i=0;i<10;i++){const a=i/10*TAU+time*.04,rr=s*.34,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.64;circle(x,y,s*(.025+(i%3)*.008),rgba(i%2?z.color:[155,225,255],.13),rgba(i%2?z.color:[255,225,245],.45),1.4);for(let k=0;k<5;k++){const aa=k/5*TAU+time*.18;circle(x+Math.cos(aa)*s*.016,y+Math.sin(aa)*s*.016,s*.004,rgba([255,255,255],.5));}}}
+    function sceneAI(z,time){const s=Math.min(width,height),layers=[5,8,10,8,5],mx=width*.13,bw=width*.74,top=height*.21,bh=height*.58,pos=[];for(let l=0;l<layers.length;l++){pos[l]=[];const x=mx+l/(layers.length-1)*bw;for(let i=0;i<layers[l];i++){const y=top+(i+.5)/layers[l]*bh;pos[l].push([x,y]);}}for(let l=0;l<layers.length-1;l++)for(let i=0;i<pos[l].length;i++)for(let j=0;j<pos[l+1].length;j++){if((i*3+j*5+l)%3)continue;const a=pos[l][i],b=pos[l+1][j];line(a[0],a[1],b[0],b[1],rgba(z.color,.055+((i+j)%4)*.02),1);const p=fract(time*(.14+l*.02)+i*.07+j*.03),x=mix(a[0],b[0],p),y=mix(a[1],b[1],p);circle(x,y,1.3,rgba([255,252,225],.45));}for(let l=0;l<pos.length;l++)for(let i=0;i<pos[l].length;i++){const a=pos[l][i],pulse=.5+.5*Math.sin(time*1.4+l+i*.6);circle(a[0],a[1],s*(.008+(l===2?.007:0)),rgba(l===2?[255,205,246]:z.color,.35+pulse*.35),rgba([255,255,255],.25),1);}for(let i=0;i<16;i++){ctx.font=`800 ${s*.024}px ui-monospace, monospace`;ctx.textAlign='center';ctx.fillStyle=rgba(i%2?z.color:[255,255,255],.15);ctx.fillText(glyphs[i].char,width*(.04+seeded(i+81)*.92),height*(.07+seeded(i+95)*.86));}}
+    function sceneAutonomy(z,time){const s=Math.min(width,height),roadY=height*.73;for(let i=0;i<5;i++){const y=roadY+i*s*.03;line(width*.04,y,width*.96,y,rgba([225,235,245],i===0?.28:.08),i===0?4:1);}for(let i=0;i<7;i++){const p=fract(time*(.06+i*.005)+i*.15),x=width*(.08+p*.84),y=roadY-s*(.03+(i%3)*.055),w=s*.075,h=s*.038;ctx.fillStyle=rgba(i%2?z.color:[130,210,255],.34);roundedRectPath(x-w*.5,y-h*.5,w,h,h*.25);ctx.fill();ctx.strokeStyle=rgba([255,255,255],.45);ctx.stroke();circle(x-w*.28,y+h*.48,h*.2,'rgba(5,8,15,.85)',rgba(z.color,.5));circle(x+w*.28,y+h*.48,h*.2,'rgba(5,8,15,.85)',rgba(z.color,.5));for(let r=1;r<4;r++){ctx.strokeStyle=rgba(z.color,.12/r);ctx.beginPath();ctx.arc(x,y,s*(.05+r*.035),Math.PI,TAU);ctx.stroke();}}const cx=width*.5,cy=height*.32;for(let i=0;i<8;i++){const a=i/8*TAU+time*.09,x=cx+Math.cos(a)*s*.25,y=cy+Math.sin(a)*s*.12;circle(x,y,3+i%3,rgba(i%2?z.color:[255,240,210],.7));line(x,y,cx,cy,rgba(z.color,.14));}circle(cx,cy,s*.035,'rgba(255,255,255,.18)',rgba(z.color,.7),2);}
+    function scenePlanetaryTech(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.52,r=s*.25;drawGlobe(cx,cy,r,z,time,true);for(let i=0;i<7;i++){const a=time*(.055+i*.008)+i*TAU/7,rr=r*(1.33+(i%3)*.16),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.57;polygon([[x-s*.012,y],[x+s*.012,y],[x+s*.026,y+s*.009],[x-s*.026,y+s*.009]],rgba([220,235,245],.6),rgba(z.color,.65),1);line(x-s*.05,y,x-s*.025,y,rgba(z.color,.6),3);line(x+s*.025,y,x+s*.05,y,rgba(z.color,.6),3);line(x,y,cx+Math.cos(a)*r,cy+Math.sin(a)*r*.57,rgba(z.color,.13));}for(let i=0;i<14;i++){const a=i/14*TAU,rr=r*.7,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;const val=.5+.5*Math.sin(time*.7+i);circle(x,y,s*(.008+val*.007),rgba(i%3?z.color:[255,220,120],.35+val*.25));}ctx.font=`800 ${s*.024}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.58)';ctx.fillText('TÉCNICA · ECONOMÍA · SOCIEDAD · LEGITIMIDAD',cx,height*.91);}
+    function sceneFutures(z,time){const s=Math.min(width,height),origin=[width*.5,height*.82],horizon=height*.18;softHalo(width*.5,horizon,s*.4,z.color,.16);const colors=[[120,230,255],[255,145,190],[150,255,160],[235,210,255],[255,210,120],[155,170,255],[255,115,105],[225,245,255]];for(let i=0;i<8;i++){const endX=width*(.08+i/7*.84),controlX=width*.5+(endX-width*.5)*.35+Math.sin(i)*s*.06;ctx.strokeStyle=rgba(colors[i],.28+i*.018);ctx.lineWidth=2+i%3;ctx.beginPath();ctx.moveTo(...origin);ctx.bezierCurveTo(controlX,height*.62,controlX,height*.36,endX,horizon);ctx.stroke();const p=fract(time*(.08+i*.006)+i*.11),t=p,x=(1-t)**3*origin[0]+3*(1-t)**2*t*controlX+3*(1-t)*t*t*controlX+t**3*endX,y=(1-t)**3*origin[1]+3*(1-t)**2*t*height*.62+3*(1-t)*t*t*height*.36+t**3*horizon;circle(x,y,2.5+i%2,rgba(colors[i],.72));circle(endX,horizon,s*(.018+(i%3)*.007),rgba(colors[i],.52),rgba([255,255,255],.45),1.3);}ctx.font=`900 ${s*.03}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.66)';ctx.fillText('NINGÚN FUTURO ESTÁ PREDETERMINADO',width*.5,height*.93);}
+
+    const SCENES=[scenePlanetary,sceneTools,sceneMachines,sceneMeasurement,sceneMaterials,sceneAgriculture,sceneEngines,sceneIndustry,sceneElectricity,sceneTelecom,sceneElectronics,sceneComputing,sceneSoftware,sceneInternet,sceneRobotics,sceneBiotech,sceneAI,sceneAutonomy,scenePlanetaryTech,sceneFutures];
+    function zoneWeight(progress,p0,p1,feather=.035){const enter=smooth(clamp((progress-(p0-feather))/feather,0,1)),exit=1-smooth(clamp((progress-p1)/feather,0,1));return enter*exit;}
+    function drawScene(progress,time){for(const z of ZONES){const alpha=zoneWeight(progress,z.p0,z.p1,.016);if(alpha<.003)continue;ctx.save();ctx.globalAlpha=alpha;SCENES[z.scene](z,time);ctx.restore();}}
+    function drawBursts(dt){for(let i=bursts.length-1;i>=0;i--){const p=bursts[i];p.life-=dt*p.decay;if(p.life<=0){bursts.splice(i,1);continue}p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.94,dt*60);p.vy*=Math.pow(.94,dt*60);circle(p.x,p.y,p.r*(.5+p.life),rgba(p.color,p.life*.55));}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.life-=dt*1.05;if(w.life<=0){waves.splice(i,1);continue}w.radius+=dt*Math.min(width,height)*.24;ctx.strokeStyle=rgba(w.color,w.life*.25);ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(w.x,w.y,w.radius,0,TAU);ctx.stroke();}}
+
+    function render(now){const dt=Math.min(.04,Math.max(.001,(now-lastFrame)/1000));lastFrame=now;elapsed+=reducedMotion?dt*.24:dt;pointerX+=(targetX-pointerX)*(1-Math.pow(.001,dt));pointerY+=(targetY-pointerY)*(1-Math.pow(.001,dt));currentProgress+=(depthFromY(pointerY)-currentProgress)*(1-Math.pow(.005,dt));shownX+=(pointerX*width-shownX)*(1-Math.pow(.001,dt));shownY+=(pointerY*height-shownY)*(1-Math.pow(.001,dt));touchEnergy*=Math.pow(.075,dt);
+      drawBackground(currentProgress,elapsed);drawScene(currentProgress,elapsed);drawBursts(dt);if(!pointerDown)setAccent(zoneForDepth(currentProgress));requestAnimationFrame(render);}
+    window.addEventListener('resize',resize,{passive:true});window.addEventListener('orientationchange',()=>setTimeout(resize,120),{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden&&audioCtx&&audioCtx.state==='running')audioCtx.suspend().catch(()=>{});});
+    resize();setAccent(ZONES[0]);requestAnimationFrame(render);
+  })();
+</script>
+</body>
+</html>
