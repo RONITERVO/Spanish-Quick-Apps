@@ -1,0 +1,1635 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#09020e">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora desde el fondo cósmico de microondas hasta la inflación y el límite de la física conocida, en español.">
+  <meta name="application-name" content="Espectro del Universo Temprano: del Fondo Cósmico a la Inflación">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro del Universo Temprano">
+  <meta property="og:description" content="Toca y retrocede por la historia física inferida del universo, desde la luz más antigua hasta la frontera de nuestro conocimiento.">
+  <title>Espectro del Universo Temprano: del Fondo Cósmico a la Inflación</title>
+  <style>
+    :root {
+      --accent: rgb(255 202 148);
+      --accent-soft: rgb(255 202 148 / .34);
+      --ink: rgb(255 255 255);
+      --panel: rgb(8 3 16 / .56);
+      --scan-x: 50vw;
+      --scan-y: 91vh;
+      --progress: 5%;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #050109;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: white;
+      font-family:
+        Inter, ui-rounded, "SF Pro Rounded", "Segoe UI",
+        system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #early-universe-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background:
+        radial-gradient(circle at var(--scan-x) var(--scan-y),
+          color-mix(in srgb, var(--accent) 65%, transparent) 0%,
+          color-mix(in srgb, var(--accent) 22%, transparent) 12%,
+          transparent 35%);
+      mix-blend-mode: screen;
+    }
+
+    body.active #light-field { opacity: .9; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg,
+          transparent calc(var(--scan-x) - 1px),
+          color-mix(in srgb, var(--accent) 72%, transparent) var(--scan-x),
+          transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg,
+          transparent calc(var(--scan-y) - 1px),
+          color-mix(in srgb, var(--accent) 44%, transparent) var(--scan-y),
+          transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+
+    body.active #scan-line { opacity: .25; }
+
+    #grain {
+      z-index: 4;
+      opacity: .052;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 40%, rgb(0 0 0 / .2) 72%, rgb(0 0 0 / .76) 122%),
+        linear-gradient(90deg, rgb(0 0 0 / .33), transparent 12%, transparent 88%, rgb(0 0 0 / .36));
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 48%;
+      width: min(92vw, 820px);
+      padding: clamp(16px, 3.3vw, 28px) clamp(20px, 5vw, 52px) clamp(18px, 3.8vw, 34px);
+      border: 1px solid rgb(255 255 255 / .23);
+      border-radius: clamp(26px, 6vw, 52px);
+      color: var(--ink);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        var(--panel);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .48),
+        0 0 82px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .27),
+        inset 0 -1px 0 rgb(0 0 0 / .22);
+      backdrop-filter: blur(23px) saturate(1.38);
+      -webkit-backdrop-filter: blur(23px) saturate(1.38);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear,
+        background 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.8vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow:
+        0 0 30px var(--accent-soft),
+        0 5px 24px rgb(0 0 0 / .48);
+    }
+
+    #zone-name.compact {
+      font-size: clamp(1.75rem, 7.5vw, 5.75rem);
+      letter-spacing: -.047em;
+      line-height: .89;
+    }
+
+    #zone-name.long {
+      font-size: clamp(1.48rem, 6.5vw, 4.7rem);
+      letter-spacing: -.035em;
+      line-height: .93;
+    }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 860;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+      opacity: .97;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(11px, 2vw, 18px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.69rem, 2.25vw, .94rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: .045em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .19);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .12);
+    }
+
+    #fact {
+      display: block;
+      max-width: 650px;
+      margin: clamp(11px, 2.3vw, 18px) auto 0;
+      font-size: clamp(.84rem, 2.68vw, 1.12rem);
+      font-weight: 630;
+      line-height: 1.29;
+      letter-spacing: -.011em;
+      text-wrap: balance;
+      opacity: .86;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.35);
+      background: radial-gradient(circle, rgb(255 255 255 / .18), transparent 67%);
+      box-shadow:
+        0 0 0 1px rgb(0 0 0 / .24),
+        0 0 21px var(--accent),
+        0 0 54px var(--accent-soft),
+        inset 0 0 18px rgb(255 255 255 / .25);
+      transition:
+        opacity 120ms ease,
+        transform 280ms cubic-bezier(.16, 1, .3, 1),
+        border-color 110ms linear,
+        box-shadow 110ms linear;
+      will-change: transform, opacity;
+    }
+
+    #touch-orb.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(11px, env(safe-area-inset-right));
+      top: max(20px, env(safe-area-inset-top));
+      bottom: max(20px, env(safe-area-inset-bottom));
+      width: 21px;
+      pointer-events: none;
+      opacity: .72;
+      transition: opacity 180ms ease;
+    }
+
+    body.active #journey-scale { opacity: 1; }
+
+    #scale-track {
+      position: absolute;
+      right: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgb(255 255 255 / .15);
+      box-shadow: 0 0 10px rgb(255 255 255 / .08);
+    }
+
+    #scale-fill {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: var(--progress);
+      border-radius: 99px;
+      background: linear-gradient(0deg, rgb(255 204 151 / .9), var(--accent));
+      box-shadow: 0 0 18px var(--accent);
+    }
+
+    #scale-dot {
+      position: absolute;
+      right: 3px;
+      bottom: calc(var(--progress) - 7px);
+      width: 12px;
+      height: 12px;
+      border: 2px solid white;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 14px var(--accent), 0 0 2px black;
+      transition: bottom 80ms linear, background 110ms linear;
+    }
+
+    #scale-bottom,
+    #scale-top,
+    #scale-value {
+      position: absolute;
+      right: 28px;
+      width: min(60vw, 340px);
+      color: rgb(255 255 255 / .57);
+      font-size: clamp(.52rem, 1.9vw, .72rem);
+      font-weight: 820;
+      line-height: 1;
+      letter-spacing: .08em;
+      text-align: right;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-shadow: 0 1px 7px black;
+    }
+
+    #scale-bottom { bottom: -1px; }
+    #scale-top { top: -1px; }
+
+    #scale-value {
+      top: clamp(10%, calc(100% - var(--progress)), 90%);
+      margin-top: -4px;
+      color: rgb(255 255 255 / .78);
+      opacity: 0;
+      transform: translateY(-50%);
+      transition: opacity 150ms ease;
+    }
+
+    body.active #scale-value { opacity: 1; }
+
+    #hint {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 80%;
+      display: grid;
+      justify-items: center;
+      gap: 7px;
+      width: min(84vw, 520px);
+      color: rgb(255 244 232 / .78);
+      text-align: center;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: hint-life 8s ease forwards;
+      text-shadow: 0 2px 12px #000;
+    }
+
+    #hint-ring {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgb(255 226 199 / .62);
+      border-radius: 50%;
+      box-shadow: 0 0 24px rgb(255 169 110 / .22);
+      animation: hint-pulse 2.2s ease-in-out infinite;
+    }
+
+    #hint-ring::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgb(255 236 219 / .95);
+      box-shadow: 0 0 14px rgb(255 154 100 / .8);
+      animation: hint-climb 2.2s ease-in-out infinite;
+    }
+
+    #hint-text {
+      font-size: clamp(.74rem, 2.9vw, 1.02rem);
+      font-weight: 900;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #hint-subtext {
+      font-size: clamp(.62rem, 2.25vw, .79rem);
+      font-weight: 720;
+      letter-spacing: .045em;
+      opacity: .75;
+    }
+
+    .ripple {
+      position: fixed;
+      z-index: 6;
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: ripple-out .8s cubic-bezier(.12, .68, .2, 1) forwards;
+      box-shadow: 0 0 24px var(--accent-soft);
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    @keyframes hint-life {
+      0%, 58% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    @keyframes hint-pulse {
+      0%, 100% { transform: scale(.88); opacity: .6; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    @keyframes hint-climb {
+      0%, 100% { transform: translate(-50%, 8px); }
+      50% { transform: translate(-50%, -14px); }
+    }
+
+    @keyframes ripple-out {
+      from { opacity: .9; transform: translate(-50%, -50%) scale(.6); }
+      to { opacity: 0; transform: translate(-50%, -50%) scale(8); }
+    }
+
+    @media (max-width: 620px) {
+      #journey-scale { right: max(7px, env(safe-area-inset-right)); }
+      #scale-bottom,
+      #scale-top,
+      #scale-value { right: 23px; }
+      #scale-bottom,
+      #scale-top { display: none; }
+    }
+
+    @media (max-height: 570px) and (orientation: landscape) {
+      #readout {
+        width: min(82vw, 760px);
+        padding: 10px 28px 12px;
+        border-radius: 25px;
+      }
+      #zone-name {
+        font-size: clamp(1.55rem, 7.4vh, 3.3rem);
+        line-height: .9;
+      }
+      #zone-name.compact { font-size: clamp(1.38rem, 6.9vh, 3rem); }
+      #zone-name.long { font-size: clamp(1.2rem, 6.3vh, 2.65rem); }
+      #feature-name { margin-top: 5px; font-size: clamp(.76rem, 4vh, 1.15rem); }
+      #metric { min-height: 24px; margin-top: 7px; padding: 5px 10px 6px; font-size: clamp(.6rem, 2.5vh, .76rem); }
+      #fact { max-width: 660px; margin-top: 7px; font-size: clamp(.7rem, 3vh, .88rem); line-height: 1.16; }
+      #journey-scale { top: max(8px, env(safe-area-inset-top)); bottom: max(8px, env(safe-area-inset-bottom)); }
+      #hint { top: 78%; gap: 4px; }
+      #hint-ring { width: 38px; height: 38px; }
+      #hint-subtext { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #readout,
+      #touch-orb,
+      #journey-scale,
+      #light-field,
+      #scan-line { transition-duration: 70ms; }
+      #hint,
+      .ripple,
+      #hint-ring::after { animation: none; }
+      #hint { opacity: .75; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="early-universe-spectrum" role="application" tabindex="0" aria-describedby="instructions" aria-label="Mapa táctil desde el fondo cósmico de microondas hasta la inflación y el límite de la física conocida"></canvas>
+  <p id="instructions" class="sr-only">La aventura comienza exactamente en el fondo cósmico de microondas. Toca o arrastra hacia arriba para retroceder por recombinación, plasma primordial, nucleosíntesis primordial, era de los leptones, era de los quarks, transición electrodébil, universo inflacionario y límite de la física conocida. Antes del fondo cósmico, la historia no se observa directamente con luz: se reconstruye mediante evidencias físicas. Arrastra horizontalmente para descubrir palabras distintas dentro de cada región. También puedes usar las flechas del teclado.</p>
+
+  <div id="light-field" aria-hidden="true"></div>
+  <div id="scan-line" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <div id="hint" aria-hidden="true">
+    <div id="hint-ring"></div>
+    <div id="hint-text">La luz más antigua queda debajo</div>
+    <div id="hint-subtext">Asciende · retrocede por la historia inferida</div>
+  </div>
+
+  <div id="readout" aria-live="polite" aria-atomic="true">
+    <span id="zone-name"></span>
+    <span id="feature-name"></span>
+    <span id="metric"></span>
+    <span id="fact"></span>
+  </div>
+
+  <div id="touch-orb" aria-hidden="true"></div>
+
+  <div id="journey-scale" aria-hidden="true">
+    <div id="scale-track"><div id="scale-fill"></div></div>
+    <div id="scale-dot"></div>
+    <span id="scale-bottom">Fondo cósmico de microondas</span>
+    <span id="scale-value">Historia física inferida</span>
+    <span id="scale-top">Límite de la física conocida</span>
+  </div>
+
+  <!--
+    Visualización educativa sin dependencias externas.
+    La altura representa una cronología conceptual comprimida y no una escala temporal lineal.
+    Antes de la recombinación, la luz electromagnética ordinaria no ofrece una imagen directa del
+    universo. Las épocas anteriores se reconstruyen combinando el fondo cósmico, abundancias
+    primordiales, física de partículas, estructura a gran escala y posibles mensajeros relictos.
+    La inflación se muestra como expansión del propio espacio en todas partes, no como una explosión
+    desde un centro. La región superior expresa incertidumbre: no representa una singularidad observada,
+    un borde físico, un multiverso confirmado ni un conocimiento establecido de algo “anterior”.
+  -->
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.getElementById("early-universe-spectrum");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const root = document.documentElement;
+      const readout = document.getElementById("readout");
+      const zoneName = document.getElementById("zone-name");
+      const featureName = document.getElementById("feature-name");
+      const metric = document.getElementById("metric");
+      const fact = document.getElementById("fact");
+      const touchOrb = document.getElementById("touch-orb");
+      const journeyScale = document.getElementById("journey-scale");
+      const scaleValue = document.getElementById("scale-value");
+      const hint = document.getElementById("hint");
+
+      const TAU = Math.PI * 2;
+      const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const ZONES = [
+        {
+          id: "cmb", name: "Fondo cósmico de microondas", p0: 0, p1: .09,
+          color: [255, 203, 148], metric: "≈ 380 000 años · la luz electromagnética más antigua observable",
+          fact: "El recorrido comienza exactamente en la superficie de última dispersión: un mapa de pequeñas variaciones de temperatura, no una pared ni el borde del universo.",
+          sound: { base: 62, filter: 760, noise: .085, pulse: .31, type: "sine" },
+          features: [
+            ["luz fósil", "La expansión estiró esta radiación hasta las microondas que llenan el cielo actual."],
+            ["anisotropía", "Diferencias diminutas de temperatura revelan pequeñas variaciones de densidad en el universo joven."],
+            ["polarización", "La orientación de la luz conserva información adicional sobre su último encuentro con la materia."],
+            ["última dispersión", "Los fotones dejaron de chocar continuamente con electrones libres y comenzaron a viajar grandes distancias."],
+            ["punto de partida", "Desde aquí el viaje deja de avanzar hacia objetos lejanos y comienza a reconstruir épocas anteriores mediante huellas físicas."]
+          ]
+        },
+        {
+          id: "recombination", name: "Recombinación", p0: .09, p1: .20,
+          color: [255, 174, 112], metric: "≈ 380 000 años · ≈ 3 000 K · el universo se vuelve transparente",
+          fact: "Electrones y núcleos pudieron formar átomos neutros, sobre todo hidrógeno. Al disminuir los electrones libres, la luz dejó de quedar atrapada en el plasma.",
+          sound: { base: 70, filter: 920, noise: .075, pulse: .28, type: "triangle" },
+          features: [
+            ["átomo neutro", "Un electrón ligado a un núcleo ya no dispersa la luz del mismo modo que un electrón libre abundante."],
+            ["hidrógeno", "La mayor parte de la materia ordinaria quedó en átomos sencillos de hidrógeno y helio."],
+            ["desacoplamiento", "Materia y radiación dejaron de intercambiar energía de manera tan intensa; los fotones pudieron propagarse casi libremente."],
+            ["universo transparente", "La transparencia no apareció desde un borde: ocurrió en todo el espacio observable a medida que el plasma se enfrió."],
+            ["superficie aparente", "Cada dirección del cielo muestra el lugar lejano donde sus fotones sufrieron su última dispersión."]
+          ]
+        },
+        {
+          id: "primordial-plasma", name: "Plasma primordial", p0: .20, p1: .34,
+          color: [255, 113, 91], metric: "Antes de 380 000 años · materia ionizada · luz atrapada",
+          fact: "Antes de recombinarse, el universo era una mezcla caliente de núcleos, electrones y fotones. La dispersión constante hacía el medio opaco a la luz electromagnética.",
+          sound: { base: 82, filter: 1280, noise: .14, pulse: .22, type: "sawtooth" },
+          features: [
+            ["electrón libre", "Las cargas libres dispersaban los fotones una y otra vez, como una niebla extremadamente densa."],
+            ["Big Bang caliente", "El Big Bang describe una fase temprana, caliente y densa y la expansión del propio espacio, no una explosión desde un lugar central."],
+            ["fotón dispersado", "La luz recorría distancias cortas entre colisiones; no podía entregarnos una fotografía directa de épocas más tempranas."],
+            ["oscilación acústica", "Presión de radiación y gravedad produjeron ondas en el plasma; sus huellas aparecen en el fondo cósmico y la distribución de materia."],
+            ["sin imagen directa", "La opacidad marca el límite de la astronomía basada en luz, no el límite de toda evidencia física."]
+          ]
+        },
+        {
+          id: "nucleosynthesis", name: "Nucleosíntesis primordial", p0: .34, p1: .47,
+          color: [255, 211, 94], metric: "Primeros minutos · se forman núcleos ligeros",
+          fact: "Al enfriarse el universo, protones y neutrones pudieron unirse brevemente para producir deuterio, helio y pequeñas cantidades de litio.",
+          sound: { base: 98, filter: 1720, noise: .085, pulse: .18, type: "triangle" },
+          features: [
+            ["protón", "Un protón es el núcleo del hidrógeno común y uno de los componentes básicos de los núcleos más pesados."],
+            ["neutrón", "Los neutrones disponibles se incorporaron principalmente al helio antes de que muchos pudieran desintegrarse."],
+            ["deuterio", "Este isótopo del hidrógeno es una prueba sensible de la densidad de materia ordinaria durante los primeros minutos."],
+            ["helio primordial", "Una fracción importante de la masa de materia ordinaria terminó como helio, antes de que existiera ninguna estrella."],
+            ["litio primordial", "Se produjo en trazas; su abundancia observada todavía presenta una tensión conocida con predicciones sencillas."]
+          ]
+        },
+        {
+          id: "lepton-era", name: "Era de los leptones", p0: .47, p1: .59,
+          color: [127, 225, 255], metric: "Alrededor del primer segundo · leptones, fotones y neutrinos",
+          fact: "A temperaturas aún mayores, electrones, positrones, neutrinos y fotones dominaban gran parte del contenido energético mientras el universo seguía expandiéndose y enfriándose.",
+          sound: { base: 118, filter: 2300, noise: .12, pulse: .14, type: "sine" },
+          features: [
+            ["electrón", "Es un leptón con carga eléctrica; más tarde quedaría ligado a núcleos para formar átomos."],
+            ["positrón", "Es la antipartícula del electrón. Pares de electrones y positrones podían crearse y aniquilarse en el baño caliente."],
+            ["neutrino", "Interactúa muy débilmente. Un fondo relicto de neutrinos es una predicción importante, aunque todavía no se ha observado directamente."],
+            ["antimateria", "Partículas y antipartículas se transformaban continuamente en radiación; una pequeña asimetría dejó la materia que vemos hoy."],
+            ["desacoplamiento de neutrinos", "Al caer la temperatura, los neutrinos dejaron de interactuar con frecuencia y continuaron propagándose como población relicta."]
+          ]
+        },
+        {
+          id: "quark-era", name: "Era de los quarks", p0: .59, p1: .72,
+          color: [219, 111, 255], metric: "Antes de ≈ 10⁻⁶ s · plasma de quarks y gluones",
+          fact: "A energías extremas, quarks y gluones no estaban confinados dentro de protones y neutrones. Formaban un fluido de partículas elementales fuertemente interactuante.",
+          sound: { base: 144, filter: 3100, noise: .17, pulse: .10, type: "sawtooth" },
+          features: [
+            ["quark", "Los quarks son componentes elementales de protones, neutrones y muchas otras partículas compuestas."],
+            ["gluón", "El gluón transmite la interacción fuerte que une a los quarks y domina el comportamiento de este plasma."],
+            ["plasma de quarks y gluones", "Experimentos de colisiones recrean por instantes estados de materia comparables, no el universo completo."],
+            ["confinamiento", "Al enfriarse el cosmos, los quarks quedaron ligados en hadrones como protones y neutrones."],
+            ["física de partículas", "Aceleradores, teoría cuántica de campos y cálculos numéricos ayudan a probar esta reconstrucción."]
+          ]
+        },
+        {
+          id: "electroweak", name: "Transición electrodébil", p0: .72, p1: .83,
+          color: [118, 143, 255], metric: "Escala aproximada ≈ 10⁻¹² s · simetrías de altas energías",
+          fact: "En el modelo de partículas, el electromagnetismo y la interacción débil se describen como aspectos de una teoría electrodébil común a energías suficientemente altas.",
+          sound: { base: 171, filter: 3900, noise: .12, pulse: .075, type: "triangle" },
+          features: [
+            ["campo de Higgs", "La transición asociada al campo de Higgs modificó cómo ciertas partículas adquieren masa efectiva."],
+            ["simetría electrodébil", "A energías altas, fenómenos hoy distintos encajan en una descripción unificada comprobada por la física de partículas."],
+            ["bosones W y Z", "Estas partículas median la interacción débil y obtienen masa mediante el mecanismo de Higgs."],
+            ["electromagnetismo", "Tras la transición, el fotón permanece sin masa y transmite la interacción electromagnética."],
+            ["frontera experimental", "Cuanto más retrocedemos, más depende la cosmología de teorías probadas en laboratorios pero extrapoladas a energías mayores."]
+          ]
+        },
+        {
+          id: "inflation", name: "Universo inflacionario", p0: .83, p1: .94,
+          color: [174, 129, 255], metric: "Época propuesta · expansión acelerada extremadamente temprana",
+          fact: "La inflación es un escenario en el que el propio espacio se expandió de forma extraordinariamente rápida. No fue una explosión dentro de un vacío ni tuvo un centro espacial.",
+          sound: { base: 205, filter: 4800, noise: .08, pulse: .045, type: "sine" },
+          features: [
+            ["expansión del espacio", "Las distancias entre regiones aumentan porque cambia la geometría del espacio en todas partes simultáneamente."],
+            ["fluctuación cuántica", "Pequeñas variaciones microscópicas pudieron estirarse y convertirse en semillas de la estructura cósmica."],
+            ["horizonte", "La inflación ayuda a explicar por qué regiones muy separadas del fondo cósmico presentan propiedades tan parecidas."],
+            ["planitud", "Una expansión enorme puede hacer que la geometría observable parezca muy cercana a plana, como una pequeña zona de una superficie inmensa."],
+            ["evidencia indirecta", "El fondo cósmico y la estructura apoyan rasgos generales del escenario, pero el mecanismo exacto y su energía no están confirmados."],
+            ["ondas gravitacionales relictas", "Una señal primordial sería una prueba extraordinaria, pero todavía no existe una detección confirmada de esas ondas procedentes de la inflación."]
+          ]
+        },
+        {
+          id: "known-physics-limit", name: "Límite de la física conocida", p0: .94, p1: 1,
+          color: [236, 220, 255], metric: "Frontera teórica · gravedad cuántica y condiciones iniciales",
+          fact: "La imagen se disuelve porque nuestras teorías actuales dejan de ser suficientes. Esta región no muestra una singularidad observada, un primer punto confirmado ni algo conocido antes de la inflación.",
+          sound: { base: 238, filter: 5400, noise: .21, pulse: .025, type: "triangle" },
+          features: [
+            ["gravedad cuántica", "Se necesita una teoría que describa conjuntamente la gravedad y los fenómenos cuánticos en condiciones extremas."],
+            ["escala de Planck", "Cerca de esta escala convencional, las extrapolaciones clásicas del espacio y el tiempo pierden fiabilidad."],
+            ["condiciones iniciales", "No sabemos qué selección física produjo el estado temprano del que surgió la evolución observable."],
+            ["sin singularidad observada", "Una singularidad matemática señala el fallo de una descripción, no una fotografía confirmada de un objeto real."],
+            ["pregunta abierta", "La ciencia distingue entre evidencia, modelo y especulación; el campo superior representa esa incertidumbre sin inventar un destino."]
+          ]
+        }
+      ];
+
+      const cmbSpots = [];
+      const atoms = [];
+      const plasmaParticles = [];
+      const photonPaths = [];
+      const nuclei = [];
+      const leptonTracks = [];
+      const quarks = [];
+      const fieldLines = [];
+      const inflationSeeds = [];
+      const uncertainty = [];
+      const particles = [];
+      const waves = [];
+
+      let width = 1;
+      let height = 1;
+      let dpr = 1;
+      let activePointer = null;
+      let pointerX = .5;
+      let pointerY = .94;
+      let targetX = .5;
+      let targetY = .94;
+      let lastZoneId = "";
+      let lastFeature = -1;
+      let hideTimer = 0;
+      let lastTime = performance.now();
+      let raf = 0;
+
+      let audioCtx = null;
+      let master = null;
+      let droneA = null;
+      let droneB = null;
+      let droneGain = null;
+      let droneFilter = null;
+      let pulseOsc = null;
+      let pulseGain = null;
+      let noiseSource = null;
+      let noiseGain = null;
+      let noiseFilter = null;
+      let stereo = null;
+
+      function clamp(value, min = 0, max = 1) { return Math.min(max, Math.max(min, value)); }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function smoothstep(a, b, x) {
+        const t = clamp((x - a) / Math.max(.00001, b - a));
+        return t * t * (3 - 2 * t);
+      }
+      function seeded(seed) {
+        let value = seed >>> 0;
+        return () => {
+          value += 0x6D2B79F5;
+          let t = value;
+          t = Math.imul(t ^ t >>> 15, t | 1);
+          t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+      }
+      function seededPoint(seed) {
+        const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+        return x - Math.floor(x);
+      }
+      function journeyFromY(yNorm) { return clamp(1 - yNorm); }
+      function zoneForJourney(progress) {
+        const p = clamp(progress, 0, .999999);
+        return ZONES.find(zone => p >= zone.p0 && p < zone.p1) || ZONES.at(-1);
+      }
+      function featureFor(zone, xNorm) {
+        const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .999999) * zone.features.length));
+        return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+      }
+      function sceneScale() { return Math.sqrt(Math.min(width, height) / 720); }
+
+      function setCssPoint(x, y) {
+        root.style.setProperty("--scan-x", `${x}px`);
+        root.style.setProperty("--scan-y", `${y}px`);
+      }
+      function setAccent(zone) {
+        const [r, g, b] = zone.color;
+        root.style.setProperty("--accent", `rgb(${r} ${g} ${b})`);
+        root.style.setProperty("--accent-soft", `rgb(${r} ${g} ${b} / .34)`);
+      }
+
+      function buildStaticScene() {
+        cmbSpots.length = atoms.length = plasmaParticles.length = photonPaths.length = 0;
+        nuclei.length = leptonTracks.length = quarks.length = fieldLines.length = 0;
+        inflationSeeds.length = uncertainty.length = 0;
+
+        const random = seeded(26071803);
+
+        const cols = Math.max(18, Math.round(width / 25));
+        const rows = Math.max(7, Math.round(height * .105 / 18));
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < cols; col++) {
+            const seed = row * 997 + col * 37;
+            cmbSpots.push({
+              x: (col + .5 + (seededPoint(seed) - .5) * .9) / cols,
+              y: .895 + (row + .5 + (seededPoint(seed + 7) - .5) * .8) / rows * .105,
+              rx: (.75 + seededPoint(seed + 31) * 2.1) / cols,
+              ry: (.6 + seededPoint(seed + 41) * 1.7) / rows * .105,
+              v: seededPoint(seed + 21),
+              phase: seededPoint(seed + 51) * TAU
+            });
+          }
+        }
+
+        for (let i = 0; i < 44; i++) {
+          atoms.push({
+            x: .02 + random() * .96,
+            y: .79 + random() * .115,
+            r: 2.5 + random() * 5,
+            a: .14 + random() * .34,
+            phase: random() * TAU,
+            tilt: random() * TAU,
+            hydrogen: random() > .2
+          });
+        }
+
+        const plasmaCount = Math.max(160, Math.round(width * height / 4100));
+        for (let i = 0; i < plasmaCount; i++) {
+          plasmaParticles.push({
+            x: random(),
+            y: .62 + random() * .19,
+            r: .45 + random() * 1.75,
+            charge: random() > .5 ? 1 : -1,
+            a: .12 + random() * .45,
+            phase: random() * TAU,
+            speed: .3 + random() * 1.4
+          });
+        }
+
+        for (let i = 0; i < 28; i++) {
+          photonPaths.push({
+            x: random(),
+            y: .63 + random() * .25,
+            length: .025 + random() * .08,
+            bends: 3 + Math.floor(random() * 5),
+            phase: random() * TAU,
+            a: .08 + random() * .18
+          });
+        }
+
+        for (let i = 0; i < 39; i++) {
+          const count = 2 + Math.floor(random() * 6);
+          const parts = [];
+          for (let j = 0; j < count; j++) {
+            const a = random() * TAU;
+            const rr = random() * (2 + count * .55);
+            parts.push({ a, rr, neutron: random() > .48, r: 1.2 + random() * 1.4 });
+          }
+          nuclei.push({
+            x: .025 + random() * .95,
+            y: .49 + random() * .145,
+            parts,
+            a: .25 + random() * .53,
+            phase: random() * TAU,
+            size: .75 + random() * 1.45
+          });
+        }
+
+        for (let i = 0; i < 64; i++) {
+          leptonTracks.push({
+            x: random(),
+            y: .37 + random() * .135,
+            angle: random() * TAU,
+            length: .012 + random() * .055,
+            curve: (random() - .5) * .04,
+            kind: Math.floor(random() * 3),
+            a: .12 + random() * .42,
+            phase: random() * TAU,
+            speed: .3 + random() * 1.8
+          });
+        }
+
+        const quarkCount = Math.max(115, Math.round(width * height / 5600));
+        for (let i = 0; i < quarkCount; i++) {
+          quarks.push({
+            x: random(),
+            y: .255 + random() * .135,
+            r: .7 + random() * 2.15,
+            family: Math.floor(random() * 3),
+            a: .2 + random() * .54,
+            phase: random() * TAU,
+            speed: .6 + random() * 2
+          });
+        }
+
+        for (let i = 0; i < 18; i++) {
+          fieldLines.push({
+            y: .15 + i / 18 * .125,
+            amp: .004 + random() * .015,
+            freq: 1.2 + random() * 3.5,
+            phase: random() * TAU,
+            a: .06 + random() * .15,
+            split: random()
+          });
+        }
+
+        const inflCols = Math.max(9, Math.round(width / 65));
+        const inflRows = Math.max(4, Math.round(height * .11 / 36));
+        for (let row = 0; row < inflRows; row++) {
+          for (let col = 0; col < inflCols; col++) {
+            inflationSeeds.push({
+              x: (col + .5 + (random() - .5) * .35) / inflCols,
+              y: .045 + (row + .5 + (random() - .5) * .3) / inflRows * .115,
+              phase: random() * TAU,
+              a: .08 + random() * .2,
+              r: .6 + random() * 1.8
+            });
+          }
+        }
+
+        for (let i = 0; i < 70; i++) {
+          uncertainty.push({
+            x: random(),
+            y: random() * .065,
+            length: .006 + random() * .035,
+            angle: random() * TAU,
+            phase: random() * TAU,
+            a: .04 + random() * .18,
+            width: .35 + random() * 1.1
+          });
+        }
+      }
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
+        dpr = Math.min(2, devicePixelRatio || 1);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildStaticScene();
+        setCssPoint(targetX * width, targetY * height);
+      }
+
+      function ensureAudio() {
+        if (audioCtx) {
+          if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+          return;
+        }
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        audioCtx = new AudioContext();
+        master = audioCtx.createGain();
+        master.gain.value = 0;
+        const compressor = audioCtx.createDynamicsCompressor();
+        compressor.threshold.value = -23;
+        compressor.knee.value = 18;
+        compressor.ratio.value = 6;
+        master.connect(compressor).connect(audioCtx.destination);
+
+        droneA = audioCtx.createOscillator();
+        droneB = audioCtx.createOscillator();
+        droneA.type = "sine";
+        droneB.type = "triangle";
+        droneGain = audioCtx.createGain();
+        droneGain.gain.value = .0001;
+        droneFilter = audioCtx.createBiquadFilter();
+        droneFilter.type = "lowpass";
+        droneFilter.frequency.value = 900;
+        droneFilter.Q.value = .8;
+        stereo = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : audioCtx.createGain();
+        droneA.connect(droneGain);
+        droneB.connect(droneGain);
+        droneGain.connect(droneFilter).connect(stereo).connect(master);
+        droneA.start();
+        droneB.start();
+
+        pulseOsc = audioCtx.createOscillator();
+        pulseOsc.type = "sine";
+        pulseGain = audioCtx.createGain();
+        pulseGain.gain.value = .0001;
+        pulseOsc.connect(pulseGain).connect(master);
+        pulseOsc.start();
+
+        const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+        const ch = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < ch.length; i++) ch[i] = Math.random() * 2 - 1;
+        noiseSource = audioCtx.createBufferSource();
+        noiseSource.buffer = noiseBuffer;
+        noiseSource.loop = true;
+        noiseGain = audioCtx.createGain();
+        noiseGain.gain.value = .0001;
+        noiseFilter = audioCtx.createBiquadFilter();
+        noiseFilter.type = "bandpass";
+        noiseFilter.frequency.value = 1200;
+        noiseFilter.Q.value = .55;
+        noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
+        noiseSource.start();
+      }
+
+      function setAudioFor(zone, xNorm, yNorm, active) {
+        if (!audioCtx || !master) return;
+        const now = audioCtx.currentTime;
+        const s = zone.sound;
+        const vertical = .91 + (1 - yNorm) * .37;
+        const horizontal = .94 + xNorm * .13;
+        const base = s.base * vertical * horizontal;
+        droneA.type = s.type;
+        droneB.type = s.type === "sawtooth" ? "triangle" : "sine";
+        droneA.frequency.setTargetAtTime(base, now, .055);
+        droneB.frequency.setTargetAtTime(base * 1.503, now, .07);
+        droneFilter.frequency.setTargetAtTime(s.filter * (.82 + xNorm * .35), now, .08);
+        droneGain.gain.setTargetAtTime(active ? .022 : .0001, now, .07);
+        pulseOsc.frequency.setTargetAtTime(base * (2.01 + s.pulse), now, .05);
+        pulseGain.gain.setTargetAtTime(active ? .006 : .0001, now, .08);
+        noiseFilter.frequency.setTargetAtTime(s.filter * 1.28, now, .08);
+        noiseGain.gain.setTargetAtTime(active ? Math.max(.0001, s.noise * .12) : .0001, now, .08);
+        if (stereo.pan) stereo.pan.setTargetAtTime((xNorm - .5) * .8, now, .05);
+        master.gain.setTargetAtTime(active ? .34 : .0001, now, .07);
+      }
+
+      function ping(zone, xNorm, featureIndex = 0) {
+        if (!audioCtx || !master) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+        const pan = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+        const scale = [1, 1.125, 1.25, 1.5, 1.6875][featureIndex % 5];
+        osc.type = zone.sound.type;
+        osc.frequency.setValueAtTime(zone.sound.base * 4.1 * scale, now);
+        osc.frequency.exponentialRampToValueAtTime(Math.max(45, zone.sound.base * 1.65), now + .42);
+        filter.type = "lowpass";
+        filter.frequency.value = zone.sound.filter * 1.8;
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(.043, now + .012);
+        gain.gain.exponentialRampToValueAtTime(.0001, now + .5);
+        osc.connect(filter).connect(gain);
+        if (pan) {
+          pan.pan.value = (xNorm - .5) * 1.5;
+          gain.connect(pan).connect(master);
+        } else {
+          gain.connect(master);
+        }
+        osc.start(now);
+        osc.stop(now + .55);
+      }
+
+      function addRipple(x, y) {
+        const node = document.createElement("div");
+        node.className = "ripple";
+        node.style.left = `${x}px`;
+        node.style.top = `${y}px`;
+        document.body.appendChild(node);
+        node.addEventListener("animationend", () => node.remove(), { once: true });
+      }
+
+      function addBurst(x, y, zone) {
+        const count = reducedMotion ? 5 : 14;
+        for (let i = 0; i < count; i++) {
+          const a = Math.random() * TAU;
+          const speed = 20 + Math.random() * 90;
+          particles.push({
+            x, y,
+            vx: Math.cos(a) * speed,
+            vy: Math.sin(a) * speed,
+            r: 1 + Math.random() * 2.6,
+            life: 1,
+            decay: 1.1 + Math.random() * .7,
+            color: zone.color
+          });
+        }
+        waves.push({ x, y, radius: 5, life: 1, color: zone.color });
+      }
+
+      function updateReadout(x, y, isNewPress = false) {
+        const xNorm = clamp(x / width, 0, .999999);
+        const yNorm = clamp(y / height, 0, .999999);
+        const progress = journeyFromY(yNorm);
+        const zone = zoneForJourney(progress);
+        const feature = featureFor(zone, xNorm);
+
+        targetX = xNorm;
+        targetY = yNorm;
+        setCssPoint(x, y);
+        setAccent(zone);
+        root.style.setProperty("--progress", `${Math.max(1.2, progress * 100)}%`);
+
+        touchOrb.style.left = `${x}px`;
+        touchOrb.style.top = `${y}px`;
+        scaleValue.textContent = zone.name;
+
+        const changed = zone.id !== lastZoneId || feature.index !== lastFeature;
+        if (changed || isNewPress) {
+          zoneName.textContent = zone.name;
+          zoneName.className = zone.name.length > 25 ? "long" : zone.name.length > 17 ? "compact" : "";
+          featureName.textContent = feature.name;
+          metric.textContent = zone.metric;
+          fact.textContent = feature.fact || zone.fact;
+          ping(zone, xNorm, feature.index);
+          addBurst(x, y, zone);
+          lastZoneId = zone.id;
+          lastFeature = feature.index;
+        }
+
+        readout.classList.add("visible");
+        touchOrb.classList.add("visible");
+        document.body.classList.add("active");
+        hint.style.display = "none";
+        setAudioFor(zone, xNorm, yNorm, true);
+      }
+
+      function releaseInteraction(delay = 900) {
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          readout.classList.remove("visible");
+          touchOrb.classList.remove("visible");
+          document.body.classList.remove("active");
+          const zone = zoneForJourney(journeyFromY(targetY));
+          setAudioFor(zone, targetX, targetY, false);
+        }, delay);
+      }
+
+      function pointerPosition(event) {
+        const rect = canvas.getBoundingClientRect();
+        return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+      }
+
+      canvas.addEventListener("pointerdown", event => {
+        event.preventDefault();
+        activePointer = event.pointerId;
+        canvas.setPointerCapture?.(event.pointerId);
+        ensureAudio();
+        const p = pointerPosition(event);
+        addRipple(p.x, p.y);
+        updateReadout(p.x, p.y, true);
+      });
+
+      canvas.addEventListener("pointermove", event => {
+        if (activePointer !== event.pointerId) return;
+        const p = pointerPosition(event);
+        updateReadout(p.x, p.y, false);
+      });
+
+      function endPointer(event) {
+        if (activePointer !== event.pointerId) return;
+        activePointer = null;
+        canvas.releasePointerCapture?.(event.pointerId);
+        releaseInteraction();
+      }
+
+      canvas.addEventListener("pointerup", endPointer);
+      canvas.addEventListener("pointercancel", endPointer);
+      canvas.addEventListener("lostpointercapture", () => {
+        activePointer = null;
+        releaseInteraction();
+      });
+      canvas.addEventListener("contextmenu", event => event.preventDefault());
+
+      canvas.addEventListener("keydown", event => {
+        const step = event.shiftKey ? .09 : .035;
+        if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) return;
+        event.preventDefault();
+        ensureAudio();
+        if (event.key === "ArrowUp") targetY = clamp(targetY - step);
+        if (event.key === "ArrowDown") targetY = clamp(targetY + step);
+        if (event.key === "ArrowLeft") targetX = clamp(targetX - step);
+        if (event.key === "ArrowRight") targetX = clamp(targetX + step);
+        updateReadout(targetX * width, targetY * height, event.key === "Enter" || event.key === " ");
+        releaseInteraction(1500);
+      });
+
+      function glow(x, y, r, core, mid, edge = "rgba(0,0,0,0)") {
+        const g = ctx.createRadialGradient(x, y, 0, x, y, Math.max(1, r));
+        g.addColorStop(0, core);
+        g.addColorStop(.38, mid);
+        g.addColorStop(1, edge);
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(x, y, Math.max(1, r), 0, TAU);
+        ctx.fill();
+      }
+
+      function drawBackground(time) {
+        const g = ctx.createLinearGradient(0, 0, 0, height);
+        g.addColorStop(0, "#08020e");
+        g.addColorStop(.055, "#140522");
+        g.addColorStop(.15, "#211039");
+        g.addColorStop(.26, "#1d1745");
+        g.addColorStop(.39, "#12203e");
+        g.addColorStop(.50, "#24302e");
+        g.addColorStop(.63, "#4b201f");
+        g.addColorStop(.77, "#552326");
+        g.addColorStop(.89, "#39261f");
+        g.addColorStop(1, "#5f4938");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, width, height);
+
+        const pulse = reducedMotion ? 1 : .92 + Math.sin(time * .00024) * .08;
+        const haze = ctx.createRadialGradient(width * .5, height * .57, 0, width * .5, height * .57, Math.max(width, height) * .85);
+        haze.addColorStop(0, `rgba(255,112,91,${.055 * pulse})`);
+        haze.addColorStop(.52, "rgba(102,63,177,.026)");
+        haze.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = haze;
+        ctx.fillRect(0, 0, width, height);
+      }
+
+      function drawCMB(time) {
+        const top = height * .885;
+        const base = ctx.createLinearGradient(0, top, 0, height);
+        base.addColorStop(0, "rgba(43,27,24,.18)");
+        base.addColorStop(.28, "rgba(84,57,43,.82)");
+        base.addColorStop(1, "rgba(105,79,56,.98)");
+        ctx.fillStyle = base;
+        ctx.fillRect(0, top, width, height - top);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const s of cmbSpots) {
+          const pulse = reducedMotion ? 1 : .96 + Math.sin(time * .0002 + s.phase) * .04;
+          const x = s.x * width;
+          const y = s.y * height;
+          const rx = s.rx * width * 1.45;
+          const ry = s.ry * height * 1.6;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.scale(1, ry / Math.max(1, rx));
+          const warm = s.v > .52;
+          const color = warm ? "255,186,103" : "105,151,222";
+          const alpha = (.035 + Math.abs(s.v - .5) * .12) * pulse;
+          const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
+          grad.addColorStop(0, `rgba(${color},${alpha})`);
+          grad.addColorStop(.72, `rgba(${color},${alpha * .45})`);
+          grad.addColorStop(1, `rgba(${color},0)`);
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(0, 0, rx, 0, TAU);
+          ctx.fill();
+          ctx.restore();
+        }
+        ctx.restore();
+
+        const boundary = ctx.createLinearGradient(0, height * .865, 0, height * .91);
+        boundary.addColorStop(0, "rgba(255,197,142,0)");
+        boundary.addColorStop(.62, "rgba(255,210,165,.17)");
+        boundary.addColorStop(1, "rgba(255,197,142,0)");
+        ctx.fillStyle = boundary;
+        ctx.fillRect(0, height * .865, width, height * .055);
+      }
+
+      function drawRecombination(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const atom of atoms) {
+          const drift = reducedMotion ? 0 : Math.sin(time * .00035 * (1 + atom.r * .05) + atom.phase) * 2.3;
+          const x = atom.x * width + drift;
+          const y = atom.y * height + Math.cos(time * .00028 + atom.phase) * 1.8;
+          const r = atom.r * sceneScale();
+          const fade = smoothstep(.79, .845, atom.y) * (1 - smoothstep(.88, .91, atom.y));
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(atom.tilt + (reducedMotion ? 0 : time * .00003));
+          ctx.strokeStyle = `rgba(255,224,195,${atom.a * fade})`;
+          ctx.lineWidth = .55;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, r * 2.15, r * .7, 0, 0, TAU);
+          ctx.stroke();
+          glow(0, 0, r * 1.65, `rgba(255,177,102,${atom.a * .85 * fade})`, `rgba(255,101,72,${atom.a * .18 * fade})`);
+          const electronX = Math.cos(atom.phase + time * (reducedMotion ? 0 : .0011)) * r * 2.15;
+          const electronY = Math.sin(atom.phase + time * (reducedMotion ? 0 : .0011)) * r * .7;
+          glow(electronX, electronY, r * .55, `rgba(151,221,255,${atom.a * fade})`, `rgba(76,167,255,${atom.a * .12 * fade})`);
+          ctx.restore();
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const escapeCount = 14;
+        for (let i = 0; i < escapeCount; i++) {
+          const x = (i + .5) / escapeCount * width;
+          const phase = i * 1.77;
+          const y = height * (.80 + Math.sin(time * .00055 + phase) * .008);
+          const len = height * (.025 + (i % 3) * .006);
+          const grad = ctx.createLinearGradient(x, y, x, y + len);
+          grad.addColorStop(0, "rgba(255,243,221,0)");
+          grad.addColorStop(.5, "rgba(255,235,201,.24)");
+          grad.addColorStop(1, "rgba(255,221,180,0)");
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = .8;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + Math.sin(phase) * 5, y + len);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawPrimordialPlasma(time) {
+        const top = height * .61;
+        const bottom = height * .815;
+        const fog = ctx.createLinearGradient(0, top, 0, bottom);
+        fog.addColorStop(0, "rgba(108,27,35,.1)");
+        fog.addColorStop(.32, "rgba(255,82,68,.16)");
+        fog.addColorStop(.74, "rgba(255,137,92,.24)");
+        fog.addColorStop(1, "rgba(255,181,123,.08)");
+        ctx.fillStyle = fog;
+        ctx.fillRect(0, top, width, bottom - top);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const p of plasmaParticles) {
+          const dx = reducedMotion ? 0 : Math.sin(time * .00046 * p.speed + p.phase) * 4.5;
+          const dy = reducedMotion ? 0 : Math.cos(time * .00039 * p.speed + p.phase) * 3;
+          const x = p.x * width + dx;
+          const y = p.y * height + dy;
+          const r = p.r * sceneScale();
+          const positive = p.charge > 0;
+          glow(
+            x, y, r * 4.6,
+            positive ? `rgba(255,196,119,${p.a * .52})` : `rgba(128,207,255,${p.a * .58})`,
+            positive ? `rgba(255,73,57,${p.a * .1})` : `rgba(75,113,255,${p.a * .1})`
+          );
+          ctx.fillStyle = positive ? `rgba(255,228,181,${p.a})` : `rgba(210,243,255,${p.a})`;
+          ctx.beginPath();
+          ctx.arc(x, y, Math.max(.35, r * .55), 0, TAU);
+          ctx.fill();
+        }
+
+        for (const path of photonPaths) {
+          ctx.strokeStyle = `rgba(255,246,213,${path.a})`;
+          ctx.lineWidth = .5;
+          ctx.beginPath();
+          let x = path.x * width;
+          let y = path.y * height;
+          ctx.moveTo(x, y);
+          const segment = path.length * width / path.bends;
+          for (let j = 1; j <= path.bends; j++) {
+            const a = path.phase + j * 2.31 + (reducedMotion ? 0 : time * .0002);
+            x += Math.cos(a) * segment;
+            y += Math.sin(a) * segment * .55;
+            ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawNucleosynthesis(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const nucleus of nuclei) {
+          const x = nucleus.x * width + (reducedMotion ? 0 : Math.sin(time * .00042 + nucleus.phase) * 2.4);
+          const y = nucleus.y * height + (reducedMotion ? 0 : Math.cos(time * .00037 + nucleus.phase) * 1.8);
+          const scale = nucleus.size * sceneScale();
+          for (const part of nucleus.parts) {
+            const px = x + Math.cos(part.a + time * (reducedMotion ? 0 : .00002)) * part.rr * scale;
+            const py = y + Math.sin(part.a + time * (reducedMotion ? 0 : .00002)) * part.rr * scale;
+            const r = part.r * scale;
+            const color = part.neutron ? [126, 190, 255] : [255, 208, 99];
+            glow(px, py, r * 3.1, `rgba(${color[0]},${color[1]},${color[2]},${nucleus.a * .66})`, `rgba(${color[0]},${color[1]},${color[2]},${nucleus.a * .1})`);
+            ctx.fillStyle = `rgba(255,249,229,${nucleus.a * .78})`;
+            ctx.beginPath();
+            ctx.arc(px, py, Math.max(.4, r * .5), 0, TAU);
+            ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawLeptonEra(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const t of leptonTracks) {
+          const motion = reducedMotion ? 0 : (time * .00002 * t.speed) % 1;
+          const x = ((t.x + motion) % 1) * width;
+          const y = t.y * height + Math.sin(time * .0007 * t.speed + t.phase) * 2.2;
+          const len = t.length * width;
+          const angle = t.angle + Math.sin(time * .00025 + t.phase) * .2;
+          const color = t.kind === 0 ? "129,229,255" : t.kind === 1 ? "255,155,225" : "202,248,255";
+          ctx.strokeStyle = `rgba(${color},${t.a})`;
+          ctx.lineWidth = t.kind === 2 ? .45 : .7;
+          ctx.beginPath();
+          ctx.moveTo(x - Math.cos(angle) * len * .5, y - Math.sin(angle) * len * .5);
+          ctx.quadraticCurveTo(
+            x + Math.cos(angle + Math.PI / 2) * t.curve * width,
+            y + Math.sin(angle + Math.PI / 2) * t.curve * height,
+            x + Math.cos(angle) * len * .5,
+            y + Math.sin(angle) * len * .5
+          );
+          ctx.stroke();
+          glow(x, y, (t.kind === 2 ? 1.2 : 2.1) * sceneScale(), `rgba(${color},${t.a * .72})`, `rgba(${color},${t.a * .08})`);
+        }
+        ctx.restore();
+      }
+
+      function drawQuarkEra(time) {
+        const top = height * .245;
+        const bottom = height * .4;
+        ctx.save();
+        const fluid = ctx.createLinearGradient(0, top, 0, bottom);
+        fluid.addColorStop(0, "rgba(101,42,145,.08)");
+        fluid.addColorStop(.5, "rgba(181,57,186,.14)");
+        fluid.addColorStop(1, "rgba(62,59,132,.08)");
+        ctx.fillStyle = fluid;
+        ctx.fillRect(0, top, width, bottom - top);
+        ctx.globalCompositeOperation = "screen";
+
+        for (const q of quarks) {
+          const x = q.x * width + (reducedMotion ? 0 : Math.sin(time * .00062 * q.speed + q.phase) * 3.2);
+          const y = q.y * height + (reducedMotion ? 0 : Math.cos(time * .00054 * q.speed + q.phase) * 2.6);
+          const r = q.r * sceneScale();
+          const palette = q.family === 0 ? [255, 96, 121] : q.family === 1 ? [94, 212, 255] : [255, 221, 89];
+          glow(x, y, r * 4.2, `rgba(${palette[0]},${palette[1]},${palette[2]},${q.a * .56})`, `rgba(${palette[0]},${palette[1]},${palette[2]},${q.a * .1})`);
+          ctx.fillStyle = `rgba(255,255,244,${q.a * .76})`;
+          ctx.beginPath();
+          ctx.arc(x, y, Math.max(.4, r * .42), 0, TAU);
+          ctx.fill();
+        }
+
+        ctx.strokeStyle = "rgba(238,188,255,.065)";
+        ctx.lineWidth = .6;
+        for (let i = 0; i < quarks.length - 1; i += 3) {
+          const a = quarks[i];
+          const b = quarks[(i + 5) % quarks.length];
+          if (Math.abs(a.y - b.y) > .05 || Math.abs(a.x - b.x) > .14) continue;
+          ctx.beginPath();
+          ctx.moveTo(a.x * width, a.y * height);
+          ctx.quadraticCurveTo((a.x + b.x) * width * .5, (a.y + b.y) * height * .5 + Math.sin(i) * 4, b.x * width, b.y * height);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawElectroweak(time) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const line of fieldLines) {
+          const y0 = line.y * height;
+          const amp = line.amp * height;
+          const phase = line.phase + (reducedMotion ? 0 : time * .00025);
+          ctx.strokeStyle = `rgba(153,178,255,${line.a})`;
+          ctx.lineWidth = .55;
+          ctx.beginPath();
+          const segments = 44;
+          for (let i = 0; i <= segments; i++) {
+            const x = i / segments * width;
+            const unified = 1 - smoothstep(.15, .27, line.y);
+            const splitWave = Math.sin(i / segments * TAU * line.freq + phase) * amp;
+            const second = Math.sin(i / segments * TAU * (line.freq * .5) - phase * .7) * amp * line.split * (1 - unified);
+            const y = y0 + splitWave + second;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+
+        const nodeCount = 13;
+        for (let i = 0; i < nodeCount; i++) {
+          const x = (i + .5) / nodeCount * width;
+          const y = height * (.19 + Math.sin(i * 1.9 + time * (reducedMotion ? 0 : .0002)) * .02);
+          glow(x, y, 8 * sceneScale(), "rgba(187,205,255,.19)", "rgba(103,112,255,.035)");
+        }
+        ctx.restore();
+      }
+
+      function drawInflation(time) {
+        const top = height * .04;
+        const bottom = height * .17;
+        const phase = reducedMotion ? .5 : ((time * .000035) % 1);
+        const stretch = 1 + phase * 1.4;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, top, width, bottom - top);
+        ctx.clip();
+        ctx.globalCompositeOperation = "screen";
+
+        for (let i = 0; i < 11; i++) {
+          const baseX = i / 10 * width;
+          const x = width * .5 + (baseX - width * .5) * stretch;
+          const alpha = .085 * (1 - phase * .45);
+          const grad = ctx.createLinearGradient(x, top, x, bottom);
+          grad.addColorStop(0, "rgba(208,179,255,0)");
+          grad.addColorStop(.5, `rgba(208,179,255,${alpha})`);
+          grad.addColorStop(1, "rgba(208,179,255,0)");
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = .55;
+          ctx.beginPath();
+          ctx.moveTo(x, top);
+          ctx.lineTo(x, bottom);
+          ctx.stroke();
+        }
+
+        for (let j = 0; j < 7; j++) {
+          const baseY = top + j / 6 * (bottom - top);
+          const center = (top + bottom) * .5;
+          const y = center + (baseY - center) * (1 + phase * .8);
+          ctx.strokeStyle = `rgba(196,172,255,${.06 * (1 - phase * .35)})`;
+          ctx.lineWidth = .55;
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+
+        for (const seed of inflationSeeds) {
+          const sx = width * .5 + (seed.x * width - width * .5) * stretch;
+          const syCenter = height * .105;
+          const sy = syCenter + (seed.y * height - syCenter) * (1 + phase * .8);
+          const pulse = reducedMotion ? 1 : .86 + Math.sin(time * .0009 + seed.phase) * .14;
+          glow(sx, sy, seed.r * 8 * sceneScale() * pulse, `rgba(234,217,255,${seed.a * .65})`, `rgba(164,102,255,${seed.a * .1})`);
+        }
+
+        const veil = ctx.createLinearGradient(0, top, 0, bottom);
+        veil.addColorStop(0, "rgba(13,3,22,.34)");
+        veil.addColorStop(.5, "rgba(178,96,255,.055)");
+        veil.addColorStop(1, "rgba(31,17,63,.1)");
+        ctx.fillStyle = veil;
+        ctx.fillRect(0, top, width, bottom - top);
+        ctx.restore();
+      }
+
+      function drawUncertainty(time) {
+        const top = 0;
+        const bottom = height * .07;
+        const veil = ctx.createLinearGradient(0, top, 0, bottom);
+        veil.addColorStop(0, "rgba(2,0,7,.96)");
+        veil.addColorStop(.55, "rgba(26,9,42,.74)");
+        veil.addColorStop(1, "rgba(25,8,45,0)");
+        ctx.fillStyle = veil;
+        ctx.fillRect(0, top, width, bottom);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const u of uncertainty) {
+          const x = u.x * width + (reducedMotion ? 0 : Math.sin(time * .0003 + u.phase) * 5);
+          const y = u.y * height;
+          const len = u.length * width;
+          ctx.strokeStyle = `rgba(235,220,255,${u.a})`;
+          ctx.lineWidth = u.width;
+          ctx.beginPath();
+          ctx.moveTo(x - Math.cos(u.angle) * len * .5, y - Math.sin(u.angle) * len * .5);
+          ctx.lineTo(x + Math.cos(u.angle) * len * .5, y + Math.sin(u.angle) * len * .5);
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        const fade = ctx.createLinearGradient(0, height * .018, 0, height * .085);
+        fade.addColorStop(0, "rgba(255,255,255,.035)");
+        fade.addColorStop(.4, "rgba(220,194,255,.018)");
+        fade.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = fade;
+        ctx.fillRect(0, 0, width, height * .09);
+      }
+
+      function drawScientificCues() {
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "rgba(255,230,209,.19)";
+        ctx.font = `800 ${Math.max(7, Math.min(9, width * .018))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("ANTES DEL FONDO CÓSMICO, LA HISTORIA SE RECONSTRUYE MEDIANTE EVIDENCIAS", width * .5, height * .69);
+        ctx.fillStyle = "rgba(215,201,255,.21)";
+        ctx.fillText("LA INFLACIÓN EXPANDE EL ESPACIO EN TODAS PARTES · NO EXPLOTA DESDE UN CENTRO", width * .5, height * .115);
+        ctx.restore();
+      }
+
+      function drawBottomContinuity() {
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = "rgba(255,171,111,.32)";
+        ctx.fillStyle = "rgba(255,229,205,.57)";
+        ctx.font = `850 ${Math.max(8, Math.min(11, width * .023))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("EL FONDO CÓSMICO CONTINÚA DEBAJO", width * .5, height - Math.max(8, height * .012));
+        ctx.restore();
+      }
+
+      function drawTopTransition() {
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.shadowBlur = 16;
+        ctx.shadowColor = "rgba(188,139,255,.4)";
+        ctx.fillStyle = "rgba(245,231,255,.67)";
+        ctx.font = `850 ${Math.max(7, Math.min(10, width * .021))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("MÁS ALLÁ DE LA EVIDENCIA ACTUAL", width * .5, Math.max(7, height * .006));
+        ctx.fillStyle = "rgba(255,248,255,.82)";
+        ctx.font = `950 ${Math.max(8, Math.min(12, width * .026))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("GRAVEDAD CUÁNTICA · CONDICIONES INICIALES · ORIGEN", width * .5, Math.max(21, height * .028));
+        ctx.fillStyle = "rgba(229,211,244,.53)";
+        ctx.font = `760 ${Math.max(7, Math.min(9, width * .019))}px Inter,system-ui,sans-serif`;
+        ctx.fillText("PREGUNTAS ABIERTAS · NO UN PRIMER MOMENTO OBSERVADO", width * .5, Math.max(38, height * .049));
+        ctx.restore();
+      }
+
+      function drawParticles(dt) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life -= p.decay * dt;
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.vx *= Math.pow(.09, dt);
+          p.vy *= Math.pow(.09, dt);
+          const [r, g, b] = p.color;
+          ctx.fillStyle = `rgba(${r},${g},${b},${p.life * .7})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * (.4 + p.life), 0, TAU);
+          ctx.fill();
+        }
+        for (let i = waves.length - 1; i >= 0; i--) {
+          const w = waves[i];
+          w.life -= dt * 1.25;
+          if (w.life <= 0) {
+            waves.splice(i, 1);
+            continue;
+          }
+          w.radius += dt * 128;
+          const [r, g, b] = w.color;
+          ctx.strokeStyle = `rgba(${r},${g},${b},${w.life * .4})`;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.arc(w.x, w.y, w.radius, 0, TAU);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function draw(time) {
+        const dt = Math.min(.05, Math.max(0, (time - lastTime) / 1000));
+        lastTime = time;
+        if (!reducedMotion) {
+          pointerX += (targetX - pointerX) * .08;
+          pointerY += (targetY - pointerY) * .08;
+        } else {
+          pointerX = targetX;
+          pointerY = targetY;
+        }
+
+        drawBackground(time);
+        drawInflation(time);
+        drawElectroweak(time);
+        drawQuarkEra(time);
+        drawLeptonEra(time);
+        drawNucleosynthesis(time);
+        drawPrimordialPlasma(time);
+        drawRecombination(time);
+        drawCMB(time);
+        drawUncertainty(time);
+        drawScientificCues();
+        drawBottomContinuity();
+        drawTopTransition();
+        drawParticles(dt);
+        raf = requestAnimationFrame(draw);
+      }
+
+      function init() {
+        resize();
+        addEventListener("resize", resize, { passive: true });
+        addEventListener("orientationchange", () => setTimeout(resize, 120), { passive: true });
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden && audioCtx?.state === "running") audioCtx.suspend().catch(() => {});
+        });
+        canvas.focus({ preventScroll: true });
+        raf = requestAnimationFrame(draw);
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
