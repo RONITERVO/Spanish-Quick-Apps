@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#000000">
+  <title>Espectro de colores</title>
+  <style>
+    :root {
+      --sample: rgb(255 255 255);
+      --ink: rgb(255 255 255);
+      --panel: rgb(0 0 0 / 0.28);
+      --ring: rgb(255 255 255);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      background: #000;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      font-family:
+        Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui,
+        -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #spectrum {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    #name-wrap {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      z-index: 4;
+      max-width: min(92vw, 950px);
+      padding: clamp(14px, 3vw, 28px) clamp(22px, 5vw, 54px);
+      border: 1px solid rgb(255 255 255 / 0.28);
+      border-radius: clamp(24px, 5vw, 52px);
+      background: var(--panel);
+      box-shadow:
+        0 18px 70px rgb(0 0 0 / 0.28),
+        0 0 70px color-mix(in srgb, var(--sample) 60%, transparent),
+        inset 0 1px 0 rgb(255 255 255 / 0.35);
+      backdrop-filter: blur(18px) saturate(1.35);
+      -webkit-backdrop-filter: blur(18px) saturate(1.35);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.72);
+      filter: blur(14px);
+      transition:
+        opacity 180ms ease,
+        transform 420ms cubic-bezier(.16, 1, .3, 1),
+        filter 250ms ease,
+        background 120ms linear,
+        box-shadow 120ms linear;
+      will-change: transform, opacity, filter;
+    }
+
+    #name-wrap.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      filter: blur(0);
+    }
+
+    #color-name {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(2.7rem, 11vw, 9rem);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -0.055em;
+      text-align: center;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-shadow:
+        0 1px 0 rgb(255 255 255 / 0.18),
+        0 0 28px color-mix(in srgb, var(--sample) 78%, transparent),
+        0 6px 26px rgb(0 0 0 / 0.28);
+    }
+
+    #touch-orb {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 5;
+      width: 42px;
+      height: 42px;
+      border: 3px solid var(--ring);
+      border-radius: 999px;
+      box-shadow:
+        0 0 0 1px rgb(0 0 0 / 0.22),
+        0 0 24px var(--ring),
+        inset 0 0 14px rgb(255 255 255 / 0.32);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.4);
+      transition:
+        opacity 130ms ease,
+        transform 300ms cubic-bezier(.16, 1, .3, 1),
+        border-color 90ms linear,
+        box-shadow 90ms linear;
+      will-change: transform, opacity;
+    }
+
+    #touch-orb.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .ripple {
+      position: fixed;
+      z-index: 3;
+      width: 34px;
+      height: 34px;
+      border: 2px solid var(--ring);
+      border-radius: 999px;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0.6);
+      opacity: 0.9;
+      animation: ripple 700ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: translate(-50%, -50%) scale(4.8);
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #name-wrap,
+      #touch-orb {
+        transition-duration: 80ms;
+      }
+
+      .ripple {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="spectrum" aria-label="Espectro completo de colores"></canvas>
+
+  <div id="name-wrap" aria-live="polite" aria-atomic="true">
+    <p id="color-name"></p>
+  </div>
+
+  <div id="touch-orb" aria-hidden="true"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.getElementById("spectrum");
+      const ctx = canvas.getContext("2d", { alpha: false, willReadFrequently: true });
+      const nameWrap = document.getElementById("name-wrap");
+      const colorName = document.getElementById("color-name");
+      const touchOrb = document.getElementById("touch-orb");
+      const root = document.documentElement;
+
+      let dpr = 1;
+      let activePointer = null;
+      let pendingPoint = null;
+      let frameRequested = false;
+      let hideTimer = 0;
+      let lastRippleAt = 0;
+
+      function drawSpectrum() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.max(1, Math.round(width * dpr));
+        canvas.height = Math.max(1, Math.round(height * dpr));
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const hue = ctx.createLinearGradient(0, 0, width, 0);
+        hue.addColorStop(0.000, "#ff0000");
+        hue.addColorStop(0.167, "#ffff00");
+        hue.addColorStop(0.333, "#00ff00");
+        hue.addColorStop(0.500, "#00ffff");
+        hue.addColorStop(0.667, "#0000ff");
+        hue.addColorStop(0.833, "#ff00ff");
+        hue.addColorStop(1.000, "#ff0000");
+        ctx.fillStyle = hue;
+        ctx.fillRect(0, 0, width, height);
+
+        const light = ctx.createLinearGradient(0, 0, 0, height);
+        light.addColorStop(0.000, "rgba(255,255,255,1)");
+        light.addColorStop(0.485, "rgba(255,255,255,0)");
+        light.addColorStop(0.515, "rgba(0,0,0,0)");
+        light.addColorStop(1.000, "rgba(0,0,0,1)");
+        ctx.fillStyle = light;
+        ctx.fillRect(0, 0, width, height);
+      }
+
+      function rgbToHsl(r, g, b) {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h = 0;
+        let s = 0;
+        const l = (max + min) / 2;
+        const delta = max - min;
+
+        if (delta !== 0) {
+          s = delta / (1 - Math.abs(2 * l - 1));
+
+          if (max === r) {
+            h = 60 * (((g - b) / delta) % 6);
+          } else if (max === g) {
+            h = 60 * (((b - r) / delta) + 2);
+          } else {
+            h = 60 * (((r - g) / delta) + 4);
+          }
+        }
+
+        if (h < 0) h += 360;
+        return { h, s, l };
+      }
+
+      function spanishColorName(r, g, b) {
+        const { h, s, l } = rgbToHsl(r, g, b);
+
+        if (l <= 0.055) return "negro";
+        if (l >= 0.965) return "blanco";
+
+        if (s <= 0.09) {
+          if (l < 0.28) return "gris oscuro";
+          if (l > 0.76) return "gris claro";
+          return "gris";
+        }
+
+        const redHue = h < 15 || h >= 345;
+
+        if (redHue && l < 0.24 && s > 0.35) return "granate";
+        if (h >= 18 && h < 48 && l < 0.36 && s > 0.32) return "marrón";
+        if (h >= 32 && h < 58 && l > 0.76 && s < 0.72) return "beige";
+        if (h >= 40 && h < 58 && l >= 0.38 && l <= 0.67 && s > 0.72) return "dorado";
+        if (h >= 52 && h < 82 && l < 0.32) return "verde oliva";
+        if (h >= 205 && h < 248 && l < 0.23) return "azul marino";
+        if ((h >= 330 || h < 12) && l > 0.72) return "rosa";
+
+        const palette = [
+          [8,   "rojo"],
+          [20,  "coral"],
+          [38,  "naranja"],
+          [52,  "ámbar"],
+          [68,  "amarillo"],
+          [92,  "verde lima"],
+          [138, "verde"],
+          [158, "esmeralda"],
+          [178, "turquesa"],
+          [198, "cian"],
+          [218, "azul cielo"],
+          [248, "azul"],
+          [268, "añil"],
+          [288, "violeta"],
+          [310, "púrpura"],
+          [330, "magenta"],
+          [345, "rosa"],
+          [360, "rojo"]
+        ];
+
+        let base = "rojo";
+        for (const [limit, name] of palette) {
+          if (h < limit) {
+            base = name;
+            break;
+          }
+        }
+
+        if (l < 0.26) return base + " oscuro";
+        if (l > 0.79 && s < 0.76) return base + " pálido";
+        if (l > 0.72) return base + " claro";
+        if (s < 0.38) return base + " apagado";
+        return base;
+      }
+
+      function contrastFor(r, g, b) {
+        const linear = [r, g, b].map(value => {
+          const c = value / 255;
+          return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+        });
+
+        const luminance =
+          0.2126 * linear[0] +
+          0.7152 * linear[1] +
+          0.0722 * linear[2];
+
+        return luminance > 0.43 ? "rgb(10 10 14)" : "rgb(255 255 255)";
+      }
+
+      function sampleAt(x, y) {
+        const clampedX = Math.max(0, Math.min(window.innerWidth - 1, x));
+        const clampedY = Math.max(0, Math.min(window.innerHeight - 1, y));
+        const pixel = ctx.getImageData(
+          Math.round(clampedX * dpr),
+          Math.round(clampedY * dpr),
+          1,
+          1
+        ).data;
+
+        return { r: pixel[0], g: pixel[1], b: pixel[2], x: clampedX, y: clampedY };
+      }
+
+      function showColor(point, makeRipple = false) {
+        const { r, g, b, x, y } = sampleAt(point.x, point.y);
+        const sample = `rgb(${r} ${g} ${b})`;
+        const ink = contrastFor(r, g, b);
+        const lightInk = ink.includes("255");
+
+        root.style.setProperty("--sample", sample);
+        root.style.setProperty("--ink", ink);
+        root.style.setProperty("--ring", ink);
+        root.style.setProperty(
+          "--panel",
+          lightInk ? "rgb(0 0 0 / 0.30)" : "rgb(255 255 255 / 0.32)"
+        );
+
+        colorName.textContent = spanishColorName(r, g, b);
+        touchOrb.style.left = x + "px";
+        touchOrb.style.top = y + "px";
+
+        nameWrap.classList.add("visible");
+        touchOrb.classList.add("visible");
+
+        if (makeRipple) createRipple(x, y);
+      }
+
+      function createRipple(x, y) {
+        const now = performance.now();
+        if (now - lastRippleAt < 90) return;
+        lastRippleAt = now;
+
+        const ripple = document.createElement("div");
+        ripple.className = "ripple";
+        ripple.style.left = x + "px";
+        ripple.style.top = y + "px";
+        document.body.appendChild(ripple);
+        ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
+      }
+
+      function queueSample(x, y, ripple = false) {
+        pendingPoint = { x, y, ripple };
+
+        if (frameRequested) return;
+        frameRequested = true;
+
+        requestAnimationFrame(() => {
+          frameRequested = false;
+          if (!pendingPoint) return;
+
+          const point = pendingPoint;
+          pendingPoint = null;
+          showColor(point, point.ripple);
+        });
+      }
+
+      function hideSoon() {
+        clearTimeout(hideTimer);
+        hideTimer = window.setTimeout(() => {
+          nameWrap.classList.remove("visible");
+          touchOrb.classList.remove("visible");
+        }, 520);
+      }
+
+      canvas.addEventListener("pointerdown", event => {
+        event.preventDefault();
+        activePointer = event.pointerId;
+        canvas.setPointerCapture?.(event.pointerId);
+        clearTimeout(hideTimer);
+        queueSample(event.clientX, event.clientY, true);
+      });
+
+      canvas.addEventListener("pointermove", event => {
+        if (event.pointerId !== activePointer) return;
+        event.preventDefault();
+        queueSample(event.clientX, event.clientY, false);
+      });
+
+      function endPointer(event) {
+        if (event.pointerId !== activePointer) return;
+        activePointer = null;
+        hideSoon();
+      }
+
+      canvas.addEventListener("pointerup", endPointer);
+      canvas.addEventListener("pointercancel", endPointer);
+      canvas.addEventListener("lostpointercapture", () => {
+        activePointer = null;
+        hideSoon();
+      });
+
+      window.addEventListener("resize", () => {
+        drawSpectrum();
+        nameWrap.classList.remove("visible");
+        touchOrb.classList.remove("visible");
+      }, { passive: true });
+
+      document.addEventListener("contextmenu", event => event.preventDefault());
+
+      drawSpectrum();
+    })();
+  </script>
+</body>
+</html>
