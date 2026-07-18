@@ -1,0 +1,1795 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#03050d">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora desde la frontera del sistema solar hasta el borde de la Vía Láctea, en español.">
+  <meta name="application-name" content="Espectro de la Vía Láctea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro de la Vía Láctea">
+  <meta property="og:description" content="Toca y recorre el espacio desde Plutón hasta el borde de nuestra galaxia.">
+  <title>Espectro de la Vía Láctea · Del sistema solar al borde galáctico</title>
+  <style>
+    :root {
+      --accent: rgb(130 205 255);
+      --accent-soft: rgb(130 205 255 / .34);
+      --ink: rgb(255 255 255);
+      --panel: rgb(3 6 17 / .52);
+      --scan-x: 50vw;
+      --scan-y: 88vh;
+      --progress: 6%;
+      --home-y: 89vh;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #02030a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: white;
+      font-family:
+        Inter, ui-rounded, "SF Pro Rounded", "Segoe UI",
+        system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #galaxy-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background:
+        radial-gradient(circle at var(--scan-x) var(--scan-y),
+          color-mix(in srgb, var(--accent) 66%, transparent) 0%,
+          color-mix(in srgb, var(--accent) 20%, transparent) 12%,
+          transparent 35%);
+      mix-blend-mode: screen;
+    }
+
+    body.active #light-field { opacity: .88; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 160ms ease;
+      background:
+        linear-gradient(90deg,
+          transparent calc(var(--scan-x) - 1px),
+          color-mix(in srgb, var(--accent) 70%, transparent) var(--scan-x),
+          transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg,
+          transparent calc(var(--scan-y) - 1px),
+          color-mix(in srgb, var(--accent) 42%, transparent) var(--scan-y),
+          transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+
+    body.active #scan-line { opacity: .28; }
+
+    #grain {
+      z-index: 4;
+      opacity: .048;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 42%, rgb(0 0 0 / .24) 75%, rgb(0 0 0 / .75) 122%),
+        linear-gradient(90deg, rgb(0 0 0 / .32), transparent 13%, transparent 87%, rgb(0 0 0 / .36));
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 48%;
+      width: min(92vw, 800px);
+      padding: clamp(16px, 3.3vw, 28px) clamp(20px, 5vw, 50px) clamp(18px, 3.8vw, 34px);
+      border: 1px solid rgb(255 255 255 / .24);
+      border-radius: clamp(26px, 6vw, 52px);
+      color: var(--ink);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        var(--panel);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .42),
+        0 0 78px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .28),
+        inset 0 -1px 0 rgb(0 0 0 / .2);
+      backdrop-filter: blur(23px) saturate(1.38);
+      -webkit-backdrop-filter: blur(23px) saturate(1.38);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear,
+        background 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.8vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow:
+        0 0 30px var(--accent-soft),
+        0 5px 24px rgb(0 0 0 / .48);
+    }
+
+    #zone-name.compact {
+      font-size: clamp(1.75rem, 7.6vw, 5.8rem);
+      letter-spacing: -.048em;
+      line-height: .89;
+    }
+
+    #zone-name.long {
+      font-size: clamp(1.52rem, 6.8vw, 4.9rem);
+      letter-spacing: -.038em;
+      line-height: .93;
+    }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 860;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+      opacity: .97;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(11px, 2vw, 18px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.7rem, 2.25vw, .95rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .18);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .12);
+    }
+
+    #fact {
+      display: block;
+      max-width: 630px;
+      margin: clamp(11px, 2.3vw, 18px) auto 0;
+      font-size: clamp(.85rem, 2.68vw, 1.12rem);
+      font-weight: 630;
+      line-height: 1.28;
+      letter-spacing: -.012em;
+      text-wrap: balance;
+      opacity: .84;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.35);
+      background: radial-gradient(circle, rgb(255 255 255 / .18), transparent 67%);
+      box-shadow:
+        0 0 0 1px rgb(0 0 0 / .24),
+        0 0 21px var(--accent),
+        0 0 54px var(--accent-soft),
+        inset 0 0 18px rgb(255 255 255 / .25);
+      transition:
+        opacity 120ms ease,
+        transform 280ms cubic-bezier(.16, 1, .3, 1),
+        border-color 110ms linear,
+        box-shadow 110ms linear;
+      will-change: transform, opacity;
+    }
+
+    #touch-orb.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 8;
+      top: max(18px, env(safe-area-inset-top));
+      right: max(10px, env(safe-area-inset-right));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: 42px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(14px);
+      transition: opacity 180ms ease, transform 300ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    #journey-scale.visible {
+      opacity: .92;
+      transform: translateX(0);
+    }
+
+    #scale-track {
+      position: absolute;
+      top: 20px;
+      right: 11px;
+      bottom: 20px;
+      width: 2px;
+      border-radius: 999px;
+      background: rgb(255 255 255 / .2);
+      box-shadow: 0 0 18px rgb(255 255 255 / .08);
+      overflow: hidden;
+    }
+
+    #scale-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(0deg, rgb(255 194 92), var(--accent));
+      box-shadow: 0 0 16px var(--accent);
+    }
+
+    #scale-dot {
+      position: absolute;
+      right: 5px;
+      bottom: 20px;
+      width: 14px;
+      height: 14px;
+      border: 2px solid white;
+      border-radius: 999px;
+      transform: translateY(50%);
+      background: var(--accent);
+      box-shadow: 0 0 16px var(--accent), 0 0 30px var(--accent-soft);
+    }
+
+    #scale-bottom,
+    #scale-top,
+    #scale-value {
+      position: absolute;
+      right: 1px;
+      font-size: clamp(.5rem, 1.52vw, .64rem);
+      font-weight: 850;
+      letter-spacing: .12em;
+      line-height: 1;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px rgb(0 0 0 / .9);
+      white-space: nowrap;
+    }
+
+    #scale-bottom { bottom: 0; }
+    #scale-top { top: 0; }
+    #scale-value {
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right center;
+      opacity: .86;
+    }
+
+    #scale-home {
+      position: absolute;
+      right: 1px;
+      bottom: 8%;
+      padding-right: 15px;
+      font-size: clamp(.46rem, 1.35vw, .59rem);
+      font-weight: 900;
+      letter-spacing: .1em;
+      line-height: 1;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px rgb(0 0 0 / .92);
+      white-space: nowrap;
+      color: rgb(255 205 110);
+    }
+
+    #scale-home::after {
+      content: "";
+      position: absolute;
+      right: 7px;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      border: 1px solid white;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      background: rgb(255 188 76);
+      box-shadow: 0 0 10px rgb(255 188 76);
+    }
+
+    #hint {
+      position: fixed;
+      z-index: 7;
+      left: 50%;
+      top: var(--home-y);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      animation: hint-in 900ms 650ms ease forwards, hint-pulse 2.8s 1.6s ease-in-out infinite;
+      transition: opacity 360ms ease;
+    }
+
+    #hint.hidden {
+      opacity: 0 !important;
+      animation: none;
+    }
+
+    #hint-ring {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border: 2px solid rgb(255 255 255 / .76);
+      border-radius: 999px;
+      box-shadow: 0 0 20px rgb(255 188 76 / .58), inset 0 0 12px rgb(255 255 255 / .14);
+    }
+
+    #hint-ring::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2px;
+      height: 70px;
+      border-radius: 999px;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(180deg, transparent, rgb(255 255 255 / .68), transparent);
+      animation: hint-swipe 2.2s ease-in-out infinite;
+    }
+
+    #hint-text {
+      max-width: min(84vw, 460px);
+      font-size: .67rem;
+      font-weight: 850;
+      letter-spacing: .18em;
+      line-height: 1.3;
+      text-align: center;
+      text-transform: uppercase;
+      text-shadow: 0 2px 12px rgb(0 0 0 / .76);
+      opacity: .82;
+    }
+
+    #hint-subtext {
+      max-width: min(84vw, 440px);
+      font-size: .58rem;
+      font-weight: 700;
+      line-height: 1.36;
+      letter-spacing: .08em;
+      text-align: center;
+      text-transform: uppercase;
+      text-shadow: 0 2px 12px rgb(0 0 0 / .86);
+      opacity: .65;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .ripple {
+      position: fixed;
+      z-index: 7;
+      width: 44px;
+      height: 44px;
+      border: 2px solid var(--accent);
+      border-radius: 999px;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(.35);
+      box-shadow: 0 0 28px var(--accent-soft);
+      animation: ripple 850ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple {
+      to { opacity: 0; transform: translate(-50%, -50%) scale(5.8); }
+    }
+
+    @keyframes hint-in { to { opacity: .84; } }
+
+    @keyframes hint-pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: .7; }
+      50% { transform: translate(-50%, -50%) scale(1.08); opacity: .98; }
+    }
+
+    @keyframes hint-swipe {
+      0%, 100% { transform: translate(-50%, -38%) scaleY(.45); opacity: .25; }
+      50% { transform: translate(-50%, -62%) scaleY(1); opacity: .9; }
+    }
+
+    @media (max-width: 560px) {
+      #readout { width: min(90vw, 560px); top: 47%; }
+      #fact { max-width: 80vw; }
+      #journey-scale { right: max(7px, env(safe-area-inset-right)); width: 36px; }
+      #scale-value { right: 17px; font-size: .53rem; }
+    }
+
+    @media (max-height: 520px) and (orientation: landscape) {
+      #readout {
+        top: 49%;
+        width: min(86vw, 800px);
+        padding: 10px 28px 12px;
+        border-radius: 34px;
+      }
+      #zone-name { font-size: clamp(2.1rem, 13.5vh, 4rem); line-height: .88; }
+      #zone-name.compact {
+      font-size: clamp(1.75rem, 7.6vw, 5.8rem);
+      letter-spacing: -.048em;
+      line-height: .89;
+    }
+
+    #zone-name.long {
+      font-size: clamp(1.52rem, 6.8vw, 4.9rem);
+      letter-spacing: -.038em;
+      line-height: .93;
+    }
+
+    #feature-name { margin-top: 5px; font-size: clamp(.76rem, 4vh, 1.15rem); }
+      #metric { min-height: 24px; margin-top: 7px; padding: 5px 10px 6px; font-size: clamp(.6rem, 2.5vh, .76rem); }
+      #fact { max-width: 660px; margin-top: 7px; font-size: clamp(.7rem, 3vh, .88rem); line-height: 1.16; }
+      #journey-scale { top: max(8px, env(safe-area-inset-top)); bottom: max(8px, env(safe-area-inset-bottom)); }
+      #hint { gap: 5px; }
+      #hint-ring { width: 38px; height: 38px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #readout,
+      #touch-orb,
+      #journey-scale,
+      #light-field,
+      #scan-line { transition-duration: 70ms; }
+      #hint,
+      .ripple,
+      #hint-ring::after { animation: none; }
+      #hint { opacity: .75; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="galaxy-spectrum" role="application" tabindex="0" aria-describedby="instructions" aria-label="Mapa táctil desde la frontera del sistema solar hasta el borde de la Vía Láctea"></canvas>
+  <p id="instructions" class="sr-only">La aventura continúa encima de Plutón. Toca o arrastra hacia arriba para viajar por la heliosfera, la nube de Oort, las estrellas cercanas y toda la Vía Láctea. Arrastra horizontalmente para descubrir palabras distintas dentro de cada región. También puedes usar las flechas del teclado.</p>
+
+  <div id="light-field" aria-hidden="true"></div>
+  <div id="scan-line" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <div id="hint" aria-hidden="true">
+    <div id="hint-ring"></div>
+    <div id="hint-text">Plutón queda debajo</div>
+    <div id="hint-subtext">Asciende hacia las estrellas y la Vía Láctea · explora de lado a lado</div>
+  </div>
+
+  <div id="readout" aria-live="polite" aria-atomic="true">
+    <span id="zone-name"></span>
+    <span id="feature-name"></span>
+    <span id="metric"></span>
+    <span id="fact"></span>
+  </div>
+
+  <div id="touch-orb" aria-hidden="true"></div>
+
+  <div id="journey-scale" aria-hidden="true">
+    <div id="scale-track"><div id="scale-fill"></div></div>
+    <div id="scale-dot"></div>
+    <span id="scale-bottom">Plutón</span>
+    <span id="scale-home">Sistema Solar</span>
+    <span id="scale-value">Escala educativa · distancias comprimidas</span>
+    <span id="scale-top">Borde galáctico</span>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.getElementById("galaxy-spectrum");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const root = document.documentElement;
+      const readout = document.getElementById("readout");
+      const zoneName = document.getElementById("zone-name");
+      const featureName = document.getElementById("feature-name");
+      const metric = document.getElementById("metric");
+      const fact = document.getElementById("fact");
+      const touchOrb = document.getElementById("touch-orb");
+      const journeyScale = document.getElementById("journey-scale");
+      const scaleValue = document.getElementById("scale-value");
+      const scaleDot = document.getElementById("scale-dot");
+      const hint = document.getElementById("hint");
+
+      const TAU = Math.PI * 2;
+      const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const ZONES = [
+        {
+          id: "frontier",
+          name: "Frontera planetaria",
+          p0: 0,
+          p1: .075,
+          color: [246, 196, 145],
+          metric: "Más allá de Plutón · unos 40 UA del Sol",
+          fact: "Aquí termina el mapa planetario anterior. El Sol ya parece una estrella muy brillante, pero su influencia todavía llena el espacio.",
+          sound: { base: 82, filter: 1250, noise: .09, pulse: .34, type: "triangle" },
+          features: [
+            ["Plutón", "El planeta enano queda atrás mientras la ruta continúa hacia regiones mucho más grandes y vacías."],
+            ["Cinturón de Kuiper", "Una extensa población de mundos helados rodea al Sol más allá de la órbita de Neptuno."],
+            ["Sol lejano", "Desde aquí, el Sol se ve pequeño, aunque sigue siendo con diferencia el objeto más brillante del cielo."],
+            ["órbita", "La gravedad del Sol todavía mantiene ligados a innumerables cuerpos que tardan siglos en completar una vuelta."],
+            ["espacio exterior", "No existe una pared al final del sistema planetario: sus regiones se vuelven gradualmente más tenues."]
+          ]
+        },
+        {
+          id: "heliosphere",
+          name: "Heliosfera",
+          p0: .075,
+          p1: .17,
+          color: [103, 206, 255],
+          metric: "Burbuja del viento solar · frontera variable",
+          fact: "El viento solar forma una enorme burbuja alrededor del Sol. Su borde cambia de forma según el medio interestelar.",
+          sound: { base: 74, filter: 1050, noise: .15, pulse: .4, type: "sine" },
+          features: [
+            ["viento solar", "Partículas cargadas salen continuamente del Sol y atraviesan el espacio en todas direcciones."],
+            ["choque de terminación", "El viento solar se frena bruscamente cuando comienza a sentir la presión del espacio interestelar."],
+            ["heliofunda", "Entre el choque de terminación y la heliopausa, el viento solar avanza más lento y se vuelve turbulento."],
+            ["heliopausa", "Esta frontera marca el punto donde domina el medio interestelar en lugar del viento solar."],
+            ["Voyager", "Las sondas Voyager han cruzado la heliopausa y continúan enviando datos desde el espacio interestelar."]
+          ]
+        },
+        {
+          id: "oort",
+          name: "Nube de Oort",
+          p0: .17,
+          p1: .265,
+          color: [176, 209, 241],
+          metric: "Se cree que alcanza decenas de miles de UA",
+          fact: "Una inmensa nube hipotética de cuerpos helados podría envolver al sistema solar y ser la fuente de muchos cometas de período largo.",
+          sound: { base: 66, filter: 870, noise: .075, pulse: .47, type: "sine" },
+          features: [
+            ["cometa", "Un pequeño mundo de hielo puede caer hacia el Sol y formar una coma brillante y una larga cola."],
+            ["hielo antiguo", "Estos cuerpos conservarían materiales muy poco alterados desde el nacimiento del sistema solar."],
+            ["órbita lejana", "Una vuelta alrededor del Sol puede durar miles, millones o incluso más años."],
+            ["nube esférica", "A diferencia del cinturón de Kuiper, esta región se imagina rodeando al Sol en casi todas las direcciones."],
+            ["estrella pasajera", "La gravedad de una estrella cercana puede alterar lentamente la órbita de un cometa distante."]
+          ]
+        },
+        {
+          id: "interstellar",
+          name: "Espacio interestelar",
+          p0: .265,
+          p1: .35,
+          color: [126, 169, 227],
+          metric: "Entre las estrellas · materia extremadamente dispersa",
+          fact: "El espacio interestelar no está completamente vacío: contiene gas, polvo, campos magnéticos y partículas de alta energía.",
+          sound: { base: 58, filter: 720, noise: .11, pulse: .52, type: "triangle" },
+          features: [
+            ["gas interestelar", "Átomos y moléculas muy separados llenan el enorme volumen que existe entre las estrellas."],
+            ["polvo cósmico", "Granos diminutos absorben y dispersan luz, y también ayudan a formar nuevas estrellas y planetas."],
+            ["rayo cósmico", "Partículas muy energéticas viajan por la galaxia a velocidades cercanas a la de la luz."],
+            ["campo magnético", "Campos débiles pero extensos guían partículas cargadas a través del medio interestelar."],
+            ["nube interestelar local", "El sistema solar atraviesa actualmente una pequeña región de gas dentro del vecindario galáctico."]
+          ]
+        },
+        {
+          id: "alpha-centauri",
+          name: "Alfa Centauri",
+          p0: .35,
+          p1: .435,
+          color: [255, 147, 107],
+          metric: "Próxima Centauri · 4,24 años luz",
+          fact: "El sistema estelar más cercano al Sol contiene tres estrellas. Próxima Centauri es la más cercana de todas.",
+          sound: { base: 98, filter: 1450, noise: .06, pulse: .24, type: "sine" },
+          features: [
+            ["Próxima Centauri", "Es una pequeña enana roja y la estrella conocida más cercana al Sol."],
+            ["Alfa Centauri A", "Esta estrella amarilla se parece al Sol y forma una pareja con Alfa Centauri B."],
+            ["Alfa Centauri B", "Es algo más pequeña y fría que el Sol, y orbita junto a Alfa Centauri A."],
+            ["exoplaneta", "Alrededor de Próxima se han detectado mundos que orbitan una estrella distinta del Sol."],
+            ["año luz", "Es la distancia que recorre la luz en un año, no una medida de tiempo."]
+          ]
+        },
+        {
+          id: "neighborhood",
+          name: "Vecindario estelar",
+          p0: .435,
+          p1: .535,
+          color: [255, 215, 145],
+          metric: "Decenas de años luz alrededor del Sol",
+          fact: "Nuestro vecindario reúne estrellas brillantes, enanas rojas, enanas blancas, mundos invisibles y sistemas muy distintos.",
+          sound: { base: 113, filter: 1700, noise: .07, pulse: .2, type: "triangle" },
+          features: [
+            ["Sirio", "Es la estrella más brillante del cielo nocturno terrestre y forma un sistema doble."],
+            ["estrella de Barnard", "Una enana roja cercana se desplaza por el cielo más rápido que cualquier otra estrella conocida."],
+            ["enana blanca", "Es el núcleo caliente y denso que puede quedar cuando una estrella parecida al Sol termina su vida."],
+            ["enana marrón", "Tiene más masa que un planeta gigante, pero no suficiente para brillar como una estrella normal."],
+            ["sistema estelar", "Muchas estrellas viven en parejas o grupos unidos por la gravedad, no solas como el Sol."]
+          ]
+        },
+        {
+          id: "local-bubble",
+          name: "Burbuja Local",
+          p0: .535,
+          p1: .62,
+          color: [119, 226, 220],
+          metric: "Una cavidad de gas caliente alrededor del Sol",
+          fact: "El Sol se encuentra dentro de una amplia región con menos gas frío que sus alrededores, probablemente modelada por antiguas supernovas.",
+          sound: { base: 126, filter: 1900, noise: .13, pulse: .17, type: "sine" },
+          features: [
+            ["supernova antigua", "Explosiones estelares del pasado pudieron calentar y apartar parte del gas de esta región."],
+            ["plasma caliente", "El gas extremadamente tenue puede alcanzar temperaturas muy altas sin sentirse denso como una atmósfera."],
+            ["pared de gas", "En el contorno de la burbuja se acumulan nubes más densas donde pueden nacer estrellas."],
+            ["mapa tridimensional", "El polvo y la luz de muchas estrellas permiten reconstruir la forma irregular de nuestro entorno."],
+            ["vecindario del Sol", "La Tierra viaja con el Sol a través de esta cavidad mientras toda la galaxia gira."]
+          ]
+        },
+        {
+          id: "orion-spur",
+          name: "Espolón de Orión",
+          p0: .62,
+          p1: .71,
+          color: [123, 184, 255],
+          metric: "Nuestra dirección dentro del disco galáctico",
+          fact: "El sistema solar vive en una estructura menor situada entre dos grandes brazos espirales de la Vía Láctea.",
+          sound: { base: 139, filter: 2100, noise: .1, pulse: .15, type: "triangle" },
+          features: [
+            ["brazo espiral", "Una franja de estrellas, gas y polvo destaca dentro del disco de una galaxia espiral."],
+            ["Sol", "Nuestra estrella es solo una entre cientos de miles de millones que forman la Vía Láctea."],
+            ["nube molecular", "El gas frío y denso puede colapsar por gravedad y comenzar a producir nuevas estrellas."],
+            ["cúmulo abierto", "Un grupo joven de estrellas nace de la misma nube y se dispersa lentamente con el tiempo."],
+            ["rotación galáctica", "El Sol tarda cientos de millones de años en completar una órbita alrededor del centro galáctico."]
+          ]
+        },
+        {
+          id: "stellar-nursery",
+          name: "Guardería estelar",
+          p0: .71,
+          p1: .79,
+          color: [225, 113, 255],
+          metric: "Nebulosas, cúmulos y estrellas recién nacidas",
+          fact: "En las nubes más densas de los brazos galácticos, la gravedad transforma gas y polvo en nuevas generaciones de estrellas.",
+          sound: { base: 154, filter: 2500, noise: .15, pulse: .13, type: "sine" },
+          features: [
+            ["nebulosa de Orión", "Una gran nube iluminada revela estrellas jóvenes que nacen dentro de gas y polvo."],
+            ["protoestrella", "Antes de encender la fusión, una estrella crece acumulando materia de la nube que la rodea."],
+            ["disco protoplanetario", "Un disco de gas y polvo alrededor de una estrella joven puede formar planetas, lunas y asteroides."],
+            ["Pléyades", "Este cúmulo joven reúne estrellas azules brillantes que nacieron aproximadamente juntas."],
+            ["nebulosa oscura", "Una nube de polvo puede bloquear la luz de las estrellas que están detrás y parecer un hueco negro."]
+          ]
+        },
+        {
+          id: "milky-way-disk",
+          name: "Disco galáctico",
+          p0: .79,
+          p1: .875,
+          color: [164, 157, 255],
+          metric: "La Vía Láctea mide alrededor de 100.000 años luz de ancho",
+          fact: "La mayor parte de las estrellas visibles, el gas y el polvo forman un disco aplanado con una barra central y brazos espirales.",
+          sound: { base: 168, filter: 2850, noise: .12, pulse: .11, type: "triangle" },
+          features: [
+            ["Vía Láctea", "Desde la Tierra vemos el disco de nuestra galaxia de canto como una banda luminosa que cruza el cielo."],
+            ["barra central", "Una estructura alargada de estrellas atraviesa la región interior de la galaxia."],
+            ["carril de polvo", "Nubes oscuras ocultan parte de la luz y dibujan grietas dentro de la franja galáctica."],
+            ["materia oscura", "Una forma de materia invisible aporta gran parte de la gravedad que mantiene unida la galaxia."],
+            ["estrella", "Las estrellas del disco tienen edades, masas, colores y sistemas planetarios muy diferentes."]
+          ]
+        },
+        {
+          id: "galactic-center",
+          name: "Centro galáctico",
+          p0: .875,
+          p1: .94,
+          color: [255, 190, 92],
+          metric: "A unos 26.000 años luz del Sol",
+          fact: "El corazón de la Vía Láctea está lleno de estrellas, gas caliente y fuertes campos magnéticos, oculto tras nubes de polvo.",
+          sound: { base: 184, filter: 3400, noise: .18, pulse: .09, type: "sawtooth" },
+          features: [
+            ["Sagitario A*", "Un agujero negro supermasivo de unos cuatro millones de masas solares ocupa el centro de la galaxia."],
+            ["cúmulo nuclear", "Millones de estrellas se concentran en una región pequeña alrededor del agujero negro central."],
+            ["órbita estelar", "Algunas estrellas cercanas se mueven tan rápido que permiten medir la masa invisible del agujero negro."],
+            ["polvo caliente", "La radiación y los choques calientan nubes que brillan en longitudes de onda invisibles para nuestros ojos."],
+            ["radioastronomía", "Las ondas de radio y la luz infrarroja atraviesan mejor el polvo que oculta el centro galáctico."]
+          ]
+        },
+        {
+          id: "halo",
+          name: "Halo galáctico",
+          p0: .94,
+          p1: .982,
+          color: [149, 133, 255],
+          metric: "Una envoltura extensa alrededor del disco",
+          fact: "Fuera del disco brillante existe un halo con estrellas antiguas, cúmulos globulares, corrientes estelares y una gran cantidad de materia oscura.",
+          sound: { base: 199, filter: 3900, noise: .08, pulse: .075, type: "sine" },
+          features: [
+            ["cúmulo globular", "Cientos de miles de estrellas antiguas pueden reunirse en una esfera compacta que orbita la galaxia."],
+            ["estrella antigua", "Algunas estrellas del halo nacieron cuando la Vía Láctea todavía estaba formándose."],
+            ["corriente estelar", "Una galaxia pequeña o un cúmulo desgarrado puede dejar una larga cinta de estrellas."],
+            ["halo de materia oscura", "La mayor parte de la masa de la galaxia podría estar distribuida en una envoltura invisible mucho mayor que el disco."],
+            ["galaxia satélite", "Pequeñas galaxias orbitan la Vía Láctea y pueden intercambiar estrellas y gas con ella."]
+          ]
+        },
+        {
+          id: "galactic-edge",
+          name: "Borde de la Vía Láctea",
+          p0: .982,
+          p1: 1,
+          color: [206, 178, 255],
+          metric: "Salida hacia el Grupo Local",
+          fact: "La galaxia no termina en una línea nítida. Su luz se vuelve tenue y su halo se mezcla con el espacio entre galaxias.",
+          sound: { base: 220, filter: 4600, noise: .045, pulse: .06, type: "sine" },
+          features: [
+            ["borde difuso", "Cada componente de la galaxia tiene un tamaño distinto, por eso no existe una única frontera exacta."],
+            ["espacio intergaláctico", "Entre las galaxias hay enormes distancias con gas extremadamente tenue y materia invisible."],
+            ["Grupo Local", "La Vía Láctea pertenece a una familia de galaxias donde también están Andrómeda y muchas galaxias pequeñas."],
+            ["Andrómeda", "Es la gran galaxia vecina y el siguiente destino natural para ampliar esta aventura."],
+            ["universo", "Más allá esperan grupos, cúmulos, filamentos cósmicos y miles de millones de galaxias."]
+          ]
+        }
+      ];
+
+      const LANDMARKS = [
+        { id: "sun", p: .048, lane: -.1, size: 20 },
+        { id: "heliosphere", p: .122, lane: .08, size: 58 },
+        { id: "oort", p: .218, lane: -.05, size: 72 },
+        { id: "interstellar", p: .305, lane: .12, size: 52 },
+        { id: "alpha", p: .392, lane: -.1, size: 29 },
+        { id: "neighborhood", p: .482, lane: .13, size: 62 },
+        { id: "bubble", p: .578, lane: -.07, size: 78 },
+        { id: "orion", p: .666, lane: .08, size: 84 },
+        { id: "nebula", p: .748, lane: -.12, size: 54 },
+        { id: "disk", p: .832, lane: .08, size: 94 },
+        { id: "center", p: .909, lane: -.06, size: 40 },
+        { id: "halo", p: .963, lane: .04, size: 84 }
+      ];
+
+      const stars = [];
+      const dust = [];
+      const cosmicRays = [];
+      const particles = [];
+      const waves = [];
+
+      let width = 1;
+      let height = 1;
+      let dpr = 1;
+      let activePointer = null;
+      let pointerX = .5;
+      let pointerY = .91;
+      let targetX = .5;
+      let targetY = .91;
+      let hasInteracted = false;
+      let hideTimer = 0;
+      let lastZoneId = "";
+      let lastFeature = -1;
+      let lastTime = performance.now();
+      let raf = 0;
+
+      let audioCtx = null;
+      let master = null;
+      let droneA = null;
+      let droneB = null;
+      let droneGain = null;
+      let droneFilter = null;
+      let pulseOsc = null;
+      let pulseGain = null;
+      let noiseSource = null;
+      let noiseGain = null;
+      let noiseFilter = null;
+      let stereo = null;
+
+      function seeded(seed) {
+        let value = seed >>> 0;
+        return () => {
+          value = (value * 1664525 + 1013904223) >>> 0;
+          return value / 4294967296;
+        };
+      }
+
+      function buildStaticScene() {
+        const random = seeded(18072027);
+        stars.length = 0;
+        dust.length = 0;
+        cosmicRays.length = 0;
+
+        const starCount = Math.max(230, Math.round((width * height) / 3600));
+        for (let i = 0; i < starCount; i++) {
+          const y = Math.pow(random(), .78);
+          const topBias = 1 - y;
+          stars.push({
+            x: random(),
+            y,
+            r: .32 + random() * (1.15 + topBias * 1.4),
+            alpha: .14 + random() * (.48 + topBias * .3),
+            phase: random() * TAU,
+            speed: .4 + random() * 1.8,
+            warmth: random()
+          });
+        }
+
+        for (let i = 0; i < 130; i++) {
+          dust.push({
+            x: random(),
+            y: random(),
+            r: 18 + random() * 90,
+            alpha: .012 + random() * .048,
+            phase: random() * TAU,
+            hue: random()
+          });
+        }
+
+        for (let i = 0; i < 34; i++) {
+          cosmicRays.push({
+            x: random(),
+            y: random(),
+            len: 18 + random() * 80,
+            speed: .00002 + random() * .00005,
+            alpha: .08 + random() * .18,
+            phase: random() * TAU
+          });
+        }
+      }
+
+      function resize() {
+        width = Math.max(1, innerWidth);
+        height = Math.max(1, innerHeight);
+        dpr = Math.min(2, devicePixelRatio || 1);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildStaticScene();
+      }
+
+      function clamp(value, min = 0, max = 1) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function journeyFromY(yNorm) {
+        return clamp(1 - yNorm);
+      }
+
+      function yFromJourney(progress) {
+        return clamp(1 - progress);
+      }
+
+      function zoneForJourney(progress) {
+        const p = clamp(progress, 0, .999999);
+        for (const zone of ZONES) {
+          if (p >= zone.p0 && p < zone.p1) return zone;
+        }
+        return ZONES[ZONES.length - 1];
+      }
+
+      function localRatio(zone, progress) {
+        return clamp((progress - zone.p0) / Math.max(.0001, zone.p1 - zone.p0));
+      }
+
+      function featureFor(zone, xNorm) {
+        const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .99999) * zone.features.length));
+        return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+      }
+
+      function routeX(progress) {
+        const wave = Math.sin(progress * Math.PI * 2.42 - .8) * width * .085;
+        const fine = Math.sin(progress * Math.PI * 7.1 + .4) * width * .018;
+        return width * .5 + wave + fine;
+      }
+
+      function routeY(progress) {
+        return height * (.962 - progress * .922);
+      }
+
+      function landmarkPoint(landmark) {
+        return {
+          x: routeX(landmark.p) + landmark.lane * Math.min(width * .56, 520),
+          y: routeY(landmark.p)
+        };
+      }
+
+      function setCssPoint(x, y) {
+        root.style.setProperty("--scan-x", x + "px");
+        root.style.setProperty("--scan-y", y + "px");
+      }
+
+      function setAccent(zone) {
+        const [r, g, b] = zone.color;
+        root.style.setProperty("--accent", `rgb(${r} ${g} ${b})`);
+        root.style.setProperty("--accent-soft", `rgb(${r} ${g} ${b} / .34)`);
+      }
+
+      function ensureAudio() {
+        if (audioCtx) {
+          if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+          return;
+        }
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtor) return;
+
+        audioCtx = new AudioCtor();
+        master = audioCtx.createGain();
+        master.gain.value = .16;
+
+        const compressor = audioCtx.createDynamicsCompressor();
+        compressor.threshold.value = -22;
+        compressor.knee.value = 24;
+        compressor.ratio.value = 8;
+        compressor.attack.value = .006;
+        compressor.release.value = .22;
+
+        stereo = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+        if (stereo) {
+          master.connect(stereo);
+          stereo.connect(compressor);
+        } else {
+          master.connect(compressor);
+        }
+        compressor.connect(audioCtx.destination);
+
+        droneA = audioCtx.createOscillator();
+        droneB = audioCtx.createOscillator();
+        droneGain = audioCtx.createGain();
+        droneFilter = audioCtx.createBiquadFilter();
+        droneA.type = "sine";
+        droneB.type = "triangle";
+        droneA.frequency.value = 62;
+        droneB.frequency.value = 62.5;
+        droneGain.gain.value = .0001;
+        droneFilter.type = "lowpass";
+        droneFilter.frequency.value = 1000;
+        droneFilter.Q.value = 1.1;
+        droneA.connect(droneFilter);
+        droneB.connect(droneFilter);
+        droneFilter.connect(droneGain);
+        droneGain.connect(master);
+        droneA.start();
+        droneB.start();
+
+        pulseOsc = audioCtx.createOscillator();
+        pulseGain = audioCtx.createGain();
+        pulseOsc.type = "sine";
+        pulseOsc.frequency.value = 1.5;
+        pulseGain.gain.value = .0001;
+        pulseOsc.connect(pulseGain);
+        pulseGain.connect(master);
+        pulseOsc.start();
+
+        const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+        const channel = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < channel.length; i++) channel[i] = Math.random() * 2 - 1;
+        noiseSource = audioCtx.createBufferSource();
+        noiseSource.buffer = noiseBuffer;
+        noiseSource.loop = true;
+        noiseFilter = audioCtx.createBiquadFilter();
+        noiseFilter.type = "bandpass";
+        noiseFilter.frequency.value = 620;
+        noiseFilter.Q.value = .7;
+        noiseGain = audioCtx.createGain();
+        noiseGain.gain.value = .0001;
+        noiseSource.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(master);
+        noiseSource.start();
+      }
+
+      function setAudioFor(zone, xNorm, yNorm, active) {
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const s = zone.sound;
+        const vertical = .9 + (1 - yNorm) * .34;
+        const horizontal = .92 + xNorm * .18;
+        const base = s.base * vertical * horizontal;
+
+        droneA.type = s.type;
+        droneB.type = s.type === "sawtooth" ? "triangle" : "sine";
+        droneA.frequency.setTargetAtTime(base, now, .06);
+        droneB.frequency.setTargetAtTime(base * 1.006, now, .07);
+        droneFilter.frequency.setTargetAtTime(s.filter * (.86 + xNorm * .35), now, .07);
+        droneFilter.Q.setTargetAtTime(1.1 + xNorm * 2.2, now, .08);
+        droneGain.gain.setTargetAtTime(active ? .16 : .0001, now, active ? .045 : .2);
+
+        pulseOsc.frequency.setTargetAtTime(.45 + s.pulse * 3.8, now, .08);
+        pulseGain.gain.setTargetAtTime(active ? .018 + s.pulse * .035 : .0001, now, .08);
+
+        noiseFilter.frequency.setTargetAtTime(250 + s.filter * .38, now, .08);
+        noiseGain.gain.setTargetAtTime(active ? s.noise * .12 : .0001, now, .09);
+        if (stereo) stereo.pan.setTargetAtTime((xNorm - .5) * 1.2, now, .07);
+      }
+
+      function ping(zone, xNorm, featureIndex = 0) {
+        if (!audioCtx || !master) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+        const pan = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+        const scale = [1, 1.125, 1.25, 1.5, 1.6875][featureIndex % 5];
+        osc.type = featureIndex % 2 ? "triangle" : "sine";
+        osc.frequency.setValueAtTime(zone.sound.base * 3.2 * scale, now);
+        osc.frequency.exponentialRampToValueAtTime(zone.sound.base * 5.1 * scale, now + .24);
+        filter.type = "lowpass";
+        filter.frequency.value = Math.min(6200, zone.sound.filter * 1.8);
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(.11, now + .012);
+        gain.gain.exponentialRampToValueAtTime(.0001, now + .42);
+        osc.connect(filter);
+        filter.connect(gain);
+        if (pan) {
+          pan.pan.value = (xNorm - .5) * 1.4;
+          gain.connect(pan);
+          pan.connect(master);
+        } else {
+          gain.connect(master);
+        }
+        osc.start(now);
+        osc.stop(now + .46);
+      }
+
+      function addRipple(x, y) {
+        const node = document.createElement("div");
+        node.className = "ripple";
+        node.style.left = x + "px";
+        node.style.top = y + "px";
+        document.body.appendChild(node);
+        node.addEventListener("animationend", () => node.remove(), { once: true });
+      }
+
+      function addBurst(x, y, zone) {
+        const count = reducedMotion ? 5 : 18;
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * TAU;
+          const speed = 25 + Math.random() * 115;
+          particles.push({
+            x,
+            y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 1,
+            decay: .65 + Math.random() * .7,
+            r: 1 + Math.random() * 3,
+            color: zone.color
+          });
+        }
+        waves.push({ x, y, radius: 10, life: 1, color: zone.color });
+      }
+
+      function updateReadout(x, y, isNewPress = false) {
+        const xNorm = clamp(x / width, 0, .999999);
+        const yNorm = clamp(y / height, 0, .999999);
+        const progress = journeyFromY(yNorm);
+        const zone = zoneForJourney(progress);
+        const feature = featureFor(zone, xNorm);
+
+        pointerX = xNorm;
+        pointerY = yNorm;
+        targetX = xNorm;
+        targetY = yNorm;
+
+        setCssPoint(x, y);
+        setAccent(zone);
+        root.style.setProperty("--progress", `${(progress * 100).toFixed(2)}%`);
+
+        const trackHeight = Math.max(1, height - 40);
+        scaleDot.style.bottom = `${20 + progress * trackHeight}px`;
+        scaleValue.textContent = zone.metric;
+
+        zoneName.textContent = zone.name;
+        zoneName.classList.toggle("compact", zone.name.length > 15);
+        zoneName.classList.toggle("long", zone.name.length > 20);
+        featureName.textContent = feature.name;
+        metric.textContent = zone.metric;
+        fact.textContent = feature.fact;
+
+        touchOrb.style.left = x + "px";
+        touchOrb.style.top = y + "px";
+        touchOrb.classList.add("visible");
+        readout.classList.add("visible");
+        journeyScale.classList.add("visible");
+        document.body.classList.add("active");
+
+        ensureAudio();
+        setAudioFor(zone, xNorm, yNorm, true);
+
+        const zoneChanged = zone.id !== lastZoneId;
+        const featureChanged = feature.index !== lastFeature;
+        if (zoneChanged || (isNewPress && featureChanged)) {
+          ping(zone, xNorm, feature.index);
+          addBurst(x, y, zone);
+        }
+        if (isNewPress) addRipple(x, y);
+
+        lastZoneId = zone.id;
+        lastFeature = feature.index;
+        hasInteracted = true;
+        hint.classList.add("hidden");
+        clearTimeout(hideTimer);
+      }
+
+      function releaseInteraction(delay = 900) {
+        document.body.classList.remove("active");
+        setAudioFor(zoneForJourney(journeyFromY(pointerY)), pointerX, pointerY, false);
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          readout.classList.remove("visible");
+          touchOrb.classList.remove("visible");
+          journeyScale.classList.remove("visible");
+        }, delay);
+      }
+
+      function pointerPosition(event) {
+        return { x: clamp(event.clientX, 0, width), y: clamp(event.clientY, 0, height) };
+      }
+
+      canvas.addEventListener("pointerdown", event => {
+        activePointer = event.pointerId;
+        try { canvas.setPointerCapture?.(event.pointerId); } catch {}
+        const point = pointerPosition(event);
+        updateReadout(point.x, point.y, true);
+      });
+
+      canvas.addEventListener("pointermove", event => {
+        if (activePointer !== event.pointerId) return;
+        const point = pointerPosition(event);
+        updateReadout(point.x, point.y, false);
+      });
+
+      function endPointer(event) {
+        if (activePointer !== event.pointerId) return;
+        activePointer = null;
+        try { canvas.releasePointerCapture?.(event.pointerId); } catch {}
+        releaseInteraction();
+      }
+
+      canvas.addEventListener("pointerup", endPointer);
+      canvas.addEventListener("pointercancel", endPointer);
+      canvas.addEventListener("contextmenu", event => event.preventDefault());
+
+      canvas.addEventListener("keydown", event => {
+        const step = event.shiftKey ? .09 : .035;
+        let handled = true;
+        if (event.key === "ArrowUp") targetY -= step;
+        else if (event.key === "ArrowDown") targetY += step;
+        else if (event.key === "ArrowLeft") targetX -= step;
+        else if (event.key === "ArrowRight") targetX += step;
+        else if (event.key === "Home") targetY = .96;
+        else if (event.key === "End") targetY = .04;
+        else if (event.key === " " || event.key === "Enter") {}
+        else handled = false;
+        if (!handled) return;
+        event.preventDefault();
+        targetX = clamp(targetX, .02, .98);
+        targetY = clamp(targetY, .025, .975);
+        updateReadout(targetX * width, targetY * height, true);
+        releaseInteraction(1500);
+      });
+
+      function drawBackground(time) {
+        const bg = ctx.createLinearGradient(0, height, 0, 0);
+        bg.addColorStop(0, "#070814");
+        bg.addColorStop(.25, "#030611");
+        bg.addColorStop(.58, "#06091a");
+        bg.addColorStop(.82, "#09091e");
+        bg.addColorStop(1, "#110d24");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, width, height);
+
+        const solarGlow = ctx.createRadialGradient(width * .5, height * 1.04, 0, width * .5, height * 1.04, height * .48);
+        solarGlow.addColorStop(0, "rgba(255,196,76,.74)");
+        solarGlow.addColorStop(.12, "rgba(255,154,64,.25)");
+        solarGlow.addColorStop(.38, "rgba(103,135,255,.08)");
+        solarGlow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = solarGlow;
+        ctx.fillRect(0, height * .52, width, height * .48);
+
+        const galacticGlow = ctx.createRadialGradient(width * .5, -height * .04, 0, width * .5, -height * .04, Math.max(width, height) * .68);
+        galacticGlow.addColorStop(0, "rgba(255,213,145,.32)");
+        galacticGlow.addColorStop(.14, "rgba(174,128,255,.18)");
+        galacticGlow.addColorStop(.5, "rgba(82,93,191,.07)");
+        galacticGlow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = galacticGlow;
+        ctx.fillRect(0, 0, width, height * .62);
+
+        ctx.save();
+        ctx.translate(width * .51, height * .07);
+        ctx.rotate(-.14);
+        const band = ctx.createLinearGradient(-width * .65, 0, width * .65, 0);
+        band.addColorStop(0, "rgba(120,100,220,0)");
+        band.addColorStop(.25, "rgba(145,128,239,.05)");
+        band.addColorStop(.5, "rgba(255,216,161,.18)");
+        band.addColorStop(.75, "rgba(143,121,235,.05)");
+        band.addColorStop(1, "rgba(120,100,220,0)");
+        ctx.fillStyle = band;
+        ctx.scale(1, .18);
+        ctx.beginPath();
+        ctx.arc(0, 0, width * .72, 0, TAU);
+        ctx.fill();
+        ctx.restore();
+
+        for (const star of stars) {
+          const flicker = .72 + Math.sin(time * .0012 * star.speed + star.phase) * .28;
+          const x = star.x * width;
+          const y = star.y * height;
+          const topBoost = 1 + (1 - star.y) * .7;
+          const alpha = star.alpha * flicker * topBoost;
+          const warm = star.warmth > .88;
+          ctx.fillStyle = warm ? `rgba(255,223,171,${alpha})` : `rgba(206,225,255,${alpha})`;
+          ctx.beginPath();
+          ctx.arc(x, y, star.r, 0, TAU);
+          ctx.fill();
+          if (star.r > 1.55) {
+            ctx.strokeStyle = warm ? `rgba(255,221,164,${alpha * .38})` : `rgba(178,211,255,${alpha * .34})`;
+            ctx.lineWidth = .6;
+            ctx.beginPath();
+            ctx.moveTo(x - star.r * 3.3, y);
+            ctx.lineTo(x + star.r * 3.3, y);
+            ctx.moveTo(x, y - star.r * 3.3);
+            ctx.lineTo(x, y + star.r * 3.3);
+            ctx.stroke();
+          }
+        }
+
+        for (const mote of dust) {
+          const drift = Math.sin(time * .00012 + mote.phase) * 7;
+          const x = mote.x * width + drift;
+          const y = mote.y * height;
+          const purple = mote.hue > .55;
+          const glow = ctx.createRadialGradient(x, y, 0, x, y, mote.r);
+          glow.addColorStop(0, purple ? `rgba(174,105,255,${mote.alpha})` : `rgba(78,157,255,${mote.alpha})`);
+          glow.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = glow;
+          ctx.fillRect(x - mote.r, y - mote.r, mote.r * 2, mote.r * 2);
+        }
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (const ray of cosmicRays) {
+          const x = ((ray.x + time * ray.speed) % 1.12 - .06) * width;
+          const y = ray.y * height + Math.sin(time * .0003 + ray.phase) * 8;
+          ctx.strokeStyle = `rgba(160,210,255,${ray.alpha})`;
+          ctx.lineWidth = .65;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + ray.len * .35, y - ray.len);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawJourneyPath(time) {
+        ctx.save();
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
+        const pathGrad = ctx.createLinearGradient(0, height, 0, 0);
+        pathGrad.addColorStop(0, "rgba(255,193,88,.2)");
+        pathGrad.addColorStop(.23, "rgba(105,204,255,.34)");
+        pathGrad.addColorStop(.55, "rgba(121,224,218,.3)");
+        pathGrad.addColorStop(.78, "rgba(205,119,255,.34)");
+        pathGrad.addColorStop(1, "rgba(255,214,151,.44)");
+        ctx.strokeStyle = pathGrad;
+        ctx.lineWidth = Math.max(1.4, Math.min(width, height) * .0032);
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = "rgba(128,185,255,.32)";
+        ctx.beginPath();
+        for (let p = 0; p <= 1.0001; p += .008) {
+          const x = routeX(p);
+          const y = routeY(p);
+          if (p === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        for (const zone of ZONES) {
+          const y = routeY(zone.p0);
+          const [r, g, b] = zone.color;
+          const fade = ctx.createLinearGradient(0, y, width, y);
+          fade.addColorStop(0, `rgba(${r},${g},${b},0)`);
+          fade.addColorStop(.32, `rgba(${r},${g},${b},.11)`);
+          fade.addColorStop(.5, `rgba(${r},${g},${b},.25)`);
+          fade.addColorStop(.68, `rgba(${r},${g},${b},.11)`);
+          fade.addColorStop(1, `rgba(${r},${g},${b},0)`);
+          ctx.strokeStyle = fade;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+
+        const exitP = .995;
+        const exitX = routeX(exitP);
+        const exitY = routeY(exitP);
+        const glow = ctx.createRadialGradient(exitX, exitY, 0, exitX, exitY, Math.min(width, height) * .25);
+        glow.addColorStop(0, "rgba(231,202,255,.34)");
+        glow.addColorStop(.18, "rgba(167,121,255,.12)");
+        glow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, width, height * .32);
+
+        const pulseP = clamp(journeyFromY(pointerY));
+        const pulseX = routeX(pulseP);
+        const pulseY = routeY(pulseP);
+        const pulse = 5 + Math.sin(time * .004) * 2.3;
+        ctx.fillStyle = "rgba(255,255,255,.9)";
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = "rgba(159,203,255,.86)";
+        ctx.beginPath();
+        ctx.arc(pulseX, pulseY, pulse, 0, TAU);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function starGlow(x, y, radius, inner, middle, outer) {
+        const glow = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        glow.addColorStop(0, inner);
+        glow.addColorStop(.18, middle);
+        glow.addColorStop(1, outer);
+        ctx.fillStyle = glow;
+        ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+      }
+
+      function drawSun(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.max(7, Math.min(landmark.size, height * .03));
+        const pulse = 1 + Math.sin(time * .0016) * .06;
+        starGlow(x, y, r * 4.4, "rgba(255,255,225,.95)", "rgba(255,190,72,.26)", "rgba(255,120,30,0)");
+        const grad = ctx.createRadialGradient(x - r * .32, y - r * .35, 1, x, y, r * pulse);
+        grad.addColorStop(0, "#fffce8");
+        grad.addColorStop(.35, "#ffd66d");
+        grad.addColorStop(.78, "#ff923f");
+        grad.addColorStop(1, "#b93620");
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(x, y, r * pulse, 0, TAU);
+        ctx.fill();
+      }
+
+      function drawHeliosphere(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .105);
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(-.18);
+        for (let i = 0; i < 3; i++) {
+          const pulse = 1 + Math.sin(time * .001 + i * 1.8) * .025;
+          ctx.strokeStyle = `rgba(${90 + i * 25},${181 + i * 14},255,${.19 - i * .035})`;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, r * pulse * (1 + i * .11), r * .62 * pulse * (1 + i * .08), 0, 0, TAU);
+          ctx.stroke();
+        }
+        const tail = ctx.createLinearGradient(r * .3, 0, r * 2.1, 0);
+        tail.addColorStop(0, "rgba(82,190,255,.16)");
+        tail.addColorStop(1, "rgba(82,190,255,0)");
+        ctx.fillStyle = tail;
+        ctx.beginPath();
+        ctx.moveTo(r * .2, -r * .35);
+        ctx.quadraticCurveTo(r * 1.1, -r * .42, r * 2.2, -r * .12);
+        ctx.lineTo(r * 2.2, r * .12);
+        ctx.quadraticCurveTo(r * 1.1, r * .42, r * .2, r * .35);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+        starGlow(x - r * .23, y, r * .42, "rgba(255,247,194,.9)", "rgba(255,176,73,.22)", "rgba(255,130,30,0)");
+      }
+
+      function drawOort(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .13);
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(time * .000025);
+        for (let ring = 0; ring < 4; ring++) {
+          const count = 20 + ring * 13;
+          for (let i = 0; i < count; i++) {
+            const angle = (i / count) * TAU + ring * .53;
+            const rr = r * (.38 + ring * .18) * (1 + Math.sin(i * 2.31 + ring) * .1);
+            const px = Math.cos(angle) * rr;
+            const py = Math.sin(angle) * rr * (.66 + ring * .035);
+            const alpha = .16 + (i % 5) * .035;
+            ctx.fillStyle = `rgba(205,225,255,${alpha})`;
+            ctx.beginPath();
+            ctx.arc(px, py, .7 + (i % 3) * .28, 0, TAU);
+            ctx.fill();
+          }
+        }
+        ctx.restore();
+        starGlow(x, y, r * .32, "rgba(255,248,205,.75)", "rgba(255,180,80,.14)", "rgba(0,0,0,0)");
+      }
+
+      function drawInterstellarCloud(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .1);
+        for (let i = 0; i < 8; i++) {
+          const a = i / 8 * TAU + time * .00004;
+          const px = x + Math.cos(a * 1.3) * r * .4;
+          const py = y + Math.sin(a) * r * .26;
+          const cloud = ctx.createRadialGradient(px, py, 0, px, py, r * (.48 + i * .025));
+          cloud.addColorStop(0, `rgba(94,152,231,${.07 + i * .005})`);
+          cloud.addColorStop(.45, `rgba(85,119,198,${.035 + i * .002})`);
+          cloud.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = cloud;
+          ctx.fillRect(px - r, py - r, r * 2, r * 2);
+        }
+      }
+
+      function drawAlphaCentauri(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .055);
+        const orbit = r * .64;
+        const angle = time * .00018;
+        const ax = x + Math.cos(angle) * orbit;
+        const ay = y + Math.sin(angle) * orbit * .42;
+        const bx = x - Math.cos(angle) * orbit;
+        const by = y - Math.sin(angle) * orbit * .42;
+        starGlow(ax, ay, r * 1.6, "rgba(255,255,230,.96)", "rgba(255,216,119,.26)", "rgba(0,0,0,0)");
+        starGlow(bx, by, r * 1.45, "rgba(255,245,211,.92)", "rgba(255,176,92,.22)", "rgba(0,0,0,0)");
+        const px = x + r * 1.45;
+        const py = y + r * .6;
+        starGlow(px, py, r * .78, "rgba(255,184,144,.9)", "rgba(255,74,56,.25)", "rgba(0,0,0,0)");
+      }
+
+      function drawNeighborhood(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .11);
+        const points = [
+          [-.66, -.2, 1.8, "255,246,212"],
+          [-.25, .46, 1.2, "255,130,92"],
+          [.18, -.47, 1.45, "200,225,255"],
+          [.58, .12, 2.2, "190,217,255"],
+          [.05, .18, .8, "255,206,126"],
+          [.72, -.48, .85, "255,120,90"],
+          [-.62, .48, .72, "210,231,255"]
+        ];
+        for (let i = 0; i < points.length; i++) {
+          const [dx, dy, size, color] = points[i];
+          const pulse = .86 + Math.sin(time * .0018 + i * 1.3) * .14;
+          starGlow(x + dx * r, y + dy * r, r * .16 * size, `rgba(${color},${.82 * pulse})`, `rgba(${color},${.16 * pulse})`, "rgba(0,0,0,0)");
+        }
+        ctx.strokeStyle = "rgba(189,211,255,.1)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, TAU);
+        ctx.stroke();
+      }
+
+      function drawLocalBubble(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .135);
+        const wobble = 1 + Math.sin(time * .0005) * .025;
+        const fill = ctx.createRadialGradient(x - r * .18, y - r * .2, 0, x, y, r * wobble);
+        fill.addColorStop(0, "rgba(102,239,225,.06)");
+        fill.addColorStop(.62, "rgba(82,198,211,.035)");
+        fill.addColorStop(.82, "rgba(117,238,222,.12)");
+        fill.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = fill;
+        ctx.beginPath();
+        ctx.ellipse(x, y, r * 1.18 * wobble, r * .72, -.16, 0, TAU);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(141,255,236,.18)";
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.ellipse(x, y, r * 1.18 * wobble, r * .72, -.16, 0, TAU);
+        ctx.stroke();
+      }
+
+      function drawOrionSpur(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .15);
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(-.42);
+        ctx.lineCap = "round";
+        for (let arm = 0; arm < 3; arm++) {
+          const grad = ctx.createLinearGradient(-r, 0, r, 0);
+          grad.addColorStop(0, "rgba(84,129,255,0)");
+          grad.addColorStop(.5, `rgba(${120 + arm * 20},${170 + arm * 12},255,${.2 - arm * .04})`);
+          grad.addColorStop(1, "rgba(84,129,255,0)");
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 8 - arm * 2.2;
+          ctx.beginPath();
+          ctx.moveTo(-r * 1.15, r * (.32 - arm * .12));
+          ctx.bezierCurveTo(-r * .4, -r * (.5 + arm * .02), r * .35, r * (.5 - arm * .08), r * 1.15, -r * (.3 + arm * .06));
+          ctx.stroke();
+        }
+        for (let i = 0; i < 45; i++) {
+          const t = i / 44;
+          const px = -r * 1.05 + t * r * 2.1;
+          const py = Math.sin(t * Math.PI * 2.1) * r * .35 + Math.sin(i * 2.7) * r * .12;
+          ctx.fillStyle = i % 6 === 0 ? "rgba(255,222,163,.6)" : "rgba(191,218,255,.38)";
+          ctx.beginPath();
+          ctx.arc(px, py, .8 + (i % 3) * .35, 0, TAU);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function drawNebula(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .1);
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const colors = [
+          [237, 88, 255],
+          [105, 124, 255],
+          [72, 224, 235],
+          [255, 121, 184]
+        ];
+        for (let i = 0; i < 11; i++) {
+          const a = i * 2.13 + time * .000035;
+          const px = x + Math.cos(a) * r * (.2 + (i % 4) * .13);
+          const py = y + Math.sin(a * 1.2) * r * (.15 + (i % 3) * .12);
+          const rr = r * (.42 + (i % 5) * .12);
+          const c = colors[i % colors.length];
+          const cloud = ctx.createRadialGradient(px, py, 0, px, py, rr);
+          cloud.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},.16)`);
+          cloud.addColorStop(.5, `rgba(${c[0]},${c[1]},${c[2]},.07)`);
+          cloud.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = cloud;
+          ctx.fillRect(px - rr, py - rr, rr * 2, rr * 2);
+        }
+        ctx.restore();
+        for (let i = 0; i < 9; i++) {
+          const a = i / 9 * TAU + .4;
+          const px = x + Math.cos(a) * r * .34;
+          const py = y + Math.sin(a) * r * .22;
+          starGlow(px, py, r * .13, "rgba(225,242,255,.86)", "rgba(125,183,255,.18)", "rgba(0,0,0,0)");
+        }
+      }
+
+      function drawGalacticDisk(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .17);
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(-.12);
+        for (let layer = 0; layer < 5; layer++) {
+          const rr = r * (1 - layer * .11);
+          const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, rr);
+          glow.addColorStop(0, `rgba(255,224,165,${.19 - layer * .018})`);
+          glow.addColorStop(.2, `rgba(201,166,255,${.12 - layer * .012})`);
+          glow.addColorStop(.72, `rgba(103,131,255,${.06 - layer * .006})`);
+          glow.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = glow;
+          ctx.save();
+          ctx.scale(1, .22 + layer * .012);
+          ctx.beginPath();
+          ctx.arc(0, 0, rr, 0, TAU);
+          ctx.fill();
+          ctx.restore();
+        }
+        ctx.strokeStyle = "rgba(18,15,42,.52)";
+        ctx.lineWidth = r * .045;
+        for (let i = -2; i <= 2; i++) {
+          const yy = i * r * .055 + Math.sin(time * .00018 + i) * 1.2;
+          ctx.beginPath();
+          ctx.moveTo(-r * .95, yy);
+          ctx.bezierCurveTo(-r * .3, yy - r * .08, r * .25, yy + r * .08, r * .95, yy);
+          ctx.stroke();
+        }
+        ctx.restore();
+        starGlow(x, y, r * .5, "rgba(255,247,211,.55)", "rgba(255,183,99,.11)", "rgba(0,0,0,0)");
+      }
+
+      function drawGalacticCenter(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .075);
+        starGlow(x, y, r * 3.1, "rgba(255,250,221,.88)", "rgba(255,177,73,.2)", "rgba(0,0,0,0)");
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(time * .00012);
+        const disk = ctx.createRadialGradient(0, 0, r * .14, 0, 0, r * 1.35);
+        disk.addColorStop(0, "rgba(0,0,0,.94)");
+        disk.addColorStop(.16, "rgba(0,0,0,.96)");
+        disk.addColorStop(.28, "rgba(255,247,205,.88)");
+        disk.addColorStop(.43, "rgba(255,126,44,.52)");
+        disk.addColorStop(.72, "rgba(186,65,255,.2)");
+        disk.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = disk;
+        ctx.save();
+        ctx.scale(1, .32);
+        ctx.beginPath();
+        ctx.arc(0, 0, r * 1.35, 0, TAU);
+        ctx.fill();
+        ctx.restore();
+        ctx.fillStyle = "#010103";
+        ctx.beginPath();
+        ctx.arc(0, 0, r * .27, 0, TAU);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawHalo(time, landmark) {
+        const { x, y } = landmarkPoint(landmark);
+        const r = Math.min(landmark.size, Math.min(width, height) * .15);
+        const halo = ctx.createRadialGradient(x, y, 0, x, y, r * 1.2);
+        halo.addColorStop(0, "rgba(174,146,255,.06)");
+        halo.addColorStop(.65, "rgba(133,114,227,.035)");
+        halo.addColorStop(.92, "rgba(190,168,255,.09)");
+        halo.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.ellipse(x, y, r * 1.16, r * .82, .1, 0, TAU);
+        ctx.fill();
+        for (let i = 0; i < 12; i++) {
+          const a = i / 12 * TAU + time * .000018;
+          const rr = r * (.4 + (i % 4) * .15);
+          const px = x + Math.cos(a) * rr;
+          const py = y + Math.sin(a) * rr * .7;
+          const clusterR = 3 + (i % 3) * 1.5;
+          starGlow(px, py, clusterR * 4.5, "rgba(255,230,178,.62)", "rgba(170,145,255,.12)", "rgba(0,0,0,0)");
+          ctx.fillStyle = "rgba(255,238,203,.75)";
+          for (let j = 0; j < 7; j++) {
+            const aa = j / 7 * TAU;
+            ctx.beginPath();
+            ctx.arc(px + Math.cos(aa) * clusterR, py + Math.sin(aa) * clusterR, .55, 0, TAU);
+            ctx.fill();
+          }
+        }
+      }
+
+      function drawLandmarks(time) {
+        for (const landmark of LANDMARKS) {
+          switch (landmark.id) {
+            case "sun": drawSun(time, landmark); break;
+            case "heliosphere": drawHeliosphere(time, landmark); break;
+            case "oort": drawOort(time, landmark); break;
+            case "interstellar": drawInterstellarCloud(time, landmark); break;
+            case "alpha": drawAlphaCentauri(time, landmark); break;
+            case "neighborhood": drawNeighborhood(time, landmark); break;
+            case "bubble": drawLocalBubble(time, landmark); break;
+            case "orion": drawOrionSpur(time, landmark); break;
+            case "nebula": drawNebula(time, landmark); break;
+            case "disk": drawGalacticDisk(time, landmark); break;
+            case "center": drawGalacticCenter(time, landmark); break;
+            case "halo": drawHalo(time, landmark); break;
+          }
+        }
+      }
+
+      function drawParticles(dt) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life -= p.decay * dt;
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.vx *= Math.pow(.09, dt);
+          p.vy *= Math.pow(.09, dt);
+          const [r, g, b] = p.color;
+          ctx.fillStyle = `rgba(${r},${g},${b},${p.life * .72})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * (.4 + p.life), 0, TAU);
+          ctx.fill();
+        }
+
+        for (let i = waves.length - 1; i >= 0; i--) {
+          const wave = waves[i];
+          wave.life -= dt * 1.25;
+          if (wave.life <= 0) {
+            waves.splice(i, 1);
+            continue;
+          }
+          wave.radius += dt * 128;
+          const [r, g, b] = wave.color;
+          ctx.strokeStyle = `rgba(${r},${g},${b},${wave.life * .42})`;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.arc(wave.x, wave.y, wave.radius, 0, TAU);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function draw(time) {
+        const dt = Math.min(.05, Math.max(0, (time - lastTime) / 1000));
+        lastTime = time;
+
+        if (!reducedMotion) {
+          pointerX += (targetX - pointerX) * .08;
+          pointerY += (targetY - pointerY) * .08;
+        } else {
+          pointerX = targetX;
+          pointerY = targetY;
+        }
+
+        drawBackground(time);
+        drawJourneyPath(time);
+        drawLandmarks(time);
+        drawParticles(dt);
+
+        raf = requestAnimationFrame(draw);
+      }
+
+      function init() {
+        resize();
+        addEventListener("resize", resize, { passive: true });
+        addEventListener("orientationchange", () => setTimeout(resize, 120), { passive: true });
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden && audioCtx?.state === "running") audioCtx.suspend().catch(() => {});
+        });
+        canvas.focus({ preventScroll: true });
+        raf = requestAnimationFrame(draw);
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
