@@ -1,0 +1,1769 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#05050b">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora de la complejidad: de leyes simples y autoorganización a replicación, protocélulas y el umbral aún desconocido de la vida.">
+  <meta name="application-name" content="Espectro de la Complejidad: de las Leyes Simples al Umbral de la Vida">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro de la Complejidad">
+  <meta property="og:description" content="Toca y observa cómo reglas locales, energía, redes e información pueden producir organización, evolución química y protocélulas.">
+  <title>Espectro de la Complejidad: de las Leyes Simples al Umbral de la Vida</title>
+  <style>
+    :root {
+      --accent: 191 223 255;
+      --accent-soft: rgb(var(--accent) / .34);
+      --ink: 255 255 255;
+      --panel: 5 8 15;
+      --scan-x: 50vw;
+      --scan-y: 92vh;
+      --progress: 2%;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #030308;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: rgb(var(--ink));
+      font-family: Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #complexity-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette,
+    #top-bloom {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background:
+        radial-gradient(circle at var(--scan-x) var(--scan-y), rgb(var(--accent) / .52) 0, rgb(var(--accent) / .15) 11%, transparent 34%);
+      mix-blend-mode: screen;
+    }
+    body.active #light-field { opacity: .88; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg, transparent calc(var(--scan-x) - 1px), rgb(var(--accent) / .55) var(--scan-x), transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg, transparent calc(var(--scan-y) - 1px), rgb(var(--accent) / .34) var(--scan-y), transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+    body.active #scan-line { opacity: .2; }
+
+    #grain {
+      z-index: 4;
+      opacity: .045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 38%, rgb(0 0 0 / .23) 72%, rgb(0 0 0 / .82) 126%),
+        linear-gradient(90deg, rgb(0 0 0 / .46), transparent 13%, transparent 87%, rgb(0 0 0 / .44));
+    }
+
+    #top-bloom {
+      z-index: 1;
+      opacity: .38;
+      background: radial-gradient(ellipse at 50% -8%, rgb(137 255 179 / .25), transparent 48%);
+      mix-blend-mode: screen;
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 49%;
+      width: min(92vw, 850px);
+      padding: clamp(15px, 3.2vw, 27px) clamp(19px, 5vw, 52px) clamp(18px, 3.7vw, 33px);
+      border: 1px solid rgb(255 255 255 / .22);
+      border-radius: clamp(25px, 6vw, 52px);
+      color: white;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        rgb(var(--panel) / .65);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .55),
+        0 0 84px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .26),
+        inset 0 -1px 0 rgb(0 0 0 / .25);
+      backdrop-filter: blur(23px) saturate(1.36);
+      -webkit-backdrop-filter: blur(23px) saturate(1.36);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #certainty-class {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 27px;
+      margin-bottom: clamp(9px, 2vw, 15px);
+      padding: 6px 13px 7px;
+      border: 1px solid rgb(var(--accent) / .62);
+      border-radius: 999px;
+      color: rgb(var(--accent));
+      font-size: clamp(.62rem, 2.1vw, .87rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: rgb(var(--accent) / .09);
+      box-shadow: 0 0 25px var(--accent-soft), inset 0 1px 0 rgb(255 255 255 / .1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.5vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow: 0 0 30px var(--accent-soft), 0 5px 24px rgb(0 0 0 / .5);
+    }
+    #zone-name.compact { font-size: clamp(1.7rem, 7.15vw, 5.55rem); letter-spacing: -.046em; line-height: .9; }
+    #zone-name.long { font-size: clamp(1.38rem, 5.9vw, 4.45rem); letter-spacing: -.034em; line-height: .94; }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 880;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(10px, 2vw, 17px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.67rem, 2.2vw, .92rem);
+      font-weight: 820;
+      line-height: 1.12;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .2);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .11);
+    }
+
+    #fact {
+      display: block;
+      max-width: 690px;
+      margin: clamp(10px, 2.25vw, 17px) auto 0;
+      font-size: clamp(.82rem, 2.63vw, 1.1rem);
+      font-weight: 600;
+      line-height: 1.42;
+      letter-spacing: .005em;
+      color: rgb(255 255 255 / .9);
+      text-wrap: pretty;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 92%;
+      width: clamp(58px, 15vw, 104px);
+      aspect-ratio: 1;
+      border: 1px solid rgb(var(--accent) / .82);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(.4);
+      background: radial-gradient(circle, rgb(255 255 255 / .82) 0 2%, rgb(var(--accent) / .34) 7%, rgb(var(--accent) / .09) 36%, transparent 70%);
+      box-shadow: 0 0 18px rgb(var(--accent) / .58), 0 0 62px rgb(var(--accent) / .42), inset 0 0 26px rgb(var(--accent) / .19);
+      transition: opacity 150ms ease, transform 260ms cubic-bezier(.16, 1, .3, 1);
+    }
+    #touch-orb.visible { opacity: .9; transform: translate(-50%, -50%) scale(1); }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(10px, env(safe-area-inset-right));
+      top: max(19px, env(safe-area-inset-top));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: clamp(50px, 10vw, 78px);
+      pointer-events: none;
+      opacity: .58;
+      transition: opacity 180ms ease;
+    }
+    body.active #journey-scale { opacity: .9; }
+
+    #scale-track {
+      position: absolute;
+      right: 11px;
+      top: 48px;
+      bottom: 48px;
+      width: 3px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgb(255 255 255 / .14);
+      box-shadow: 0 0 12px rgb(0 0 0 / .5);
+    }
+    #scale-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(to top, rgb(116 169 255 / .65), rgb(var(--accent)));
+      box-shadow: 0 0 14px rgb(var(--accent) / .72);
+    }
+    #scale-dot {
+      position: absolute;
+      right: 6px;
+      bottom: 48px;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgb(255 255 255 / .84);
+      border-radius: 50%;
+      transform: translateY(50%);
+      background: rgb(var(--accent));
+      box-shadow: 0 0 17px rgb(var(--accent) / .85);
+    }
+    #scale-bottom,
+    #scale-top {
+      position: absolute;
+      right: 0;
+      width: 72px;
+      font-size: clamp(.49rem, 1.6vw, .61rem);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: .11em;
+      text-align: right;
+      text-transform: uppercase;
+      color: rgb(255 255 255 / .65);
+    }
+    #scale-top { top: 0; }
+    #scale-bottom { bottom: 0; }
+    #scale-value {
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      width: min(34vh, 240px);
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right center;
+      font-size: clamp(.54rem, 1.7vw, .66rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .14em;
+      text-align: center;
+      text-transform: uppercase;
+      color: rgb(var(--accent));
+      text-shadow: 0 0 14px rgb(var(--accent) / .6);
+      white-space: nowrap;
+    }
+
+    #hint {
+      position: fixed;
+      z-index: 6;
+      left: 50%;
+      bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+      width: min(78vw, 510px);
+      transform: translateX(-50%);
+      color: rgb(255 255 255 / .78);
+      text-align: center;
+      pointer-events: none;
+      font-size: clamp(.7rem, 2.4vw, .94rem);
+      font-weight: 800;
+      line-height: 1.34;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 16px rgb(0 0 0 / .8);
+      animation: breathe 3.2s ease-in-out infinite;
+    }
+    #hint strong { color: rgb(var(--accent)); }
+
+    .ripple {
+      position: fixed;
+      z-index: 7;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgb(var(--accent) / .78);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 22px rgb(var(--accent) / .52), inset 0 0 15px rgb(var(--accent) / .2);
+      animation: ripple 920ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple {
+      to { width: min(72vw, 560px); height: min(72vw, 560px); opacity: 0; }
+    }
+    @keyframes breathe {
+      0%, 100% { opacity: .4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: .95; transform: translateX(-50%) translateY(-3px); }
+    }
+
+    @media (max-height: 620px) {
+      #readout { width: min(88vw, 760px); padding-top: 12px; padding-bottom: 14px; }
+      #certainty-class { margin-bottom: 7px; }
+      #fact { margin-top: 8px; line-height: 1.32; }
+      #metric { margin-top: 7px; }
+      #journey-scale { opacity: .46; }
+    }
+
+    @media (max-width: 460px) {
+      #readout { width: 91vw; }
+      #journey-scale { right: 3px; }
+      #scale-value { display: none; }
+      #scale-bottom, #scale-top { width: 54px; font-size: .45rem; }
+      #hint { width: 72vw; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #hint { animation: none; }
+      .ripple { animation-duration: 1ms; }
+      #readout, #touch-orb, #light-field, #scan-line { transition-duration: 1ms; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="complexity-spectrum" tabindex="0" role="application" aria-label="Exploración táctil de la complejidad, desde la naturaleza de la realidad en la parte inferior hasta el umbral de la vida en la parte superior. Toca, arrastra o usa las flechas del teclado."></canvas>
+  <div id="top-bloom" aria-hidden="true"></div>
+  <div id="light-field" aria-hidden="true"></div>
+  <div id="scan-line" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <div id="hint" aria-hidden="true"><strong>Toca y asciende</strong> · de reglas simples al umbral de la vida</div>
+
+  <div id="readout" aria-live="polite" aria-atomic="true">
+    <span id="certainty-class"></span>
+    <strong id="zone-name"></strong>
+    <span id="feature-name"></span>
+    <span id="metric"></span>
+    <span id="fact"></span>
+  </div>
+
+  <div id="touch-orb" aria-hidden="true"></div>
+
+  <div id="journey-scale" aria-hidden="true">
+    <span id="scale-top">El umbral de la vida</span>
+    <div id="scale-track"><div id="scale-fill"></div></div>
+    <div id="scale-dot"></div>
+    <span id="scale-value">Leyes y simetrías</span>
+    <span id="scale-bottom">La naturaleza de la realidad</span>
+  </div>
+
+  <!--
+    Visualización educativa conceptual, táctil y sin dependencias externas.
+
+    Los patrones representan principios generales de física, química, teoría de redes y evolución;
+    no reconstruyen literalmente el origen histórico de la vida. La autoorganización no implica
+    intención, conciencia ni diseño. El orden local de sistemas abiertos puede persistir mientras
+    reciben energía y producen entropía en su entorno, en conformidad con la termodinámica.
+
+    Se conocen muchas piezas relevantes para la química prebiótica y se han reproducido en laboratorio
+    procesos como autoensamblaje, catálisis, compartimentación, selección molecular y protocélulas
+    experimentales. Sin embargo, no existe una secuencia histórica confirmada que conecte de forma única
+    la Tierra prebiótica con los primeros sistemas biológicos. Mundo de ARN, metabolismo primero,
+    mundos lipídicos, superficies minerales, fuentes hidrotermales, ciclos húmedo-seco y aporte
+    extraterrestre se presentan como líneas de investigación compatibles o competidoras, sin declarar
+    una ganadora.
+  -->
+
+  <script>
+  (() => {
+    "use strict";
+
+    const canvas = document.getElementById("complexity-spectrum");
+    const ctx = canvas.getContext("2d", { alpha: false, desynchronized: true });
+    const root = document.documentElement;
+    const readout = document.getElementById("readout");
+    const certaintyClass = document.getElementById("certainty-class");
+    const zoneName = document.getElementById("zone-name");
+    const featureName = document.getElementById("feature-name");
+    const metric = document.getElementById("metric");
+    const fact = document.getElementById("fact");
+    const touchOrb = document.getElementById("touch-orb");
+    const scaleValue = document.getElementById("scale-value");
+    const scaleDot = document.getElementById("scale-dot");
+    const hint = document.getElementById("hint");
+
+    const TAU = Math.PI * 2;
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const mix = (a, b, t) => a + (b - a) * t;
+    const smooth = t => t * t * (3 - 2 * t);
+    const fract = v => v - Math.floor(v);
+    const seeded = n => fract(Math.sin(n * 127.1 + 311.7) * 43758.5453123);
+
+    const ZONES = [
+      {
+        id: "reality", name: "La naturaleza de la realidad", className: "Continuidad con Realidad Emergente", p0: 0, p1: .052,
+        color: [176, 212, 255], metric: "Punto de partida · de lo fundamental a lo emergente",
+        fact: "El recorrido anterior terminó preguntando qué es fundamental. Este comienza con la dirección inversa: cómo pueden surgir organización, función y novedad colectiva a partir de reglas e ingredientes más simples.",
+        sound: { base: 43, filter: 470, noise: .055, pulse: .02, type: "sine" },
+        features: [
+          ["realidad", "La realidad observable contiene niveles de organización cuyas propiedades no aparecen en una sola partícula, molécula o regla aislada."],
+          ["emergencia", "Una propiedad emergente surge de interacciones colectivas y no puede atribuirse sin más a un componente individual."],
+          ["nivel", "Las explicaciones pueden operar en niveles distintos: partículas, materiales, redes químicas, células, organismos y ecosistemas."],
+          ["componente", "Los componentes importan, pero también importan sus conexiones, cantidades, condiciones y flujos de energía."],
+          ["interacción", "La complejidad empieza cuando muchos elementos se afectan mutuamente mediante reglas locales."],
+          ["pregunta", "¿Cómo pueden unas pocas leyes producir estructuras y comportamientos que no existen en sus componentes aislados?"]
+        ]
+      },
+      {
+        id: "laws", name: "Leyes y simetrías", className: "Principios físicos establecidos", p0: .052, p1: .12,
+        color: [111, 181, 255], metric: "Reglas locales · conservación · probabilidad · condiciones",
+        fact: "Una misma ley puede generar resultados muy distintos cuando cambian el estado inicial, los límites o las fluctuaciones. Las reglas restringen lo posible sin especificar cada detalle del resultado.",
+        sound: { base: 49, filter: 650, noise: .045, pulse: .04, type: "triangle" },
+        features: [
+          ["ley", "Una ley física resume regularidades y relaciones que se cumplen en un dominio de condiciones; no es una instrucción que diseñe cada resultado."],
+          ["regla", "Una regla local determina cómo responde un elemento a su entorno inmediato."],
+          ["simetría", "Una simetría expresa que cierta transformación deja invariables las leyes o una descripción física."],
+          ["conservación", "Magnitudes como energía, momento o carga se conservan bajo condiciones asociadas a simetrías fundamentales."],
+          ["probabilidad", "La probabilidad organiza resultados posibles cuando existe incertidumbre, ruido o comportamiento cuántico."],
+          ["condición inicial", "El estado de partida puede dirigir un sistema hacia historias muy diferentes aun cuando las reglas sean idénticas."],
+          ["condición de frontera", "Los límites de un sistema restringen flujos, formas y patrones posibles."],
+          ["posibilidad", "Las leyes delimitan un espacio de posibilidades; la historia concreta selecciona una trayectoria dentro de él."]
+        ]
+      },
+      {
+        id: "breaking", name: "Ruptura de simetría", className: "Fenómeno físico reproducible", p0: .12, p1: .18,
+        color: [130, 137, 255], metric: "Estado uniforme → elección colectiva → dominios y defectos",
+        fact: "Una ley puede ser simétrica aunque el estado producido por ella no lo sea. Pequeñas fluctuaciones pueden decidir qué orientación adopta cada región.",
+        sound: { base: 56, filter: 820, noise: .04, pulse: .07, type: "sine" },
+        features: [
+          ["equilibrio inestable", "Un estado perfectamente balanceado puede existir matemáticamente y, sin embargo, ser tan sensible que cualquier perturbación lo aparte de él."],
+          ["ruptura espontánea", "El sistema selecciona una de varias configuraciones equivalentes sin que la ley favorezca una dirección concreta."],
+          ["transición de fase", "Al cruzar un umbral de temperatura, presión u otro parámetro, puede cambiar la organización colectiva del sistema."],
+          ["dominio", "Regiones distintas pueden elegir orientaciones diferentes y formar dominios separados."],
+          ["defecto", "Donde dominios incompatibles se encuentran pueden quedar fronteras, vórtices u otros defectos."],
+          ["fluctuación", "Una variación diminuta puede romper la igualdad perfecta y amplificarse durante la transición."],
+          ["estado colectivo", "La orientación elegida pertenece al conjunto, no a una partícula aislada."]
+        ]
+      },
+      {
+        id: "matter", name: "Estados colectivos de la materia", className: "Propiedades macroscópicas observadas", p0: .18, p1: .245,
+        color: [78, 202, 239], metric: "Muchas partículas → nuevas propiedades del conjunto",
+        fact: "Ninguna molécula aislada es húmeda y ningún átomo aislado es un sólido. Rigidez, viscosidad, magnetismo y superconductividad aparecen mediante organización colectiva.",
+        sound: { base: 63, filter: 980, noise: .055, pulse: .08, type: "triangle" },
+        features: [
+          ["sólido", "En un sólido, los componentes mantienen relaciones estructurales persistentes que permiten rigidez y elasticidad."],
+          ["líquido", "Un líquido conserva cohesión y volumen aproximado, pero reorganiza continuamente sus vecinos y puede fluir."],
+          ["flujo", "El flujo describe el transporte colectivo de materia o energía a través del espacio."],
+          ["presión", "La presión macroscópica resume innumerables transferencias microscópicas de momento."],
+          ["viscosidad", "La viscosidad mide la resistencia interna de un fluido a deformarse o fluir."],
+          ["magnetismo", "La alineación cooperativa de muchos momentos magnéticos puede producir un imán estable."],
+          ["superconductividad", "En ciertos materiales y condiciones, un estado cuántico colectivo permite corriente sin resistencia eléctrica convencional."],
+          ["transición", "Cambiar temperatura, presión o campo puede reorganizar el conjunto y crear una fase diferente."]
+        ]
+      },
+      {
+        id: "nonequilibrium", name: "Lejos del equilibrio", className: "Termodinámica de sistemas abiertos", p0: .245, p1: .31,
+        color: [56, 229, 213], metric: "Gradientes + flujo de energía + disipación",
+        fact: "Muchos sistemas complejos persisten porque reciben energía, transforman recursos y expulsan entropía hacia su entorno. Cuando el flujo se detiene, su estructura dinámica puede desaparecer.",
+        sound: { base: 71, filter: 1190, noise: .08, pulse: .11, type: "sawtooth" },
+        features: [
+          ["gradiente", "Un gradiente es una diferencia espacial de temperatura, concentración, presión o potencial capaz de impulsar un flujo."],
+          ["sistema abierto", "Un sistema abierto intercambia energía o materia con el entorno y puede sostener estados imposibles en equilibrio cerrado."],
+          ["flujo de calor", "El calor fluye espontáneamente de regiones más calientes a más frías mientras exista una diferencia de temperatura."],
+          ["potencial químico", "Las diferencias de potencial químico impulsan reacciones y transporte de componentes."],
+          ["disipación", "La energía útil se dispersa en formas menos disponibles mientras el sistema realiza procesos irreversibles."],
+          ["entropía", "El orden local no viola la segunda ley: el sistema y su entorno, considerados juntos, producen entropía."],
+          ["persistencia", "Una estructura disipativa puede mantenerse solo mientras atraviesa el flujo que la sostiene."]
+        ]
+      },
+      {
+        id: "fluctuations", name: "Fluctuaciones", className: "Variación inevitable y medible", p0: .31, p1: .365,
+        color: [87, 243, 178], metric: "Ruido microscópico · sensibilidad · selección de trayectorias",
+        fact: "Las fluctuaciones no son siempre un defecto. Pueden explorar posibilidades, iniciar transiciones, romper simetrías y ofrecer variación sobre la que actúan procesos de selección.",
+        sound: { base: 78, filter: 1380, noise: .13, pulse: .14, type: "triangle" },
+        features: [
+          ["ruido", "El ruido reúne variaciones rápidas o impredecibles. Puede ocultar señales, pero también activar transiciones y exploración."],
+          ["variación", "Pequeñas diferencias entre elementos o momentos impiden que todos sigan exactamente la misma historia."],
+          ["sensibilidad", "Algunos sistemas amplifican diferencias iniciales diminutas y producen resultados macroscópicos divergentes."],
+          ["azar", "El azar introduce resultados no determinados por la información disponible, sin eliminar las restricciones de las leyes."],
+          ["semilla", "Una perturbación local puede actuar como semilla de un dominio, cristal, onda o nueva rama química."],
+          ["exploración", "La variación permite que un sistema visite estados alternativos en lugar de quedar fijado en una única configuración."]
+        ]
+      },
+      {
+        id: "patterns", name: "Patrones espontáneos", className: "Autoorganización física reproducible", p0: .365, p1: .435,
+        color: [151, 246, 116], metric: "Ondas · espirales · franjas · manchas · ramificación",
+        fact: "El orden puede aparecer sin un controlador central. Interacciones locales, difusión, reacción y flujo pueden producir formas globales regulares.",
+        sound: { base: 86, filter: 1580, noise: .075, pulse: .18, type: "sine" },
+        features: [
+          ["convección", "Un fluido calentado desde abajo puede organizarse en celdas de circulación cuando el gradiente supera un umbral."],
+          ["cristalización", "Un patrón cristalino crece cuando unidades compatibles se incorporan a una estructura ordenada."],
+          ["reacción-difusión", "La combinación de reacciones locales y velocidades distintas de difusión puede generar manchas, franjas y ondas."],
+          ["onda", "Una perturbación puede propagarse mediante acoplamiento local sin transportar permanentemente los mismos componentes."],
+          ["espiral", "Frentes de excitación y recuperación pueden enrollarse y mantener ondas rotatorias."],
+          ["ramificación", "El crecimiento guiado por transporte y competencia puede producir árboles, venas, descargas y dendritas."],
+          ["sincronización", "Osciladores conectados pueden ajustar sus ritmos y formar un pulso colectivo."],
+          ["sin diseñador", "Que un patrón sea ordenado no implica que una mente haya especificado cada una de sus partes."]
+        ]
+      },
+      {
+        id: "feedback", name: "Retroalimentación", className: "Mecanismo general de regulación", p0: .435, p1: .5,
+        color: [235, 232, 91], metric: "Señal → respuesta → nueva señal",
+        fact: "La retroalimentación positiva amplifica cambios; la negativa los corrige o estabiliza. Combinadas con retrasos y umbrales, ambas pueden producir regulación, oscilaciones o colapso.",
+        sound: { base: 94, filter: 1760, noise: .06, pulse: .24, type: "triangle" },
+        features: [
+          ["señal", "Una señal es una variación capaz de modificar el comportamiento de otra parte del sistema."],
+          ["respuesta", "La respuesta transforma el estado del sistema y puede alterar la señal que la produjo."],
+          ["retroalimentación positiva", "Una salida refuerza el cambio inicial y puede acelerar crecimiento, activación o comportamiento desbocado."],
+          ["retroalimentación negativa", "Una salida contrarresta la desviación y favorece estabilidad o recuperación."],
+          ["umbral", "Una respuesta puede activarse solo después de superar cierto nivel de señal."],
+          ["oscilación", "Los retrasos entre señal y corrección pueden generar ciclos repetidos en vez de un equilibrio estático."],
+          ["homeostasis", "La homeostasis mantiene variables dentro de intervalos viables mediante múltiples bucles de regulación."],
+          ["colapso", "Cuando la amplificación supera la capacidad de regulación, el sistema puede abandonar su estado organizado."]
+        ]
+      },
+      {
+        id: "networks", name: "Redes complejas", className: "Estructura matemática y física observable", p0: .5, p1: .57,
+        color: [255, 184, 81], metric: "Nodos + conexiones → rutas, centros, cascadas",
+        fact: "La organización de las conexiones puede importar tanto como la naturaleza de los componentes. La misma lógica de red aparece en moléculas, neuronas, ecosistemas, redes eléctricas y sociedades.",
+        sound: { base: 103, filter: 1980, noise: .052, pulse: .28, type: "sine" },
+        features: [
+          ["nodo", "Un nodo representa una unidad del sistema: molécula, especie, neurona, central eléctrica, persona u otra entidad."],
+          ["enlace", "Un enlace representa interacción, transporte, dependencia o comunicación entre nodos."],
+          ["centro", "Un centro o hub concentra muchas conexiones y puede facilitar coordinación o crear dependencia crítica."],
+          ["grupo", "Los nodos pueden formar comunidades densamente conectadas con enlaces más escasos hacia otras comunidades."],
+          ["cascada", "Una alteración puede propagarse de nodo en nodo y producir una respuesta extensa."],
+          ["robustez", "Rutas alternativas y diversidad pueden permitir que una red mantenga función después de perder componentes."],
+          ["fragilidad", "Una red eficiente puede ser vulnerable si depende de pocos centros o carece de redundancia."],
+          ["topología", "La topología describe quién se conecta con quién y condiciona el comportamiento colectivo."]
+        ]
+      },
+      {
+        id: "selforganization", name: "Autoorganización", className: "Orden descentralizado observado", p0: .57, p1: .64,
+        color: [255, 139, 93], metric: "Reglas locales + energía + feedback + red",
+        fact: "Ningún objeto maestro dirige la escena. El orden global emerge de coordinación local, circulación de señales, adaptación y mantenimiento continuo.",
+        sound: { base: 112, filter: 2200, noise: .05, pulse: .32, type: "triangle" },
+        features: [
+          ["regla local", "Cada elemento responde a vecinos y señales próximas sin conocer el estado completo del sistema."],
+          ["comportamiento colectivo", "El conjunto puede desplazarse, oscilar, dividir tareas o mantener forma de maneras ausentes en cada unidad."],
+          ["atractor", "Un atractor es un estado o patrón dinámico hacia el que convergen múltiples trayectorias del sistema."],
+          ["adaptación", "Una organización adaptativa modifica su respuesta según condiciones y experiencias anteriores."],
+          ["automantenimiento", "Un sistema se mantiene cuando sus procesos reparan o reemplazan componentes y conservan las condiciones necesarias para continuar."],
+          ["coordinación", "La coordinación descentralizada distribuye decisiones entre interacciones locales en lugar de concentrarlas en un controlador."],
+          ["identidad dinámica", "Un sistema puede conservar organización aunque sus componentes materiales cambien con el tiempo."]
+        ]
+      },
+      {
+        id: "information", name: "Información funcional", className: "Concepto dependiente del sistema", p0: .64, p1: .71,
+        color: [255, 105, 136], metric: "Patrón + contexto + efecto sobre la persistencia",
+        fact: "No todo orden es información biológicamente útil. Un patrón se vuelve funcional cuando, dentro de un sistema, contribuye de forma reproducible a mantener, regular o reproducir una organización.",
+        sound: { base: 122, filter: 2440, noise: .043, pulse: .38, type: "sine" },
+        features: [
+          ["patrón", "Un patrón contiene regularidades, pero su sola existencia no garantiza una función."],
+          ["memoria", "La memoria permite que un estado anterior influya en respuestas posteriores."],
+          ["señal", "Una señal funcional modifica procesos de manera dependiente del contexto."],
+          ["instrucción", "Una secuencia puede actuar como instrucción solo si existe una maquinaria capaz de interpretarla y producir consecuencias."],
+          ["error", "Copiar, transmitir o ejecutar patrones introduce errores que pueden degradar función o generar novedad."],
+          ["corrección", "La detección y reparación de errores aumenta la persistencia de información a través del tiempo."],
+          ["función", "Una función se define por el efecto que una estructura o proceso tiene dentro de un sistema y un entorno."],
+          ["respuesta ambiental", "La información funcional puede relacionar señales externas con acciones que favorecen la continuidad del sistema."]
+        ]
+      },
+      {
+        id: "chemistry", name: "Química organizada", className: "Química y autoensamblaje observados", p0: .71, p1: .78,
+        color: [239, 92, 195], metric: "Catálisis · ciclos · reconocimiento · compartimentos",
+        fact: "Las moléculas pueden formar ciclos mutuamente sostenidos en los que los productos de unas reacciones facilitan otras. La organización química convierte una lista de sustancias en una red dinámica.",
+        sound: { base: 133, filter: 2670, noise: .05, pulse: .43, type: "triangle" },
+        features: [
+          ["catalizador", "Un catalizador acelera una reacción al ofrecer una ruta alternativa sin consumirse de forma neta en el proceso idealizado."],
+          ["ciclo de reacción", "En un ciclo, una secuencia de reacciones regenera componentes necesarios para continuar."],
+          ["reconocimiento molecular", "La forma, carga y afinidad permiten que moléculas se asocien selectivamente."],
+          ["portador de energía", "Ciertas moléculas acoplan reacciones favorables con procesos que requieren aporte energético."],
+          ["conjunto autocatalítico", "Una red autocatalítica contiene reacciones cuyos catalizadores son producidos, directa o indirectamente, por la propia red."],
+          ["cooperación molecular", "Múltiples especies químicas pueden sostenerse mutuamente aunque ninguna sea autosuficiente."],
+          ["compartimento", "Una frontera física concentra reactivos, limita pérdidas y modifica qué reacciones pueden sostenerse."]
+        ]
+      },
+      {
+        id: "replication", name: "Replicación y variación", className: "Principios evolutivos demostrados", p0: .78, p1: .845,
+        color: [195, 103, 241], metric: "Copia imperfecta + herencia + persistencia diferencial",
+        fact: "Replicar no basta. Para que exista evolución abierta deben aparecer diferencias heredables y algunas variantes deben persistir o reproducirse más que otras en un entorno determinado.",
+        sound: { base: 145, filter: 2920, noise: .047, pulse: .49, type: "sine" },
+        features: [
+          ["copia", "Copiar conserva una organización o secuencia a través de nuevas instancias."],
+          ["herencia", "La herencia transmite características entre generaciones o ciclos de reproducción."],
+          ["mutación", "Una mutación es un cambio heredable en la información copiada."],
+          ["replicación imperfecta", "La copia con errores combina continuidad con aparición de variantes."],
+          ["competencia", "Las variantes pueden depender de recursos limitados o interferir entre sí."],
+          ["selección", "La selección ocurre cuando diferencias heredables causan diferencias sistemáticas de supervivencia o reproducción."],
+          ["adaptación", "Una adaptación es una característica acumulada porque mejoró la persistencia o reproducción en contextos pasados."],
+          ["deriva", "El azar también puede cambiar la frecuencia de variantes, especialmente en poblaciones pequeñas."]
+        ]
+      },
+      {
+        id: "protocells", name: "Compartimentos y protocélulas", className: "Modelos experimentales, no antepasados confirmados", p0: .845, p1: .91,
+        color: [132, 129, 255], metric: "Membrana + interior + transporte + crecimiento + división",
+        fact: "Vesículas y protocélulas experimentales muestran cómo una membrana puede concentrar química, crecer y dividirse. Son modelos de posibilidades, no reconstrucciones confirmadas de la primera célula.",
+        sound: { base: 157, filter: 3180, noise: .04, pulse: .55, type: "triangle" },
+        features: [
+          ["membrana", "Una membrana crea una frontera semipermeable entre interior y exterior."],
+          ["interior", "El interior puede mantener concentraciones y reacciones diferentes de las del entorno."],
+          ["exterior", "El exterior suministra materia y energía, pero también impone cambios y perturbaciones."],
+          ["transporte selectivo", "Una frontera selectiva deja pasar algunas sustancias más fácilmente que otras."],
+          ["alimento", "Un recurso químico puede aportar materia o energía a procesos internos."],
+          ["crecimiento", "Una protocélula puede incorporar componentes y aumentar su membrana o contenido."],
+          ["división", "La deformación y separación de un compartimento puede distribuir su contenido entre descendientes."],
+          ["acoplamiento", "Para evolucionar como unidad, la membrana, el metabolismo y la información deben beneficiarse mutuamente."]
+        ]
+      },
+      {
+        id: "chemicalevolution", name: "Evolución química", className: "Múltiples rutas activas de investigación", p0: .91, p1: .972,
+        color: [103, 179, 255], metric: "Química observada → historia posible → origen desconocido",
+        fact: "Existen varias familias de hipótesis compatibles en parte y competidoras en parte. La evidencia identifica procesos posibles, pero todavía no determina la secuencia histórica real.",
+        sound: { base: 171, filter: 3440, noise: .055, pulse: .62, type: "sine" },
+        features: [
+          ["mundo de ARN", "Las hipótesis de mundo de ARN estudian moléculas capaces de almacenar información y catalizar reacciones antes del sistema moderno de ADN y proteínas."],
+          ["metabolismo primero", "Los modelos de metabolismo primero priorizan redes químicas autosostenidas antes de replicadores informacionales complejos."],
+          ["mundo lipídico", "Los modelos lipídicos investigan conjuntos de moléculas anfipáticas capaces de formar compartimentos, crecer y transmitir composiciones."],
+          ["fuentes hidrotermales", "Gradientes químicos y minerales de entornos hidrotermales podrían haber impulsado reacciones y compartimentación natural."],
+          ["superficies minerales", "Minerales pueden concentrar moléculas, orientar reacciones y ofrecer catálisis o plantillas físicas."],
+          ["ciclos húmedo-seco", "Ciclos de evaporación y rehidratación pueden concentrar reactivos y favorecer la formación de enlaces."],
+          ["aporte extraterrestre", "Meteoritos y polvo cósmico entregan compuestos orgánicos, aunque eso no explica por sí solo su organización en vida."],
+          ["certeza", "Se observan química orgánica y autoorganización; se conocen componentes prebióticos; se fabrican protocélulas. La ruta histórica concreta sigue abierta."]
+        ]
+      },
+      {
+        id: "threshold", name: "El umbral de la vida", className: "Frontera científica aún abierta", p0: .972, p1: 1.0001,
+        color: [127, 255, 171], metric: "Automantenimiento + herencia + variación + evolución",
+        fact: "La física permite la química, y la química puede generar redes que se organizan, conservan información y se reproducen. Aún no sabemos qué secuencia concreta transformó materia no viva en los primeros sistemas biológicos.",
+        sound: { base: 187, filter: 3800, noise: .035, pulse: .7, type: "triangle" },
+        features: [
+          ["umbral", "No existe una línea universalmente simple entre química compleja y vida; varios criterios pueden aparecer gradualmente y en distinto orden."],
+          ["automantenimiento", "Un sistema vivo conserva activamente condiciones internas mediante flujos de materia y energía."],
+          ["herencia", "La continuidad evolutiva requiere que parte de la organización pase a nuevas generaciones."],
+          ["evolución", "La selección acumulativa puede convertir variación heredable en adaptación histórica."],
+          ["primera vida", "No conocemos la identidad, el lugar ni la secuencia exacta de los primeros sistemas biológicos de la Tierra."],
+          ["nueva historia", "Más allá, cuando la química comenzó a heredarse, adaptarse y evolucionar, apareció una nueva historia: la vida."],
+          ["siguiente viaje", "Espectro de la Vida: de la Primera Célula a la Conciencia."]
+        ]
+      }
+    ];
+
+    let width = 1;
+    let height = 1;
+    let dpr = 1;
+    let pointerDown = false;
+    let targetX = .5;
+    let targetY = .94;
+    let pointerX = .5;
+    let pointerY = .94;
+    let shownX = width * .5;
+    let shownY = height * .94;
+    let lastZoneId = "";
+    let lastFeature = -1;
+    let hideTimer = 0;
+    let speechTimer = 0;
+    let lastSpoken = "";
+    let speechUnlocked = false;
+    let lastFrame = performance.now();
+    let elapsed = 0;
+    let currentProgress = .03;
+    let touchEnergy = 0;
+
+    const fieldParticles = [];
+    const networkNodes = [];
+    const molecules = [];
+    const cells = [];
+    const bursts = [];
+    const waves = [];
+    const patternSeeds = [];
+    const lineages = [];
+
+    let audioCtx = null;
+    let master = null;
+    let droneA = null;
+    let droneB = null;
+    let droneGain = null;
+    let droneFilter = null;
+    let pulseOsc = null;
+    let pulseGain = null;
+    let noiseSource = null;
+    let noiseGain = null;
+    let noiseFilter = null;
+    let stereo = null;
+
+    function depthFromY(yNorm) { return clamp(1 - yNorm, 0, 1); }
+
+    function zoneForDepth(p) {
+      for (let i = 0; i < ZONES.length; i++) {
+        if (p >= ZONES[i].p0 && p < ZONES[i].p1) return ZONES[i];
+      }
+      return ZONES[ZONES.length - 1];
+    }
+
+    function featureFor(zone, xNorm) {
+      const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .999999) * zone.features.length));
+      return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+    }
+
+    function setAccent(zone) {
+      root.style.setProperty("--accent", `${zone.color[0]} ${zone.color[1]} ${zone.color[2]}`);
+    }
+
+    function setCssPoint(x, y) {
+      root.style.setProperty("--scan-x", `${x}px`);
+      root.style.setProperty("--scan-y", `${y}px`);
+    }
+
+    function buildScene() {
+      fieldParticles.length = 0;
+      networkNodes.length = 0;
+      molecules.length = 0;
+      cells.length = 0;
+      patternSeeds.length = 0;
+      lineages.length = 0;
+
+      const particleCount = reducedMotion ? 90 : Math.round(clamp(width * height / 6200, 110, 240));
+      for (let i = 0; i < particleCount; i++) {
+        fieldParticles.push({
+          x: seeded(i + 1), y: seeded(i + 1000), vx: (seeded(i + 2000) - .5) * .04,
+          vy: (seeded(i + 3000) - .5) * .04, r: 1.1 + seeded(i + 4000) * 2.5,
+          phase: seeded(i + 5000) * TAU, group: i % 7
+        });
+      }
+
+      const nodeCount = reducedMotion ? 28 : 48;
+      for (let i = 0; i < nodeCount; i++) {
+        const angle = seeded(i + 6000) * TAU;
+        const radius = Math.sqrt(seeded(i + 7000)) * .43;
+        networkNodes.push({
+          x: .5 + Math.cos(angle) * radius, y: .5 + Math.sin(angle) * radius * .78,
+          vx: (seeded(i + 8000) - .5) * .015, vy: (seeded(i + 9000) - .5) * .015,
+          r: 2 + seeded(i + 10000) * 5, phase: seeded(i + 11000) * TAU,
+          hub: seeded(i + 12000) > .84, group: i % 5
+        });
+      }
+
+      for (let i = 0; i < 30; i++) {
+        molecules.push({
+          angle: i / 30 * TAU, radius: .16 + seeded(i + 13000) * .22,
+          phase: seeded(i + 14000) * TAU, kind: i % 6, r: 3 + seeded(i + 15000) * 4
+        });
+      }
+
+      for (let i = 0; i < 13; i++) {
+        cells.push({
+          x: .12 + seeded(i + 16000) * .76, y: .2 + seeded(i + 17000) * .62,
+          r: .045 + seeded(i + 18000) * .055, phase: seeded(i + 19000) * TAU,
+          wobble: .08 + seeded(i + 20000) * .13, type: i % 4
+        });
+      }
+
+      for (let i = 0; i < 8; i++) {
+        patternSeeds.push({ x: seeded(i + 21000), y: seeded(i + 22000), phase: seeded(i + 23000) * TAU });
+      }
+
+      for (let i = 0; i < 9; i++) {
+        lineages.push({
+          x: .08 + i * .105, phase: seeded(i + 24000) * TAU,
+          branch: seeded(i + 25000), variant: i % 5
+        });
+      }
+    }
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      width = Math.max(1, rect.width);
+      height = Math.max(1, rect.height);
+      dpr = Math.min(2, devicePixelRatio || 1);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      buildScene();
+      setCssPoint(targetX * width, targetY * height);
+    }
+
+    function ensureAudio() {
+      if (audioCtx) {
+        if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+        return;
+      }
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      audioCtx = new AudioContext();
+      master = audioCtx.createGain();
+      master.gain.value = 0;
+      const compressor = audioCtx.createDynamicsCompressor();
+      compressor.threshold.value = -24;
+      compressor.knee.value = 20;
+      compressor.ratio.value = 5;
+      master.connect(compressor).connect(audioCtx.destination);
+
+      droneA = audioCtx.createOscillator();
+      droneB = audioCtx.createOscillator();
+      droneGain = audioCtx.createGain();
+      droneFilter = audioCtx.createBiquadFilter();
+      stereo = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : audioCtx.createGain();
+      droneA.type = "sine";
+      droneB.type = "triangle";
+      droneGain.gain.value = .0001;
+      droneFilter.type = "lowpass";
+      droneFilter.frequency.value = 850;
+      droneFilter.Q.value = .8;
+      droneA.connect(droneGain);
+      droneB.connect(droneGain);
+      droneGain.connect(droneFilter).connect(stereo).connect(master);
+      droneA.start();
+      droneB.start();
+
+      pulseOsc = audioCtx.createOscillator();
+      pulseGain = audioCtx.createGain();
+      pulseOsc.type = "sine";
+      pulseGain.gain.value = .0001;
+      pulseOsc.connect(pulseGain).connect(master);
+      pulseOsc.start();
+
+      const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+      const channel = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < channel.length; i++) channel[i] = Math.random() * 2 - 1;
+      noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
+      noiseSource.loop = true;
+      noiseFilter = audioCtx.createBiquadFilter();
+      noiseFilter.type = "bandpass";
+      noiseFilter.frequency.value = 1100;
+      noiseFilter.Q.value = .5;
+      noiseGain = audioCtx.createGain();
+      noiseGain.gain.value = .0001;
+      noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
+      noiseSource.start();
+    }
+
+    function setAudioFor(zone, xNorm, progress, active) {
+      if (!audioCtx || !master) return;
+      const now = audioCtx.currentTime;
+      const s = zone.sound;
+      const base = s.base * (.93 + xNorm * .15);
+      droneA.type = s.type;
+      droneB.type = s.type === "sawtooth" || s.type === "square" ? "triangle" : "sine";
+      droneA.frequency.setTargetAtTime(base, now, .08);
+      droneB.frequency.setTargetAtTime(base * (1.498 + progress * .009), now, .1);
+      droneFilter.frequency.setTargetAtTime(s.filter * (.84 + xNorm * .28), now, .1);
+      droneGain.gain.setTargetAtTime(active ? .013 + progress * .006 : .0001, now, .09);
+      pulseOsc.frequency.setTargetAtTime(base * (1.985 + s.pulse), now, .08);
+      pulseGain.gain.setTargetAtTime(active ? .0028 + progress * .002 : .0001, now, .1);
+      noiseFilter.frequency.setTargetAtTime(s.filter * 1.12, now, .1);
+      noiseGain.gain.setTargetAtTime(active ? Math.max(.0001, s.noise * .065) : .0001, now, .1);
+      if (stereo.pan) stereo.pan.setTargetAtTime((xNorm - .5) * .7, now, .08);
+      master.gain.setTargetAtTime(active ? .28 : .0001, now, .09);
+    }
+
+    function ping(zone, xNorm, featureIndex = 0) {
+      if (!audioCtx || !master) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+      const pan = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+      const scale = [1, 1.125, 1.25, 1.5, 1.667, 2, 2.25, 2.5][featureIndex % 8];
+      osc.type = zone.sound.type;
+      osc.frequency.setValueAtTime(Math.max(36, zone.sound.base * 2.65 * scale), now);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(34, zone.sound.base * 1.18), now + .48);
+      filter.type = "lowpass";
+      filter.frequency.value = Math.max(350, zone.sound.filter * 1.45);
+      gain.gain.setValueAtTime(.0001, now);
+      gain.gain.exponentialRampToValueAtTime(.027, now + .012);
+      gain.gain.exponentialRampToValueAtTime(.0001, now + .56);
+      osc.connect(filter).connect(gain);
+      if (pan) {
+        pan.pan.value = (xNorm - .5) * 1.35;
+        gain.connect(pan).connect(master);
+      } else gain.connect(master);
+      osc.start(now);
+      osc.stop(now + .62);
+    }
+
+    function queueSpeech(label) {
+      if (!speechUnlocked || !("speechSynthesis" in window) || !label || label === lastSpoken) return;
+      clearTimeout(speechTimer);
+      speechTimer = setTimeout(() => {
+        try {
+          speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(label);
+          utterance.lang = "es-ES";
+          utterance.rate = .86;
+          utterance.pitch = 1;
+          const voices = speechSynthesis.getVoices();
+          const voice = voices.find(v => /^es(-|_)/i.test(v.lang)) || voices.find(v => /spanish|español/i.test(v.name));
+          if (voice) utterance.voice = voice;
+          speechSynthesis.speak(utterance);
+          lastSpoken = label;
+        } catch (_) {}
+      }, 360);
+    }
+
+    function addRipple(x, y) {
+      const node = document.createElement("div");
+      node.className = "ripple";
+      node.style.left = `${x}px`;
+      node.style.top = `${y}px`;
+      document.body.appendChild(node);
+      node.addEventListener("animationend", () => node.remove(), { once: true });
+    }
+
+    function addBurst(x, y, color) {
+      const count = reducedMotion ? 5 : 13;
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * TAU;
+        const speed = 18 + Math.random() * 72;
+        bursts.push({
+          x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+          r: .8 + Math.random() * 2.4, life: 1, decay: 1 + Math.random() * .8,
+          color
+        });
+      }
+      waves.push({ x, y, radius: 5, life: 1, color });
+    }
+
+    function updateReadout(x, y, isNewPress = false) {
+      const xNorm = clamp(x / width, 0, .999999);
+      const yNorm = clamp(y / height, 0, .999999);
+      const progress = depthFromY(yNorm);
+      const zone = zoneForDepth(progress);
+      const feature = featureFor(zone, xNorm);
+
+      targetX = xNorm;
+      targetY = yNorm;
+      touchEnergy = 1;
+      setCssPoint(x, y);
+      setAccent(zone);
+      root.style.setProperty("--progress", `${Math.max(1.2, progress * 100)}%`);
+      root.style.setProperty("--progress-number", `${progress}`);
+      scaleDot.style.bottom = `${48 + progress * Math.max(0, height - 96)}px`;
+
+      touchOrb.style.left = `${x}px`;
+      touchOrb.style.top = `${y}px`;
+      scaleValue.textContent = zone.className;
+
+      const changed = zone.id !== lastZoneId || feature.index !== lastFeature;
+      if (changed || isNewPress) {
+        certaintyClass.textContent = zone.className;
+        zoneName.textContent = zone.name;
+        zoneName.className = zone.name.length > 31 ? "long" : zone.name.length > 21 ? "compact" : "";
+        featureName.textContent = feature.name;
+        metric.textContent = zone.metric;
+        fact.textContent = feature.fact || zone.fact;
+        ping(zone, xNorm, feature.index);
+        addBurst(x, y, zone.color);
+        queueSpeech(feature.name);
+        lastZoneId = zone.id;
+        lastFeature = feature.index;
+      }
+
+      readout.classList.add("visible");
+      touchOrb.classList.add("visible");
+      document.body.classList.add("active");
+      hint.style.display = "none";
+      setAudioFor(zone, xNorm, progress, true);
+    }
+
+    function releaseInteraction(delay = 1050) {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        readout.classList.remove("visible");
+        touchOrb.classList.remove("visible");
+        document.body.classList.remove("active");
+        const zone = zoneForDepth(depthFromY(targetY));
+        setAudioFor(zone, targetX, depthFromY(targetY), false);
+      }, delay);
+    }
+
+    function endPointer() {
+      pointerDown = false;
+      releaseInteraction();
+    }
+
+    canvas.addEventListener("pointerdown", event => {
+      event.preventDefault();
+      canvas.focus({ preventScroll: true });
+      pointerDown = true;
+      speechUnlocked = true;
+      ensureAudio();
+      try { canvas.setPointerCapture(event.pointerId); } catch (_) {}
+      updateReadout(event.clientX, event.clientY, true);
+      addRipple(event.clientX, event.clientY);
+    });
+
+    canvas.addEventListener("pointermove", event => {
+      if (!pointerDown && event.pointerType !== "mouse") return;
+      if (!pointerDown && event.pointerType === "mouse" && event.buttons === 0) {
+        targetX = clamp(event.clientX / width, 0, 1);
+        targetY = clamp(event.clientY / height, 0, 1);
+        return;
+      }
+      event.preventDefault();
+      updateReadout(event.clientX, event.clientY, false);
+    });
+
+    canvas.addEventListener("pointerup", endPointer);
+    canvas.addEventListener("pointercancel", endPointer);
+    canvas.addEventListener("lostpointercapture", () => { pointerDown = false; });
+    canvas.addEventListener("contextmenu", event => event.preventDefault());
+
+    canvas.addEventListener("keydown", event => {
+      const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " ", "Enter"];
+      if (!keys.includes(event.key)) return;
+      event.preventDefault();
+      speechUnlocked = true;
+      ensureAudio();
+      const stepY = event.shiftKey ? .075 : .032;
+      const stepX = event.shiftKey ? .12 : .065;
+      if (event.key === "ArrowUp") targetY = clamp(targetY - stepY, .005, .995);
+      if (event.key === "ArrowDown") targetY = clamp(targetY + stepY, .005, .995);
+      if (event.key === "ArrowLeft") targetX = clamp(targetX - stepX, .005, .995);
+      if (event.key === "ArrowRight") targetX = clamp(targetX + stepX, .005, .995);
+      updateReadout(targetX * width, targetY * height, true);
+      if (event.key === " " || event.key === "Enter") addRipple(targetX * width, targetY * height);
+      releaseInteraction(1450);
+    });
+
+    function rgba(c, a) { return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
+
+    function drawBackground(progress, time) {
+      const zone = zoneForDepth(progress);
+      const idx = ZONES.indexOf(zone);
+      const next = ZONES[Math.min(ZONES.length - 1, idx + 1)];
+      const local = smooth(clamp((progress - zone.p0) / Math.max(.0001, zone.p1 - zone.p0), 0, 1));
+      const c = [mix(zone.color[0], next.color[0], local), mix(zone.color[1], next.color[1], local), mix(zone.color[2], next.color[2], local)];
+
+      const g = ctx.createLinearGradient(0, height, 0, 0);
+      g.addColorStop(0, `rgb(${Math.floor(c[0] * .025 + 2)},${Math.floor(c[1] * .025 + 2)},${Math.floor(c[2] * .035 + 6)})`);
+      g.addColorStop(.46, `rgb(${Math.floor(c[0] * .04 + 2)},${Math.floor(c[1] * .035 + 2)},${Math.floor(c[2] * .055 + 6)})`);
+      g.addColorStop(1, `rgb(${Math.floor(c[0] * .075 + 2)},${Math.floor(c[1] * .08 + 3)},${Math.floor(c[2] * .07 + 7)})`);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, width, height);
+
+      const px = pointerX * width;
+      const py = pointerY * height;
+      const glow = ctx.createRadialGradient(px, py, 0, px, py, Math.max(width, height) * .7);
+      glow.addColorStop(0, rgba(c, .11 + touchEnergy * .09));
+      glow.addColorStop(.4, rgba(c, .045));
+      glow.addColorStop(1, rgba(c, 0));
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, width, height);
+
+      const topGlow = ctx.createRadialGradient(width * .5, -height * .08, 0, width * .5, 0, height * .72);
+      topGlow.addColorStop(0, `rgba(130,255,178,${.035 + progress * .09})`);
+      topGlow.addColorStop(1, "rgba(130,255,178,0)");
+      ctx.fillStyle = topGlow;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.globalAlpha = .18;
+      ctx.strokeStyle = rgba(c, .18);
+      ctx.lineWidth = 1;
+      const spacing = Math.max(34, Math.min(78, width / 9));
+      const drift = (time * 8) % spacing;
+      for (let y = height + drift; y > -spacing; y -= spacing) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y - progress * spacing * .55);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function drawRuleField(progress, time, alpha) {
+      if (alpha <= .001) return;
+      const cols = Math.max(8, Math.floor(width / 64));
+      const rows = Math.max(12, Math.floor(height / 58));
+      const cellW = width / cols;
+      const cellH = height / rows;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth = 1;
+      for (let r = 0; r <= rows; r++) {
+        ctx.strokeStyle = `rgba(125,181,255,${.08 + .02 * Math.sin(time + r)})`;
+        ctx.beginPath();
+        for (let c = 0; c <= cols; c++) {
+          const x = c * cellW;
+          const y = r * cellH + Math.sin(c * .7 + r * .35 + time * .7) * 2;
+          if (c === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      for (let c = 0; c <= cols; c++) {
+        ctx.strokeStyle = "rgba(178,215,255,.065)";
+        ctx.beginPath();
+        ctx.moveTo(c * cellW, 0);
+        ctx.lineTo(c * cellW + Math.sin(c + time) * 3, height);
+        ctx.stroke();
+      }
+
+      const centerX = width * .5;
+      const centerY = height * .56;
+      for (let k = 0; k < 4; k++) {
+        const rr = Math.min(width, height) * (.09 + k * .07 + .008 * Math.sin(time * .8 + k));
+        ctx.strokeStyle = `rgba(176,212,255,${.14 - k * .02})`;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, rr, 0, TAU);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawSymmetryBreaking(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const size = Math.max(30, Math.min(52, width / 9));
+      const cols = Math.ceil(width / size) + 1;
+      const rows = Math.ceil(height / size) + 1;
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const x = c * size + size * .5;
+          const y = r * size + size * .5;
+          const n = Math.sin(c * .83 + r * .61 + Math.sin(r * .29) * 2.2 + time * .05);
+          const domain = n > .18 ? 1 : n < -.18 ? -1 : 0;
+          const angle = domain * .72 + Math.sin(c * .21 + r * .17 + time * .5) * .08;
+          ctx.strokeStyle = domain > 0 ? "rgba(126,125,255,.35)" : domain < 0 ? "rgba(92,224,240,.3)" : "rgba(255,255,255,.18)";
+          ctx.lineWidth = domain === 0 ? 1 : 1.6;
+          ctx.beginPath();
+          ctx.moveTo(x - Math.cos(angle) * size * .23, y - Math.sin(angle) * size * .23);
+          ctx.lineTo(x + Math.cos(angle) * size * .23, y + Math.sin(angle) * size * .23);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(x + Math.cos(angle) * size * .23, y + Math.sin(angle) * size * .23, 2.2, 0, TAU);
+          ctx.fillStyle = ctx.strokeStyle;
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawMatter(progress, time, alpha) {
+      if (alpha <= .001) return;
+      const phase = clamp((progress - .18) / .065, 0, 1);
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      for (let i = 0; i < fieldParticles.length; i++) {
+        const p = fieldParticles[i];
+        let x;
+        let y;
+        const gridCols = Math.max(12, Math.floor(Math.sqrt(fieldParticles.length * width / height)));
+        const gridRows = Math.ceil(fieldParticles.length / gridCols);
+        const gx = (i % gridCols + .5) / gridCols;
+        const gy = (Math.floor(i / gridCols) + .5) / gridRows;
+        const solidMix = 1 - smooth(clamp(phase * 1.8, 0, 1));
+        const liquidMix = 1 - Math.abs(phase - .5) * 2;
+        x = mix(p.x, gx, solidMix);
+        y = mix(p.y, gy, solidMix);
+        x += Math.sin(time * (1.1 + p.group * .05) + p.phase) * (.004 + .016 * phase) * (liquidMix + phase);
+        y += Math.cos(time * (1.25 + p.group * .04) + p.phase) * (.004 + .014 * phase) * (liquidMix + phase);
+        const px = x * width;
+        const py = y * height;
+        const r = p.r * (1 + phase * .25);
+        ctx.fillStyle = `rgba(89,211,237,${.18 + .25 * (1 - phase * .4)})`;
+        ctx.beginPath();
+        ctx.arc(px, py, r, 0, TAU);
+        ctx.fill();
+        if (solidMix > .35 && i % 2 === 0) {
+          const j = i + 1;
+          if (j < fieldParticles.length && j % gridCols !== 0) {
+            ctx.strokeStyle = `rgba(113,220,240,${.08 * solidMix})`;
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(((j % gridCols + .5) / gridCols) * width, (Math.floor(j / gridCols) + .5) / gridRows * height);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawEnergyFlow(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const lanes = 10;
+      for (let i = 0; i < lanes; i++) {
+        const x0 = (i + .5) / lanes * width;
+        ctx.beginPath();
+        for (let k = 0; k <= 28; k++) {
+          const t = k / 28;
+          const y = height * (1.05 - t * 1.12);
+          const x = x0 + Math.sin(t * TAU * 1.8 + time * .9 + i * .8) * width * (.018 + .014 * t);
+          if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        const grad = ctx.createLinearGradient(0, height, 0, 0);
+        grad.addColorStop(0, "rgba(255,116,72,.05)");
+        grad.addColorStop(.48, "rgba(66,232,206,.34)");
+        grad.addColorStop(1, "rgba(105,255,177,.04)");
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.2 + (i % 3) * .55;
+        ctx.stroke();
+      }
+      for (let i = 0; i < 32; i++) {
+        const t = fract(time * (.05 + (i % 5) * .006) + seeded(i + 26000));
+        const lane = i % lanes;
+        const y = height * (1.04 - t * 1.1);
+        const x0 = (lane + .5) / lanes * width;
+        const x = x0 + Math.sin(t * TAU * 1.8 + time * .9 + lane * .8) * width * (.018 + .014 * t);
+        ctx.fillStyle = `rgba(81,242,202,${.18 + .35 * Math.sin(t * Math.PI)})`;
+        ctx.beginPath();
+        ctx.arc(x, y, 1.4 + 2 * Math.sin(t * Math.PI), 0, TAU);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawFluctuations(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      for (let i = 0; i < fieldParticles.length; i += 2) {
+        const p = fieldParticles[i];
+        const x = p.x * width + Math.sin(time * 4.3 + p.phase) * (4 + p.group * 1.5);
+        const y = p.y * height + Math.cos(time * 3.7 + p.phase * 1.7) * (4 + p.group * 1.2);
+        const pulse = .5 + .5 * Math.sin(time * 6 + p.phase);
+        ctx.fillStyle = `rgba(93,247,184,${.05 + .24 * pulse})`;
+        ctx.beginPath();
+        ctx.arc(x, y, .7 + p.r * pulse, 0, TAU);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawPatterns(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const step = Math.max(9, Math.min(18, width / 32));
+      const mode = clamp((progress - .365) / .07, 0, 1);
+      for (let y = -step; y <= height + step; y += step) {
+        for (let x = -step; x <= width + step; x += step) {
+          const nx = x / Math.max(width, 1);
+          const ny = y / Math.max(height, 1);
+          const stripes = Math.sin(nx * 29 + Math.sin(ny * 9 + time * .35) * 2.8);
+          const spots = Math.sin(nx * 20 + Math.sin(ny * 16)) + Math.cos(ny * 23 - time * .25);
+          const spiralAngle = Math.atan2(ny - .5, nx - .5);
+          const spiralRadius = Math.hypot((nx - .5) * 1.25, ny - .5);
+          const spiral = Math.sin(spiralAngle * 4 + spiralRadius * 35 - time * 1.4);
+          const v = mix(stripes, mix(spots * .5, spiral, mode), mode);
+          if (v > .2) {
+            const a = clamp((v - .2) * .22, .02, .24);
+            ctx.fillStyle = `rgba(164,246,108,${a})`;
+            const r = step * (.14 + .25 * clamp(v, 0, 1));
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, TAU);
+            ctx.fill();
+          }
+        }
+      }
+      for (const seed of patternSeeds) {
+        const x = seed.x * width;
+        const y = seed.y * height;
+        for (let k = 0; k < 3; k++) {
+          const r = fract(time * .08 + seed.phase / TAU + k / 3) * Math.min(width, height) * .25;
+          ctx.strokeStyle = `rgba(151,246,116,${.2 * (1 - r / (Math.min(width, height) * .25))})`;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, TAU);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawFeedback(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const cx = width * .5;
+      const cy = height * .52;
+      const maxR = Math.min(width, height) * .37;
+      for (let i = 0; i < 7; i++) {
+        const r = maxR * (.18 + i * .115) * (1 + .035 * Math.sin(time * (1.2 + i * .05) + i));
+        ctx.strokeStyle = i % 2 ? "rgba(247,232,83,.22)" : "rgba(255,167,80,.2)";
+        ctx.lineWidth = 1.2 + (i % 3) * .5;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, -Math.PI * .2, Math.PI * 1.54);
+        ctx.stroke();
+        const a = time * (.35 + i * .03) + i;
+        const x = cx + Math.cos(a) * r;
+        const y = cy + Math.sin(a) * r;
+        ctx.fillStyle = "rgba(255,239,96,.72)";
+        ctx.beginPath();
+        ctx.arc(x, y, 2.2 + (i % 2), 0, TAU);
+        ctx.fill();
+      }
+      const signal = .5 + .5 * Math.sin(time * 2.2);
+      ctx.fillStyle = `rgba(255,224,92,${.07 + signal * .17})`;
+      ctx.beginPath();
+      ctx.arc(cx, cy, maxR * (.1 + signal * .055), 0, TAU);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawNetwork(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const pts = networkNodes;
+      for (let i = 0; i < pts.length; i++) {
+        const a = pts[i];
+        const ax = a.x * width + Math.sin(time * .32 + a.phase) * width * .008;
+        const ay = a.y * height + Math.cos(time * .27 + a.phase) * height * .008;
+        let links = 0;
+        for (let j = i + 1; j < pts.length; j++) {
+          const b = pts[j];
+          const bx = b.x * width + Math.sin(time * .32 + b.phase) * width * .008;
+          const by = b.y * height + Math.cos(time * .27 + b.phase) * height * .008;
+          const dx = bx - ax;
+          const dy = by - ay;
+          const dist = Math.hypot(dx, dy);
+          const threshold = Math.min(width, height) * (a.hub || b.hub ? .25 : .155);
+          if (dist < threshold && links < (a.hub ? 8 : 4)) {
+            const pulse = fract(time * .11 + seeded(i * 91 + j * 17));
+            ctx.strokeStyle = `rgba(255,173,78,${.04 + (1 - dist / threshold) * .17})`;
+            ctx.lineWidth = .7 + (a.hub || b.hub ? .6 : 0);
+            ctx.beginPath();
+            ctx.moveTo(ax, ay);
+            ctx.lineTo(bx, by);
+            ctx.stroke();
+            const sx = mix(ax, bx, pulse);
+            const sy = mix(ay, by, pulse);
+            ctx.fillStyle = `rgba(255,208,106,${.18 + .4 * Math.sin(pulse * Math.PI)})`;
+            ctx.beginPath();
+            ctx.arc(sx, sy, 1.2, 0, TAU);
+            ctx.fill();
+            links++;
+          }
+        }
+      }
+      for (const n of pts) {
+        const x = n.x * width + Math.sin(time * .32 + n.phase) * width * .008;
+        const y = n.y * height + Math.cos(time * .27 + n.phase) * height * .008;
+        const pulse = .7 + .3 * Math.sin(time * 1.1 + n.phase);
+        ctx.fillStyle = n.hub ? `rgba(255,192,82,${.48 * pulse})` : `rgba(255,144,94,${.28 * pulse})`;
+        ctx.beginPath();
+        ctx.arc(x, y, n.r * (n.hub ? 1.35 : 1), 0, TAU);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawSelfOrganization(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const centerX = width * (.5 + .06 * Math.sin(time * .17));
+      const centerY = height * (.5 + .04 * Math.cos(time * .2));
+      const count = reducedMotion ? 36 : 74;
+      for (let i = 0; i < count; i++) {
+        const phase = seeded(i + 27000) * TAU;
+        const radius = Math.sqrt(seeded(i + 28000)) * Math.min(width, height) * .34;
+        const angle = phase + time * (.12 + seeded(i + 29000) * .16) + Math.sin(time * .3 + phase) * .25;
+        const x = centerX + Math.cos(angle) * radius * (1 + .09 * Math.sin(time + phase));
+        const y = centerY + Math.sin(angle) * radius * .68;
+        const heading = angle + Math.PI * .54;
+        const size = 3 + seeded(i + 30000) * 5;
+        ctx.fillStyle = `rgba(255,137,95,${.13 + .28 * seeded(i + 31000)})`;
+        ctx.beginPath();
+        ctx.moveTo(x + Math.cos(heading) * size, y + Math.sin(heading) * size);
+        ctx.lineTo(x + Math.cos(heading + 2.45) * size * .68, y + Math.sin(heading + 2.45) * size * .68);
+        ctx.lineTo(x + Math.cos(heading - 2.45) * size * .68, y + Math.sin(heading - 2.45) * size * .68);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawFunctionalInformation(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const bands = 5;
+      for (let b = 0; b < bands; b++) {
+        const y0 = height * (.25 + b * .13);
+        ctx.strokeStyle = `rgba(255,104,139,${.12 + b * .015})`;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        for (let i = 0; i <= 70; i++) {
+          const t = i / 70;
+          const x = t * width;
+          const y = y0 + Math.sin(t * TAU * (2 + b * .45) + time * (.55 + b * .08)) * (13 + b * 2);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        for (let i = 0; i < 22; i++) {
+          const t = fract(i / 22 + time * (.018 + b * .002));
+          const x = t * width;
+          const y = y0 + Math.sin(t * TAU * (2 + b * .45) + time * (.55 + b * .08)) * (13 + b * 2);
+          const bit = seeded(i + b * 100 + 32000) > .5;
+          ctx.fillStyle = bit ? "rgba(255,123,166,.58)" : "rgba(255,211,226,.32)";
+          ctx.fillRect(x - 2, y - 2, 4, 4);
+        }
+      }
+      const cx = width * .5;
+      const cy = height * .5;
+      const r = Math.min(width, height) * .08;
+      ctx.strokeStyle = "rgba(255,150,183,.3)";
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * (1 + .08 * Math.sin(time * 1.4)), 0, TAU);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawOrganizedChemistry(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const cx = width * .5;
+      const cy = height * .51;
+      const scale = Math.min(width, height);
+      for (let i = 0; i < molecules.length; i++) {
+        const m = molecules[i];
+        const angle = m.angle + time * (.08 + (m.kind % 3) * .025);
+        const rr = m.radius * scale * (1 + .04 * Math.sin(time + m.phase));
+        const x = cx + Math.cos(angle) * rr;
+        const y = cy + Math.sin(angle) * rr * .72;
+        const next = molecules[(i + 1) % molecules.length];
+        const na = next.angle + time * (.08 + (next.kind % 3) * .025);
+        const nr = next.radius * scale * (1 + .04 * Math.sin(time + next.phase));
+        const nx = cx + Math.cos(na) * nr;
+        const ny = cy + Math.sin(na) * nr * .72;
+        if (i % 2 === 0) {
+          ctx.strokeStyle = "rgba(236,91,196,.12)";
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.quadraticCurveTo(cx, cy, nx, ny);
+          ctx.stroke();
+        }
+        const colors = ["rgba(239,91,195,.55)", "rgba(134,116,255,.48)", "rgba(255,174,88,.46)", "rgba(99,231,198,.42)"];
+        ctx.fillStyle = colors[m.kind % colors.length];
+        ctx.beginPath();
+        ctx.arc(x, y, m.r, 0, TAU);
+        ctx.fill();
+        ctx.fillStyle = "rgba(255,255,255,.38)";
+        ctx.beginPath();
+        ctx.arc(x - m.r * .28, y - m.r * .25, Math.max(.7, m.r * .23), 0, TAU);
+        ctx.fill();
+      }
+      for (let k = 0; k < 4; k++) {
+        const r = scale * (.09 + k * .055);
+        const start = time * (.2 + k * .04) + k;
+        ctx.strokeStyle = `rgba(245,101,200,${.15 - k * .02})`;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, start, start + Math.PI * 1.5);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawReplication(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const rows = 5;
+      for (let r = 0; r < rows; r++) {
+        const y = height * (.2 + r * .15);
+        const copyOffset = Math.sin(time * .35 + r) * 8;
+        for (let i = 0; i < 24; i++) {
+          const x = width * (.08 + i / 26 * .84);
+          const bit = seeded(r * 100 + i + 33000) > .48;
+          const mutation = (i === (r * 7 + 5) % 24 && r > 1);
+          ctx.fillStyle = mutation ? "rgba(255,223,94,.85)" : bit ? "rgba(195,103,241,.62)" : "rgba(114,146,255,.42)";
+          const yy = y + Math.sin(i * .55 + time * .7 + r) * 4 + copyOffset * .2;
+          ctx.beginPath();
+          ctx.arc(x, yy, mutation ? 4.4 : 3.1, 0, TAU);
+          ctx.fill();
+          if (i > 0) {
+            const px = width * (.08 + (i - 1) / 26 * .84);
+            const py = y + Math.sin((i - 1) * .55 + time * .7 + r) * 4 + copyOffset * .2;
+            ctx.strokeStyle = "rgba(199,122,241,.18)";
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(x, yy);
+            ctx.stroke();
+          }
+        }
+        if (r < rows - 1) {
+          const t = fract(time * .1 + r * .21);
+          ctx.strokeStyle = `rgba(210,126,242,${.16 * Math.sin(t * Math.PI)})`;
+          ctx.beginPath();
+          ctx.moveTo(width * (.18 + t * .62), y + 12);
+          ctx.lineTo(width * (.22 + t * .58), y + height * .15 - 12);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawProtocells(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const scale = Math.min(width, height);
+      for (let i = 0; i < cells.length; i++) {
+        const c = cells[i];
+        const x = c.x * width + Math.sin(time * .22 + c.phase) * scale * .015;
+        const y = c.y * height + Math.cos(time * .19 + c.phase) * scale * .012;
+        const r = c.r * scale * (1 + c.wobble * Math.sin(time * .6 + c.phase));
+        ctx.strokeStyle = `rgba(138,136,255,${.25 + (i % 3) * .05})`;
+        ctx.lineWidth = 1.4 + (i % 2) * .7;
+        ctx.beginPath();
+        const steps = 48;
+        for (let k = 0; k <= steps; k++) {
+          const a = k / steps * TAU;
+          const wobble = 1 + .07 * Math.sin(a * (3 + c.type) + time * .55 + c.phase);
+          const px = x + Math.cos(a) * r * wobble;
+          const py = y + Math.sin(a) * r * wobble;
+          if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+        const fill = ctx.createRadialGradient(x - r * .25, y - r * .3, 0, x, y, r);
+        fill.addColorStop(0, "rgba(173,158,255,.14)");
+        fill.addColorStop(1, "rgba(96,113,255,.025)");
+        ctx.fillStyle = fill;
+        ctx.fill();
+        for (let k = 0; k < 6 + c.type; k++) {
+          const a = c.phase + k / (6 + c.type) * TAU + time * (.2 + c.type * .02);
+          const rr = r * (.2 + .48 * seeded(i * 40 + k + 34000));
+          ctx.fillStyle = k % 3 === 0 ? "rgba(247,112,196,.55)" : "rgba(95,231,198,.43)";
+          ctx.beginPath();
+          ctx.arc(x + Math.cos(a) * rr, y + Math.sin(a) * rr, 1.6 + (k % 2) * 1.3, 0, TAU);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawChemicalEvolution(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      for (let i = 0; i < lineages.length; i++) {
+        const l = lineages[i];
+        const startX = l.x * width;
+        const bottomY = height * .86;
+        const topY = height * .12;
+        ctx.strokeStyle = `rgba(${95 + l.variant * 25},${175 + (l.variant % 2) * 30},255,${.15 + i * .004})`;
+        ctx.lineWidth = 1.2 + (i % 3) * .45;
+        ctx.beginPath();
+        ctx.moveTo(startX, bottomY);
+        let x = startX;
+        for (let k = 1; k <= 14; k++) {
+          const t = k / 14;
+          x = startX + Math.sin(t * 7 + l.phase) * width * .035 + (t > .55 ? (l.branch - .5) * width * .1 : 0);
+          const y = mix(bottomY, topY, t);
+          ctx.lineTo(x, y);
+          if ((k + i) % 5 === 0) {
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + (seeded(i * 20 + k + 35000) - .5) * width * .12, y - height * .07);
+            ctx.moveTo(x, y);
+          }
+        }
+        ctx.stroke();
+        const pulse = fract(time * .06 + i / lineages.length);
+        const y = mix(bottomY, topY, pulse);
+        const px = startX + Math.sin(pulse * 7 + l.phase) * width * .035 + (pulse > .55 ? (l.branch - .5) * width * .1 : 0);
+        ctx.fillStyle = `rgba(113,190,255,${.3 + .35 * Math.sin(pulse * Math.PI)})`;
+        ctx.beginPath();
+        ctx.arc(px, y, 2.5 + 2 * Math.sin(pulse * Math.PI), 0, TAU);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawLifeThreshold(progress, time, alpha) {
+      if (alpha <= .001) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const cx = width * .5;
+      const cy = height * .48;
+      const scale = Math.min(width, height);
+      const r = scale * (.15 + .012 * Math.sin(time * .55));
+      const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 2.8);
+      glow.addColorStop(0, "rgba(127,255,171,.22)");
+      glow.addColorStop(.36, "rgba(105,230,177,.08)");
+      glow.addColorStop(1, "rgba(105,230,177,0)");
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 2.8, 0, TAU);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(141,255,182,.52)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let k = 0; k <= 90; k++) {
+        const a = k / 90 * TAU;
+        const wobble = 1 + .045 * Math.sin(a * 5 + time * .7) + .025 * Math.sin(a * 9 - time * .4);
+        const x = cx + Math.cos(a) * r * wobble;
+        const y = cy + Math.sin(a) * r * wobble;
+        if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+
+      const inner = 18;
+      for (let i = 0; i < inner; i++) {
+        const a = i / inner * TAU + time * (.08 + (i % 4) * .01);
+        const rr = r * (.16 + .62 * seeded(i + 36000));
+        const x = cx + Math.cos(a) * rr;
+        const y = cy + Math.sin(a) * rr;
+        ctx.fillStyle = i % 4 === 0 ? "rgba(255,129,192,.7)" : i % 3 === 0 ? "rgba(255,221,91,.62)" : "rgba(113,235,194,.58)";
+        ctx.beginPath();
+        ctx.arc(x, y, 2 + (i % 3), 0, TAU);
+        ctx.fill();
+        const j = (i + 5) % inner;
+        const aj = j / inner * TAU + time * (.08 + (j % 4) * .01);
+        const rrj = r * (.16 + .62 * seeded(j + 36000));
+        ctx.strokeStyle = "rgba(149,255,187,.1)";
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(cx + Math.cos(aj) * rrj, cy + Math.sin(aj) * rrj);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function zoneWeight(progress, p0, p1, feather = .045) {
+      const enter = smooth(clamp((progress - (p0 - feather)) / feather, 0, 1));
+      const exit = 1 - smooth(clamp((progress - p1) / feather, 0, 1));
+      return enter * exit;
+    }
+
+    function drawBursts(dt) {
+      for (let i = bursts.length - 1; i >= 0; i--) {
+        const p = bursts[i];
+        p.life -= dt * p.decay;
+        if (p.life <= 0) { bursts.splice(i, 1); continue; }
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.vx *= Math.pow(.94, dt * 60);
+        p.vy *= Math.pow(.94, dt * 60);
+        ctx.fillStyle = rgba(p.color, p.life * .55);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * (.5 + p.life), 0, TAU);
+        ctx.fill();
+      }
+      for (let i = waves.length - 1; i >= 0; i--) {
+        const w = waves[i];
+        w.life -= dt * 1.05;
+        if (w.life <= 0) { waves.splice(i, 1); continue; }
+        w.radius += dt * Math.min(width, height) * .24;
+        ctx.strokeStyle = rgba(w.color, w.life * .25);
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(w.x, w.y, w.radius, 0, TAU);
+        ctx.stroke();
+      }
+    }
+
+    function render(now) {
+      const dt = Math.min(.04, Math.max(.001, (now - lastFrame) / 1000));
+      lastFrame = now;
+      elapsed += reducedMotion ? dt * .24 : dt;
+      pointerX += (targetX - pointerX) * (1 - Math.pow(.001, dt));
+      pointerY += (targetY - pointerY) * (1 - Math.pow(.001, dt));
+      currentProgress += (depthFromY(pointerY) - currentProgress) * (1 - Math.pow(.005, dt));
+      shownX += (pointerX * width - shownX) * (1 - Math.pow(.001, dt));
+      shownY += (pointerY * height - shownY) * (1 - Math.pow(.001, dt));
+      touchEnergy *= Math.pow(.075, dt);
+
+      drawBackground(currentProgress, elapsed);
+
+      drawRuleField(currentProgress, elapsed, zoneWeight(currentProgress, 0, .12, .05));
+      drawSymmetryBreaking(currentProgress, elapsed, zoneWeight(currentProgress, .09, .2, .045));
+      drawMatter(currentProgress, elapsed, zoneWeight(currentProgress, .16, .27, .04));
+      drawEnergyFlow(currentProgress, elapsed, zoneWeight(currentProgress, .22, .35, .045));
+      drawFluctuations(currentProgress, elapsed, zoneWeight(currentProgress, .29, .39, .04));
+      drawPatterns(currentProgress, elapsed, zoneWeight(currentProgress, .34, .46, .045));
+      drawFeedback(currentProgress, elapsed, zoneWeight(currentProgress, .41, .53, .045));
+      drawNetwork(currentProgress, elapsed, zoneWeight(currentProgress, .47, .59, .045));
+      drawSelfOrganization(currentProgress, elapsed, zoneWeight(currentProgress, .55, .67, .045));
+      drawFunctionalInformation(currentProgress, elapsed, zoneWeight(currentProgress, .61, .74, .045));
+      drawOrganizedChemistry(currentProgress, elapsed, zoneWeight(currentProgress, .68, .81, .045));
+      drawReplication(currentProgress, elapsed, zoneWeight(currentProgress, .75, .87, .045));
+      drawProtocells(currentProgress, elapsed, zoneWeight(currentProgress, .82, .93, .045));
+      drawChemicalEvolution(currentProgress, elapsed, zoneWeight(currentProgress, .89, .985, .035));
+      drawLifeThreshold(currentProgress, elapsed, smooth(clamp((currentProgress - .95) / .05, 0, 1)));
+
+      drawBursts(dt);
+
+      if (!pointerDown) {
+        const zone = zoneForDepth(currentProgress);
+        setAccent(zone);
+      }
+      requestAnimationFrame(render);
+    }
+
+    window.addEventListener("resize", resize, { passive: true });
+    window.addEventListener("orientationchange", () => setTimeout(resize, 120), { passive: true });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && audioCtx && audioCtx.state === "running") audioCtx.suspend().catch(() => {});
+    });
+
+    resize();
+    setAccent(ZONES[0]);
+    root.style.setProperty("--progress-number", ".03");
+    requestAnimationFrame(render);
+  })();
+  </script>
+</body>
+</html>
