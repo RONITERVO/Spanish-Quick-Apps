@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#05070a">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Exploración táctil, visual y sonora de la cultura: del conocimiento compartido a la comunicación, las herramientas, las ciudades, la ciencia y la civilización planetaria.">
+  <meta name="application-name" content="Espectro de la Cultura: del Conocimiento Compartido a la Civilización">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Espectro de la Cultura">
+  <meta property="og:description" content="Toca y asciende desde el conocimiento compartido hasta la civilización planetaria.">
+  <title>Espectro de la Cultura: del Conocimiento Compartido a la Civilización</title>
+  <style>
+    :root {
+      --accent: 255 211 137;
+      --accent-soft: rgb(var(--accent) / .34);
+      --ink: 255 255 255;
+      --panel: 8 9 14;
+      --scan-x: 50vw;
+      --scan-y: 93vh;
+      --progress: 2%;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #05070a;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      color: rgb(var(--ink));
+      font-family: Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #culture-spectrum {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      outline: none;
+    }
+
+    #light-field,
+    #scan-line,
+    #grain,
+    #vignette,
+    #top-bloom,
+    #bottom-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #light-field {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      background: radial-gradient(circle at var(--scan-x) var(--scan-y), rgb(var(--accent) / .56) 0, rgb(var(--accent) / .15) 11%, transparent 35%);
+      mix-blend-mode: screen;
+    }
+    body.active #light-field { opacity: .82; }
+
+    #scan-line {
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      background:
+        linear-gradient(90deg, transparent calc(var(--scan-x) - 1px), rgb(var(--accent) / .52) var(--scan-x), transparent calc(var(--scan-x) + 1px)),
+        linear-gradient(180deg, transparent calc(var(--scan-y) - 1px), rgb(var(--accent) / .32) var(--scan-y), transparent calc(var(--scan-y) + 1px));
+      mix-blend-mode: screen;
+    }
+    body.active #scan-line { opacity: .17; }
+
+    #grain {
+      z-index: 4;
+      opacity: .042;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    #vignette {
+      z-index: 5;
+      background:
+        radial-gradient(ellipse at center, transparent 38%, rgb(0 0 0 / .22) 72%, rgb(0 0 0 / .84) 128%),
+        linear-gradient(90deg, rgb(0 0 0 / .47), transparent 13%, transparent 87%, rgb(0 0 0 / .45));
+    }
+
+    #top-bloom {
+      z-index: 1;
+      opacity: .5;
+      background: radial-gradient(ellipse at 50% -10%, rgb(255 243 216 / .34), transparent 49%);
+      mix-blend-mode: screen;
+    }
+
+    #bottom-glow {
+      z-index: 1;
+      opacity: .46;
+      background: radial-gradient(ellipse at 50% 110%, rgb(255 173 92 / .24), transparent 48%);
+      mix-blend-mode: screen;
+    }
+
+    #readout {
+      position: fixed;
+      z-index: 9;
+      left: 50%;
+      top: 49%;
+      width: min(92vw, 860px);
+      padding: clamp(15px, 3.2vw, 27px) clamp(19px, 5vw, 52px) clamp(18px, 3.7vw, 33px);
+      border: 1px solid rgb(255 255 255 / .22);
+      border-radius: clamp(25px, 6vw, 52px);
+      color: white;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate(-50%, -50%) scale(.7);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / .12), transparent 56%),
+        rgb(var(--panel) / .66);
+      box-shadow:
+        0 24px 80px rgb(0 0 0 / .58),
+        0 0 86px var(--accent-soft),
+        inset 0 1px 0 rgb(255 255 255 / .26),
+        inset 0 -1px 0 rgb(0 0 0 / .25);
+      backdrop-filter: blur(23px) saturate(1.36);
+      -webkit-backdrop-filter: blur(23px) saturate(1.36);
+      transition:
+        opacity 170ms ease,
+        filter 240ms ease,
+        transform 410ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 140ms linear;
+      will-change: opacity, filter, transform;
+    }
+
+    #readout.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #evidence-class {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 27px;
+      margin-bottom: clamp(9px, 2vw, 15px);
+      padding: 6px 13px 7px;
+      border: 1px solid rgb(var(--accent) / .62);
+      border-radius: 999px;
+      color: rgb(var(--accent));
+      font-size: clamp(.62rem, 2.1vw, .87rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: rgb(var(--accent) / .09);
+      box-shadow: 0 0 25px var(--accent-soft), inset 0 1px 0 rgb(255 255 255 / .1);
+    }
+
+    #zone-name {
+      display: block;
+      margin: 0;
+      font-size: clamp(2rem, 8.5vw, 6.8rem);
+      font-weight: 950;
+      line-height: .86;
+      letter-spacing: -.058em;
+      word-spacing: .1em;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow: 0 0 30px var(--accent-soft), 0 5px 24px rgb(0 0 0 / .5);
+    }
+    #zone-name.compact { font-size: clamp(1.7rem, 7.15vw, 5.55rem); letter-spacing: -.046em; line-height: .9; }
+    #zone-name.long { font-size: clamp(1.38rem, 5.9vw, 4.45rem); letter-spacing: -.034em; line-height: .94; }
+
+    #feature-name {
+      display: block;
+      margin-top: clamp(8px, 1.8vw, 14px);
+      font-size: clamp(.9rem, 3.2vw, 1.62rem);
+      font-weight: 880;
+      line-height: 1.08;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    #metric {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      margin-top: clamp(10px, 2vw, 17px);
+      padding: 7px 13px 8px;
+      border: 1px solid rgb(255 255 255 / .18);
+      border-radius: 999px;
+      font-size: clamp(.67rem, 2.2vw, .92rem);
+      font-weight: 820;
+      line-height: 1.12;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: rgb(0 0 0 / .2);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / .11);
+    }
+
+    #fact {
+      display: block;
+      max-width: 700px;
+      margin: clamp(10px, 2.25vw, 17px) auto 0;
+      font-size: clamp(.82rem, 2.63vw, 1.1rem);
+      font-weight: 600;
+      line-height: 1.42;
+      letter-spacing: .005em;
+      color: rgb(255 255 255 / .91);
+      text-wrap: pretty;
+    }
+
+    #touch-orb {
+      position: fixed;
+      z-index: 8;
+      left: 50%;
+      top: 93%;
+      width: clamp(58px, 15vw, 104px);
+      aspect-ratio: 1;
+      border: 1px solid rgb(var(--accent) / .82);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(.4);
+      background: radial-gradient(circle, rgb(255 255 255 / .82) 0 2%, rgb(var(--accent) / .34) 7%, rgb(var(--accent) / .09) 36%, transparent 70%);
+      box-shadow: 0 0 18px rgb(var(--accent) / .58), 0 0 62px rgb(var(--accent) / .42), inset 0 0 26px rgb(var(--accent) / .19);
+      transition: opacity 150ms ease, transform 260ms cubic-bezier(.16, 1, .3, 1);
+    }
+    #touch-orb.visible { opacity: .9; transform: translate(-50%, -50%) scale(1); }
+
+    #journey-scale {
+      position: fixed;
+      z-index: 7;
+      right: max(10px, env(safe-area-inset-right));
+      top: max(19px, env(safe-area-inset-top));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: clamp(50px, 10vw, 78px);
+      pointer-events: none;
+      opacity: .58;
+      transition: opacity 180ms ease;
+    }
+    body.active #journey-scale { opacity: .9; }
+
+    #scale-track {
+      position: absolute;
+      right: 11px;
+      top: 48px;
+      bottom: 48px;
+      width: 3px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgb(255 255 255 / .14);
+      box-shadow: 0 0 12px rgb(0 0 0 / .5);
+    }
+    #scale-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--progress);
+      border-radius: inherit;
+      background: linear-gradient(to top, rgb(94 214 164 / .68), rgb(var(--accent)));
+      box-shadow: 0 0 14px rgb(var(--accent) / .72);
+    }
+    #scale-dot {
+      position: absolute;
+      right: 6px;
+      bottom: 48px;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgb(255 255 255 / .84);
+      border-radius: 50%;
+      transform: translateY(50%);
+      background: rgb(var(--accent));
+      box-shadow: 0 0 17px rgb(var(--accent) / .85);
+    }
+    #scale-bottom,
+    #scale-top {
+      position: absolute;
+      right: 0;
+      width: 74px;
+      font-size: clamp(.49rem, 1.6vw, .61rem);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: .11em;
+      text-align: right;
+      text-transform: uppercase;
+      color: rgb(255 255 255 / .65);
+    }
+    #scale-top { top: 0; }
+    #scale-bottom { bottom: 0; }
+    #scale-value {
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      width: min(34vh, 250px);
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right center;
+      font-size: clamp(.54rem, 1.7vw, .66rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: .14em;
+      text-align: center;
+      text-transform: uppercase;
+      color: rgb(var(--accent));
+      text-shadow: 0 0 14px rgb(var(--accent) / .6);
+      white-space: nowrap;
+    }
+
+    #hint {
+      position: fixed;
+      z-index: 6;
+      left: 50%;
+      bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+      width: min(78vw, 530px);
+      transform: translateX(-50%);
+      color: rgb(255 255 255 / .78);
+      text-align: center;
+      pointer-events: none;
+      font-size: clamp(.7rem, 2.4vw, .94rem);
+      font-weight: 800;
+      line-height: 1.34;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 16px rgb(0 0 0 / .8);
+      animation: breathe 3.2s ease-in-out infinite;
+    }
+    #hint strong { color: rgb(var(--accent)); }
+
+    .ripple {
+      position: fixed;
+      z-index: 7;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgb(var(--accent) / .78);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 22px rgb(var(--accent) / .52), inset 0 0 15px rgb(var(--accent) / .2);
+      animation: ripple 920ms cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes ripple { to { width: min(72vw, 560px); height: min(72vw, 560px); opacity: 0; } }
+    @keyframes breathe {
+      0%, 100% { opacity: .4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: .95; transform: translateX(-50%) translateY(-3px); }
+    }
+
+    @media (max-height: 620px) {
+      #readout { width: min(88vw, 760px); padding-top: 12px; padding-bottom: 14px; }
+      #evidence-class { margin-bottom: 7px; }
+      #fact { margin-top: 8px; line-height: 1.32; }
+      #metric { margin-top: 7px; }
+      #journey-scale { opacity: .46; }
+    }
+
+    @media (max-width: 460px) {
+      #readout { width: 91vw; }
+      #journey-scale { right: 3px; }
+      #scale-value { display: none; }
+      #scale-bottom, #scale-top { width: 54px; font-size: .45rem; }
+      #hint { width: 72vw; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #hint { animation: none; }
+      .ripple { animation-duration: 1ms; }
+      #readout, #touch-orb, #light-field, #scan-line { transition-duration: 1ms; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="culture-spectrum" tabindex="0" role="application" aria-label="Exploración táctil de la cultura, desde el conocimiento compartido en la parte inferior hasta la civilización planetaria en la parte superior. Toca, arrastra o usa las flechas del teclado."></canvas>
+  <div id="top-bloom" aria-hidden="true"></div><div id="bottom-glow" aria-hidden="true"></div><div id="light-field" aria-hidden="true"></div><div id="scan-line" aria-hidden="true"></div><div id="grain" aria-hidden="true"></div><div id="vignette" aria-hidden="true"></div>
+  <div id="hint" aria-hidden="true"><strong>Toca y asciende</strong> · del conocimiento a la civilización</div>
+  <div id="readout" aria-live="polite" aria-atomic="true"><span id="evidence-class"></span><strong id="zone-name"></strong><span id="feature-name"></span><span id="metric"></span><span id="fact"></span></div>
+  <div id="touch-orb" aria-hidden="true"></div>
+  <div id="journey-scale" aria-hidden="true"><span id="scale-top">Civilización planetaria</span><div id="scale-track"><div id="scale-fill"></div></div><div id="scale-dot"></div><span id="scale-value">Conocimiento compartido</span><span id="scale-bottom">Conocimiento compartido</span></div>
+
+  <!--
+    Visualización educativa conceptual, táctil y sin dependencias externas.
+
+    La escala vertical representa aumento de alcance, acumulación y coordinación cultural, no una escalera
+    universal de superioridad. Las sociedades pueden resolver problemas semejantes de formas distintas;
+    agricultura, escritura, ciudades, industria y conectividad no forman una trayectoria única, obligatoria
+    ni irreversible. Las regiones se superponen y las prácticas antiguas continúan dentro de sistemas modernos.
+
+    No se afirma que sociedades sin escritura carezcan de conocimiento complejo, que la agricultura mejorara
+    inmediatamente toda vida, que instituciones sirvan por igual a todas las personas, que tecnología determine
+    por sí sola el cambio social ni que la conectividad global haya eliminado la diversidad cultural.
+
+    "Civilización planetaria" describe una red de sociedades interdependientes capaz de transformar sistemas
+    terrestres. No implica unidad política, acceso igual, coordinación completa ni una definición universal de
+    civilización. Los elementos visuales son metáforas interactivas, no reconstrucciones históricas literales.
+  -->
+
+  <script>
+  (() => {
+    "use strict";
+
+    const canvas = document.getElementById("culture-spectrum");
+    const ctx = canvas.getContext("2d", { alpha: false, desynchronized: true });
+    const root = document.documentElement;
+    const readout = document.getElementById("readout");
+    const evidenceClass = document.getElementById("evidence-class");
+    const zoneName = document.getElementById("zone-name");
+    const featureName = document.getElementById("feature-name");
+    const metric = document.getElementById("metric");
+    const fact = document.getElementById("fact");
+    const touchOrb = document.getElementById("touch-orb");
+    const scaleValue = document.getElementById("scale-value");
+    const scaleDot = document.getElementById("scale-dot");
+    const hint = document.getElementById("hint");
+
+    const TAU = Math.PI * 2;
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const mix = (a, b, t) => a + (b - a) * t;
+    const smooth = t => t * t * (3 - 2 * t);
+    const fract = v => v - Math.floor(v);
+    const seeded = n => fract(Math.sin(n * 127.1 + 311.7) * 43758.5453123);
+    const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+    const ZONES = [{"id":"shared-knowledge","name":"El conocimiento compartido","className":"Memoria colectiva acumulativa","color":[255,211,137],"metric":"Experiencia + símbolos + enseñanza + corrección → conocimiento público","fact":"Compartir información no garantiza que sea verdadera, pero permite conservarla, compararla, corregirla y ampliarla.","sound":{"base":58.0,"filter":760,"noise":0.018,"pulse":0.07,"type":"sine"},"features":[["símbolos compartidos","Los símbolos permiten que varias personas señalen una misma idea sin depender del objeto presente."],["memoria externa","Diagramas, marcas, objetos y relatos conservan información fuera de una sola mente."],["enseñanza","Una habilidad puede transmitirse deliberadamente en lugar de redescubrirse desde cero."],["corrección colectiva","Otras personas pueden comprobar, discutir y modificar una afirmación."],["historias","Los relatos organizan experiencias y conectan acontecimientos separados."],["instrucciones","Una secuencia de acciones puede conservarse y repetirse por personas ausentes."],["descubrimientos","Una idea útil puede incorporarse al repertorio de toda una comunidad."],["conocimiento provisional","Lo compartido puede mejorar, pero también puede contener errores, sesgos y olvidos."]],"p0":0.0,"p1":0.05,"scene":0},{"id":"communication","name":"Comunicación","className":"Transferencia social anterior a la escritura","color":[109,220,255],"metric":"Señal + contexto + atención mutua → mensaje interpretado","fact":"La comunicación puede usar voz, gesto, mirada, ritmo, olor, postura o movimiento; no requiere escritura ni lenguaje hablado completo.","sound":{"base":62.1,"filter":865,"noise":0.023,"pulse":0.10500000000000001,"type":"triangle"},"features":[["gesto","Las manos y el cuerpo pueden indicar dirección, tamaño, intención o emoción."],["señal","Una señal adquiere significado cuando emisor y receptor relacionan su forma con una situación."],["voz","La voz transmite palabras, ritmo, urgencia, identidad y estado emocional."],["mirada","La dirección de la mirada ayuda a compartir atención sobre un objeto o acontecimiento."],["movimiento","Acciones coordinadas pueden comunicar cuándo avanzar, detenerse o cambiar de tarea."],["ritmo","Patrones temporales facilitan coordinación, memoria y participación grupal."],["imitación","Copiar una acción permite aprender incluso sin una explicación verbal."],["mensaje","El significado depende del contexto y puede interpretarse de manera distinta por cada receptor."]],"p0":0.05,"p1":0.1,"scene":1},{"id":"language","name":"Lenguaje compartido","className":"Sistema simbólico comunitario","color":[180,161,255],"metric":"Palabras + reglas + contexto → significados combinables","fact":"Un lenguaje compartido permite hablar de objetos ausentes, acontecimientos pasados y posibilidades futuras.","sound":{"base":66.2,"filter":970,"noise":0.027999999999999997,"pulse":0.14,"type":"sine"},"features":[["palabra","Una palabra conecta una forma sonora, gestual o escrita con significados aprendidos socialmente."],["gramática","Las reglas de combinación permiten expresar relaciones que una lista de palabras no mostraría."],["nombre","Nombrar ayuda a mantener identidad, referencia y memoria a través del tiempo."],["categoría","Las lenguas agrupan el mundo de maneras útiles, pero no todas trazan las mismas fronteras."],["pregunta","Preguntar convierte una incertidumbre privada en una búsqueda compartida."],["explicación","Una explicación relaciona causas, mecanismos, ejemplos y consecuencias."],["diálogo","Las personas ajustan significado turno a turno mediante respuestas y aclaraciones."],["diversidad lingüística","Dialectos y lenguas diferentes conservan historias y soluciones culturales distintas."]],"p0":0.1,"p1":0.15,"scene":2},{"id":"stories","name":"Relatos","className":"Memoria narrativa e identidad compartida","color":[255,137,164],"metric":"Experiencias + secuencia + significado → relato transmisible","fact":"Los relatos no solo entretienen: pueden conservar historia, conocimiento ambiental, valores, advertencias e identidades.","sound":{"base":70.3,"filter":1075,"noise":0.033,"pulse":0.17500000000000002,"type":"triangle"},"features":[["orígenes","Los relatos de origen sitúan a una comunidad dentro de un paisaje, una genealogía o un orden simbólico."],["viajes","Narrar recorridos conserva rutas, peligros, encuentros y cambios."],["advertencias","Una historia memorable puede transmitir riesgos con más fuerza que una instrucción aislada."],["antepasados","Recordar a quienes vivieron antes conecta obligaciones, territorios y prácticas."],["héroes","Las figuras heroicas concentran ideales y conflictos, aunque simplifiquen historias reales."],["ficción","Imaginar situaciones inexistentes permite explorar decisiones sin ejecutarlas."],["identidad","Relatos compartidos ayudan a definir quién pertenece, aunque también pueden excluir."],["reinterpretación","Cada generación puede contar de nuevo una historia y cambiar su énfasis o significado."]],"p0":0.15,"p1":0.2,"scene":3},{"id":"teaching","name":"Enseñanza","className":"Transmisión deliberada de habilidades","color":[255,239,135],"metric":"Demostración + práctica + retroalimentación → aprendizaje acelerado","fact":"La enseñanza acelera la transmisión cultural porque cada persona no necesita descubrirlo todo desde el principio.","sound":{"base":74.4,"filter":1180,"noise":0.038,"pulse":0.21000000000000002,"type":"sine"},"features":[["demostración","Observar una acción completa revela movimientos, secuencia y resultado."],["imitación","Repetir lo observado convierte una representación en práctica corporal."],["corrección","La retroalimentación señala diferencias entre el intento y el resultado buscado."],["práctica","La repetición ajusta coordinación, velocidad, memoria y precisión."],["aprendizaje guiado","Una persona experta puede aumentar gradualmente la dificultad y retirar ayuda."],["explicación","Las razones y principios permiten adaptar una habilidad a situaciones nuevas."],["evaluación","Comprobar el resultado ayuda a distinguir dominio real de familiaridad."],["reciprocidad","Quien aprende hoy puede enseñar mañana y ampliar el conocimiento recibido."]],"p0":0.2,"p1":0.25,"scene":4},{"id":"cooperation","name":"Cooperación","className":"Coordinación hacia metas compartidas","color":[82,214,159],"metric":"Roles + comunicación + confianza → capacidad colectiva","fact":"La cooperación combina capacidades individuales para alcanzar resultados imposibles o muy costosos en solitario.","sound":{"base":78.5,"filter":1285,"noise":0.018,"pulse":0.24500000000000002,"type":"triangle"},"features":[["caza","La coordinación puede distribuir rastreo, conducción, captura y reparto."],["recolección","Compartir información sobre lugares y estaciones reduce riesgo y esfuerzo."],["cuidado","El cuidado cooperativo amplía protección, aprendizaje y supervivencia infantil."],["construcción","Varias personas pueden mover materiales y mantener tareas simultáneas."],["defensa","La vigilancia y respuesta coordinadas cambian la capacidad de protección."],["navegación","Rutas largas exigen memoria distribuida, observación y reparto de responsabilidades."],["alimentos","Compartir reservas puede compensar días de éxito desigual y sostener vínculos."],["planificación","Una meta futura requiere acordar tiempos, recursos, roles y contingencias."]],"p0":0.25,"p1":0.3,"scene":5},{"id":"norms","name":"Normas y confianza","className":"Expectativas sociales negociadas","color":[247,183,98],"metric":"Repetición + reputación + sanciones + reparación → cooperación estable","fact":"Las sociedades dependen no solo de la fuerza, sino también de expectativas compartidas sobre cómo deben comportarse las personas.","sound":{"base":82.6,"filter":1390,"noise":0.023,"pulse":0.28,"type":"sine"},"features":[["promesa","Una promesa conecta una acción futura con la reputación presente."],["reciprocidad","Ayudar y recibir ayuda puede crear relaciones duraderas, no intercambios instantáneos."],["reputación","La memoria social influye en quién recibe confianza, oportunidades o vigilancia."],["justicia","Las ideas de reparto justo varían según contexto, necesidad, mérito y tradición."],["sanción","Las sanciones pueden desalentar abusos, pero también ser desiguales o injustas."],["perdón","La reparación y el perdón permiten continuar una relación después del daño."],["liderazgo","El liderazgo puede coordinar, representar o imponer; sus formas no son universales."],["conflicto","Mediación, debate, compensación y separación son respuestas culturales distintas al conflicto."]],"p0":0.3,"p1":0.35,"scene":6},{"id":"tools","name":"Herramientas","className":"Capacidades corporales ampliadas y acumulativas","color":[194,149,92],"metric":"Material + diseño + técnica → acción ampliada","fact":"Las herramientas conservan decisiones de diseño y permiten que mejoras pequeñas se acumulen durante generaciones.","sound":{"base":86.69999999999999,"filter":1495,"noise":0.027999999999999997,"pulse":0.07,"type":"triangle"},"features":[["piedra","Un borde tallado concentra fuerza para cortar, raspar o perforar."],["cuerda","Fibras trenzadas permiten atar, arrastrar, tejer, medir y construir."],["aguja","Una punta perforada convierte hilo y piel o tejido en ropa, refugio y reparación."],["recipiente","Contener transforma el transporte, almacenamiento, cocción y reparto."],["martillo","Una masa con mango amplifica impacto y protege la mano."],["medición","Marcas, pesos y reglas hacen comparables longitudes, cantidades y resultados."],["almacenamiento","Guardar herramientas y materiales extiende proyectos más allá de un solo momento."],["mejora acumulativa","Una herramienta nueva suele combinar formas, materiales y técnicas heredadas."]],"p0":0.35,"p1":0.4,"scene":7},{"id":"art","name":"Arte y simbolismo","className":"Expresión, emoción e identidad","color":[224,118,255],"metric":"Forma + ritmo + materia + contexto → significado cultural","fact":"El arte puede comunicar emoción, identidad, memoria y significado sin funcionar como una descripción literal.","sound":{"base":90.8,"filter":1600,"noise":0.033,"pulse":0.10500000000000001,"type":"sawtooth"},"features":[["música","El sonido organizado coordina atención, emoción, memoria y movimiento."],["danza","El cuerpo puede representar vínculos, historias, celebración y transformación."],["pintura","Pigmentos y superficies convierten gestos en huellas visibles duraderas."],["decoración","Modificar objetos cotidianos puede señalar cuidado, identidad, rango o pertenencia."],["escultura","La materia adquiere formas simbólicas que pueden ser tocadas y rodeadas."],["ceremonia","Acciones repetidas en tiempos especiales crean marcos compartidos de significado."],["símbolo","Una forma puede representar algo ausente, abstracto o socialmente acordado."],["interpretación","Una obra puede sostener múltiples significados y cambiar según quien la encuentre."]],"p0":0.4,"p1":0.45,"scene":8},{"id":"exchange","name":"Intercambio","className":"Contacto entre grupos y circulación cultural","color":[89,202,224],"metric":"Objetos + rutas + encuentros → transferencia material y simbólica","fact":"Cuando los grupos intercambian objetos, también pueden circular palabras, técnicas, cultivos, músicas, creencias, genes y enfermedades.","sound":{"base":94.9,"filter":1705,"noise":0.038,"pulse":0.14,"type":"sine"},"features":[["regalo","Un regalo puede crear obligación, alianza, prestigio o cuidado sin fijar un precio."],["trueque","El intercambio directo depende de necesidades coincidentes y valores negociados."],["ruta","Los caminos conectan paisajes, estaciones, comunidades y zonas de producción."],["material","Piedra, sal, metal, concha o pigmento pueden viajar mucho más lejos que quienes los obtuvieron."],["tecnología","Un objeto importado puede revelar un diseño y ser adaptado localmente."],["palabra","El contacto lingüístico produce préstamos, traducciones y nuevas formas de nombrar."],["migración","Las personas transportan prácticas completas, no solo mercancías."],["riesgo","Las redes también transmiten competencia, violencia, explotación y enfermedad."]],"p0":0.45,"p1":0.5,"scene":9},{"id":"agriculture","name":"Agricultura","className":"Transformación sostenida de ecosistemas","color":[132,205,94],"metric":"Selección + calendario + trabajo + almacenamiento → producción planificada","fact":"La agricultura surgió de manera independiente en varias regiones y produjo beneficios, costes y trayectorias diferentes; no fue una mejora inmediata en todo aspecto de la vida.","sound":{"base":99.0,"filter":1810,"noise":0.018,"pulse":0.17500000000000002,"type":"sine"},"features":[["selección vegetal","Guardar semillas de ciertas plantas cambia gradualmente poblaciones cultivadas."],["domesticación animal","La cría selectiva modifica comportamiento, cuerpo y relación ecológica."],["estaciones","Sembrar y cosechar requieren calendarios y observación climática."],["riego","Canales y depósitos redistribuyen agua, pero exigen mantenimiento y acuerdos."],["almacenamiento","Las reservas reducen estacionalidad y crean nuevos riesgos de pérdida o control desigual."],["tierra","Cultivar transforma suelos, vegetación, biodiversidad y formas de propiedad."],["excedente","La producción almacenada puede sostener especialización, comercio y poder."],["costes","Trabajo repetitivo, dieta limitada, enfermedad y desigualdad aumentaron en muchos contextos agrícolas."]],"p0":0.5,"p1":0.55,"scene":10},{"id":"settlements","name":"Asentamientos","className":"Paisajes construidos y permanencia creciente","color":[227,157,93],"metric":"Vivienda + agua + almacenamiento + caminos → comunidad estable","fact":"Los asentamientos reúnen personas, infraestructuras y memoria material; no todos fueron agrícolas ni evolucionaron hacia ciudades.","sound":{"base":103.1,"filter":1915,"noise":0.023,"pulse":0.21000000000000002,"type":"triangle"},"features":[["viviendas","Las casas organizan descanso, parentesco, trabajo, intimidad y almacenamiento."],["almacenes","Reservas comunes o privadas cambian seguridad, poder y planificación."],["talleres","Espacios especializados concentran herramientas, materiales y aprendizaje."],["caminos","El tránsito repetido convierte movimiento en infraestructura."],["espacios comunes","Plazas, fogones y salas compartidas sostienen reunión, ceremonia y decisión."],["defensas","Muros y posiciones protegidas responden a riesgos, pero también separan."],["agua","Pozos, fuentes y canales condicionan tamaño, salud y ubicación."],["división del trabajo","La permanencia permite especialización, aunque las tareas siguen superponiéndose."]],"p0":0.55,"p1":0.6,"scene":11},{"id":"writing","name":"Escritura","className":"Información más allá de la memoria viva","color":[245,218,171],"metric":"Marcas convencionales + soporte + lectura → registro transmisible","fact":"La escritura permite almacenar mensajes con mayor precisión y transmitirlos a distancia y entre generaciones, pero las sociedades sin escritura también conservan conocimiento complejo.","sound":{"base":107.19999999999999,"filter":2020,"noise":0.027999999999999997,"pulse":0.24500000000000002,"type":"sine"},"features":[["signo","Una marca se vuelve escritura cuando una comunidad aprende su relación con sonidos, palabras o ideas."],["número","Registrar cantidades ayuda a contar personas, bienes, tiempo, deuda y medida."],["cuenta","Fichas y tablillas pueden preservar transacciones que nadie recuerda por completo."],["nombre","Escribir un nombre mantiene referencia administrativa, familiar o ceremonial."],["ley","Un texto fija una versión consultable, aunque interpretación y aplicación sigan siendo sociales."],["carta","El mensaje puede viajar sin que emisor y receptor compartan lugar o momento."],["archivo","Colecciones organizadas permiten comparar registros y extender memoria institucional."],["literatura","La escritura puede conservar voces, argumentos y mundos imaginados durante siglos."]],"p0":0.6,"p1":0.65,"scene":12},{"id":"cities","name":"Ciudades","className":"Densidad, especialización e interdependencia","color":[255,187,82],"metric":"Alimentos + agua + trabajo + administración + energía → sistema urbano","fact":"Una ciudad no es un solo invento: es una red dependiente de territorios, infraestructuras, trabajo, autoridad y flujos materiales.","sound":{"base":111.3,"filter":2125,"noise":0.033,"pulse":0.28,"type":"triangle"},"features":[["mercado","Los mercados concentran intercambio, información, negociación y regulación."],["taller","La proximidad de especialistas acelera producción, aprendizaje y competencia."],["vivienda","La densidad genera nuevas formas de vecindad, desigualdad, riesgo y oportunidad."],["camino","Calles y puertas organizan acceso, movimiento, defensa y comercio."],["agua y saneamiento","Abastecimiento y eliminación de residuos condicionan salud y crecimiento."],["administración","Contar, registrar y coordinar se vuelve más exigente con poblaciones densas."],["monumento","Edificios visibles concentran memoria, culto, autoridad o identidad."],["dependencia regional","Toda ciudad necesita alimentos, materiales y energía procedentes de otros lugares."]],"p0":0.65,"p1":0.7,"scene":13},{"id":"institutions","name":"Instituciones","className":"Reglas y funciones que sobreviven a sus miembros","color":[112,164,245],"metric":"Roles + normas + registros + recursos → continuidad organizada","fact":"Una institución conserva reglas, funciones y memoria más allá de las personas que la componen en un momento determinado.","sound":{"base":115.39999999999999,"filter":2230,"noise":0.038,"pulse":0.07,"type":"sine"},"features":[["consejo","Un consejo distribuye deliberación y autoridad entre personas designadas o reconocidas."],["tribunal","Los tribunales formalizan procedimientos para conflicto, prueba y sanción."],["escuela","La enseñanza se vuelve una función sostenida con currículos, roles y evaluación."],["ejército","La defensa organizada concentra entrenamiento, logística y poder coercitivo."],["organización religiosa","Rituales, especialistas y lugares pueden persistir mediante normas y archivos."],["impuestos","Recaudar recursos financia proyectos y autoridad, pero distribuye cargas de manera desigual."],["obras públicas","Caminos, canales y servicios coordinan trabajo a escalas mayores."],["poder","Las instituciones pueden proteger bienes comunes o privilegiar a ciertos grupos; suelen hacer ambas cosas en grados distintos."]],"p0":0.7,"p1":0.75,"scene":14},{"id":"commerce","name":"Comercio y redes","className":"Sistemas regionales de circulación","color":[95,216,199],"metric":"Rutas + contratos + medios de pago + logística → intercambio ampliado","fact":"Las redes comerciales conectan lugares distantes y vuelven cada objeto parte de una historia material, técnica y social más extensa.","sound":{"base":119.5,"filter":2335,"noise":0.018,"pulse":0.10500000000000001,"type":"triangle"},"features":[["carretera","Una ruta mantenida reduce fricción y hace previsibles tiempos y cargas."],["puerto","Los puertos conectan transporte terrestre, fluvial y marítimo."],["caravana","Viajar en grupo distribuye defensa, animales, guías y mercancías."],["moneda","Una unidad reconocida facilita comparación y pago, pero depende de confianza e instituciones."],["contrato","Los acuerdos registrados extienden obligaciones más allá del encuentro inmediato."],["navegación","Mapas, estrellas, instrumentos y experiencia convierten distancia en ruta."],["cadena de suministro","Un producto combina extracción, transformación, transporte, venta y consumo."],["interdependencia","La especialización aumenta capacidad y también vulnerabilidad ante interrupciones."]],"p0":0.75,"p1":0.8,"scene":15},{"id":"science","name":"Ciencia","className":"Corrección pública y conocimiento comprobable","color":[110,225,255],"metric":"Observación + medición + hipótesis + prueba + crítica → explicación revisable","fact":"La ciencia no es una colección fija de respuestas. Es un sistema social para detectar errores y mejorar explicaciones.","sound":{"base":123.6,"filter":2440,"noise":0.023,"pulse":0.14,"type":"sine"},"features":[["observación","Observar sistemáticamente exige definir qué cuenta, cómo se registra y qué podría haberse omitido."],["medición","Las unidades e instrumentos hacen resultados comparables entre lugares y personas."],["hipótesis","Una hipótesis propone una relación que puede enfrentarse a evidencia."],["experimento","Modificar condiciones ayuda a distinguir causas de coincidencias."],["matemáticas","La representación matemática comprime patrones y produce predicciones precisas."],["replicación","Repetir un procedimiento comprueba si un resultado depende del observador o del azar."],["crítica","La revisión pública busca errores de método, inferencia y evidencia."],["revisión","Una explicación científica fuerte puede cambiar cuando aparecen mejores datos o modelos."]],"p0":0.8,"p1":0.85,"scene":16},{"id":"industry","name":"Industria","className":"Máquinas, energía concentrada y producción masiva","color":[255,139,75],"metric":"Máquinas + combustibles o electricidad + estandarización → gran escala productiva","fact":"La industrialización multiplicó capacidad productiva y transformó trabajo, ciudades, población, desigualdad y sistemas ambientales.","sound":{"base":127.69999999999999,"filter":2545,"noise":0.027999999999999997,"pulse":0.17500000000000002,"type":"triangle"},"features":[["máquina","Mecanismos repetibles convierten energía en movimientos controlados."],["fábrica","Reunir trabajadores, máquinas y materiales sincroniza producción y disciplina laboral."],["estandarización","Piezas y medidas comunes permiten reparación, intercambio y fabricación en serie."],["ferrocarril","El transporte mecanizado comprime tiempo, distancia y coste logístico."],["electricidad","La energía eléctrica puede generarse lejos, distribuirse y convertirse en luz, movimiento o información."],["urbanización","El trabajo industrial atrae población y reestructura vivienda, salud y servicios."],["trabajo","La productividad creció junto con jornadas peligrosas, conflicto laboral y nuevas organizaciones."],["impacto ambiental","Extraer y quemar energía a gran escala altera aire, agua, clima, suelos y biodiversidad."]],"p0":0.85,"p1":0.9,"scene":17},{"id":"global-networks","name":"Redes globales","className":"Interconexión planetaria de alta velocidad","color":[125,145,255],"metric":"Telecomunicaciones + transporte + cómputo + logística → efectos a distancia","fact":"La conectividad permite cooperación a escala planetaria, pero también transmite conflictos, errores, riesgos y desigualdades.","sound":{"base":131.8,"filter":2650,"noise":0.033,"pulse":0.21000000000000002,"type":"sawtooth"},"features":[["telecomunicaciones","Mensajes eléctricos y ópticos reducen el tiempo de comunicación de meses a fracciones de segundo."],["aviación","Personas y mercancías cruzan continentes rápidamente, junto con emisiones y riesgos biológicos."],["satélites","Órbitas artificiales sostienen navegación, observación, ciencia y comunicación."],["computación","Procesar información a gran velocidad cambia administración, diseño, ciencia y vida cotidiana."],["internet","Redes interoperables conectan publicaciones, servicios, comunidades y sistemas críticos."],["logística","Datos, contenedores y centros de distribución coordinan cadenas planetarias."],["colaboración","Equipos separados pueden construir conocimiento y tecnología en tiempo casi real."],["desigualdad digital","Acceso, control, alfabetización y exposición a riesgos permanecen distribuidos de manera desigual."]],"p0":0.9,"p1":0.95,"scene":18},{"id":"planetary-civilization","name":"Civilización planetaria","className":"Red interdependiente que transforma la Tierra","color":[170,239,255],"metric":"Sociedades conectadas + energía + conocimiento + riesgos → capacidad planetaria","fact":"La humanidad forma una red planetaria de sociedades interdependientes, pero todavía no actúa como una sola comunidad coordinada.","sound":{"base":135.89999999999998,"filter":2755,"noise":0.038,"pulse":0.24500000000000002,"type":"sine"},"features":[["comunicación global","Gran parte del planeta puede intercambiar información casi instantáneamente, aunque no con igual libertad o acceso."],["observación planetaria","Sensores terrestres y orbitales permiten vigilar clima, océanos, bosques, ciudades y riesgos."],["sistemas energéticos","Las sociedades dependen de infraestructuras energéticas extensas que deben transformarse sin excluir a quienes las necesitan."],["conocimiento compartido","Bases de datos, educación y ciencia conectan descubrimientos producidos en culturas e instituciones distintas."],["transformación ambiental","La actividad humana altera ciclos globales y exige decisiones que superan fronteras nacionales."],["instituciones internacionales","Tratados y organismos coordinan algunas tareas, pero poseen autoridad limitada y desigual."],["infraestructura espacial","Satélites y misiones extienden funciones civiles más allá de la superficie sin convertir a la humanidad en una unidad política."],["futuros y riesgos","Más allá surge otra pregunta: ¿qué tecnologías puede construir una civilización planetaria y qué riesgos debe aprender a gobernar?"]],"p0":0.95,"p1":1.0,"scene":19}];
+
+    let width = 1, height = 1, dpr = 1;
+    let pointerDown = false;
+    let targetX = .5, targetY = .982, pointerX = .5, pointerY = .982;
+    let shownX = .5, shownY = .982;
+    let lastZoneId = "", lastFeature = -1;
+    let hideTimer = 0, speechTimer = 0, lastSpoken = "", speechUnlocked = false;
+    let lastFrame = performance.now(), elapsed = 0, currentProgress = .018, touchEnergy = 0;
+
+    const particles = [], people = [], structures = [], routes = [], glyphs = [], bursts = [], waves = [];
+    let audioCtx = null, master = null, droneA = null, droneB = null, droneGain = null;
+    let droneFilter = null, pulseOsc = null, pulseGain = null, noiseSource = null;
+    let noiseGain = null, noiseFilter = null, stereo = null;
+
+    function depthFromY(yNorm) { return clamp(1 - yNorm, 0, 1); }
+    function zoneForDepth(p) {
+      for (const zone of ZONES) if (p >= zone.p0 && p < zone.p1) return zone;
+      return ZONES[ZONES.length - 1];
+    }
+    function featureFor(zone, xNorm) {
+      const index = Math.min(zone.features.length - 1, Math.floor(clamp(xNorm, 0, .999999) * zone.features.length));
+      return { index, name: zone.features[index][0], fact: zone.features[index][1] };
+    }
+    function setAccent(zone) { root.style.setProperty("--accent", `${zone.color[0]} ${zone.color[1]} ${zone.color[2]}`); }
+    function setCssPoint(x, y) { root.style.setProperty("--scan-x", `${x}px`); root.style.setProperty("--scan-y", `${y}px`); }
+
+    function buildScene() {
+      particles.length = people.length = structures.length = routes.length = glyphs.length = 0;
+      const particleCount = reducedMotion ? 90 : Math.round(clamp(width * height / 4800, 150, 360));
+      for (let i=0;i<particleCount;i++) particles.push({x:seeded(i+1),y:seeded(i+1000),r:.5+seeded(i+2000)*2.4,phase:seeded(i+3000)*TAU,speed:.15+seeded(i+4000)*.8,kind:i%9});
+      for (let i=0;i<54;i++) people.push({x:.05+seeded(i+5000)*.9,y:.08+seeded(i+6000)*.82,r:3+seeded(i+7000)*7,phase:seeded(i+8000)*TAU,group:i%7,role:i%5});
+      for (let i=0;i<42;i++) structures.push({x:.04+seeded(i+9000)*.92,y:.12+seeded(i+10000)*.74,w:.035+seeded(i+11000)*.085,h:.035+seeded(i+12000)*.12,phase:seeded(i+13000)*TAU,kind:i%8});
+      for (let i=0;i<34;i++) routes.push({x1:seeded(i+14000),y1:seeded(i+15000),x2:seeded(i+16000),y2:seeded(i+17000),phase:seeded(i+18000)*TAU,kind:i%5});
+      const chars='AaÑ¿?123∞→≈ΣΔ✦◌⌁';
+      for (let i=0;i<62;i++) glyphs.push({x:.04+seeded(i+19000)*.92,y:.06+seeded(i+20000)*.86,char:chars[i%chars.length],size:9+seeded(i+21000)*25,phase:seeded(i+22000)*TAU,speed:.25+seeded(i+23000)*.8});
+    }
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      width = Math.max(1, rect.width); height = Math.max(1, rect.height);
+      dpr = Math.min(2, devicePixelRatio || 1);
+      canvas.width = Math.round(width*dpr); canvas.height = Math.round(height*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0); buildScene();
+      shownX = targetX*width; shownY = targetY*height; setCssPoint(shownX, shownY);
+    }
+
+    function ensureAudio() {
+      if (audioCtx) { if (audioCtx.state === "suspended") audioCtx.resume().catch(()=>{}); return; }
+      const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
+      audioCtx = new AudioContext(); master = audioCtx.createGain(); master.gain.value = 0;
+      const compressor = audioCtx.createDynamicsCompressor(); compressor.threshold.value=-24; compressor.knee.value=20; compressor.ratio.value=5;
+      master.connect(compressor).connect(audioCtx.destination);
+      droneA=audioCtx.createOscillator(); droneB=audioCtx.createOscillator(); droneGain=audioCtx.createGain(); droneFilter=audioCtx.createBiquadFilter();
+      stereo=audioCtx.createStereoPanner?audioCtx.createStereoPanner():audioCtx.createGain();
+      droneA.type='sine'; droneB.type='triangle'; droneGain.gain.value=.0001; droneFilter.type='lowpass'; droneFilter.frequency.value=850; droneFilter.Q.value=.8;
+      droneA.connect(droneGain); droneB.connect(droneGain); droneGain.connect(droneFilter).connect(stereo).connect(master); droneA.start(); droneB.start();
+      pulseOsc=audioCtx.createOscillator(); pulseGain=audioCtx.createGain(); pulseOsc.type='sine'; pulseGain.gain.value=.0001; pulseOsc.connect(pulseGain).connect(master); pulseOsc.start();
+      const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate), channel=buffer.getChannelData(0);
+      for(let i=0;i<channel.length;i++) channel[i]=Math.random()*2-1;
+      noiseSource=audioCtx.createBufferSource(); noiseSource.buffer=buffer; noiseSource.loop=true;
+      noiseFilter=audioCtx.createBiquadFilter(); noiseFilter.type='bandpass'; noiseFilter.frequency.value=1100; noiseFilter.Q.value=.5;
+      noiseGain=audioCtx.createGain(); noiseGain.gain.value=.0001; noiseSource.connect(noiseFilter).connect(noiseGain).connect(master); noiseSource.start();
+    }
+
+    function setAudioFor(zone,xNorm,progress,active){
+      if(!audioCtx||!master)return; const now=audioCtx.currentTime,s=zone.sound,base=s.base*(.94+xNorm*.13);
+      droneA.type=s.type; droneB.type=s.type==='sawtooth'?'triangle':'sine';
+      droneA.frequency.setTargetAtTime(base,now,.08); droneB.frequency.setTargetAtTime(base*(1.496+progress*.012),now,.1);
+      droneFilter.frequency.setTargetAtTime(s.filter*(.84+xNorm*.3),now,.1); droneGain.gain.setTargetAtTime(active?.011+progress*.006:.0001,now,.09);
+      pulseOsc.frequency.setTargetAtTime(base*(1.985+s.pulse),now,.08); pulseGain.gain.setTargetAtTime(active?.0024+progress*.002:.0001,now,.1);
+      noiseFilter.frequency.setTargetAtTime(s.filter*1.13,now,.1); noiseGain.gain.setTargetAtTime(active?Math.max(.0001,s.noise*.055):.0001,now,.1);
+      if(stereo.pan)stereo.pan.setTargetAtTime((xNorm-.5)*.7,now,.08); master.gain.setTargetAtTime(active?.27:.0001,now,.09);
+    }
+
+    function ping(zone,xNorm,index=0){
+      if(!audioCtx||!master)return; const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),filter=audioCtx.createBiquadFilter();
+      const pan=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null; osc.type=index%3===0?'sine':index%3===1?'triangle':'square';
+      osc.frequency.value=zone.sound.base*(2.05+index*.12); filter.type='lowpass'; filter.frequency.value=1800+zone.scene*100;
+      gain.gain.setValueAtTime(.0001,now); gain.gain.exponentialRampToValueAtTime(.07,now+.012); gain.gain.exponentialRampToValueAtTime(.0001,now+.52);
+      osc.connect(filter).connect(gain); if(pan){pan.pan.value=(xNorm-.5)*1.25;gain.connect(pan).connect(master)}else gain.connect(master); osc.start(now);osc.stop(now+.58);
+    }
+
+    function queueSpeech(label){
+      if(!speechUnlocked||!("speechSynthesis" in window)||!label||label===lastSpoken)return; clearTimeout(speechTimer);
+      speechTimer=setTimeout(()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(label);u.lang='es-ES';u.rate=.86;u.pitch=1;
+        const voices=speechSynthesis.getVoices();const voice=voices.find(v=>/^es(-|_)/i.test(v.lang))||voices.find(v=>/spanish|español/i.test(v.name));if(voice)u.voice=voice;
+        speechSynthesis.speak(u);lastSpoken=label;}catch(_){ }},360);
+    }
+
+    function addRipple(x,y){const node=document.createElement('div');node.className='ripple';node.style.left=`${x}px`;node.style.top=`${y}px`;document.body.appendChild(node);node.addEventListener('animationend',()=>node.remove(),{once:true});}
+    function addBurst(x,y,color){const count=reducedMotion?5:13;for(let i=0;i<count;i++){const a=Math.random()*TAU,s=18+Math.random()*72;bursts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:.8+Math.random()*2.4,life:1,decay:1+Math.random()*.8,color});}waves.push({x,y,radius:5,life:1,color});}
+
+    function updateReadout(x,y,isNewPress=false){
+      const xNorm=clamp(x/width,0,.999999),yNorm=clamp(y/height,0,.999999),progress=depthFromY(yNorm),zone=zoneForDepth(progress),feature=featureFor(zone,xNorm);
+      targetX=xNorm;targetY=yNorm;touchEnergy=1;setCssPoint(x,y);setAccent(zone);root.style.setProperty('--progress',`${Math.max(1.2,progress*100)}%`);
+      scaleDot.style.bottom=`${48+progress*Math.max(0,height-96)}px`;touchOrb.style.left=`${x}px`;touchOrb.style.top=`${y}px`;scaleValue.textContent=zone.className;
+      const changed=zone.id!==lastZoneId||feature.index!==lastFeature;
+      if(changed||isNewPress){evidenceClass.textContent=zone.className;zoneName.textContent=zone.name;zoneName.className=zone.name.length>31?'long':zone.name.length>21?'compact':'';
+        featureName.textContent=feature.name;metric.textContent=zone.metric;fact.textContent=feature.fact||zone.fact;ping(zone,xNorm,feature.index);addBurst(x,y,zone.color);queueSpeech(feature.name);lastZoneId=zone.id;lastFeature=feature.index;}
+      readout.classList.add('visible');touchOrb.classList.add('visible');document.body.classList.add('active');hint.style.display='none';setAudioFor(zone,xNorm,progress,true);
+    }
+    function releaseInteraction(delay=1050){clearTimeout(hideTimer);hideTimer=setTimeout(()=>{readout.classList.remove('visible');touchOrb.classList.remove('visible');document.body.classList.remove('active');const z=zoneForDepth(depthFromY(targetY));setAudioFor(z,targetX,depthFromY(targetY),false);},delay);}
+    function endPointer(){pointerDown=false;releaseInteraction();}
+    canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.focus({preventScroll:true});pointerDown=true;speechUnlocked=true;ensureAudio();try{canvas.setPointerCapture(e.pointerId)}catch(_){ }updateReadout(e.clientX,e.clientY,true);addRipple(e.clientX,e.clientY);});
+    canvas.addEventListener('pointermove',e=>{if(!pointerDown&&e.pointerType!=='mouse')return;if(!pointerDown&&e.buttons===0){targetX=clamp(e.clientX/width,0,1);targetY=clamp(e.clientY/height,0,1);return;}e.preventDefault();updateReadout(e.clientX,e.clientY);});
+    canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);canvas.addEventListener('lostpointercapture',endPointer);
+    canvas.addEventListener('keydown',e=>{const keys=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter',' '];if(!keys.includes(e.key))return;e.preventDefault();speechUnlocked=true;ensureAudio();const step=e.shiftKey?.09:.035;
+      if(e.key==='ArrowUp')targetY=clamp(targetY-step,.005,.995);if(e.key==='ArrowDown')targetY=clamp(targetY+step,.005,.995);if(e.key==='ArrowLeft')targetX=clamp(targetX-step,.005,.995);if(e.key==='ArrowRight')targetX=clamp(targetX+step,.005,.995);
+      updateReadout(targetX*width,targetY*height,e.key==='Enter'||e.key===' ');releaseInteraction(1600);});
+
+    function softHalo(cx,cy,radius,color,alpha){const g=ctx.createRadialGradient(cx,cy,0,cx,cy,radius);g.addColorStop(0,rgba(color,alpha));g.addColorStop(.35,rgba(color,alpha*.4));g.addColorStop(1,rgba(color,0));ctx.fillStyle=g;ctx.fillRect(cx-radius,cy-radius,radius*2,radius*2);}
+    function roundedRectPath(x,y,w,h,r){const rr=Math.min(r,w*.5,h*.5);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();}
+    function line(x1,y1,x2,y2,stroke='rgba(255,255,255,.3)',lw=1){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+    function circle(x,y,r,fill='rgba(255,255,255,.5)',stroke=null,lw=1){ctx.fillStyle=fill;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+    function drawPerson(x,y,s,color='rgba(255,255,255,.72)',pose=0){ctx.save();ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=Math.max(1,s*.11);ctx.lineCap='round';circle(x,y-s*.62,s*.18,color);line(x,y-s*.38,x,y+s*.2,color,Math.max(1,s*.11));
+      const swing=Math.sin(pose)*s*.18;line(x,y-s*.15,x-s*.34,y+swing,color,Math.max(1,s*.1));line(x,y-s*.15,x+s*.34,y-swing,color,Math.max(1,s*.1));line(x,y+s*.18,x-s*.26,y+s*.62,color,Math.max(1,s*.1));line(x,y+s*.18,x+s*.26,y+s*.62,color,Math.max(1,s*.1));ctx.restore();}
+    function drawHouse(x,y,w,h,color='rgba(255,235,200,.5)'){ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x-w*.55,y-h*.12);ctx.lineTo(x,y-h*.62);ctx.lineTo(x+w*.55,y-h*.12);ctx.lineTo(x+w*.48,y+h*.52);ctx.lineTo(x-w*.48,y+h*.52);ctx.closePath();ctx.stroke();roundedRectPath(x-w*.1,y+h*.12,w*.2,h*.4,2);ctx.stroke();}
+    function drawGear(cx,cy,r,teeth,color){ctx.save();ctx.strokeStyle=color;ctx.fillStyle='rgba(0,0,0,.12)';ctx.lineWidth=1.6;ctx.beginPath();for(let i=0;i<teeth*2;i++){const a=i/(teeth*2)*TAU,rr=i%2?r:r*.78;const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;if(!i)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.closePath();ctx.fill();ctx.stroke();circle(cx,cy,r*.28,'rgba(0,0,0,.38)',color,1.2);ctx.restore();}
+
+    function drawBackground(progress,time){
+      const f=clamp(progress*(ZONES.length-1),0,ZONES.length-1),i=Math.floor(f),j=Math.min(ZONES.length-1,i+1),t=smooth(f-i),a=ZONES[i].color,b=ZONES[j].color;
+      const c=a.map((v,k)=>Math.round(mix(v,b[k],t))); const dark=c.map(v=>Math.round(v*.12)),mid=c.map(v=>Math.round(v*.34));
+      const g=ctx.createLinearGradient(0,height,0,0);g.addColorStop(0,`rgb(${Math.max(3,dark[0]-5)} ${Math.max(5,dark[1]-3)} ${Math.max(7,dark[2])})`);g.addColorStop(.54,`rgb(${mid[0]} ${mid[1]} ${mid[2]})`);g.addColorStop(1,`rgb(${Math.min(255,c[0]*.66)} ${Math.min(255,c[1]*.66)} ${Math.min(255,c[2]*.66)})`);ctx.fillStyle=g;ctx.fillRect(0,0,width,height);
+      softHalo(width*(.42+.12*Math.sin(time*.05)),height*(.72-progress*.44),Math.max(width,height)*.7,c,.1+progress*.045);
+      for(const p of particles){const x=fract(p.x+time*.002*p.speed)*width+Math.sin(time*.2+p.phase)*4,y=fract(p.y-time*.0012*p.speed)*height+Math.cos(time*.15+p.phase)*4;const col=p.kind%3===0?c:p.kind%3===1?[255,240,205]:[140,220,255];circle(x,y,p.r*(.75+progress*.35),rgba(col,.08+.16*(.5+.5*Math.sin(time*p.speed+p.phase))));}
+      ctx.strokeStyle='rgba(255,255,255,.025)';ctx.lineWidth=1;for(let k=1;k<8;k++){const x=k/8*width;line(x,0,x,height,'rgba(255,255,255,.018)');}
+    }
+
+    function sceneShared(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.52;softHalo(cx,cy,s*.56,z.color,.19);for(let r=0;r<7;r++){const rr=s*(.06+r*.045);ctx.strokeStyle=rgba(z.color,.12+r*.02);ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,cy,rr,0,TAU);ctx.stroke();const n=5+r*2;for(let i=0;i<n;i++){const a=i/n*TAU+time*(.018+r*.003),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.72;circle(x,y,2+(i%3),i%4?rgba([255,246,220],.55):rgba([122,217,255],.66));if(r>0&&i%3===0)line(x,y,cx,cy,rgba(z.color,.08));}}circle(cx,cy,7+Math.sin(time*.7),rgba([255,250,230],.95));}
+    function sceneCommunication(z,time){const s=Math.min(width,height),cy=height*.56;for(let i=0;i<5;i++){const x=width*(.14+i*.18),pose=time*.9+i;drawPerson(x,cy+Math.sin(i)*s*.04,s*.065,rgba([255,255,255],.72),pose);for(let r=1;r<4;r++){ctx.strokeStyle=rgba(z.color,.24/r);ctx.lineWidth=1.3;ctx.beginPath();ctx.arc(x+(i<2?1:-1)*s*.035,cy-s*.055,s*(.035+r*.026)+Math.sin(time*2+i)*2,-.7,.7);ctx.stroke();}}for(let i=0;i<4;i++)line(width*(.19+i*.18),cy-s*.04,width*(.27+i*.18),cy-s*.04,rgba(z.color,.15),1.4);}
+    function sceneLanguage(z,time){const s=Math.min(width,height);for(let i=0;i<glyphs.length;i++){const g=glyphs[i],x=g.x*width,y=g.y*height+Math.sin(time*g.speed+g.phase)*9;ctx.font=`800 ${g.size}px system-ui`;ctx.textAlign='center';ctx.fillStyle=rgba(i%4?z.color:[255,248,225],.11+(i%5)*.035);ctx.fillText(g.char,x,y);}for(let i=0;i<4;i++){const x=width*(.17+i*.22),y=height*(.34+(i%2)*.28),w=s*.2,h=s*.1;ctx.strokeStyle=rgba(z.color,.38);ctx.lineWidth=1.3;roundedRectPath(x-w*.5,y-h*.5,w,h,h*.35);ctx.stroke();line(x-w*.13,y+h*.5,x-w*.05,y+h*.76,rgba(z.color,.34),1.2);}}
+    function sceneStories(z,time){const s=Math.min(width,height),base=height*.72;softHalo(width*.5,base,s*.3,[255,111,69],.17);circle(width*.5,base,s*.035,'rgba(255,196,95,.88)');for(let i=0;i<7;i++){const a=i/7*TAU+Math.PI*.5,x=width*.5+Math.cos(a)*s*.22,y=base+Math.sin(a)*s*.115;drawPerson(x,y,s*.044,rgba([255,240,220],.64),time+i);}ctx.strokeStyle=rgba(z.color,.34);ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<=90;i++){const x=i/90*width,y=height*(.22+.08*Math.sin(i*.18+time*.3)+.035*Math.sin(i*.47));if(!i)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();for(let i=0;i<6;i++)circle(width*(.1+i*.16),height*(.22+.08*Math.sin(i*2.9+time*.3)),3+i%3,rgba([255,242,203],.7));}
+    function sceneTeaching(z,time){const s=Math.min(width,height),y=height*.55;drawPerson(width*.3,y,s*.09,rgba([255,248,220],.76),time);drawPerson(width*.7,y+s*.04,s*.075,rgba(z.color,.84),time+.8);const bx=width*.5,by=height*.28,bw=s*.34,bh=s*.18;ctx.strokeStyle=rgba(z.color,.5);ctx.lineWidth=1.8;roundedRectPath(bx-bw*.5,by-bh*.5,bw,bh,8);ctx.stroke();for(let i=0;i<4;i++)line(bx-bw*.35,by-bh*.25+i*bh*.17,bx+bw*.35,by-bh*.25+i*bh*.17,i===2?rgba([255,244,208],.45):rgba(z.color,.24),1.2);line(width*.37,y-s*.2,bx-bw*.22,by+bh*.22,rgba(z.color,.24));line(width*.63,y-s*.2,bx+bw*.22,by+bh*.22,rgba(z.color,.24));}
+    function sceneCooperation(z,time){const s=Math.min(width,height),ground=height*.7;ctx.fillStyle=rgba(z.color,.12);ctx.fillRect(width*.18,ground-s*.06,width*.64,s*.12);for(let i=0;i<6;i++){const x=width*(.17+i*.13),yy=ground-s*(.09+.02*(i%2));drawPerson(x,yy,s*.055,rgba(i%2?z.color:[255,245,220],.72),time+i);}const beamY=ground-s*.18;line(width*.13,beamY,width*.87,beamY,rgba([255,213,151],.72),s*.035);for(let i=0;i<6;i++)line(width*(.17+i*.13),ground-s*.14,width*(.17+i*.13),beamY,rgba(z.color,.45),2);}
+    function sceneNorms(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5,r=s*.28;for(let i=0;i<10;i++){const a=i/10*TAU+time*.012,x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r*.72;drawPerson(x,y,s*.04,rgba(i%3?z.color:[255,245,220],.66),a+time);}circle(cx,cy,s*.07,'rgba(0,0,0,.14)',rgba(z.color,.55),1.6);line(cx-s*.055,cy,cx+s*.055,cy,rgba([255,248,220],.72),3);line(cx,cy-s*.055,cx,cy+s*.055,rgba([255,248,220],.72),3);}
+    function sceneTools(z,time){const s=Math.min(width,height),y=height*.52;for(let i=0;i<6;i++){const x=width*(.1+i*.16);ctx.save();ctx.translate(x,y+Math.sin(time*.7+i)*8);ctx.rotate((i-2.5)*.08);ctx.strokeStyle=i%2?rgba(z.color,.74):'rgba(255,239,205,.68)';ctx.fillStyle=rgba(z.color,.16);ctx.lineWidth=2;if(i===0){ctx.beginPath();ctx.moveTo(-s*.035,s*.055);ctx.lineTo(0,-s*.065);ctx.lineTo(s*.045,s*.04);ctx.closePath();ctx.fill();ctx.stroke();}else if(i===1){ctx.beginPath();ctx.arc(0,0,s*.045,0,TAU);ctx.stroke();ctx.beginPath();ctx.arc(0,0,s*.025,0,TAU);ctx.stroke();}else if(i===2){line(-s*.055,0,s*.055,0,ctx.strokeStyle,3);circle(s*.055,0,s*.012,ctx.strokeStyle);}else if(i===3){roundedRectPath(-s*.04,-s*.055,s*.08,s*.11,s*.02);ctx.stroke();}else if(i===4){line(-s*.02,s*.06,s*.025,-s*.06,ctx.strokeStyle,4);line(-s*.045,-s*.02,s*.06,-s*.02,ctx.strokeStyle,8);}else{for(let r=0;r<4;r++){ctx.beginPath();ctx.arc(0,0,s*(.02+r*.013),0,TAU);ctx.stroke();}}ctx.restore();}}
+    function sceneArt(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5;for(let r=0;r<9;r++){ctx.strokeStyle=rgba(r%3?z.color:[255,226,144],.11+r*.018);ctx.lineWidth=1+r*.18;ctx.beginPath();for(let i=0;i<=100;i++){const a=i/100*TAU,rr=s*(.05+r*.026)*(1+.12*Math.sin(a*(3+r%4)+time*.6));const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.78;if(!i)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.closePath();ctx.stroke();}for(let i=0;i<8;i++){const a=i/8*TAU+time*.08,x=cx+Math.cos(a)*s*.31,y=cy+Math.sin(a)*s*.22;drawPerson(x,y,s*.038,rgba(i%2?z.color:[255,250,225],.7),time*1.5+i);}}
+    function sceneExchange(z,time){const s=Math.min(width,height),y=height*.56;for(let side=0;side<2;side++){const base=side?width*.73:width*.27;for(let i=0;i<4;i++)drawPerson(base+(i-1.5)*s*.055,y+(i%2)*s*.035,s*.04,rgba(side?z.color:[255,239,208],.68),time+i);}ctx.strokeStyle=rgba(z.color,.38);ctx.lineWidth=2;ctx.setLineDash([6,8]);ctx.beginPath();ctx.moveTo(width*.34,y-s*.12);ctx.bezierCurveTo(width*.45,y-s*.26,width*.55,y+s*.08,width*.66,y-s*.1);ctx.stroke();ctx.setLineDash([]);for(let i=0;i<5;i++){const t=fract(time*.08+i/5),x=mix(width*.34,width*.66,t),yy=y-s*.12+Math.sin(t*Math.PI)*-s*.09;circle(x,yy,3+i%2,rgba(i%2?z.color:[255,225,135],.82));}}
+    function sceneAgriculture(z,time){const s=Math.min(width,height),horizon=height*.28;ctx.fillStyle=rgba([95,160,72],.18);ctx.fillRect(0,horizon,width,height-horizon);for(let row=0;row<7;row++){const y=horizon+(row+1)/8*(height-horizon);line(width*.06,y,width*.94,y,rgba([214,187,118],.15+row*.018),1.4);for(let i=0;i<9;i++){const x=width*(.08+i*.105)+(row%2)*12;line(x,y,x,y-s*.035,rgba(z.color,.54),1.5);line(x,y-s*.02,x-s*.015,y-s*.035,rgba(z.color,.4),1);line(x,y-s*.026,x+s*.015,y-s*.045,rgba(z.color,.4),1);}}ctx.strokeStyle=rgba([111,202,255],.45);ctx.lineWidth=s*.018;ctx.beginPath();ctx.moveTo(0,height*.54);ctx.bezierCurveTo(width*.3,height*.48,width*.7,height*.66,width,height*.58);ctx.stroke();circle(width*.82,height*.17,s*.055,rgba([255,225,123],.65));}
+    function sceneSettlement(z,time){const s=Math.min(width,height),ground=height*.73;line(0,ground,width,ground,rgba([244,222,185],.28),2);for(let i=0;i<8;i++){const x=width*(.08+i*.12),w=s*(.09+(i%3)*.015),h=s*(.1+(i%2)*.02);drawHouse(x,ground-h*.35,w,h,i%2?rgba(z.color,.58):'rgba(255,234,198,.53)');}ctx.strokeStyle=rgba([218,188,135],.22);ctx.lineWidth=s*.035;ctx.beginPath();ctx.moveTo(width*.48,height);ctx.bezierCurveTo(width*.42,height*.82,width*.57,height*.65,width*.5,height*.46);ctx.stroke();circle(width*.5,height*.44,s*.018,rgba([255,176,81],.75));}
+    function sceneWriting(z,time){const s=Math.min(width,height),x=width*.5,y=height*.5,w=s*.48,h=s*.58;ctx.fillStyle='rgba(25,18,14,.24)';ctx.strokeStyle=rgba(z.color,.55);ctx.lineWidth=2;roundedRectPath(x-w*.5,y-h*.5,w,h,12);ctx.fill();ctx.stroke();ctx.save();ctx.beginPath();roundedRectPath(x-w*.48,y-h*.47,w*.96,h*.94,10);ctx.clip();for(let i=0;i<36;i++){const g=glyphs[i],gx=x-w*.42+(i%6)*w*.165,gy=y-h*.38+Math.floor(i/6)*h*.15;ctx.font=`700 ${s*.035}px serif`;ctx.textAlign='center';ctx.fillStyle=i%5?rgba(z.color,.52):'rgba(255,246,220,.72)';ctx.fillText(g.char,gx,gy+Math.sin(time*.5+g.phase)*2);}ctx.restore();}
+    function sceneCity(z,time){const s=Math.min(width,height),ground=height*.8;const grad=ctx.createLinearGradient(0,height*.2,0,ground);grad.addColorStop(0,rgba(z.color,.04));grad.addColorStop(1,rgba(z.color,.18));ctx.fillStyle=grad;ctx.fillRect(0,height*.15,width,ground-height*.15);for(let i=0;i<16;i++){const st=structures[i],x=i/15*width,w=s*(.035+(i%4)*.012),h=s*(.11+(i%7)*.045);ctx.fillStyle=i%3?rgba([22,24,31],.62):rgba(z.color,.14);ctx.strokeStyle=rgba(z.color,.22+(i%3)*.07);ctx.lineWidth=1.2;ctx.fillRect(x-w*.5,ground-h,w,h);ctx.strokeRect(x-w*.5,ground-h,w,h);for(let r=0;r<Math.floor(h/(s*.04));r++)for(let c=0;c<2;c++)circle(x+(c-.5)*w*.35,ground-h+s*.025+r*s*.04,1.4,(r+c+i)%4?'rgba(255,214,123,.35)':'rgba(120,210,255,.35)');}ctx.strokeStyle='rgba(255,255,255,.11)';ctx.lineWidth=s*.03;ctx.beginPath();ctx.moveTo(width*.5,height);ctx.lineTo(width*.46,ground);ctx.stroke();}
+    function sceneInstitutions(z,time){const s=Math.min(width,height),cx=width*.5,base=height*.7,w=s*.5,h=s*.34;ctx.strokeStyle=rgba(z.color,.62);ctx.fillStyle='rgba(5,10,22,.22)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx-w*.55,base-h*.72);ctx.lineTo(cx,base-h);ctx.lineTo(cx+w*.55,base-h*.72);ctx.closePath();ctx.fill();ctx.stroke();for(let i=0;i<7;i++){const x=cx-w*.42+i*w*.14;ctx.fillStyle=rgba(z.color,.14);ctx.fillRect(x-s*.025,base-h*.68,s*.05,h*.65);ctx.strokeRect(x-s*.025,base-h*.68,s*.05,h*.65);}line(cx-w*.54,base,cx+w*.54,base,rgba(z.color,.62),4);for(let i=0;i<8;i++){const a=i/8*TAU+time*.01,x=cx+Math.cos(a)*s*.35,y=height*.34+Math.sin(a)*s*.12;circle(x,y,3+i%2,rgba(i%3?z.color:[255,244,218],.6));line(x,y,cx,base-h*.65,rgba(z.color,.09));}}
+    function sceneCommerce(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5;ctx.strokeStyle=rgba(z.color,.22);ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(cx,cy,s*.33,s*.25,0,0,TAU);ctx.stroke();for(let i=0;i<12;i++){const a=i/12*TAU,x=cx+Math.cos(a)*s*.33,y=cy+Math.sin(a)*s*.25;circle(x,y,3+i%3,rgba(i%2?z.color:[255,229,171],.7));const j=(i*5+3)%12,a2=j/12*TAU,x2=cx+Math.cos(a2)*s*.33,y2=cy+Math.sin(a2)*s*.25;ctx.strokeStyle=rgba(z.color,.15);ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(cx+Math.sin(a+i)*s*.12,cy+Math.cos(a-i)*s*.08,x2,y2);ctx.stroke();}for(let i=0;i<7;i++){const a=i/7*TAU+time*.08,x=cx+Math.cos(a)*s*.22,y=cy+Math.sin(a)*s*.16;circle(x,y,2.8,rgba([255,242,197],.8));}}
+    function sceneScience(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.52;for(let r=0;r<5;r++){ctx.strokeStyle=rgba(r%2?z.color:[255,245,214],.13+r*.035);ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(cx,cy,s*(.08+r*.047),s*(.04+r*.022),r*.55+time*.02,0,TAU);ctx.stroke();}circle(cx,cy,s*.035,rgba([255,246,212],.82));for(let i=0;i<9;i++){const a=i/9*TAU+time*.16,r=s*(.11+(i%3)*.055),x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r*.55;circle(x,y,2+i%3,rgba(z.color,.75));}const gx=width*.1,gy=height*.18,gw=width*.25,gh=height*.2;line(gx,gy+gh,gx+gw,gy+gh,'rgba(255,255,255,.28)',1.5);line(gx,gy,gx,gy+gh,'rgba(255,255,255,.28)',1.5);ctx.strokeStyle=rgba(z.color,.7);ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<=30;i++){const x=gx+i/30*gw,y=gy+gh*(.75-.55/(1+Math.exp(-(i-15)/4)))+Math.sin(i*.7)*3;if(!i)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();}
+    function sceneIndustry(z,time){const s=Math.min(width,height),ground=height*.77;ctx.fillStyle='rgba(13,15,18,.64)';for(let i=0;i<7;i++){const x=width*(.08+i*.14),w=s*.09,h=s*(.12+(i%3)*.07);ctx.fillRect(x-w*.5,ground-h,w,h);ctx.strokeStyle=rgba(z.color,.28);ctx.strokeRect(x-w*.5,ground-h,w,h);}for(let i=0;i<3;i++){const x=width*(.2+i*.27);ctx.fillRect(x,ground-s*.34,s*.045,s*.34);const smokeY=ground-s*.35;for(let k=0;k<5;k++)circle(x+s*.022+Math.sin(time*.4+k)*s*.02,smokeY-k*s*.045,s*(.018+k*.004),rgba([210,210,210],.06+k*.015));}drawGear(width*.43,height*.58,s*.115,14,rgba(z.color,.6));drawGear(width*.61,height*.61,s*.08,11,rgba([255,224,175],.48));for(let i=0;i<8;i++)line(i/7*width,ground+s*.04,(i+1)/7*width,ground+s*.04,rgba([255,205,95],.24),4);}
+    function sceneGlobal(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.5,r=s*.31;softHalo(cx,cy,r*1.8,z.color,.15);ctx.strokeStyle=rgba(z.color,.35);ctx.lineWidth=1.4;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();for(let lat=-2;lat<=2;lat++){ctx.beginPath();ctx.ellipse(cx,cy,r*Math.cos(lat*.24),r*.28*Math.cos(lat*.24),0,0,TAU);ctx.strokeStyle=rgba(z.color,.12);ctx.stroke();}for(let lon=0;lon<7;lon++){ctx.beginPath();ctx.ellipse(cx,cy,r*.28,r,lon/7*TAU,0,TAU);ctx.strokeStyle=rgba(z.color,.11);ctx.stroke();}const pts=[];for(let i=0;i<22;i++){const a=seeded(i+50)*TAU,rr=Math.sqrt(seeded(i+90))*r*.92,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.74;pts.push([x,y]);circle(x,y,2+i%3,rgba(i%4?z.color:[255,240,205],.72));}for(let i=0;i<28;i++){const a=pts[i%pts.length],b=pts[(i*7+5)%pts.length];ctx.strokeStyle=rgba(z.color,.09+(i%4)*.025);ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.quadraticCurveTo(cx+Math.sin(i)*r*.2,cy+Math.cos(i)*r*.15,b[0],b[1]);ctx.stroke();}for(let i=0;i<5;i++){const a=time*.08+i/5*TAU,x=cx+Math.cos(a)*r*1.23,y=cy+Math.sin(a)*r*.52;circle(x,y,3,rgba([255,245,220],.75));line(x,y,cx+Math.cos(a)*r,cy+Math.sin(a)*r*.74,rgba(z.color,.17));}}
+    function scenePlanetary(z,time){const s=Math.min(width,height),cx=width*.5,cy=height*.52,r=s*.27;softHalo(cx,cy,r*2.2,z.color,.22);const g=ctx.createRadialGradient(cx-r*.35,cy-r*.42,r*.05,cx,cy,r);g.addColorStop(0,'rgba(190,245,255,.98)');g.addColorStop(.43,'rgba(68,169,220,.92)');g.addColorStop(1,'rgba(12,44,95,.96)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.fill();ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.clip();ctx.fillStyle='rgba(88,184,115,.68)';for(let i=0;i<11;i++){const a=seeded(i+300)*TAU,rr=seeded(i+330)*r*.75,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.8;ctx.beginPath();ctx.ellipse(x,y,r*(.07+seeded(i+350)*.13),r*(.025+seeded(i+370)*.07),a,0,TAU);ctx.fill();}ctx.strokeStyle='rgba(255,255,255,.17)';for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(cx-r*.2+i*r*.07,cy-r*.1+i*r*.03,r*(.5+i*.05),.2,2.5);ctx.stroke();}ctx.restore();ctx.strokeStyle='rgba(180,238,255,.52)';ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.stroke();for(let i=0;i<26;i++){const a=i/26*TAU+time*.012,x=cx+Math.cos(a)*r*.82,y=cy+Math.sin(a)*r*.82;circle(x,y,1.7+i%3,rgba(i%4?z.color:[255,240,185],.42));}for(let i=0;i<4;i++){const a=time*(.07+i*.012)+i*TAU/4,rr=r*(1.33+i*.11),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.62;circle(x,y,3+i,rgba([255,247,218],.78));line(x,y,cx+Math.cos(a)*r,cy+Math.sin(a)*r*.62,rgba(z.color,.16));}ctx.font=`800 ${s*.028}px system-ui`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.6)';ctx.fillText('TECNOLOGÍA · INFORMACIÓN · ENERGÍA · FUTUROS',cx,height*.91);}
+
+    const SCENES=[sceneShared,sceneCommunication,sceneLanguage,sceneStories,sceneTeaching,sceneCooperation,sceneNorms,sceneTools,sceneArt,sceneExchange,sceneAgriculture,sceneSettlement,sceneWriting,sceneCity,sceneInstitutions,sceneCommerce,sceneScience,sceneIndustry,sceneGlobal,scenePlanetary];
+    function zoneWeight(progress,p0,p1,feather=.035){const enter=smooth(clamp((progress-(p0-feather))/feather,0,1)),exit=1-smooth(clamp((progress-p1)/feather,0,1));return enter*exit;}
+    function drawScene(progress,time){for(const z of ZONES){const alpha=zoneWeight(progress,z.p0,z.p1,.036);if(alpha<.003)continue;ctx.save();ctx.globalAlpha=alpha;SCENES[z.scene](z,time);ctx.restore();}}
+    function drawBursts(dt){for(let i=bursts.length-1;i>=0;i--){const p=bursts[i];p.life-=dt*p.decay;if(p.life<=0){bursts.splice(i,1);continue}p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.94,dt*60);p.vy*=Math.pow(.94,dt*60);circle(p.x,p.y,p.r*(.5+p.life),rgba(p.color,p.life*.55));}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.life-=dt*1.05;if(w.life<=0){waves.splice(i,1);continue}w.radius+=dt*Math.min(width,height)*.24;ctx.strokeStyle=rgba(w.color,w.life*.25);ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(w.x,w.y,w.radius,0,TAU);ctx.stroke();}}
+
+    function render(now){const dt=Math.min(.04,Math.max(.001,(now-lastFrame)/1000));lastFrame=now;elapsed+=reducedMotion?dt*.24:dt;pointerX+=(targetX-pointerX)*(1-Math.pow(.001,dt));pointerY+=(targetY-pointerY)*(1-Math.pow(.001,dt));currentProgress+=(depthFromY(pointerY)-currentProgress)*(1-Math.pow(.005,dt));shownX+=(pointerX*width-shownX)*(1-Math.pow(.001,dt));shownY+=(pointerY*height-shownY)*(1-Math.pow(.001,dt));touchEnergy*=Math.pow(.075,dt);
+      drawBackground(currentProgress,elapsed);drawScene(currentProgress,elapsed);drawBursts(dt);if(!pointerDown)setAccent(zoneForDepth(currentProgress));requestAnimationFrame(render);}
+    window.addEventListener('resize',resize,{passive:true});window.addEventListener('orientationchange',()=>setTimeout(resize,120),{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden&&audioCtx&&audioCtx.state==='running')audioCtx.suspend().catch(()=>{});});
+    resize();setAccent(ZONES[0]);requestAnimationFrame(render);
+  })();
+</script>
+</body>
+</html>
