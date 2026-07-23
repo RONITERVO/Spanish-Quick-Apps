@@ -18,8 +18,8 @@
     : browserLanguages.find(language => /^en(?:-|$)/i.test(language)) || "en-US";
   const languageLabel = locale === "fi" ? "SUOMI" : "ENGLISH";
   const HOLD_DELAY_MS = 900;
-  const JITTER_MIN = 18;
-  const JITTER_MAX = 30;
+  const JITTER_MIN = 28;
+  const JITTER_MAX = 42;
 
   let activePointer = null;
   let interactionUnlocked = false;
@@ -30,6 +30,7 @@
   let animationFrame = 0;
   let hideTimer = 0;
   let catalog = Object.create(null);
+  const narratedSignaturesThisTouch = new Set();
 
   document.documentElement.dataset.learningLocale = locale;
   document.documentElement.dataset.learningApp = appId;
@@ -148,7 +149,7 @@
   });
 
   function jitterRadius() {
-    return Math.min(JITTER_MAX, Math.max(JITTER_MIN, Math.min(innerWidth, innerHeight) * .05));
+    return Math.min(JITTER_MAX, Math.max(JITTER_MIN, Math.min(innerWidth, innerHeight) * .07));
   }
 
   function cancelHold() {
@@ -336,6 +337,7 @@
     const parts = cleanParts(capturedTarget.parts);
     if (!parts.length) return;
 
+    narratedSignaturesThisTouch.add(capturedTarget.signature);
     stopNarration(false);
     const token = runToken;
     const spanishDone = await speakPhase(parts, "ESPAÑOL", "es-ES", capturedTarget.color, capturedTarget, token);
@@ -367,18 +369,30 @@
     const detail = event.detail || {};
     const parts = cleanParts(detail.parts || [detail.text]);
     if (!parts.length) return;
-    target = {
+    const signature = parts.join("\u0000");
+    const nextTarget = {
       parts,
+      signature,
       x: Number.isFinite(detail.x) ? detail.x : innerWidth * .5,
       y: Number.isFinite(detail.y) ? detail.y : innerHeight * .5,
       color: detail.color || getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#f59e0b"
     };
+    if (target?.signature === signature) {
+      target.x = nextTarget.x;
+      target.y = nextTarget.y;
+      target.color = nextTarget.color;
+      if (holdTimer || narratedSignaturesThisTouch.has(signature)) return;
+    } else {
+      target = nextTarget;
+    }
+    if (narratedSignaturesThisTouch.has(signature)) return;
     if (interactionUnlocked) scheduleNarration();
   });
 
   document.addEventListener("pointerdown", event => {
     stopNarration();
     interactionUnlocked = true;
+    narratedSignaturesThisTouch.clear();
     activePointer = event.pointerId;
     anchor = { x: event.clientX, y: event.clientY };
     target = null;
@@ -388,6 +402,7 @@
   document.addEventListener("keydown", event => {
     if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) {
       interactionUnlocked = true;
+      if (activePointer === null) narratedSignaturesThisTouch.clear();
     }
   }, true);
 

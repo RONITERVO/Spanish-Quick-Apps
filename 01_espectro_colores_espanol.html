@@ -158,6 +158,8 @@
       let settleTimer = 0;
       let feedbackAnchor = null;
       let pendingFeedback = null;
+      let pendingFeedbackSignature = "";
+      const shownFeedbackThisTouch = new Set();
       let speechUnlocked = false;
       let speechTimer = 0;
       let lastSpoken = "";
@@ -253,6 +255,7 @@
 
         const feedback = pendingFeedback;
         pendingFeedback = null;
+        if (shownFeedbackThisTouch.has(feedback.text)) return;
         showFloatingText(
           feedback.text,
           feedback.x,
@@ -269,21 +272,30 @@
             color: feedback.glow
           }
         }));
+        shownFeedbackThisTouch.add(feedback.text);
       }
 
       function scheduleFloatingFeedback(text, x, y, color, stroke, glow) {
         pendingFeedback = { text, x, y, color, stroke, glow };
-        const radius = Math.min(26, Math.max(16, Math.min(window.innerWidth, window.innerHeight) * .045));
+        const targetChanged = text !== pendingFeedbackSignature;
+        if (targetChanged) pendingFeedbackSignature = text;
+        if (shownFeedbackThisTouch.has(text)) {
+          clearTimeout(settleTimer);
+          settleTimer = 0;
+          pendingFeedback = null;
+          return;
+        }
+        const radius = Math.min(42, Math.max(28, Math.min(window.innerWidth, window.innerHeight) * .07));
         const deltaX = feedbackAnchor ? x - feedbackAnchor.x : radius + 1;
         const deltaY = feedbackAnchor ? y - feedbackAnchor.y : 0;
         const movedSignificantly = deltaX * deltaX + deltaY * deltaY > radius * radius;
-        if (movedSignificantly) {
+        if (movedSignificantly || targetChanged) {
           feedbackAnchor = { x, y };
           clearTimeout(settleTimer);
           clearFloatingTexts();
-          settleTimer = window.setTimeout(flushFloatingFeedback, 220);
+          settleTimer = window.setTimeout(flushFloatingFeedback, 400);
         } else if (!settleTimer && !floatingTexts.length) {
-          settleTimer = window.setTimeout(flushFloatingFeedback, 220);
+          settleTimer = window.setTimeout(flushFloatingFeedback, 400);
         }
       }
 
@@ -516,6 +528,8 @@
       canvas.addEventListener("pointerdown", event => {
         event.preventDefault();
         speechUnlocked = true;
+        shownFeedbackThisTouch.clear();
+        pendingFeedbackSignature = "";
         activePointer = event.pointerId;
         canvas.setPointerCapture?.(event.pointerId);
         clearTimeout(hideTimer);
@@ -555,6 +569,8 @@
         clearTimeout(settleTimer);
         feedbackAnchor = null;
         pendingFeedback = null;
+        pendingFeedbackSignature = "";
+        shownFeedbackThisTouch.clear();
         feedbackCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         floatingTexts.length = 0;
         touchOrb.classList.remove("visible");
