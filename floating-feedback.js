@@ -59,7 +59,9 @@
   let feedbackVisible = false;
   let settleTimer = 0;
   let settleAnchor = null;
+  let settleSignature = "";
   let activePointer = null;
+  const shownSignaturesThisTouch = new Set();
 
   function resizeFeedbackCanvas() {
     width = window.innerWidth;
@@ -125,7 +127,11 @@
     ctx.clearRect(0, 0, width, height);
   }
 
-  function showReadoutFeedback(force = false, touchOverride = null) {
+  function readoutSignature() {
+    return `${textFrom("zone-name")}\u0000${textFrom("feature-name")}`;
+  }
+
+  function showReadoutFeedback(force = false, touchOverride = null, dedupeTouch = false) {
     const evidence = textFrom("evidence-class");
     const title = textFrom("zone-name");
     const feature = textFrom("feature-name");
@@ -134,6 +140,7 @@
     if (!title && !feature) return;
 
     const signature = `${title}\u0000${feature}`;
+    if (dedupeTouch && shownSignaturesThisTouch.has(signature)) return;
     if (!force && signature === lastSignature && feedbackVisible) return;
 
     const touch = touchOverride || currentTouchPoint();
@@ -159,11 +166,12 @@
       }
     }));
     lastSignature = signature;
+    if (dedupeTouch) shownSignaturesThisTouch.add(signature);
     feedbackVisible = true;
   }
 
   function feedbackJitterRadius() {
-    return Math.min(26, Math.max(16, Math.min(width, height) * .045));
+    return Math.min(42, Math.max(28, Math.min(width, height) * .07));
   }
 
   function movedBeyondFeedbackJitter(x, y) {
@@ -181,12 +189,24 @@
   }
 
   function scheduleSettledFeedback(reset = false) {
-    if (!reset && (settleTimer || feedbackVisible)) return;
+    const signature = readoutSignature();
+    const targetChanged = signature !== settleSignature;
+    if (targetChanged) settleSignature = signature;
+    if (shownSignaturesThisTouch.has(signature)) {
+      clearTimeout(settleTimer);
+      settleTimer = 0;
+      return;
+    }
+    if (!reset && !targetChanged && (settleTimer || feedbackVisible)) return;
     clearTimeout(settleTimer);
     settleTimer = window.setTimeout(() => {
       settleTimer = 0;
-      showReadoutFeedback(false);
-    }, 220);
+      if (readoutSignature() !== settleSignature) {
+        scheduleSettledFeedback(true);
+        return;
+      }
+      showReadoutFeedback(false, null, true);
+    }, 400);
   }
 
   function updateFloatingTexts(dt) {
@@ -324,9 +344,11 @@
 
   document.addEventListener("pointerdown", event => {
     activePointer = event.pointerId;
+    shownSignaturesThisTouch.clear();
     point.x = event.clientX;
     point.y = event.clientY;
     settleAnchor = { x: point.x, y: point.y };
+    settleSignature = "";
     clearFloatingTexts();
     scheduleSettledFeedback(true);
   }, true);
@@ -352,14 +374,17 @@
     clearTimeout(settleTimer);
     settleTimer = 0;
     const releasePoint = { x: point.x, y: point.y };
-    window.setTimeout(() => showReadoutFeedback(false, releasePoint), 0);
+    window.setTimeout(() => {
+      showReadoutFeedback(false, releasePoint, true);
+      shownSignaturesThisTouch.clear();
+    }, 0);
   }
 
   document.addEventListener("pointerup", finishPointer, true);
   document.addEventListener("pointercancel", finishPointer, true);
 
   const observer = new MutationObserver(() => {
-    if (activePointer === null) showReadoutFeedback(false);
+    if (activePointer === null) showReadoutFeedback(false, null, shownSignaturesThisTouch.size > 0);
     else scheduleSettledFeedback(false);
   });
   observer.observe(readout, { childList: true, characterData: true, subtree: true });
@@ -368,6 +393,8 @@
     clearTimeout(settleTimer);
     settleTimer = 0;
     settleAnchor = null;
+    settleSignature = "";
+    shownSignaturesThisTouch.clear();
     clearFloatingTexts();
     resizeFeedbackCanvas();
   }, { passive: true });

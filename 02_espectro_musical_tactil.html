@@ -306,31 +306,40 @@
       }
 
       function scheduleVoiceFloatingText(voice) {
-        const radius = Math.min(26, Math.max(16, Math.min(width, height) * .045));
+        const signature = `${voice.midi}\u0000${voice.timbre.label}`;
+        const targetChanged = signature !== voice.feedbackSignature;
+        if (targetChanged) voice.feedbackSignature = signature;
+        const radius = Math.min(42, Math.max(28, Math.min(width, height) * .07));
         const deltaX = voice.x - voice.feedbackAnchorX;
         const deltaY = voice.y - voice.feedbackAnchorY;
         const movedSignificantly = deltaX * deltaX + deltaY * deltaY > radius * radius;
-        if (movedSignificantly) {
+        if (movedSignificantly || targetChanged) {
           voice.feedbackAnchorX = voice.x;
           voice.feedbackAnchorY = voice.y;
           clearTimeout(voice.feedbackTimer);
           voice.feedbackTimer = 0;
           clearVoiceFloatingText(voice.pointerId);
         }
-        if ((movedSignificantly || !hasVoiceFloatingText(voice.pointerId)) && !voice.feedbackTimer) {
+        if (voice.shownFeedbackSignatures.has(signature)) return;
+        if ((movedSignificantly || targetChanged || !hasVoiceFloatingText(voice.pointerId)) && !voice.feedbackTimer) {
           voice.feedbackTimer = window.setTimeout(() => {
             voice.feedbackTimer = 0;
             if (voice.ended) return;
+            const currentSignature = `${voice.midi}\u0000${voice.timbre.label}`;
+            if (currentSignature !== signature || voice.shownFeedbackSignatures.has(signature)) return;
             showNoteFloatingText(voice.midi, voice.timbre, voice.x, voice.y, voice.pointerId);
-          }, 220);
+            voice.shownFeedbackSignatures.add(signature);
+          }, 400);
         }
       }
 
       function flushVoiceFloatingText(voice) {
         clearTimeout(voice.feedbackTimer);
         voice.feedbackTimer = 0;
-        if (!hasVoiceFloatingText(voice.pointerId)) {
+        const signature = `${voice.midi}\u0000${voice.timbre.label}`;
+        if (!voice.shownFeedbackSignatures.has(signature) && !hasVoiceFloatingText(voice.pointerId)) {
           showNoteFloatingText(voice.midi, voice.timbre, voice.x, voice.y, voice.pointerId);
+          voice.shownFeedbackSignatures.add(signature);
         }
       }
 
@@ -477,6 +486,8 @@
           feedbackTimer: 0,
           feedbackAnchorX: x,
           feedbackAnchorY: y,
+          feedbackSignature: `${midi}\u0000${timbre.label}`,
+          shownFeedbackSignatures: new Set(),
           ended: false
         };
 
