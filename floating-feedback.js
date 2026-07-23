@@ -3,7 +3,6 @@
 
   const readout = document.getElementById("readout");
   if (!readout) return;
-  const enableSpeech = document.currentScript?.dataset.tts === "true";
 
   const style = document.createElement("style");
   style.textContent = `
@@ -61,9 +60,6 @@
   let settleTimer = 0;
   let settleAnchor = null;
   let activePointer = null;
-  let speechUnlocked = false;
-  let speechTimer = 0;
-  let lastSpoken = "";
 
   function resizeFeedbackCanvas() {
     width = window.innerWidth;
@@ -94,29 +90,6 @@
     return getComputedStyle(document.documentElement)
       .getPropertyValue("--accent")
       .trim() || "#f59e0b";
-  }
-
-  function scheduleCurrentSpeech() {
-    if (!enableSpeech || !speechUnlocked || !("speechSynthesis" in window)) return;
-    clearTimeout(speechTimer);
-    speechTimer = window.setTimeout(() => {
-      const label = textFrom("feature-name") || textFrom("zone-name");
-      if (!label || label === lastSpoken) return;
-
-      try {
-        speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(label);
-        utterance.lang = "es-ES";
-        utterance.rate = .86;
-        utterance.pitch = 1;
-        const voices = speechSynthesis.getVoices();
-        const voice = voices.find(candidate => /^es(-|_)/i.test(candidate.lang)) ||
-          voices.find(candidate => /spanish|español/i.test(candidate.name));
-        if (voice) utterance.voice = voice;
-        speechSynthesis.speak(utterance);
-        lastSpoken = label;
-      } catch (_) {}
-    }, 360);
   }
 
   function showFloatingText({ title, feature, metric, fact, x, y, color }) {
@@ -164,22 +137,25 @@
     if (!force && signature === lastSignature && feedbackVisible) return;
 
     const touch = touchOverride || currentTouchPoint();
-    clearFloatingTexts();
-    showFloatingText({
+    const descriptor = {
       title: title || feature,
       feature: title ? feature : "",
+      color: accentColor()
+    };
+    clearFloatingTexts();
+    showFloatingText({
+      ...descriptor,
       metric,
       fact,
       x: touch.x,
-      y: touch.y,
-      color: accentColor()
+      y: touch.y
     });
     window.dispatchEvent(new CustomEvent("spectrum:learning-target", {
       detail: {
-        parts: [evidence, title || feature, title ? feature : "", metric, fact],
+        parts: [evidence, descriptor.title, descriptor.feature, metric, fact],
         x: touch.x,
         y: touch.y,
-        color: accentColor()
+        color: descriptor.color
       }
     }));
     lastSignature = signature;
@@ -348,13 +324,11 @@
 
   document.addEventListener("pointerdown", event => {
     activePointer = event.pointerId;
-    speechUnlocked = true;
     point.x = event.clientX;
     point.y = event.clientY;
     settleAnchor = { x: point.x, y: point.y };
     clearFloatingTexts();
     scheduleSettledFeedback(true);
-    scheduleCurrentSpeech();
   }, true);
 
   document.addEventListener("pointermove", event => {
@@ -367,7 +341,6 @@
     } else {
       scheduleSettledFeedback(false);
     }
-    scheduleCurrentSpeech();
   }, true);
 
   function finishPointer(event) {
@@ -388,15 +361,8 @@
   const observer = new MutationObserver(() => {
     if (activePointer === null) showReadoutFeedback(false);
     else scheduleSettledFeedback(false);
-    scheduleCurrentSpeech();
   });
   observer.observe(readout, { childList: true, characterData: true, subtree: true });
-
-  document.addEventListener("keydown", event => {
-    if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) return;
-    speechUnlocked = true;
-    scheduleCurrentSpeech();
-  }, true);
 
   window.addEventListener("resize", () => {
     clearTimeout(settleTimer);
@@ -405,12 +371,6 @@
     clearFloatingTexts();
     resizeFeedbackCanvas();
   }, { passive: true });
-
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) return;
-    clearTimeout(speechTimer);
-    if (enableSpeech && "speechSynthesis" in window) speechSynthesis.cancel();
-  });
 
   resizeFeedbackCanvas();
 })();

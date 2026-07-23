@@ -81,7 +81,7 @@
   "dimensión": "ulottuvuus",
   "El espacio-tiempo combina tres dimensiones espaciales y una temporal, aunque el tiempo no se comporta idénticamente a una dirección espacial.": "Aika-avaruus yhdistää kolme avaruusulottuvuutta ja yhden aikaulottuvuuden, vaikka aika ei käyttäydy samalla tavoin kuin avaruuden suunta.",
   "línea de universo": "maailmanviiva",
-  "La línea de universo reúne todos los eventos recorridos por un objeto a lo largo de su existencia.": "Maailmanlinja kokoaa yhteen kaikki tapahtumat, jotka esine on kokenut sen olemassaolon aikana.",
+  "La línea de universo reúne todos los eventos recorridos por un objeto a lo largo de su existencia.": "Maailmanviiva kokoaa yhteen kaikki tapahtumat, jotka esine on kokenut sen olemassaolon aikana.",
   "intervalo": "intervalli",
   "El intervalo espacio-temporal combina separaciones espaciales y temporales de una manera que todos los observadores inerciales comparten.": "Aika-avaruusväli yhdistää avaruudelliset ja ajalliset erot kaikkien inertiaalihavaitsijoiden yhteisellä tavalla.",
   "tiempo propio": "ominaisaika",

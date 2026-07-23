@@ -125,7 +125,7 @@
   "ley": "lakia",
   "Una norma simbólica puede redistribuir poder, proteger vulnerables o legitimar daño.": "Symbolinen normi voi jakaa valtaa uudelleen, suojella haavoittuvia tai legitimoida vahinkoa.",
   "dinero": "rahaa",
-  "Un acuerdo colectivo sobre representación permite coordinar intercambios a gran escala.": "Edustusta koskeva työehtosopimus mahdollistaa laajan vaihdon koordinoinnin.",
+  "Un acuerdo colectivo sobre representación permite coordinar intercambios a gran escala.": "Yhteinen sopimus arvon esittämisestä mahdollistaa laajamittaisen vaihdannan koordinoinnin.",
   "ciencia": "tiede",
   "Métodos públicos convierten observaciones individuales en conocimiento corregible por una comunidad.": "Julkiset menetelmät muuttavat yksittäiset havainnot yhteisön korjaaviksi tiedoiksi.",
   "arte": "taide",

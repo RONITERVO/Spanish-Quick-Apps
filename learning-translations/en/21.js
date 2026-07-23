@@ -178,7 +178,7 @@
   "Reacciones entre minerales y fluidos sostienen ecosistemas independientes de la luz solar.": "Reactions between minerals and fluids sustain ecosystems independent of sunlight.",
   "vida subterránea": "underground life",
   "Rocas y sedimentos pueden proteger organismos de radiación, sequedad y cambios superficiales.": "Rocks and sediments can protect organisms from radiation, dryness, and surface changes.",
-  "latencia": "latency",
+  "latencia": "dormancy",
   "Algunos sistemas reducen su actividad durante periodos adversos sin permanecer indefinidamente viables.": "Some systems reduce their activity during adverse periods without remaining viable indefinitely.",
   "huella planetaria": "planetary footprint",
   "Una biosfera extensa puede alterar gases, minerales e isótopos a escala global.": "An extensive biosphere can alter gases, minerals and isotopes on a global scale.",

@@ -154,7 +154,7 @@
   "línea de montaje": "kokoonpanolinja",
   "Dividir una secuencia en tareas repetidas aumenta ritmo y reduce flexibilidad del trabajo.": "Jakson jakaminen toistuviin tehtäviin lisää vauhtia ja vähentää työn joustavuutta.",
   "ferrocarril": "rautatie",
-  "Vías, locomotoras y horarios integran producción y transporte terrestre.": "Telat, veturit ja aikataulut yhdistävät tuotannon ja maakuljetukset.",
+  "Vías, locomotoras y horarios integran producción y transporte terrestre.": "Raiteet, veturit ja aikataulut yhdistävät tuotannon ja maakuljetukset.",
   "producción masiva": "massatuotanto",
   "Grandes volúmenes reducen coste unitario mientras elevan demanda material y residuos.": "Suuret määrät vähentävät yksikkökustannuksia ja lisäävät materiaalin kysyntää ja jätettä.",
   "Inspección, lubricación, repuestos y conocimiento técnico sostienen la capacidad productiva real.": "Tarkastukset, voitelu, varaosat ja tekninen tietämys ylläpitävät todellista tuotantokapasiteettia.",

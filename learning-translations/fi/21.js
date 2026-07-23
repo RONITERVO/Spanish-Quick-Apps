@@ -37,7 +37,7 @@
   "fósforo": "fosfori",
   "El fósforo participa en membranas y transferencia de energía, y su disponibilidad puede limitar ecosistemas.": "Fosfori osallistuu kalvojen ja energian siirtoon, ja sen saatavuus voi rajoittaa ekosysteemejä.",
   "azufre": "rikki",
-  "El azufre interviene en proteínas y metabolismos capaces de operar sin oxígeno.": "Rikki puuttuu proteiineihin ja aineenvaihduntaan, jotka pystyvät toimimaan ilman happea.",
+  "El azufre interviene en proteínas y metabolismos capaces de operar sin oxígeno.": "Rikki osallistuu proteiinien rakenteeseen ja ilman happea toimiviin aineenvaihduntaprosesseihin.",
   "polvo estelar": "tähtipöly",
   "Elementos pesados expulsados por estrellas se incorporan a nuevas nubes, planetas y organismos potenciales.": "Tähtien sinkoamat raskaat elementit liitetään uusiin pilviin, planeetoihin ja mahdollisiin organismeihin.",
   "moléculas interestelares": "tähtienväliset molekyylit",

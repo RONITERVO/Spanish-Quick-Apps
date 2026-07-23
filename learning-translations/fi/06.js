@@ -37,7 +37,7 @@
   "Esta pequeña galaxia está siendo deformada y absorbida gradualmente por la Vía Láctea.": "Linnunrata muuttaa vähitellen tämän pienen galaksin muotoa ja sulauttaa sitä itseensä.",
   "Fornax": "Fornax",
   "Una galaxia enana esferoidal puede tener muy poco gas y una población dominada por estrellas antiguas.": "Kääpiöpallogalaksissa voi olla hyvin vähän kaasua ja populaatiota hallitsevat vanhat tähdet.",
-  "galaxia ultradébil": "ultrahamea galaksi",
+  "galaxia ultradébil": "ultrahimmeä galaksi",
   "Algunas compañeras son tan tenues que solo se descubren contando cuidadosamente sus estrellas.": "Jotkin seuralaisgalaksit ovat niin himmeitä, että ne löydetään vain laskemalla tarkasti niiden tähtiä.",
   "fuerza de marea": "vuorovesivoima",
   "La gravedad de una galaxia grande puede estirar, calentar y deshacer lentamente a una galaxia pequeña.": "Suuren galaksin painovoima voi hitaasti venyttää, kuumentaa ja hajottaa pienen galaksin.",

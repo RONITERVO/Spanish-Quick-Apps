@@ -107,7 +107,7 @@
   "evidencia indirecta": "epäsuora näyttö",
   "El fondo cósmico y la estructura apoyan rasgos generales del escenario, pero el mecanismo exacto y su energía no están confirmados.": "Kosminen mikroaaltotausta ja rakenne tukevat skenaarion yleispiirteitä, mutta tarkkaa mekanismia ja sen energiatasoa ei ole vahvistettu.",
   "ondas gravitacionales relictas": "jäännösgravitaatioaallot",
-  "Una señal primordial sería una prueba extraordinaria, pero todavía no existe una detección confirmada de esas ondas procedentes de la inflación.": "Alkuräjähdyksestä peräisin oleva signaali olisi poikkeuksellinen todiste, mutta inflaation synnyttämistä gravitaatioaalloista ei ole vielä vahvistettua havaintoa.",
+  "Una señal primordial sería una prueba extraordinaria, pero todavía no existe una detección confirmada de esas ondas procedentes de la inflación.": "Primordiaalinen signaali olisi poikkeuksellinen todiste, mutta inflaation synnyttämistä gravitaatioaalloista ei ole vielä vahvistettua havaintoa.",
   "Límite de la física conocida": "Tunnetun fysiikan raja",
   "Frontera teórica · gravedad cuántica y condiciones iniciales": "Teoreettinen raja · kvanttipainovoima ja alkuehdot",
   "La imagen se disuelve porque nuestras teorías actuales dejan de ser suficientes. Esta región no muestra una singularidad observada, un primer punto confirmado ni algo conocido antes de la inflación.": "Kuva häviää, koska nykyiset teoriamme eivät enää riitä. Alue ei esitä havaittua singulariteettia, vahvistettua ensimmäistä hetkeä eikä mitään tunnettua inflaatiota edeltävää vaihetta.",

@@ -265,7 +265,7 @@
   "energía estelar": "tähtien energiaa",
   "Las estrellas ofrecen gradientes abundantes durante tiempos finitos y con tasas que cambian según su masa.": "Tähdet tarjoavat runsaasti gradientteja rajallisiin aikoihin ja nopeuksilla, jotka vaihtelevat niiden massasta riippuen.",
   "enanas rojas": "punaiset kääpiöt",
-  "Estrellas pequeñas pueden durar billones de años, aunque sus entornos y actividad presentan desafíos propios.": "Pienet tähdet voivat kestää miljardeja vuosia, vaikka niiden ympäristö ja toiminta asettavat omat haasteensa.",
+  "Estrellas pequeñas pueden durar billones de años, aunque sus entornos y actividad presentan desafíos propios.": "Pienet tähdet voivat kestää biljoonia vuosia, vaikka niiden ympäristö ja toiminta asettavat omat haasteensa.",
   "remanentes": "jäänteitä",
   "Enanas blancas, estrellas de neutrones y acreción tardía ofrecen fuentes más raras y difíciles de utilizar.": "Valkoiset kääpiöt, neutronitähdet ja myöhäinen akkreetti tarjoavat harvinaisempia ja vaikeammin käytettäviä lähteitä.",
   "agujeros negros": "mustia aukkoja",

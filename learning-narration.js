@@ -22,6 +22,7 @@
   const JITTER_MAX = 30;
 
   let activePointer = null;
+  let interactionUnlocked = false;
   let anchor = null;
   let target = null;
   let holdTimer = 0;
@@ -331,7 +332,7 @@
   }
 
   async function narrate(capturedTarget) {
-    if (!capturedTarget || capturedTarget !== target || activePointer === null) return;
+    if (!capturedTarget || capturedTarget !== target) return;
     const parts = cleanParts(capturedTarget.parts);
     if (!parts.length) return;
 
@@ -354,7 +355,7 @@
 
   function scheduleNarration() {
     cancelHold();
-    if (activePointer === null || !target) return;
+    if (!target) return;
     const capturedTarget = target;
     holdTimer = window.setTimeout(() => {
       holdTimer = 0;
@@ -372,15 +373,22 @@
       y: Number.isFinite(detail.y) ? detail.y : innerHeight * .5,
       color: detail.color || getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#f59e0b"
     };
-    if (activePointer !== null) scheduleNarration();
+    if (interactionUnlocked) scheduleNarration();
   });
 
   document.addEventListener("pointerdown", event => {
     stopNarration();
+    interactionUnlocked = true;
     activePointer = event.pointerId;
     anchor = { x: event.clientX, y: event.clientY };
     target = null;
     try { speechSynthesis.resume(); } catch (_) {}
+  }, true);
+
+  document.addEventListener("keydown", event => {
+    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) {
+      interactionUnlocked = true;
+    }
   }, true);
 
   document.addEventListener("pointermove", event => {

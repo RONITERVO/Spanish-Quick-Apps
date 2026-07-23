@@ -291,7 +291,7 @@
   "intervalos vacíos": "empty intervals",
   "Acontecimientos útiles aparecen separados por duraciones que superan cualquier escala biológica familiar.": "Useful events appear separated by durations that exceed any familiar biological scale.",
   "El destino de la información": "The fate of information",
-  "Frontera física y conceptual · preservar un patrón exige que alguna diferencia siga siendo recuperable": "Physical and conceptual boundary Preserving a pattern requires that some difference remains recoverable",
+  "Frontera física y conceptual · preservar un patrón exige que alguna diferencia siga siendo recuperable": "Physical and conceptual boundary · preserving a pattern requires that some difference remain recoverable.",
   "Registro + soporte + mantenimiento + acceso → posibilidad de reconstruir un pasado": "Registration + support + maintenance + access → possibility of reconstructing a past",
   "La física moderna sugiere restricciones profundas sobre la información, pero la recuperación práctica y la interpretación continúan siendo problemas distintos.": "Modern physics suggests profound restrictions on information, but practical retrieval and interpretation remain distinct problems.",
   "preservación fundamental": "fundamental preservation",

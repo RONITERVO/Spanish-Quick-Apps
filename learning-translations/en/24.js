@@ -51,7 +51,7 @@
   "extinción": "extinction",
   "Cuando una línea termina, desaparecen capacidades y futuros que esa organización podía producir.": "When a line ends, capabilities and futures that that organization could produce disappear.",
   "Sentir convierte estados en experiencias": "Feeling converts states into experiences",
-  "Conciencia · algo ya no solo ocurre, sino que ocurre para alguien": "Consciousness something no longer just happens, but it happens for someone",
+  "Conciencia · algo ya no solo ocurre, sino que ocurre para alguien": "Consciousness · something no longer just happens, but happens for someone.",
   "Estado corporal + integración nerviosa + memoria → experiencia con valencia": "Body state + nervous integration + memory → experience with valence",
   "El sufrimiento y el bienestar introducen una dimensión que no se agota describiendo masa, posición o energía.": "Suffering and well-being introduce a dimension that is not exhausted by describing mass, position or energy.",
   "dolor": "pain",

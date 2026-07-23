@@ -99,7 +99,7 @@
   "interfaces neuronales": "hermoliitännät",
   "Electrodos y otros sistemas pueden leer o estimular actividad cerebral, aumentando capacidad terapéutica y sensibilidad de los datos mentales.": "Elektrodit ja muut järjestelmät voivat lukea tai stimuloida aivojen toimintaa, mikä lisää terapeuttista kapasiteettia ja henkisen tiedon herkkyyttä.",
   "ingeniería ecológica": "ekologinen suunnittelu",
-  "Intervenir poblaciones o hábitats puede restaurar funciones y producir efectos evolutivos que cruzan fronteras.": "Väliin tulevat populaatiot tai elinympäristöt voivat palauttaa toimintoja ja tuottaa evoluutiovaikutuksia, jotka ylittävät rajat.",
+  "Intervenir poblaciones o hábitats puede restaurar funciones y producir efectos evolutivos que cruzan fronteras.": "Populaatioihin tai elinympäristöihin puuttuminen voi palauttaa toimintoja ja tuottaa rajat ylittäviä evoluutiovaikutuksia.",
   "computación biológica": "biologinen laskenta",
   "Células y moléculas pueden almacenar información o ejecutar operaciones con propiedades muy diferentes de la electrónica convencional.": "Solut ja molekyylit voivat tallentaa tietoa tai suorittaa operaatioita, joilla on hyvin erilaiset ominaisuudet kuin perinteisessä elektroniikassa.",
   "Colaboración humano–máquina": "Ihmisen ja koneen yhteistyö",
