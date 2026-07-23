@@ -64,65 +64,6 @@
       mix-blend-mode: multiply;
     }
 
-    .note-label {
-      position: fixed;
-      z-index: 6;
-      left: 0;
-      top: 0;
-      min-width: 120px;
-      padding: 13px 22px 15px;
-      border: 1px solid rgba(255,255,255,.32);
-      border-radius: 999px;
-      color: white;
-      text-align: center;
-      pointer-events: none;
-      transform: translate(-50%, -50%) scale(.55);
-      opacity: 0;
-      filter: blur(10px);
-      background: rgba(10,10,18,.3);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.08) inset,
-        0 0 28px var(--note-color),
-        0 16px 50px rgba(0,0,0,.35);
-      backdrop-filter: blur(18px) saturate(1.45);
-      -webkit-backdrop-filter: blur(18px) saturate(1.45);
-      transition:
-        opacity 160ms ease,
-        transform 380ms cubic-bezier(.16,1,.3,1),
-        filter 220ms ease;
-      will-change: transform, opacity, filter;
-    }
-
-    .note-label.visible {
-      opacity: 1;
-      filter: blur(0);
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .note-name {
-      display: block;
-      font-size: clamp(2rem, 8vw, 5.8rem);
-      font-weight: 950;
-      line-height: .9;
-      letter-spacing: -.05em;
-      text-transform: uppercase;
-      text-shadow:
-        0 0 24px var(--note-color),
-        0 4px 18px rgba(0,0,0,.4);
-      white-space: nowrap;
-    }
-
-    .note-sub {
-      display: block;
-      margin-top: 6px;
-      font-size: clamp(.7rem, 2vw, 1rem);
-      font-weight: 750;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      opacity: .78;
-      white-space: nowrap;
-    }
-
     .touch-ring {
       position: fixed;
       z-index: 5;
@@ -173,7 +114,6 @@
       .ripple {
         display: none;
       }
-      .note-label,
       .touch-ring {
         transition-duration: 80ms;
       }
@@ -210,6 +150,8 @@
       const voices = new Map();
       const particles = [];
       const waves = [];
+      const floatingTexts = [];
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
       let audioCtx = null;
       let master = null;
@@ -222,6 +164,9 @@
       let height = 1;
       let raf = 0;
       let lastTime = performance.now();
+      let speechUnlocked = false;
+      let speechTimer = 0;
+      let lastSpoken = "";
 
       function initAudio() {
         if (audioCtx) {
@@ -290,6 +235,131 @@
           hue,
           css: `hsl(${hue} 100% 65%)`
         };
+      }
+
+      function showFloatingText(text, x, y, color = "#b8860b", subtext = "", owner = null) {
+        const life = reducedMotion.matches ? 0.72 : 1.05;
+        floatingTexts.push({
+          text,
+          subtext,
+          x: Math.max(82, Math.min(width - 82, x)),
+          y: y < height * 0.24 ? y + 96 : y - 58,
+          color,
+          owner,
+          life,
+          maxLife: life,
+          angle: (Math.random() - 0.5) * 0.055
+        });
+      }
+
+      function showNoteFloatingText(midi, timbre, x, y, pointerId) {
+        const noteIndex = midi % 12;
+        const octave = Math.floor(midi / 12) - 1;
+        const [spanish, symbol] = NOTES[noteIndex];
+        showFloatingText(
+          spanish,
+          x,
+          y,
+          colorForMidi(midi).css,
+          `${symbol}${octave} · ${timbre.label}`,
+          pointerId
+        );
+      }
+
+      function queueSpeech(label) {
+        if (!speechUnlocked || !("speechSynthesis" in window) || !label) return;
+        clearTimeout(speechTimer);
+        if (label === lastSpoken) return;
+        speechTimer = window.setTimeout(() => {
+          try {
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(label);
+            utterance.lang = "es-ES";
+            utterance.rate = .86;
+            utterance.pitch = 1;
+            const availableVoices = speechSynthesis.getVoices();
+            const spanishVoice = availableVoices.find(voice => /^es(-|_)/i.test(voice.lang)) ||
+              availableVoices.find(voice => /spanish|español/i.test(voice.name));
+            if (spanishVoice) utterance.voice = spanishVoice;
+            speechSynthesis.speak(utterance);
+            lastSpoken = label;
+          } catch (_) {}
+        }, 360);
+      }
+
+      function clearVoiceFloatingText(pointerId) {
+        for (let i = floatingTexts.length - 1; i >= 0; i--) {
+          if (floatingTexts[i].owner === pointerId) floatingTexts.splice(i, 1);
+        }
+      }
+
+      function hasVoiceFloatingText(pointerId) {
+        return floatingTexts.some(text => text.owner === pointerId);
+      }
+
+      function scheduleVoiceFloatingText(voice) {
+        clearTimeout(voice.feedbackTimer);
+        clearVoiceFloatingText(voice.pointerId);
+        voice.feedbackTimer = window.setTimeout(() => {
+          voice.feedbackTimer = 0;
+          if (voice.ended) return;
+          showNoteFloatingText(voice.midi, voice.timbre, voice.x, voice.y, voice.pointerId);
+        }, 220);
+        queueSpeech(NOTES[voice.midi % 12][0]);
+      }
+
+      function flushVoiceFloatingText(voice) {
+        clearTimeout(voice.feedbackTimer);
+        voice.feedbackTimer = 0;
+        if (!hasVoiceFloatingText(voice.pointerId)) {
+          showNoteFloatingText(voice.midi, voice.timbre, voice.x, voice.y, voice.pointerId);
+        }
+      }
+
+      function updateFloatingTexts(dt) {
+        floatingTexts.forEach(text => {
+          text.life -= dt;
+          if (!reducedMotion.matches) text.y -= 42 * dt;
+        });
+        for (let i = floatingTexts.length - 1; i >= 0; i--) {
+          if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
+        }
+      }
+
+      function drawFloatingTexts(drawCtx) {
+        floatingTexts.forEach(text => {
+          const progress = 1 - text.life / text.maxLife;
+          const alpha = Math.max(0, text.life / text.maxLife);
+          const size = Math.min(68, Math.max(34, width * 0.06)) * (1 + progress * 0.14);
+
+          drawCtx.save();
+          drawCtx.translate(text.x, text.y);
+          drawCtx.rotate(text.angle * (1 - progress * 0.35));
+          drawCtx.globalAlpha = alpha;
+          drawCtx.textAlign = "center";
+          drawCtx.textBaseline = "middle";
+          drawCtx.lineJoin = "round";
+          drawCtx.shadowBlur = 22;
+          drawCtx.shadowColor = text.color;
+          drawCtx.font = `bold ${size}px Caveat, "Segoe Print", "Bradley Hand", cursive`;
+          drawCtx.lineWidth = Math.max(4, size * 0.105);
+          drawCtx.strokeStyle = "rgba(5,5,12,.82)";
+          drawCtx.strokeText(text.text.toUpperCase(), 0, 0);
+          drawCtx.fillStyle = text.color;
+          drawCtx.fillText(text.text.toUpperCase(), 0, 0);
+
+          if (text.subtext) {
+            const subSize = Math.max(13, size * 0.28);
+            drawCtx.shadowBlur = 10;
+            drawCtx.font = `700 ${subSize}px Inter, ui-rounded, system-ui, sans-serif`;
+            drawCtx.lineWidth = 3;
+            drawCtx.strokeStyle = "rgba(5,5,12,.86)";
+            drawCtx.strokeText(text.subtext.toUpperCase(), 0, size * 0.72);
+            drawCtx.fillStyle = "rgba(255,255,255,.9)";
+            drawCtx.fillText(text.subtext.toUpperCase(), 0, size * 0.72);
+          }
+          drawCtx.restore();
+        });
       }
 
       function timbreForY(y) {
@@ -386,12 +456,14 @@
           y,
           timbre,
           ui,
+          feedbackTimer: 0,
           ended: false
         };
 
         voices.set(pointerId, voice);
         burst(x, y, colorForMidi(midi).hue, 20);
         wave(x, y, colorForMidi(midi).hue);
+        scheduleVoiceFloatingText(voice);
         return voice;
       }
 
@@ -402,6 +474,7 @@
         const freq = frequencyForMidi(midi);
         const timbre = timbreForY(y);
         const now = audioCtx.currentTime;
+        const noteChanged = midi !== voice.midi;
 
         voice.osc1.frequency.cancelScheduledValues(now);
         voice.osc2.frequency.cancelScheduledValues(now);
@@ -423,7 +496,7 @@
           );
         }
 
-        if (midi !== voice.midi) {
+        if (noteChanged) {
           burst(x, y, colorForMidi(midi).hue, 8);
           wave(x, y, colorForMidi(midi).hue);
         }
@@ -434,13 +507,19 @@
         voice.y = y;
         voice.timbre = timbre;
         updateVoiceUI(voice);
+        scheduleVoiceFloatingText(voice);
       }
 
-      function stopVoice(pointerId) {
+      function stopVoice(pointerId, showFeedback = true) {
         const voice = voices.get(pointerId);
         if (!voice || voice.ended) return;
 
         voice.ended = true;
+        if (showFeedback) flushVoiceFloatingText(voice);
+        else {
+          clearTimeout(voice.feedbackTimer);
+          clearVoiceFloatingText(pointerId);
+        }
         const now = audioCtx.currentTime;
         const release = voice.timbre.release;
 
@@ -452,11 +531,9 @@
           voice.osc2.stop(now + release + 0.12);
         } catch (_) {}
 
-        voice.ui.label.classList.remove("visible");
         voice.ui.ring.classList.remove("visible");
 
         setTimeout(() => {
-          voice.ui.label.remove();
           voice.ui.ring.remove();
         }, 500);
 
@@ -464,28 +541,15 @@
       }
 
       function createVoiceUI(pointerId, x, y, midi, timbre) {
-        const label = document.createElement("div");
-        label.className = "note-label";
-        label.dataset.pointer = pointerId;
-
-        const main = document.createElement("span");
-        main.className = "note-name";
-
-        const sub = document.createElement("span");
-        sub.className = "note-sub";
-
-        label.append(main, sub);
-
         const ring = document.createElement("div");
         ring.className = "touch-ring";
 
-        document.body.append(label, ring);
+        document.body.append(ring);
 
-        const ui = { label, main, sub, ring };
+        const ui = { ring };
         updateUIElements(ui, x, y, midi, timbre);
 
         requestAnimationFrame(() => {
-          label.classList.add("visible");
           ring.classList.add("visible");
         });
 
@@ -511,18 +575,7 @@
       }
 
       function updateUIElements(ui, x, y, midi, timbre) {
-        const noteIndex = midi % 12;
-        const octave = Math.floor(midi / 12) - 1;
-        const [spanish, symbol] = NOTES[noteIndex];
         const color = colorForMidi(midi).css;
-
-        ui.main.textContent = spanish;
-        ui.sub.textContent = `${symbol}${octave} · ${timbre.label}`;
-
-        const offset = y < height * 0.24 ? 92 : -94;
-        ui.label.style.left = x + "px";
-        ui.label.style.top = (y + offset) + "px";
-        ui.label.style.setProperty("--note-color", color);
 
         ui.ring.style.left = x + "px";
         ui.ring.style.top = y + "px";
@@ -626,6 +679,7 @@
       function animate(now) {
         const dt = Math.min(0.033, (now - lastTime) / 1000);
         lastTime = now;
+        updateFloatingTexts(dt);
 
         drawBackground(now);
 
@@ -691,11 +745,14 @@
           ctx.restore();
         }
 
+        drawFloatingTexts(ctx);
+
         raf = requestAnimationFrame(animate);
       }
 
       function onPointerDown(event) {
         event.preventDefault();
+        speechUnlocked = true;
         canvas.setPointerCapture?.(event.pointerId);
         buildVoice(event.pointerId, event.clientX, event.clientY);
       }
@@ -721,7 +778,15 @@
       document.addEventListener("contextmenu", e => e.preventDefault());
       window.addEventListener("resize", resize, { passive: true });
       window.addEventListener("blur", () => {
-        for (const id of [...voices.keys()]) stopVoice(id);
+        for (const id of [...voices.keys()]) stopVoice(id, false);
+        clearTimeout(speechTimer);
+        if ("speechSynthesis" in window) speechSynthesis.cancel();
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) return;
+        clearTimeout(speechTimer);
+        if ("speechSynthesis" in window) speechSynthesis.cancel();
       });
 
       resize();
