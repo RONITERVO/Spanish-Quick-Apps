@@ -153,6 +153,7 @@
   }
 
   function showReadoutFeedback(force = false, touchOverride = null) {
+    const evidence = textFrom("evidence-class");
     const title = textFrom("zone-name");
     const feature = textFrom("feature-name");
     const metric = textFrom("metric");
@@ -173,6 +174,14 @@
       y: touch.y,
       color: accentColor()
     });
+    window.dispatchEvent(new CustomEvent("spectrum:learning-target", {
+      detail: {
+        parts: [evidence, title || feature, title ? feature : "", metric, fact],
+        x: touch.x,
+        y: touch.y,
+        color: accentColor()
+      }
+    }));
     lastSignature = signature;
     feedbackVisible = true;
   }
