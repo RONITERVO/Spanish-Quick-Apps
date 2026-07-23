@@ -261,6 +261,14 @@
           feedback.stroke,
           feedback.glow
         );
+        window.dispatchEvent(new CustomEvent("spectrum:learning-target", {
+          detail: {
+            parts: [feedback.text],
+            x: feedback.x,
+            y: feedback.y,
+            color: feedback.glow
+          }
+        }));
       }
 
       function scheduleFloatingFeedback(text, x, y, color, stroke, glow) {
@@ -277,7 +285,6 @@
         } else if (!settleTimer && !floatingTexts.length) {
           settleTimer = window.setTimeout(flushFloatingFeedback, 220);
         }
-        queueSpeech(text);
       }
 
       function updateFloatingTexts(dt) {
@@ -564,6 +571,7 @@
       drawSpectrum();
     })();
   </script>
+  <script src="learning-narration.js"></script>
   <script src="app-navigation.js"></script>
 </body>
 </html>

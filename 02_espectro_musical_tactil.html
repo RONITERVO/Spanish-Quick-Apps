@@ -264,6 +264,14 @@
           `${symbol}${octave} · ${timbre.label}`,
           pointerId
         );
+        window.dispatchEvent(new CustomEvent("spectrum:learning-target", {
+          detail: {
+            parts: [spanish, `octava ${octave}`, timbre.label],
+            x,
+            y,
+            color: colorForMidi(midi).css
+          }
+        }));
       }
 
       function queueSpeech(label) {
@@ -316,7 +324,6 @@
             showNoteFloatingText(voice.midi, voice.timbre, voice.x, voice.y, voice.pointerId);
           }, 220);
         }
-        queueSpeech(NOTES[voice.midi % 12][0]);
       }
 
       function flushVoiceFloatingText(voice) {
@@ -807,6 +814,7 @@
       raf = requestAnimationFrame(animate);
     })();
   </script>
+  <script src="learning-narration.js"></script>
   <script src="app-navigation.js"></script>
 </body>
 </html>

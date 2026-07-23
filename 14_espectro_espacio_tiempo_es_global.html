@@ -1141,7 +1141,6 @@
           fact.textContent = feature.fact || zone.fact;
           ping(zone, xNorm, feature.index);
           addBurst(x, y, zone);
-          queueSpeech(feature.name);
           lastZoneId = zone.id;
           lastFeature = feature.index;
         }
@@ -1941,6 +1940,7 @@
       requestAnimationFrame(draw);
     })();
   </script>
+  <script src="learning-narration.js"></script>
   <script src="app-navigation.js"></script>
 </body>
 </html>

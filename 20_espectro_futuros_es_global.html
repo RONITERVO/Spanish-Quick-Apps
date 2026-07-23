@@ -538,7 +538,7 @@
       scaleDot.style.bottom=`${48+progress*Math.max(0,height-96)}px`;touchOrb.style.left=`${x}px`;touchOrb.style.top=`${y}px`;scaleValue.textContent=zone.className;
       const changed=zone.id!==lastZoneId||feature.index!==lastFeature;
       if(changed||isNewPress){evidenceClass.textContent=zone.className;zoneName.textContent=zone.name;zoneName.className=zone.name.length>31?'long':zone.name.length>21?'compact':'';
-        featureName.textContent=feature.name;metric.textContent=zone.metric;fact.textContent=feature.fact||zone.fact;ping(zone,xNorm,feature.index);addBurst(x,y,zone.color);queueSpeech(feature.name);lastZoneId=zone.id;lastFeature=feature.index;}
+        featureName.textContent=feature.name;metric.textContent=zone.metric;fact.textContent=feature.fact||zone.fact;ping(zone,xNorm,feature.index);addBurst(x,y,zone.color);window.dispatchEvent(new CustomEvent("spectrum:learning-target",{detail:{parts:[feature.name,zone.metric,feature.fact||zone.fact],x,y,color:rgba(zone.color,1)}}));lastZoneId=zone.id;lastFeature=feature.index;}
       readout.classList.add('visible');touchOrb.classList.add('visible');document.body.classList.add('active');hint.style.display='none';setAudioFor(zone,xNorm,progress,true);
     }
     function releaseInteraction(delay=1050){clearTimeout(hideTimer);hideTimer=setTimeout(()=>{readout.classList.remove('visible');touchOrb.classList.remove('visible');document.body.classList.remove('active');const z=zoneForDepth(depthFromY(targetY));setAudioFor(z,targetX,depthFromY(targetY),false);},delay);}
@@ -617,6 +617,7 @@
     resize();setAccent(ZONES[0]);requestAnimationFrame(render);
   })();
 </script>
+  <script src="learning-narration.js"></script>
   <script src="app-navigation.js"></script>
 </body>
 </html>
