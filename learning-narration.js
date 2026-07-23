@@ -77,24 +77,44 @@
       letter-spacing: .2em;
       text-shadow: 0 2px 4px rgba(0, 0, 0, .95);
     }
-    .learning-narration__stream {
-      position: relative;
-      white-space: pre-line;
+    .learning-narration__lines {
+      display: grid;
+      gap: .14em;
       overflow-wrap: anywhere;
     }
-    .learning-narration__ghost {
+    .learning-narration__line {
+      display: grid;
+      min-width: 0;
+    }
+    .learning-narration__source,
+    .learning-narration__measure,
+    .learning-narration__ink {
+      grid-area: 1 / 1;
+      min-width: 0;
+    }
+    .learning-narration__source {
+      color: rgba(255, 255, 255, 0);
+      transition: color 180ms ease;
+    }
+    .learning-narration__measure {
       visibility: hidden;
-      white-space: pre-line;
+    }
+    .learning-narration__line--translating .learning-narration__source,
+    .learning-narration__line--translated .learning-narration__source {
+      color: rgba(255, 255, 255, .2);
+      -webkit-text-stroke: 1px rgba(4, 6, 13, .42);
+      paint-order: stroke fill;
+    }
+    .learning-narration__line--translated .learning-narration__source {
+      color: rgba(255, 255, 255, .12);
     }
     .learning-narration__ink {
-      position: absolute;
-      inset: 0;
-      white-space: pre-line;
+      position: relative;
       color: rgba(255, 255, 255, .98);
       -webkit-text-stroke: 1px rgba(4, 6, 13, .78);
       paint-order: stroke fill;
     }
-    .learning-narration__ink::after {
+    .learning-narration__line--speaking .learning-narration__ink::after {
       content: "";
       display: inline-block;
       width: .12em;
@@ -106,13 +126,47 @@
       transform: rotate(8deg);
       opacity: .92;
     }
-    #learning-narration.learning-narration--complete .learning-narration__ink::after {
+    #learning-narration-pointer {
+      position: fixed;
+      z-index: 2147483643;
+      left: 50%;
+      top: 50%;
+      width: 38px;
+      height: 38px;
+      border: 2px dashed var(--learning-accent, #f59e0b);
+      border-radius: 50%;
       opacity: 0;
+      transform: translate(-50%, -50%) scale(.82);
+      transition: opacity 180ms ease, transform 220ms ease;
+      pointer-events: none;
+      filter: saturate(.55) drop-shadow(0 2px 5px rgba(0, 0, 0, .75));
+    }
+    #learning-narration-pointer::after {
+      content: "";
+      position: absolute;
+      inset: 13px;
+      border-radius: 50%;
+      background: var(--learning-accent, #f59e0b);
+      opacity: .5;
+    }
+    #learning-narration-pointer.learning-narration-pointer--active {
+      opacity: .62;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    #learning-narration-pointer.learning-narration-pointer--leaving {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.72);
+    }
+    body.learning-narration-pointer-resting #touch-orb,
+    body.learning-narration-pointer-resting .touch-ring {
+      opacity: 0 !important;
     }
     #learning-narration[data-length="long"] { font-size: clamp(17px, 4.2vw, 28px); }
     #learning-narration[data-length="very-long"] { font-size: clamp(14px, 3.35vw, 22px); line-height: 1.13; }
     @media (prefers-reduced-motion: reduce) {
-      #learning-narration { transition-duration: .01ms; transform: translate(-50%, -50%); }
+      #learning-narration,
+      #learning-narration-pointer { transition-duration: .01ms; }
+      #learning-narration { transform: translate(-50%, -50%); }
       #learning-narration.learning-narration--active { transform: translate(-50%, -50%); }
     }
   `;
@@ -123,15 +177,16 @@
   overlay.setAttribute("aria-hidden", "true");
   overlay.innerHTML = `
     <div class="learning-narration__language"></div>
-    <div class="learning-narration__stream">
-      <div class="learning-narration__ghost"></div>
-      <div class="learning-narration__ink"></div>
-    </div>`;
+    <div class="learning-narration__lines"></div>`;
   document.body.appendChild(overlay);
 
+  const restingPointer = document.createElement("div");
+  restingPointer.id = "learning-narration-pointer";
+  restingPointer.setAttribute("aria-hidden", "true");
+  document.body.appendChild(restingPointer);
+
   const languageElement = overlay.querySelector(".learning-narration__language");
-  const ghostElement = overlay.querySelector(".learning-narration__ghost");
-  const inkElement = overlay.querySelector(".learning-narration__ink");
+  const linesElement = overlay.querySelector(".learning-narration__lines");
 
   const catalogReady = new Promise(resolve => {
     const catalogScript = document.createElement("script");
@@ -164,7 +219,10 @@
     animationFrame = 0;
     clearTimeout(hideTimer);
     if ("speechSynthesis" in window) speechSynthesis.cancel();
-    if (hide) overlay.classList.remove("learning-narration--active", "learning-narration--leaving");
+    if (hide) {
+      overlay.classList.remove("learning-narration--active", "learning-narration--leaving");
+      hideRestingPointer(true);
+    }
   }
 
   function cleanParts(parts) {
@@ -224,14 +282,52 @@
       voices.find(voice => voice.lang.toLowerCase().split(/[-_]/)[0] === base) || null;
   }
 
-  function setOverlayText(label, text, accent, point) {
+  function showRestingPointer(point, accent) {
+    restingPointer.style.left = `${point.x}px`;
+    restingPointer.style.top = `${point.y}px`;
+    restingPointer.style.setProperty("--learning-accent", accent || "#f59e0b");
+    restingPointer.classList.remove("learning-narration-pointer--leaving");
+    restingPointer.classList.add("learning-narration-pointer--active");
+    document.body.classList.add("learning-narration-pointer-resting");
+  }
+
+  function hideRestingPointer(immediate = false) {
+    if (immediate) {
+      restingPointer.classList.remove("learning-narration-pointer--active", "learning-narration-pointer--leaving");
+      document.body.classList.remove("learning-narration-pointer-resting");
+      return;
+    }
+    restingPointer.classList.remove("learning-narration-pointer--active");
+    restingPointer.classList.add("learning-narration-pointer--leaving");
+    document.body.classList.remove("learning-narration-pointer-resting");
+  }
+
+  function setOverlayLines(spanishParts, translated, accent, point) {
     overlay.classList.remove("learning-narration--leaving", "learning-narration--complete");
     overlay.classList.add("learning-narration--active");
     overlay.style.setProperty("--learning-accent", accent || "#f59e0b");
-    languageElement.textContent = label;
-    ghostElement.textContent = text;
-    inkElement.textContent = "";
-    overlay.dataset.length = text.length > 520 ? "very-long" : text.length > 260 ? "long" : "short";
+    languageElement.textContent = "ESPAÑOL";
+    linesElement.replaceChildren(...spanishParts.map((spanish, index) => {
+      const line = document.createElement("div");
+      line.className = "learning-narration__line";
+
+      const source = document.createElement("div");
+      source.className = "learning-narration__source";
+      source.textContent = spanish;
+
+      const measure = document.createElement("div");
+      measure.className = "learning-narration__measure";
+      measure.textContent = translated[index] || spanish;
+
+      const ink = document.createElement("div");
+      ink.className = "learning-narration__ink";
+
+      line.append(source, measure, ink);
+      return line;
+    }));
+
+    const longestText = Math.max(joinForDisplay(spanishParts).length, joinForDisplay(translated).length);
+    overlay.dataset.length = longestText > 520 ? "very-long" : longestText > 260 ? "long" : "short";
 
     requestAnimationFrame(() => {
       const bounds = overlay.getBoundingClientRect();
@@ -245,15 +341,21 @@
     });
   }
 
-  function revealText(text, index) {
-    inkElement.textContent = text.slice(0, Math.max(0, Math.min(text.length, Math.round(index))));
+  function narrationLine(index) {
+    return linesElement.children[index] || null;
   }
 
-  function speakChunk(text, language, fullText, offset, token) {
+  function revealLine(index, text, revealedCharacters) {
+    const ink = narrationLine(index)?.querySelector(".learning-narration__ink");
+    if (!ink) return;
+    ink.textContent = text.slice(0, Math.max(0, Math.min(text.length, Math.round(revealedCharacters))));
+  }
+
+  function speakChunk(text, language, onProgress, token) {
     return new Promise(resolve => {
       if (token !== runToken || !text) return resolve(false);
       if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
-        revealText(fullText, offset + text.length);
+        onProgress(text.length);
         return window.setTimeout(() => resolve(token === runToken), 500);
       }
 
@@ -274,7 +376,7 @@
         if (token !== runToken) return;
         if (!syncAt) syncAt = now;
         const projected = syncIndex + ((now - syncAt) / 1000) * charsPerSecond * utterance.rate;
-        revealText(fullText, offset + Math.min(text.length, projected));
+        onProgress(Math.min(text.length, projected));
         animationFrame = requestAnimationFrame(animate);
       };
 
@@ -294,12 +396,12 @@
         lastBoundaryIndex = event.charIndex;
         syncIndex = Math.max(syncIndex, event.charIndex);
         syncAt = performance.now();
-        revealText(fullText, offset + syncIndex);
+        onProgress(syncIndex);
       };
       const finish = success => {
         cancelAnimationFrame(animationFrame);
         animationFrame = 0;
-        if (success) revealText(fullText, offset + text.length);
+        if (success) onProgress(text.length);
         resolve(success && token === runToken);
       };
       utterance.onend = () => finish(true);
@@ -313,21 +415,31 @@
     });
   }
 
-  async function speakPhase(parts, label, language, accent, point, token) {
+  async function speakPhase(parts, phase, label, language, token) {
     if (token !== runToken) return false;
-    const displayText = joinForDisplay(parts);
-    setOverlayText(label, displayText, accent, point);
+    languageElement.textContent = phase === "spanish" ? "ESPAÑOL" : `ESPAÑOL → ${label}`;
+    overlay.classList.remove("learning-narration--complete");
 
-    let offset = 0;
     for (let index = 0; index < parts.length; index += 1) {
       if (token !== runToken) return false;
       const part = parts[index];
+      const line = narrationLine(index);
+      if (!line) continue;
+      if (phase === "translation") line.classList.add("learning-narration__line--translating");
+      line.querySelector(".learning-narration__ink").textContent = "";
+      line.classList.add("learning-narration__line--speaking");
       const spokenPart = /[.!?…:]$/.test(part) ? part : `${part}.`;
-      const ok = await speakChunk(spokenPart, language, displayText, offset, token);
+      const ok = await speakChunk(spokenPart, language, progress => revealLine(index, part, progress), token);
       if (!ok) return false;
-      offset += part.length + (index < parts.length - 1 ? 1 : 0);
+      revealLine(index, part, part.length);
+      line.classList.remove("learning-narration__line--speaking");
+      if (phase === "translation") {
+        line.classList.remove("learning-narration__line--translating");
+        line.classList.add("learning-narration__line--translated");
+      } else {
+        line.classList.add("learning-narration__line--spanish-complete");
+      }
     }
-    revealText(displayText, displayText.length);
     overlay.classList.add("learning-narration--complete");
     return true;
   }
@@ -340,14 +452,26 @@
     narratedSignaturesThisTouch.add(capturedTarget.signature);
     stopNarration(false);
     const token = runToken;
-    const spanishDone = await speakPhase(parts, "ESPAÑOL", "es-ES", capturedTarget.color, capturedTarget, token);
-    if (!spanishDone || token !== runToken) return;
+    showRestingPointer(capturedTarget, capturedTarget.color);
 
     await catalogReady;
+    if (token !== runToken) return;
     const translated = translatedParts(parts);
-    const translationDone = await speakPhase(translated, languageLabel, speechLocale, capturedTarget.color, capturedTarget, token);
-    if (!translationDone || token !== runToken) return;
+    setOverlayLines(parts, translated, capturedTarget.color, capturedTarget);
 
+    const spanishDone = await speakPhase(parts, "spanish", "ESPAÑOL", "es-ES", token);
+    if (!spanishDone || token !== runToken) {
+      if (token === runToken) stopNarration();
+      return;
+    }
+
+    const translationDone = await speakPhase(translated, "translation", languageLabel, speechLocale, token);
+    if (!translationDone || token !== runToken) {
+      if (token === runToken) stopNarration();
+      return;
+    }
+
+    hideRestingPointer();
     hideTimer = window.setTimeout(() => {
       if (token !== runToken) return;
       overlay.classList.add("learning-narration--leaving");
@@ -358,6 +482,7 @@
   function scheduleNarration() {
     cancelHold();
     if (!target) return;
+    if (activePointer === null) showRestingPointer(target, target.color);
     const capturedTarget = target;
     holdTimer = window.setTimeout(() => {
       holdTimer = 0;
