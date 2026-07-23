@@ -249,7 +249,7 @@
     const direction = Math.sign(deltaY);
     const finishingVelocity = gesture.velocityY * direction;
 
-    return distanceY >= viewportHeight / 3 &&
+    return distanceY >= viewportHeight / 4 &&
       distanceY >= Math.abs(deltaX) * 1.35 &&
       duration <= 1500 &&
       releasePause <= releaseWindow &&

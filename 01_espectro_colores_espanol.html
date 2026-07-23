@@ -156,6 +156,7 @@
       let feedbackFrame = 0;
       let lastFeedbackTime = performance.now();
       let settleTimer = 0;
+      let feedbackAnchor = null;
       let pendingFeedback = null;
       let speechUnlocked = false;
       let speechTimer = 0;
@@ -264,9 +265,18 @@
 
       function scheduleFloatingFeedback(text, x, y, color, stroke, glow) {
         pendingFeedback = { text, x, y, color, stroke, glow };
-        clearTimeout(settleTimer);
-        clearFloatingTexts();
-        settleTimer = window.setTimeout(flushFloatingFeedback, 220);
+        const radius = Math.min(26, Math.max(16, Math.min(window.innerWidth, window.innerHeight) * .045));
+        const deltaX = feedbackAnchor ? x - feedbackAnchor.x : radius + 1;
+        const deltaY = feedbackAnchor ? y - feedbackAnchor.y : 0;
+        const movedSignificantly = deltaX * deltaX + deltaY * deltaY > radius * radius;
+        if (movedSignificantly) {
+          feedbackAnchor = { x, y };
+          clearTimeout(settleTimer);
+          clearFloatingTexts();
+          settleTimer = window.setTimeout(flushFloatingFeedback, 220);
+        } else if (!settleTimer && !floatingTexts.length) {
+          settleTimer = window.setTimeout(flushFloatingFeedback, 220);
+        }
         queueSpeech(text);
       }
 
@@ -514,6 +524,7 @@
       function endPointer(event) {
         if (event.pointerId !== activePointer) return;
         activePointer = null;
+        feedbackAnchor = null;
         if (pendingPoint) {
           const point = pendingPoint;
           pendingPoint = null;
@@ -527,6 +538,7 @@
       canvas.addEventListener("pointercancel", endPointer);
       canvas.addEventListener("lostpointercapture", () => {
         activePointer = null;
+        feedbackAnchor = null;
         flushFloatingFeedback();
         hideSoon();
       });
@@ -534,6 +546,7 @@
       window.addEventListener("resize", () => {
         drawSpectrum();
         clearTimeout(settleTimer);
+        feedbackAnchor = null;
         pendingFeedback = null;
         feedbackCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         floatingTexts.length = 0;

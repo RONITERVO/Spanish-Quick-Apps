@@ -298,13 +298,24 @@
       }
 
       function scheduleVoiceFloatingText(voice) {
-        clearTimeout(voice.feedbackTimer);
-        clearVoiceFloatingText(voice.pointerId);
-        voice.feedbackTimer = window.setTimeout(() => {
+        const radius = Math.min(26, Math.max(16, Math.min(width, height) * .045));
+        const deltaX = voice.x - voice.feedbackAnchorX;
+        const deltaY = voice.y - voice.feedbackAnchorY;
+        const movedSignificantly = deltaX * deltaX + deltaY * deltaY > radius * radius;
+        if (movedSignificantly) {
+          voice.feedbackAnchorX = voice.x;
+          voice.feedbackAnchorY = voice.y;
+          clearTimeout(voice.feedbackTimer);
           voice.feedbackTimer = 0;
-          if (voice.ended) return;
-          showNoteFloatingText(voice.midi, voice.timbre, voice.x, voice.y, voice.pointerId);
-        }, 220);
+          clearVoiceFloatingText(voice.pointerId);
+        }
+        if ((movedSignificantly || !hasVoiceFloatingText(voice.pointerId)) && !voice.feedbackTimer) {
+          voice.feedbackTimer = window.setTimeout(() => {
+            voice.feedbackTimer = 0;
+            if (voice.ended) return;
+            showNoteFloatingText(voice.midi, voice.timbre, voice.x, voice.y, voice.pointerId);
+          }, 220);
+        }
         queueSpeech(NOTES[voice.midi % 12][0]);
       }
 
@@ -457,6 +468,8 @@
           timbre,
           ui,
           feedbackTimer: 0,
+          feedbackAnchorX: x,
+          feedbackAnchorY: y,
           ended: false
         };
 
