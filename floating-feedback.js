@@ -59,6 +59,7 @@
   let lastSignature = "";
   let feedbackVisible = false;
   let settleTimer = 0;
+  let settleAnchor = null;
   let activePointer = null;
   let speechUnlocked = false;
   let speechTimer = 0;
@@ -176,7 +177,26 @@
     feedbackVisible = true;
   }
 
-  function scheduleSettledFeedback() {
+  function feedbackJitterRadius() {
+    return Math.min(26, Math.max(16, Math.min(width, height) * .045));
+  }
+
+  function movedBeyondFeedbackJitter(x, y) {
+    if (!settleAnchor) {
+      settleAnchor = { x, y };
+      return true;
+    }
+    const deltaX = x - settleAnchor.x;
+    const deltaY = y - settleAnchor.y;
+    const radius = feedbackJitterRadius();
+    if (deltaX * deltaX + deltaY * deltaY <= radius * radius) return false;
+    settleAnchor.x = x;
+    settleAnchor.y = y;
+    return true;
+  }
+
+  function scheduleSettledFeedback(reset = false) {
+    if (!reset && (settleTimer || feedbackVisible)) return;
     clearTimeout(settleTimer);
     settleTimer = window.setTimeout(() => {
       settleTimer = 0;
@@ -322,8 +342,9 @@
     speechUnlocked = true;
     point.x = event.clientX;
     point.y = event.clientY;
+    settleAnchor = { x: point.x, y: point.y };
     clearFloatingTexts();
-    scheduleSettledFeedback();
+    scheduleSettledFeedback(true);
     scheduleCurrentSpeech();
   }, true);
 
@@ -331,14 +352,19 @@
     if (event.pointerId !== activePointer) return;
     point.x = event.clientX;
     point.y = event.clientY;
-    clearFloatingTexts();
-    scheduleSettledFeedback();
+    if (movedBeyondFeedbackJitter(point.x, point.y)) {
+      clearFloatingTexts();
+      scheduleSettledFeedback(true);
+    } else {
+      scheduleSettledFeedback(false);
+    }
     scheduleCurrentSpeech();
   }, true);
 
   function finishPointer(event) {
     if (event.pointerId !== activePointer) return;
     activePointer = null;
+    settleAnchor = null;
     point.x = event.clientX;
     point.y = event.clientY;
     clearTimeout(settleTimer);
@@ -352,7 +378,7 @@
 
   const observer = new MutationObserver(() => {
     if (activePointer === null) showReadoutFeedback(false);
-    else scheduleSettledFeedback();
+    else scheduleSettledFeedback(false);
     scheduleCurrentSpeech();
   });
   observer.observe(readout, { childList: true, characterData: true, subtree: true });
@@ -366,6 +392,7 @@
   window.addEventListener("resize", () => {
     clearTimeout(settleTimer);
     settleTimer = 0;
+    settleAnchor = null;
     clearFloatingTexts();
     resizeFeedbackCanvas();
   }, { passive: true });
