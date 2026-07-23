@@ -70,7 +70,7 @@
           color-mix(in srgb, var(--accent) 70%, transparent) 0%,
           color-mix(in srgb, var(--accent) 22%, transparent) 12%,
           transparent 34%);
-      mix-blend-mode: screen;
+      mix-blend-mode: normal;
     }
 
     body.active #light-field {
@@ -90,7 +90,7 @@
           transparent calc(var(--scan-y) - 1px),
           color-mix(in srgb, var(--accent) 50%, transparent) var(--scan-y),
           transparent calc(var(--scan-y) + 1px));
-      mix-blend-mode: screen;
+      mix-blend-mode: normal;
     }
 
     body.active #scan-line {
@@ -99,10 +99,10 @@
 
     #grain {
       z-index: 4;
-      opacity: .065;
+      opacity: .045;
       background-image:
         url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-      mix-blend-mode: overlay;
+      mix-blend-mode: normal;
     }
 
     #vignette {
@@ -404,6 +404,7 @@
     <span id="scale-mark"></span>
   </div>
 
+  <script src="floating-feedback.js" data-tts="true"></script>
   <script>
     (() => {
       "use strict";
@@ -423,6 +424,8 @@
 
       const TAU = Math.PI * 2;
       const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const spanishNumberOneDecimal = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 1 });
+      const spanishNumberTwoDecimals = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 2 });
 
       const ZONES = [
         {
@@ -711,9 +714,11 @@
       const motes = [];
       const bubbles = [];
       const clouds = [];
+      const cloudSprites = [];
       const cracks = [];
       const sparks = [];
       const activeRipples = [];
+      const staticDetailLayer = document.createElement("canvas");
 
       let width = 1;
       let height = 1;
@@ -727,6 +732,7 @@
       let hideTimer = 0;
       let raf = 0;
       let lastTime = performance.now();
+      let lastDrawTime = 0;
       let hasInteracted = false;
 
       let audioCtx = null;
@@ -810,10 +816,54 @@
         }
       }
 
+      function prepareLayer(layer) {
+        const layerDpr = Math.min(dpr, 1.25);
+        layer.width = Math.max(1, Math.round(width * layerDpr));
+        layer.height = Math.max(1, Math.round(height * layerDpr));
+        const layerCtx = layer.getContext("2d");
+        layerCtx.setTransform(layerDpr, 0, 0, layerDpr, 0, 0);
+        layerCtx.clearRect(0, 0, width, height);
+        return layerCtx;
+      }
+
+      function buildCloudSprites() {
+        cloudSprites.length = 0;
+        const baseSize = Math.min(width, height) * .03;
+
+        for (const cloud of clouds) {
+          const s = baseSize * cloud.scale;
+          const spriteWidth = Math.max(8, Math.ceil(s * 5.2));
+          const spriteHeight = Math.max(6, Math.ceil(s * 2.2));
+          const sprite = document.createElement("canvas");
+          sprite.width = Math.max(1, Math.round(spriteWidth * dpr));
+          sprite.height = Math.max(1, Math.round(spriteHeight * dpr));
+
+          const spriteCtx = sprite.getContext("2d");
+          spriteCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          const cx = spriteWidth * .5;
+          const cy = spriteHeight * .5;
+          const grad = spriteCtx.createRadialGradient(cx, cy, 0, cx, cy, s * 2.3);
+          grad.addColorStop(0, `rgba(255,255,255,${cloud.alpha})`);
+          grad.addColorStop(.45, `rgba(230,250,255,${cloud.alpha * .55})`);
+          grad.addColorStop(1, "rgba(255,255,255,0)");
+          spriteCtx.fillStyle = grad;
+          spriteCtx.beginPath();
+          spriteCtx.ellipse(cx, cy, s * 2.5, s, 0, 0, TAU);
+          spriteCtx.fill();
+          cloudSprites.push({ canvas: sprite, width: spriteWidth, height: spriteHeight });
+        }
+      }
+
+      function buildStaticLayers() {
+        const detailCtx = prepareLayer(staticDetailLayer);
+        drawCrust(detailCtx);
+        drawBoundaries(detailCtx);
+      }
+
       function resize() {
         width = innerWidth;
         height = innerHeight;
-        dpr = Math.min(devicePixelRatio || 1, 2);
+        dpr = Math.min(devicePixelRatio || 1, 1.5);
 
         canvas.width = Math.max(1, Math.round(width * dpr));
         canvas.height = Math.max(1, Math.round(height * dpr));
@@ -822,6 +872,8 @@
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         buildStaticScene();
+        buildCloudSprites();
+        buildStaticLayers();
       }
 
       function zoneForNormalizedY(n) {
@@ -862,13 +914,18 @@
 
       function formatMetric(zone, n) {
         const value = physicalValue(zone, n);
-        const formatted = new Intl.NumberFormat("es-ES", { maximumFractionDigits: value < 10 ? 2 : 1 }).format(Math.abs(formatNumber(value)));
+        const formatter = value < 10 ? spanishNumberTwoDecimals : spanishNumberOneDecimal;
+        const formatted = formatter.format(Math.abs(formatNumber(value)));
 
         if (zone.unit === "altitude") return `${formatted} km de altura · ${zone.material}`;
         if (zone.unit === "depth") return `${formatted} km de profundidad · ${zone.material}`;
 
         if (value >= 0) return `${formatted} km sobre el nivel del mar · ${zone.material}`;
         return `${formatted} km bajo el nivel del mar · ${zone.material}`;
+      }
+
+      function setTextIfChanged(element, value) {
+        if (element.textContent !== value) element.textContent = value;
       }
 
       function featureFor(zone, xNorm) {
@@ -1050,11 +1107,11 @@
         root.style.setProperty("--scan-x", x + "px");
         root.style.setProperty("--scan-y", y + "px");
 
-        zoneName.textContent = zone.name;
-        featureName.textContent = feature[0];
-        metric.textContent = formatMetric(zone, yNorm);
-        fact.textContent = feature[1] || zone.fact;
-        scaleText.textContent = zone.unit === "altitude" ? "hacia el espacio" : zone.unit === "depth" ? "hacia el centro" : "superficie terrestre";
+        setTextIfChanged(zoneName, zone.name);
+        setTextIfChanged(featureName, feature[0]);
+        setTextIfChanged(metric, formatMetric(zone, yNorm));
+        setTextIfChanged(fact, feature[1] || zone.fact);
+        setTextIfChanged(scaleText, zone.unit === "altitude" ? "hacia el espacio" : zone.unit === "depth" ? "hacia el centro" : "superficie terrestre");
 
         const panelAbove = y > height * .67;
         const panelBelow = y < height * .28;
@@ -1102,8 +1159,8 @@
         }, 620);
       }
 
-      function drawGradientBackdrop() {
-        const gradient = ctx.createLinearGradient(0, 0, 0, height);
+      function drawGradientBackdrop(drawCtx = ctx) {
+        const gradient = drawCtx.createLinearGradient(0, 0, 0, height);
         gradient.addColorStop(0.000, "#01020a");
         gradient.addColorStop(0.070, "#060923");
         gradient.addColorStop(0.155, "#071b3d");
@@ -1120,20 +1177,30 @@
         gradient.addColorStop(0.845, "#dd4a0d");
         gradient.addColorStop(0.935, "#f5a51f");
         gradient.addColorStop(1.000, "#fff0b4");
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, width, height);
+        drawCtx.fillStyle = gradient;
+        drawCtx.fillRect(0, 0, width, height);
       }
 
       function drawStars(time) {
         ctx.save();
         ctx.globalCompositeOperation = "screen";
+        ctx.shadowBlur = 0;
         for (const star of stars) {
           const twinkle = star.a * (.7 + .3 * Math.sin(time * .0012 + star.twinkle));
           ctx.fillStyle = `rgba(210,226,255,${twinkle})`;
-          ctx.shadowBlur = star.r * 4;
-          ctx.shadowColor = "rgba(120,160,255,.75)";
           ctx.beginPath();
           ctx.arc(star.x * width, star.y * height, star.r, 0, TAU);
+          ctx.fill();
+        }
+
+        ctx.shadowBlur = 7;
+        ctx.shadowColor = "rgba(120,160,255,.72)";
+        for (let i = 0; i < stars.length; i += 10) {
+          const star = stars[i];
+          const twinkle = star.a * (.72 + .28 * Math.sin(time * .0012 + star.twinkle));
+          ctx.fillStyle = `rgba(220,234,255,${twinkle})`;
+          ctx.beginPath();
+          ctx.arc(star.x * width, star.y * height, star.r * 1.08, 0, TAU);
           ctx.fill();
         }
         ctx.restore();
@@ -1175,13 +1242,13 @@
           const hue = band % 2 ? "110,255,185" : "78,225,255";
           const alpha = .038 + band * .014;
           ctx.beginPath();
-          for (let x = -30; x <= width + 30; x += 12) {
+          for (let x = -30; x <= width + 30; x += 20) {
             const wave = Math.sin(x * .015 + time * .0012 + band * .9) * 10 + Math.sin(x * .031 - time * .00055) * 4;
             const y = auroraTop + band * 5 + wave;
             if (x === -30) ctx.moveTo(x, y);
             else ctx.lineTo(x, y);
           }
-          for (let x = width + 30; x >= -30; x -= 12) {
+          for (let x = width + 30; x >= -30; x -= 20) {
             const wave = Math.sin(x * .015 + time * .0012 + band * .9) * 10 + Math.sin(x * .031 - time * .00055) * 4;
             const y = auroraBottom + band * 2 + wave * .35;
             ctx.lineTo(x, y);
@@ -1237,18 +1304,20 @@
       function drawClouds(time) {
         ctx.save();
         ctx.globalCompositeOperation = "screen";
-        for (const cloud of clouds) {
+        for (let i = 0; i < clouds.length; i++) {
+          const cloud = clouds[i];
+          const sprite = cloudSprites[i];
           const x = (((cloud.x + time * cloud.speed * .00002) % 1.15) - .08) * width;
           const y = cloud.y * height + Math.sin(time * .00045 + cloud.phase) * 3;
-          const s = Math.min(width, height) * .03 * cloud.scale;
-          const grad = ctx.createRadialGradient(x, y, 0, x, y, s * 2.3);
-          grad.addColorStop(0, `rgba(255,255,255,${cloud.alpha})`);
-          grad.addColorStop(.45, `rgba(230,250,255,${cloud.alpha * .55})`);
-          grad.addColorStop(1, "rgba(255,255,255,0)");
-          ctx.fillStyle = grad;
-          ctx.beginPath();
-          ctx.ellipse(x, y, s * 2.5, s, 0, 0, TAU);
-          ctx.fill();
+          if (sprite) {
+            ctx.drawImage(
+              sprite.canvas,
+              x - sprite.width * .5,
+              y - sprite.height * .5,
+              sprite.width,
+              sprite.height
+            );
+          }
         }
         ctx.restore();
       }
@@ -1285,7 +1354,7 @@
         ctx.fillStyle = "rgba(89,194,226,.45)";
         ctx.beginPath();
         ctx.moveTo(width * .64, sea);
-        for (let x = width * .64; x <= width; x += 8) {
+        for (let x = width * .64; x <= width; x += 12) {
           const y = sea + Math.sin(x * .028 + time * .0018) * 1.8 + Math.sin(x * .011 - time * .001) * 1.2;
           ctx.lineTo(x, y);
         }
@@ -1297,7 +1366,7 @@
         ctx.strokeStyle = "rgba(255,255,255,.5)";
         ctx.lineWidth = 1;
         ctx.beginPath();
-        for (let x = width * .64; x <= width; x += 8) {
+        for (let x = width * .64; x <= width; x += 12) {
           const y = sea + Math.sin(x * .028 + time * .0018) * 1.8 + Math.sin(x * .011 - time * .001) * 1.2;
           if (x === width * .64) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
@@ -1306,38 +1375,38 @@
         ctx.restore();
       }
 
-      function drawCrust() {
+      function drawCrust(drawCtx = ctx) {
         const top = height * .487;
         const bottom = height * .625;
-        ctx.save();
+        drawCtx.save();
 
         for (let i = 0; i < 9; i++) {
           const y = top + (bottom - top) * (i / 9);
-          ctx.strokeStyle = `rgba(255,221,183,${.035 + i * .008})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(0, y);
+          drawCtx.strokeStyle = `rgba(255,221,183,${.035 + i * .008})`;
+          drawCtx.lineWidth = 1;
+          drawCtx.beginPath();
+          drawCtx.moveTo(0, y);
           for (let x = 0; x <= width; x += 20) {
-            ctx.lineTo(x, y + Math.sin(x * .018 + i * 1.8) * (2 + i * .28));
+            drawCtx.lineTo(x, y + Math.sin(x * .018 + i * 1.8) * (2 + i * .28));
           }
-          ctx.stroke();
+          drawCtx.stroke();
         }
 
-        ctx.strokeStyle = "rgba(255,214,166,.2)";
-        ctx.lineWidth = 1.15;
+        drawCtx.strokeStyle = "rgba(255,214,166,.2)";
+        drawCtx.lineWidth = 1.15;
         for (const crack of cracks) {
           let x = crack.x * width;
           let y = crack.y * height;
-          ctx.beginPath();
-          ctx.moveTo(x, y);
+          drawCtx.beginPath();
+          drawCtx.moveTo(x, y);
           for (let j = 1; j <= 4; j++) {
             x += crack.lean * width * .18 + (Math.sin(j * 7.3 + crack.x * 13) * 8);
             y += crack.len * height / 4;
-            ctx.lineTo(x, y);
+            drawCtx.lineTo(x, y);
           }
-          ctx.stroke();
+          drawCtx.stroke();
         }
-        ctx.restore();
+        drawCtx.restore();
       }
 
       function drawMantle(time) {
@@ -1392,7 +1461,7 @@
           ctx.strokeStyle = `rgba(255,211,88,${.07 + i * .009})`;
           ctx.lineWidth = 2 + i * .25;
           ctx.beginPath();
-          for (let x = -20; x <= width + 20; x += 10) {
+          for (let x = -20; x <= width + 20; x += 20) {
             const wave = Math.sin(x * .018 + time * .0011 * (i % 2 ? -1 : 1) + i) * amp;
             if (x === -20) ctx.moveTo(x, y + wave);
             else ctx.lineTo(x, y + wave);
@@ -1422,33 +1491,33 @@
         ctx.restore();
       }
 
-      function drawBoundaries() {
-        ctx.save();
+      function drawBoundaries(drawCtx = ctx) {
+        drawCtx.save();
         for (const zone of ZONES) {
           const y = zone.y0 * height;
           if (y <= 0) continue;
           const zoneColor = colorCss(zone, .22);
-          const grad = ctx.createLinearGradient(0, y, width, y);
+          const grad = drawCtx.createLinearGradient(0, y, width, y);
           grad.addColorStop(0, "rgba(255,255,255,0)");
           grad.addColorStop(.2, zoneColor);
           grad.addColorStop(.8, zoneColor);
           grad.addColorStop(1, "rgba(255,255,255,0)");
-          ctx.strokeStyle = grad;
-          ctx.lineWidth = zone.id === "surface" ? 1.5 : .7;
-          ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(width, y);
-          ctx.stroke();
+          drawCtx.strokeStyle = grad;
+          drawCtx.lineWidth = zone.id === "surface" ? 1.5 : .7;
+          drawCtx.beginPath();
+          drawCtx.moveTo(0, y);
+          drawCtx.lineTo(width, y);
+          drawCtx.stroke();
         }
 
         const surfaceY = height * .46;
-        ctx.strokeStyle = "rgba(255,255,255,.33)";
-        ctx.lineWidth = 1.1;
-        ctx.beginPath();
-        ctx.moveTo(0, surfaceY);
-        ctx.lineTo(width, surfaceY);
-        ctx.stroke();
-        ctx.restore();
+        drawCtx.strokeStyle = "rgba(255,255,255,.33)";
+        drawCtx.lineWidth = 1.1;
+        drawCtx.beginPath();
+        drawCtx.moveTo(0, surfaceY);
+        drawCtx.lineTo(width, surfaceY);
+        drawCtx.stroke();
+        drawCtx.restore();
       }
 
       function drawPointerGlow(time) {
@@ -1508,8 +1577,21 @@
       }
 
       function animate(now) {
-        const dt = Math.min(.033, (now - lastTime) / 1000);
+        if (document.hidden) {
+          raf = 0;
+          return;
+        }
+
+        const isBusy = document.body.classList.contains("active") || activeRipples.length || sparks.length;
+        const frameInterval = isBusy ? 1000 / 60 : 1000 / 30;
+        if (now - lastDrawTime < frameInterval - 1) {
+          raf = requestAnimationFrame(animate);
+          return;
+        }
+
+        const dt = Math.min(.05, (now - lastTime) / 1000);
         lastTime = now;
+        lastDrawTime = now;
 
         pointerX += (targetX - pointerX) * (reducedMotion ? 1 : .24);
         pointerY += (targetY - pointerY) * (reducedMotion ? 1 : .24);
@@ -1522,10 +1604,9 @@
         drawOzone(now);
         drawClouds(now);
         drawSurface(now);
-        drawCrust();
         drawMantle(now);
         drawCore(now);
-        drawBoundaries();
+        ctx.drawImage(staticDetailLayer, 0, 0, width, height);
         drawPointerGlow(now);
         drawEffects(dt);
 
@@ -1605,6 +1686,17 @@
       });
 
       window.addEventListener("resize", resize, { passive: true });
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          cancelAnimationFrame(raf);
+          raf = 0;
+          return;
+        }
+
+        lastTime = performance.now();
+        lastDrawTime = 0;
+        if (!raf) raf = requestAnimationFrame(animate);
+      });
       window.addEventListener("blur", () => {
         activePointer = null;
         readout.classList.remove("visible");

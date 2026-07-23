@@ -9,7 +9,6 @@
     :root {
       --sample: rgb(255 255 255);
       --ink: rgb(255 255 255);
-      --panel: rgb(0 0 0 / 0.28);
       --ring: rgb(255 255 255);
     }
 
@@ -47,55 +46,26 @@
       display: block;
     }
 
-    #name-wrap {
+    #feedback {
       position: fixed;
-      left: 50%;
-      top: 50%;
+      inset: 0;
       z-index: 4;
-      max-width: min(92vw, 950px);
-      padding: clamp(14px, 3vw, 28px) clamp(22px, 5vw, 54px);
-      border: 1px solid rgb(255 255 255 / 0.28);
-      border-radius: clamp(24px, 5vw, 52px);
-      background: var(--panel);
-      box-shadow:
-        0 18px 70px rgb(0 0 0 / 0.28),
-        0 0 70px color-mix(in srgb, var(--sample) 60%, transparent),
-        inset 0 1px 0 rgb(255 255 255 / 0.35);
-      backdrop-filter: blur(18px) saturate(1.35);
-      -webkit-backdrop-filter: blur(18px) saturate(1.35);
+      width: 100%;
+      height: 100%;
+      display: block;
       pointer-events: none;
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.72);
-      filter: blur(14px);
-      transition:
-        opacity 180ms ease,
-        transform 420ms cubic-bezier(.16, 1, .3, 1),
-        filter 250ms ease,
-        background 120ms linear,
-        box-shadow 120ms linear;
-      will-change: transform, opacity, filter;
     }
 
-    #name-wrap.visible {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-      filter: blur(0);
-    }
-
-    #color-name {
-      margin: 0;
-      color: var(--ink);
-      font-size: clamp(2.7rem, 11vw, 9rem);
-      font-weight: 900;
-      line-height: 0.9;
-      letter-spacing: -0.055em;
-      text-align: center;
-      text-transform: uppercase;
+    .sr-only {
+      position: fixed;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
       white-space: nowrap;
-      text-shadow:
-        0 1px 0 rgb(255 255 255 / 0.18),
-        0 0 28px color-mix(in srgb, var(--sample) 78%, transparent),
-        0 6px 26px rgb(0 0 0 / 0.28);
+      border: 0;
     }
 
     #touch-orb {
@@ -148,7 +118,6 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #name-wrap,
       #touch-orb {
         transition-duration: 80ms;
       }
@@ -161,10 +130,8 @@
 </head>
 <body>
   <canvas id="spectrum" aria-label="Espectro completo de colores"></canvas>
-
-  <div id="name-wrap" aria-live="polite" aria-atomic="true">
-    <p id="color-name"></p>
-  </div>
+  <canvas id="feedback" aria-hidden="true"></canvas>
+  <p id="color-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 
   <div id="touch-orb" aria-hidden="true"></div>
 
@@ -174,15 +141,25 @@
 
       const canvas = document.getElementById("spectrum");
       const ctx = canvas.getContext("2d", { alpha: false, willReadFrequently: true });
-      const nameWrap = document.getElementById("name-wrap");
-      const colorName = document.getElementById("color-name");
+      const feedbackCanvas = document.getElementById("feedback");
+      const feedbackCtx = feedbackCanvas.getContext("2d");
+      const colorAnnouncer = document.getElementById("color-announcer");
       const touchOrb = document.getElementById("touch-orb");
       const root = document.documentElement;
+      const floatingTexts = [];
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
       let dpr = 1;
       let activePointer = null;
       let pendingPoint = null;
       let frameRequested = false;
+      let feedbackFrame = 0;
+      let lastFeedbackTime = performance.now();
+      let settleTimer = 0;
+      let pendingFeedback = null;
+      let speechUnlocked = false;
+      let speechTimer = 0;
+      let lastSpoken = "";
       let hideTimer = 0;
       let lastRippleAt = 0;
 
@@ -195,8 +172,13 @@
         canvas.height = Math.max(1, Math.round(height * dpr));
         canvas.style.width = width + "px";
         canvas.style.height = height + "px";
+        feedbackCanvas.width = Math.max(1, Math.round(width * dpr));
+        feedbackCanvas.height = Math.max(1, Math.round(height * dpr));
+        feedbackCanvas.style.width = width + "px";
+        feedbackCanvas.style.height = height + "px";
 
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        feedbackCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         const hue = ctx.createLinearGradient(0, 0, width, 0);
         hue.addColorStop(0.000, "#ff0000");
@@ -216,6 +198,125 @@
         light.addColorStop(1.000, "rgba(0,0,0,1)");
         ctx.fillStyle = light;
         ctx.fillRect(0, 0, width, height);
+      }
+
+      function showFloatingText(text, x, y, color = "#ffffff", stroke = "rgba(0,0,0,.78)", glow = color) {
+        const life = reducedMotion.matches ? 0.72 : 1.05;
+        floatingTexts.push({
+          text,
+          x: Math.max(74, Math.min(window.innerWidth - 74, x)),
+          y: y < 130 ? y + 82 : y - 52,
+          color,
+          stroke,
+          glow,
+          life,
+          maxLife: life,
+          angle: (Math.random() - 0.5) * 0.055
+        });
+        if (!feedbackFrame) {
+          lastFeedbackTime = performance.now();
+          feedbackFrame = requestAnimationFrame(animateFloatingTexts);
+        }
+      }
+
+      function clearFloatingTexts() {
+        floatingTexts.length = 0;
+        feedbackCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      }
+
+      function queueSpeech(label) {
+        if (!speechUnlocked || !("speechSynthesis" in window) || !label) return;
+        clearTimeout(speechTimer);
+        if (label === lastSpoken) return;
+        speechTimer = window.setTimeout(() => {
+          try {
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(label);
+            utterance.lang = "es-ES";
+            utterance.rate = .86;
+            utterance.pitch = 1;
+            const voices = speechSynthesis.getVoices();
+            const voice = voices.find(candidate => /^es(-|_)/i.test(candidate.lang)) ||
+              voices.find(candidate => /spanish|español/i.test(candidate.name));
+            if (voice) utterance.voice = voice;
+            speechSynthesis.speak(utterance);
+            lastSpoken = label;
+          } catch (_) {}
+        }, 360);
+      }
+
+      function flushFloatingFeedback() {
+        clearTimeout(settleTimer);
+        settleTimer = 0;
+        if (!pendingFeedback) return;
+
+        const feedback = pendingFeedback;
+        pendingFeedback = null;
+        showFloatingText(
+          feedback.text,
+          feedback.x,
+          feedback.y,
+          feedback.color,
+          feedback.stroke,
+          feedback.glow
+        );
+      }
+
+      function scheduleFloatingFeedback(text, x, y, color, stroke, glow) {
+        pendingFeedback = { text, x, y, color, stroke, glow };
+        clearTimeout(settleTimer);
+        clearFloatingTexts();
+        settleTimer = window.setTimeout(flushFloatingFeedback, 220);
+        queueSpeech(text);
+      }
+
+      function updateFloatingTexts(dt) {
+        floatingTexts.forEach(text => {
+          text.life -= dt;
+          if (!reducedMotion.matches) text.y -= 42 * dt;
+        });
+        for (let i = floatingTexts.length - 1; i >= 0; i--) {
+          if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
+        }
+      }
+
+      function drawFloatingTexts(drawCtx) {
+        drawCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        floatingTexts.forEach(text => {
+          const progress = 1 - text.life / text.maxLife;
+          const alpha = Math.max(0, text.life / text.maxLife);
+          const size = Math.min(72, Math.max(36, window.innerWidth * 0.065)) * (1 + progress * 0.14);
+
+          drawCtx.save();
+          drawCtx.translate(text.x, text.y);
+          drawCtx.rotate(text.angle * (1 - progress * 0.35));
+          drawCtx.globalAlpha = alpha;
+          drawCtx.font = `bold ${size}px Caveat, "Segoe Print", "Bradley Hand", cursive`;
+          drawCtx.textAlign = "center";
+          drawCtx.textBaseline = "middle";
+          drawCtx.lineJoin = "round";
+          drawCtx.lineWidth = Math.max(4, size * 0.105);
+          drawCtx.strokeStyle = text.stroke;
+          drawCtx.shadowBlur = 20;
+          drawCtx.shadowColor = text.glow;
+          drawCtx.strokeText(text.text.toUpperCase(), 0, 0);
+          drawCtx.fillStyle = text.color;
+          drawCtx.fillText(text.text.toUpperCase(), 0, 0);
+          drawCtx.restore();
+        });
+      }
+
+      function animateFloatingTexts(now) {
+        const dt = Math.min(0.033, (now - lastFeedbackTime) / 1000);
+        lastFeedbackTime = now;
+        updateFloatingTexts(dt);
+        drawFloatingTexts(feedbackCtx);
+
+        if (floatingTexts.length) {
+          feedbackFrame = requestAnimationFrame(animateFloatingTexts);
+        } else {
+          feedbackFrame = 0;
+        }
       }
 
       function rgbToHsl(r, g, b) {
@@ -336,21 +437,25 @@
         const sample = `rgb(${r} ${g} ${b})`;
         const ink = contrastFor(r, g, b);
         const lightInk = ink.includes("255");
+        const name = spanishColorName(r, g, b);
 
         root.style.setProperty("--sample", sample);
         root.style.setProperty("--ink", ink);
         root.style.setProperty("--ring", ink);
-        root.style.setProperty(
-          "--panel",
-          lightInk ? "rgb(0 0 0 / 0.30)" : "rgb(255 255 255 / 0.32)"
-        );
-
-        colorName.textContent = spanishColorName(r, g, b);
+        colorAnnouncer.textContent = name;
         touchOrb.style.left = x + "px";
         touchOrb.style.top = y + "px";
 
-        nameWrap.classList.add("visible");
         touchOrb.classList.add("visible");
+
+        scheduleFloatingFeedback(
+          name,
+          x,
+          y,
+          ink,
+          lightInk ? "rgba(0,0,0,.78)" : "rgba(255,255,255,.9)",
+          sample
+        );
 
         if (makeRipple) createRipple(x, y);
       }
@@ -387,13 +492,13 @@
       function hideSoon() {
         clearTimeout(hideTimer);
         hideTimer = window.setTimeout(() => {
-          nameWrap.classList.remove("visible");
           touchOrb.classList.remove("visible");
         }, 520);
       }
 
       canvas.addEventListener("pointerdown", event => {
         event.preventDefault();
+        speechUnlocked = true;
         activePointer = event.pointerId;
         canvas.setPointerCapture?.(event.pointerId);
         clearTimeout(hideTimer);
@@ -409,6 +514,12 @@
       function endPointer(event) {
         if (event.pointerId !== activePointer) return;
         activePointer = null;
+        if (pendingPoint) {
+          const point = pendingPoint;
+          pendingPoint = null;
+          showColor(point, false);
+        }
+        flushFloatingFeedback();
         hideSoon();
       }
 
@@ -416,14 +527,24 @@
       canvas.addEventListener("pointercancel", endPointer);
       canvas.addEventListener("lostpointercapture", () => {
         activePointer = null;
+        flushFloatingFeedback();
         hideSoon();
       });
 
       window.addEventListener("resize", () => {
         drawSpectrum();
-        nameWrap.classList.remove("visible");
+        clearTimeout(settleTimer);
+        pendingFeedback = null;
+        feedbackCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        floatingTexts.length = 0;
         touchOrb.classList.remove("visible");
       }, { passive: true });
+
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) return;
+        clearTimeout(speechTimer);
+        if ("speechSynthesis" in window) speechSynthesis.cancel();
+      });
 
       document.addEventListener("contextmenu", event => event.preventDefault());
 
