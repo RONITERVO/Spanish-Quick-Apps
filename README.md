@@ -1,1 +1,1 @@
-Collection of quick apps to study spanish basics. All of them are single page html with simple click interaction and no visible ui other than the touch area that displays the concept as full sceen spectrum. It all fits on a full phone screen, no scroll, no navigation.
+Collection of quick apps to study Spanish basics. Open `index.html` to explore all 25 full-screen touch experiences as a mobile, vertically swiped feed. Each app can still be opened directly, and the shared navigation supports swipe gestures, Page Up/Page Down, and an idle scroll hint.
