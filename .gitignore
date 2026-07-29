@@ -4,6 +4,7 @@
 .syncvoice/generation-state.json
 .syncvoice/generation.log
 .syncvoice/generation-error.log
+.syncvoice/generation.lock
 assets/syncvoice/**/*.tmp
 assets/syncvoice/**/*.partial
 assets/syncvoice/**/.checkpoint*
