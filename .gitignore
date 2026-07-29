@@ -1,0 +1,15 @@
+# SyncVoice writes same-directory temporaries so canonical outputs can be replaced atomically.
+.syncvoice/*.tmp
+.syncvoice/*.tmp.*
+.syncvoice/generation-state.json
+.syncvoice/generation.log
+.syncvoice/generation-error.log
+assets/syncvoice/**/*.tmp
+assets/syncvoice/**/*.partial
+assets/syncvoice/**/.checkpoint*
+
+# Production audio and normalized transcript sidecars are intentionally tracked for offline use.
+!assets/syncvoice/audio/
+!assets/syncvoice/audio/*.mp3
+!assets/syncvoice/transcripts/
+!assets/syncvoice/transcripts/*.json

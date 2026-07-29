@@ -8,6 +8,7 @@
 
   const appId = appMatch[1];
   const baseUrl = new URL(".", script.src);
+  const syncvoiceBaseUrl = new URL("assets/syncvoice/", baseUrl);
   const supportedLocales = new Set(["en", "fi"]);
   const browserLanguages = [...(navigator.languages || []), navigator.language || ""];
   const locale = browserLanguages
@@ -30,6 +31,12 @@
   let animationFrame = 0;
   let hideTimer = 0;
   let catalog = Object.create(null);
+  let assetCatalog = Object.create(null);
+  let activeAssetAudio = null;
+  let activeAssetFinish = null;
+  let activeAssetFrame = 0;
+  let semanticPublishQueued = false;
+  let semanticPoint = null;
   const narratedSignaturesThisTouch = new Set();
 
   document.documentElement.dataset.learningLocale = locale;
@@ -203,6 +210,21 @@
     document.head.appendChild(catalogScript);
   });
 
+  const assetCatalogReady = new Promise(resolve => {
+    const assetCatalogScript = document.createElement("script");
+    assetCatalogScript.src = new URL(`catalogs/${appId}.js`, syncvoiceBaseUrl).href;
+    assetCatalogScript.onload = () => {
+      assetCatalog = window.SpectrumSyncVoiceCatalogs?.[appId] || Object.create(null);
+      document.documentElement.dataset.syncvoiceEntries = String(Object.keys(assetCatalog).length);
+      resolve(assetCatalog);
+    };
+    assetCatalogScript.onerror = () => {
+      document.documentElement.dataset.syncvoiceEntries = "0";
+      resolve(assetCatalog);
+    };
+    document.head.appendChild(assetCatalogScript);
+  });
+
   function jitterRadius() {
     return Math.min(JITTER_MAX, Math.max(JITTER_MIN, Math.min(innerWidth, innerHeight) * .07));
   }
@@ -212,12 +234,27 @@
     holdTimer = 0;
   }
 
+  function stopAssetNarration() {
+    cancelAnimationFrame(activeAssetFrame);
+    activeAssetFrame = 0;
+    if (activeAssetAudio) {
+      activeAssetAudio.pause();
+      activeAssetAudio.removeAttribute("src");
+      activeAssetAudio.load();
+      activeAssetAudio = null;
+    }
+    const finish = activeAssetFinish;
+    activeAssetFinish = null;
+    if (finish) finish(false);
+  }
+
   function stopNarration(hide = true) {
     runToken += 1;
     cancelHold();
     cancelAnimationFrame(animationFrame);
     animationFrame = 0;
     clearTimeout(hideTimer);
+    stopAssetNarration();
     if ("speechSynthesis" in window) speechSynthesis.cancel();
     if (hide) {
       overlay.classList.remove("learning-narration--active", "learning-narration--leaving");
@@ -351,7 +388,107 @@
     ink.textContent = text.slice(0, Math.max(0, Math.min(text.length, Math.round(revealedCharacters))));
   }
 
-  function speakChunk(text, language, onProgress, token) {
+  function normalizedTranscript(payload, externalId, text) {
+    const durationMs = Number(payload?.durationMs);
+    if (payload?.version !== 1 || payload.externalId !== externalId || payload.text !== text ||
+        !Number.isFinite(durationMs) || durationMs <= 0 || !Array.isArray(payload.cues)) return null;
+    const cues = payload.cues.map(cue => ({
+      startMs: Number(cue.startMs),
+      endMs: Number(cue.endMs),
+      startChar: Number(cue.startChar),
+      endChar: Number(cue.endChar)
+    }));
+    let previousStart = -1;
+    let previousEndChar = 0;
+    for (const cue of cues) {
+      if (!Number.isFinite(cue.startMs) || cue.startMs < previousStart ||
+          !Number.isFinite(cue.endMs) || cue.endMs < cue.startMs ||
+          cue.endMs > durationMs ||
+          !Number.isInteger(cue.startChar) || cue.startChar !== previousEndChar ||
+          !Number.isInteger(cue.endChar) || cue.endChar <= cue.startChar || cue.endChar > text.length) return null;
+      previousStart = cue.startMs;
+      previousEndChar = cue.endChar;
+    }
+    return cues.length && previousEndChar === text.length ? cues : null;
+  }
+
+  function transcriptProgress(cues, elapsedMs) {
+    let progress = 0;
+    for (const cue of cues) {
+      if (elapsedMs < cue.startMs) break;
+      if (elapsedMs >= cue.endMs || cue.endMs === cue.startMs) {
+        progress = cue.endChar;
+        continue;
+      }
+      const ratio = (elapsedMs - cue.startMs) / (cue.endMs - cue.startMs);
+      return cue.startChar + (cue.endChar - cue.startChar) * ratio;
+    }
+    return progress;
+  }
+
+  async function playAssetChunk(text, onProgress, token) {
+    await assetCatalogReady;
+    if (token !== runToken) return false;
+    const externalId = assetCatalog[text];
+    if (!externalId) return null;
+
+    let cues;
+    try {
+      const transcriptUrl = new URL(`transcripts/${externalId}.json`, syncvoiceBaseUrl);
+      const response = await fetch(transcriptUrl.href, { cache: "force-cache" });
+      if (!response.ok) return null;
+      cues = normalizedTranscript(await response.json(), externalId, text);
+      if (!cues) return null;
+    } catch (_) {
+      return null;
+    }
+    if (token !== runToken) return false;
+
+    return new Promise(resolve => {
+      const audio = new Audio(new URL(`audio/${externalId}.mp3`, syncvoiceBaseUrl).href);
+      let settled = false;
+      const finish = result => {
+        if (settled) return;
+        settled = true;
+        cancelAnimationFrame(activeAssetFrame);
+        activeAssetFrame = 0;
+        audio.onended = null;
+        audio.onerror = null;
+        if (activeAssetAudio === audio) activeAssetAudio = null;
+        if (activeAssetFinish === cancel) activeAssetFinish = null;
+        if (result === true) onProgress(text.length);
+        resolve(result);
+      };
+      const cancel = result => finish(result === false ? false : null);
+      const animate = () => {
+        if (token !== runToken || settled) return finish(false);
+        onProgress(transcriptProgress(cues, audio.currentTime * 1000));
+        activeAssetFrame = requestAnimationFrame(animate);
+      };
+
+      activeAssetAudio = audio;
+      activeAssetFinish = cancel;
+      audio.preload = "auto";
+      audio.onended = () => finish(true);
+      audio.onerror = () => finish(null);
+      onProgress(0);
+      const playback = audio.play();
+      if (playback && typeof playback.then === "function") {
+        playback.then(() => {
+          if (!settled) activeAssetFrame = requestAnimationFrame(animate);
+        }, () => finish(null));
+      } else {
+        activeAssetFrame = requestAnimationFrame(animate);
+      }
+    });
+  }
+
+  async function speakChunk(text, language, onProgress, token, assetText = text) {
+    if (language === "es-ES") {
+      const assetResult = await playAssetChunk(assetText, onProgress, token);
+      if (assetResult !== null) return assetResult;
+    }
+
     return new Promise(resolve => {
       if (token !== runToken || !text) return resolve(false);
       if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
@@ -429,7 +566,7 @@
       line.querySelector(".learning-narration__ink").textContent = "";
       line.classList.add("learning-narration__line--speaking");
       const spokenPart = /[.!?…:]$/.test(part) ? part : `${part}.`;
-      const ok = await speakChunk(spokenPart, language, progress => revealLine(index, part, progress), token);
+      const ok = await speakChunk(spokenPart, language, progress => revealLine(index, part, progress), token, part);
       if (!ok) return false;
       revealLine(index, part, part.length);
       line.classList.remove("learning-narration__line--speaking");
@@ -490,6 +627,38 @@
     }, HOLD_DELAY_MS);
   }
 
+  function publishSemanticReadout(point) {
+    const readout = document.getElementById("readout");
+    if (!readout?.classList.contains("visible")) return;
+    const parts = cleanParts([
+      document.getElementById("feature-name")?.textContent,
+      document.getElementById("metric")?.textContent,
+      document.getElementById("fact")?.textContent
+    ]);
+    if (!parts.length) return;
+    window.dispatchEvent(new CustomEvent("spectrum:learning-target", {
+      detail: {
+        parts,
+        sourceKeys: parts,
+        x: point?.x,
+        y: point?.y,
+        color: getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#f59e0b"
+      }
+    }));
+  }
+
+  function queueSemanticReadout(x, y) {
+    semanticPoint = { x, y };
+    if (semanticPublishQueued) return;
+    semanticPublishQueued = true;
+    queueMicrotask(() => {
+      semanticPublishQueued = false;
+      const point = semanticPoint;
+      semanticPoint = null;
+      publishSemanticReadout(point);
+    });
+  }
+
   window.addEventListener("spectrum:learning-target", event => {
     const detail = event.detail || {};
     const parts = cleanParts(detail.parts || [detail.text]);
@@ -521,6 +690,7 @@
     activePointer = event.pointerId;
     anchor = { x: event.clientX, y: event.clientY };
     target = null;
+    queueSemanticReadout(event.clientX, event.clientY);
     try { speechSynthesis.resume(); } catch (_) {}
   }, true);
 
@@ -528,11 +698,13 @@
     if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) {
       interactionUnlocked = true;
       if (activePointer === null) narratedSignaturesThisTouch.clear();
+      queueSemanticReadout(innerWidth * .5, innerHeight * .5);
     }
   }, true);
 
   document.addEventListener("pointermove", event => {
     if (event.pointerId !== activePointer || !anchor) return;
+    queueSemanticReadout(event.clientX, event.clientY);
     const dx = event.clientX - anchor.x;
     const dy = event.clientY - anchor.y;
     const radius = jitterRadius();
