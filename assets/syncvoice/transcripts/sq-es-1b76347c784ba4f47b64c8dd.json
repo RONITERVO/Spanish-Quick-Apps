@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-1b76347c784ba4f47b64c8dd",
+  "text": "control y verificación",
+  "durationMs": 2160,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 10,
+      "endChar": 22
+    }
+  ]
+}

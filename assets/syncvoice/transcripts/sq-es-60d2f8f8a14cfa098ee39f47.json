@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-60d2f8f8a14cfa098ee39f47",
+  "text": "borde del vacío",
+  "durationMs": 1600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 15
+    }
+  ]
+}

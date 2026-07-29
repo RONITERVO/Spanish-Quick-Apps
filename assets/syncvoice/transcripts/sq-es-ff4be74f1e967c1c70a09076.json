@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ff4be74f1e967c1c70a09076",
+  "text": "Conversión biológica de estímulos en señales",
+  "durationMs": 3560,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 11
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 11,
+      "endChar": 21
+    },
+    {
+      "startMs": 150,
+      "endMs": 835,
+      "startChar": 21,
+      "endChar": 24
+    },
+    {
+      "startMs": 835,
+      "endMs": 1520,
+      "startChar": 24,
+      "endChar": 34
+    },
+    {
+      "startMs": 1520,
+      "endMs": 2480,
+      "startChar": 34,
+      "endChar": 37
+    },
+    {
+      "startMs": 2480,
+      "endMs": 2640,
+      "startChar": 37,
+      "endChar": 44
+    }
+  ]
+}

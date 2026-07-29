@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-e13c2188fe85ca51f3eeca72",
+  "text": "Un modelo permite anticipar consecuencias y actuar antes de que sean inevitables.",
+  "durationMs": 6000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 18
+    },
+    {
+      "startMs": 225,
+      "endMs": 1120,
+      "startChar": 18,
+      "endChar": 28
+    },
+    {
+      "startMs": 1120,
+      "endMs": 1920,
+      "startChar": 28,
+      "endChar": 42
+    },
+    {
+      "startMs": 1920,
+      "endMs": 2400,
+      "startChar": 42,
+      "endChar": 44
+    },
+    {
+      "startMs": 2400,
+      "endMs": 2880,
+      "startChar": 44,
+      "endChar": 51
+    },
+    {
+      "startMs": 2880,
+      "endMs": 3680,
+      "startChar": 51,
+      "endChar": 57
+    },
+    {
+      "startMs": 3680,
+      "endMs": 3960,
+      "startChar": 57,
+      "endChar": 60
+    },
+    {
+      "startMs": 3960,
+      "endMs": 4240,
+      "startChar": 60,
+      "endChar": 64
+    },
+    {
+      "startMs": 4240,
+      "endMs": 4480,
+      "startChar": 64,
+      "endChar": 69
+    },
+    {
+      "startMs": 4480,
+      "endMs": 4920,
+      "startChar": 69,
+      "endChar": 81
+    }
+  ]
+}

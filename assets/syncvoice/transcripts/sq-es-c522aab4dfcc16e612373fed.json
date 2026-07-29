@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-c522aab4dfcc16e612373fed",
+  "text": "cognición de enjambre",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1040,
+      "startChar": 13,
+      "endChar": 21
+    }
+  ]
+}

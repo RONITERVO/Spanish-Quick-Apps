@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "externalId": "sq-es-55ecc5b36207866efde1b804",
+  "text": "La orientación de la señal puede aportar información sobre campos magnéticos, geometría de emisión o instrumentación.",
+  "durationMs": 8440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 15
+    },
+    {
+      "startMs": 150,
+      "endMs": 575,
+      "startChar": 15,
+      "endChar": 18
+    },
+    {
+      "startMs": 575,
+      "endMs": 1000,
+      "startChar": 18,
+      "endChar": 21
+    },
+    {
+      "startMs": 1000,
+      "endMs": 1240,
+      "startChar": 21,
+      "endChar": 27
+    },
+    {
+      "startMs": 1240,
+      "endMs": 1880,
+      "startChar": 27,
+      "endChar": 33
+    },
+    {
+      "startMs": 1880,
+      "endMs": 2280,
+      "startChar": 33,
+      "endChar": 41
+    },
+    {
+      "startMs": 2280,
+      "endMs": 2760,
+      "startChar": 41,
+      "endChar": 53
+    },
+    {
+      "startMs": 2760,
+      "endMs": 3480,
+      "startChar": 53,
+      "endChar": 59
+    },
+    {
+      "startMs": 3480,
+      "endMs": 3840,
+      "startChar": 59,
+      "endChar": 66
+    },
+    {
+      "startMs": 3840,
+      "endMs": 4280,
+      "startChar": 66,
+      "endChar": 78
+    },
+    {
+      "startMs": 4280,
+      "endMs": 5160,
+      "startChar": 78,
+      "endChar": 88
+    },
+    {
+      "startMs": 5160,
+      "endMs": 5660,
+      "startChar": 88,
+      "endChar": 91
+    },
+    {
+      "startMs": 5660,
+      "endMs": 6160,
+      "startChar": 91,
+      "endChar": 99
+    },
+    {
+      "startMs": 6160,
+      "endMs": 7040,
+      "startChar": 99,
+      "endChar": 101
+    },
+    {
+      "startMs": 7040,
+      "endMs": 7320,
+      "startChar": 101,
+      "endChar": 117
+    }
+  ]
+}

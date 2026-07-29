@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-7732a76c61eab3338c503f42",
+  "text": "Nodos de cúmulos",
+  "durationMs": 1800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 16
+    }
+  ]
+}

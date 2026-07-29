@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-b06c98942444ce8ab8276cc9",
+  "text": "Química y autoensamblaje observados",
+  "durationMs": 3280,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 1080,
+      "startChar": 10,
+      "endChar": 25
+    },
+    {
+      "startMs": 1080,
+      "endMs": 2200,
+      "startChar": 25,
+      "endChar": 35
+    }
+  ]
+}

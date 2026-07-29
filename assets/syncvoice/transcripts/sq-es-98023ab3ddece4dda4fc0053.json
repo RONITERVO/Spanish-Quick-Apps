@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-98023ab3ddece4dda4fc0053",
+  "text": "Concepto dependiente del sistema",
+  "durationMs": 2720,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 21
+    },
+    {
+      "startMs": 150,
+      "endMs": 1640,
+      "startChar": 21,
+      "endChar": 25
+    },
+    {
+      "startMs": 1640,
+      "endMs": 1840,
+      "startChar": 25,
+      "endChar": 32
+    }
+  ]
+}

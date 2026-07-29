@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-80c8fbcb3baffa04aa8864df",
+  "text": "bucle de control",
+  "durationMs": 1960,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 1080,
+      "startChar": 9,
+      "endChar": 16
+    }
+  ]
+}

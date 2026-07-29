@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-5dd71fcf4e1d2855f57aae25",
+  "text": "más allá del fondo",
+  "durationMs": 1800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 13
+    },
+    {
+      "startMs": 225,
+      "endMs": 1080,
+      "startChar": 13,
+      "endChar": 18
+    }
+  ]
+}

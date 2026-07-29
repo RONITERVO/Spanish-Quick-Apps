@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "externalId": "sq-es-177f88851fcfafeec48fbe52",
+  "text": "Las personas ajustan significado turno a turno mediante respuestas y aclaraciones.",
+  "durationMs": 6400,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 13,
+      "endChar": 21
+    },
+    {
+      "startMs": 225,
+      "endMs": 1400,
+      "startChar": 21,
+      "endChar": 33
+    },
+    {
+      "startMs": 1400,
+      "endMs": 2280,
+      "startChar": 33,
+      "endChar": 39
+    },
+    {
+      "startMs": 2280,
+      "endMs": 2560,
+      "startChar": 39,
+      "endChar": 41
+    },
+    {
+      "startMs": 2560,
+      "endMs": 2840,
+      "startChar": 41,
+      "endChar": 47
+    },
+    {
+      "startMs": 2840,
+      "endMs": 3480,
+      "startChar": 47,
+      "endChar": 56
+    },
+    {
+      "startMs": 3480,
+      "endMs": 4120,
+      "startChar": 56,
+      "endChar": 67
+    },
+    {
+      "startMs": 4120,
+      "endMs": 4560,
+      "startChar": 67,
+      "endChar": 69
+    },
+    {
+      "startMs": 4560,
+      "endMs": 5000,
+      "startChar": 69,
+      "endChar": 82
+    }
+  ]
+}

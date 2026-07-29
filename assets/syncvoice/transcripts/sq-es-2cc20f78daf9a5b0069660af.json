@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2cc20f78daf9a5b0069660af",
+  "text": "Señales posibles · requieren contexto planetario",
+  "durationMs": 3960,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 17
+    },
+    {
+      "startMs": 150,
+      "endMs": 1360,
+      "startChar": 17,
+      "endChar": 19
+    },
+    {
+      "startMs": 1360,
+      "endMs": 1800,
+      "startChar": 19,
+      "endChar": 29
+    },
+    {
+      "startMs": 1800,
+      "endMs": 2400,
+      "startChar": 29,
+      "endChar": 38
+    },
+    {
+      "startMs": 2400,
+      "endMs": 3000,
+      "startChar": 38,
+      "endChar": 48
+    }
+  ]
+}

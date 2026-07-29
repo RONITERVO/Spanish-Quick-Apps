@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "externalId": "sq-es-cf571a152473511cb6451bbb",
+  "text": "Guardar semillas de ciertas plantas cambia gradualmente poblaciones cultivadas.",
+  "durationMs": 6160,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 17
+    },
+    {
+      "startMs": 150,
+      "endMs": 1200,
+      "startChar": 17,
+      "endChar": 20
+    },
+    {
+      "startMs": 1200,
+      "endMs": 1400,
+      "startChar": 20,
+      "endChar": 28
+    },
+    {
+      "startMs": 1400,
+      "endMs": 1920,
+      "startChar": 28,
+      "endChar": 36
+    },
+    {
+      "startMs": 1920,
+      "endMs": 2600,
+      "startChar": 36,
+      "endChar": 43
+    },
+    {
+      "startMs": 2600,
+      "endMs": 3160,
+      "startChar": 43,
+      "endChar": 56
+    },
+    {
+      "startMs": 3160,
+      "endMs": 4280,
+      "startChar": 56,
+      "endChar": 68
+    },
+    {
+      "startMs": 4280,
+      "endMs": 5200,
+      "startChar": 68,
+      "endChar": 79
+    }
+  ]
+}

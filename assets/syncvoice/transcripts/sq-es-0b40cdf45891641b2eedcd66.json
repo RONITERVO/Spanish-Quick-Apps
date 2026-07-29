@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-0b40cdf45891641b2eedcd66",
+  "text": "túnel y reacciones lentas",
+  "durationMs": 2680,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 8
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 8,
+      "endChar": 19
+    },
+    {
+      "startMs": 225,
+      "endMs": 1800,
+      "startChar": 19,
+      "endChar": 25
+    }
+  ]
+}

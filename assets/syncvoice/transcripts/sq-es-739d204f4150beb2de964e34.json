@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-739d204f4150beb2de964e34",
+  "text": "La mayoría de los vuelos atraviesan la troposfera y su borde superior.",
+  "durationMs": 4840,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 14
+    },
+    {
+      "startMs": 225,
+      "endMs": 300,
+      "startChar": 14,
+      "endChar": 18
+    },
+    {
+      "startMs": 300,
+      "endMs": 1000,
+      "startChar": 18,
+      "endChar": 25
+    },
+    {
+      "startMs": 1000,
+      "endMs": 1480,
+      "startChar": 25,
+      "endChar": 36
+    },
+    {
+      "startMs": 1480,
+      "endMs": 1880,
+      "startChar": 36,
+      "endChar": 39
+    },
+    {
+      "startMs": 1880,
+      "endMs": 2280,
+      "startChar": 39,
+      "endChar": 50
+    },
+    {
+      "startMs": 2280,
+      "endMs": 3280,
+      "startChar": 50,
+      "endChar": 52
+    },
+    {
+      "startMs": 3280,
+      "endMs": 3380,
+      "startChar": 52,
+      "endChar": 55
+    },
+    {
+      "startMs": 3380,
+      "endMs": 3480,
+      "startChar": 55,
+      "endChar": 61
+    },
+    {
+      "startMs": 3480,
+      "endMs": 4000,
+      "startChar": 61,
+      "endChar": 70
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-903e53d8b7cfe5364bbd6210",
+  "text": "capas de distancia",
+  "durationMs": 1440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 18
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-cd4444f527bd4fa3e6f37d2c",
+  "text": "dirección de la inteligencia",
+  "durationMs": 2800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 13,
+      "endChar": 16
+    },
+    {
+      "startMs": 1280,
+      "endMs": 1440,
+      "startChar": 16,
+      "endChar": 28
+    }
+  ]
+}

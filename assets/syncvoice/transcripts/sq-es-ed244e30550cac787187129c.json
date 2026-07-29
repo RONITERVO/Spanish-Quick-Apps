@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ed244e30550cac787187129c",
+  "text": "Un flujo continuo de vapor, gas, agua o aire hace girar álabes.",
+  "durationMs": 6320,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 18
+    },
+    {
+      "startMs": 225,
+      "endMs": 713,
+      "startChar": 18,
+      "endChar": 21
+    },
+    {
+      "startMs": 713,
+      "endMs": 1200,
+      "startChar": 21,
+      "endChar": 28
+    },
+    {
+      "startMs": 1200,
+      "endMs": 2200,
+      "startChar": 28,
+      "endChar": 33
+    },
+    {
+      "startMs": 2200,
+      "endMs": 3080,
+      "startChar": 33,
+      "endChar": 38
+    },
+    {
+      "startMs": 3080,
+      "endMs": 3760,
+      "startChar": 38,
+      "endChar": 40
+    },
+    {
+      "startMs": 3760,
+      "endMs": 3960,
+      "startChar": 40,
+      "endChar": 45
+    },
+    {
+      "startMs": 3960,
+      "endMs": 4520,
+      "startChar": 45,
+      "endChar": 50
+    },
+    {
+      "startMs": 4520,
+      "endMs": 5040,
+      "startChar": 50,
+      "endChar": 56
+    },
+    {
+      "startMs": 5040,
+      "endMs": 5480,
+      "startChar": 56,
+      "endChar": 63
+    }
+  ]
+}

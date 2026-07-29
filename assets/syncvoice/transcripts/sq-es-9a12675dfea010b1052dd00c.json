@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-9a12675dfea010b1052dd00c",
+  "text": "Un modelo comprime observaciones, explica mecanismos y produce predicciones que pueden fallar.",
+  "durationMs": 6880,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 19
+    },
+    {
+      "startMs": 225,
+      "endMs": 1320,
+      "startChar": 19,
+      "endChar": 34
+    },
+    {
+      "startMs": 1320,
+      "endMs": 2360,
+      "startChar": 34,
+      "endChar": 42
+    },
+    {
+      "startMs": 2360,
+      "endMs": 3200,
+      "startChar": 42,
+      "endChar": 53
+    },
+    {
+      "startMs": 3200,
+      "endMs": 3640,
+      "startChar": 53,
+      "endChar": 55
+    },
+    {
+      "startMs": 3640,
+      "endMs": 4080,
+      "startChar": 55,
+      "endChar": 63
+    },
+    {
+      "startMs": 4080,
+      "endMs": 4800,
+      "startChar": 63,
+      "endChar": 76
+    },
+    {
+      "startMs": 4800,
+      "endMs": 5220,
+      "startChar": 76,
+      "endChar": 80
+    },
+    {
+      "startMs": 5220,
+      "endMs": 5640,
+      "startChar": 80,
+      "endChar": 87
+    },
+    {
+      "startMs": 5640,
+      "endMs": 6200,
+      "startChar": 87,
+      "endChar": 94
+    }
+  ]
+}

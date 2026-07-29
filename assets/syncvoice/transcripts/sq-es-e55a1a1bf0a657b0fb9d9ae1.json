@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-e55a1a1bf0a657b0fb9d9ae1",
+  "text": "aire seco y estable",
+  "durationMs": 2320,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 1200,
+      "startChar": 10,
+      "endChar": 12
+    },
+    {
+      "startMs": 1200,
+      "endMs": 1400,
+      "startChar": 12,
+      "endChar": 19
+    }
+  ]
+}

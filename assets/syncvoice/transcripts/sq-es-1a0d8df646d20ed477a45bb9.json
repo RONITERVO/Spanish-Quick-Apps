@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-1a0d8df646d20ed477a45bb9",
+  "text": "sin imagen directa",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1040,
+      "startChar": 11,
+      "endChar": 18
+    }
+  ]
+}

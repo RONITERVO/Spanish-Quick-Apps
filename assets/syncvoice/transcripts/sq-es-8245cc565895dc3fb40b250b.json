@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-8245cc565895dc3fb40b250b",
+  "text": "hierro y níquel líquidos",
+  "durationMs": 2080,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 16
+    },
+    {
+      "startMs": 225,
+      "endMs": 1200,
+      "startChar": 16,
+      "endChar": 24
+    }
+  ]
+}

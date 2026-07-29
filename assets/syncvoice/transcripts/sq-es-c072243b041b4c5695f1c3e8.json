@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-c072243b041b4c5695f1c3e8",
+  "text": "Dos galaxias irregulares vecinas",
+  "durationMs": 2760,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1120,
+      "startChar": 13,
+      "endChar": 25
+    },
+    {
+      "startMs": 1120,
+      "endMs": 1880,
+      "startChar": 25,
+      "endChar": 32
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "externalId": "sq-es-72c4c99cb5c36f90e08b5a92",
+  "text": "Una respuesta puede informar, explicar, corregir, persuadir o revelar nueva incertidumbre.",
+  "durationMs": 8600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 14
+    },
+    {
+      "startMs": 150,
+      "endMs": 1040,
+      "startChar": 14,
+      "endChar": 20
+    },
+    {
+      "startMs": 1040,
+      "endMs": 1560,
+      "startChar": 20,
+      "endChar": 30
+    },
+    {
+      "startMs": 1560,
+      "endMs": 2600,
+      "startChar": 30,
+      "endChar": 40
+    },
+    {
+      "startMs": 2600,
+      "endMs": 3840,
+      "startChar": 40,
+      "endChar": 50
+    },
+    {
+      "startMs": 3840,
+      "endMs": 4920,
+      "startChar": 50,
+      "endChar": 60
+    },
+    {
+      "startMs": 4920,
+      "endMs": 6040,
+      "startChar": 60,
+      "endChar": 62
+    },
+    {
+      "startMs": 6040,
+      "endMs": 6400,
+      "startChar": 62,
+      "endChar": 70
+    },
+    {
+      "startMs": 6400,
+      "endMs": 7160,
+      "startChar": 70,
+      "endChar": 76
+    },
+    {
+      "startMs": 7160,
+      "endMs": 7520,
+      "startChar": 76,
+      "endChar": 90
+    }
+  ]
+}

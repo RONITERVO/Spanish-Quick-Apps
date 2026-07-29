@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-9d2dea2d6f0850a64f5cd2f1",
+  "text": "universo sin borde visible",
+  "durationMs": 2480,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1240,
+      "startChar": 13,
+      "endChar": 19
+    },
+    {
+      "startMs": 1240,
+      "endMs": 1640,
+      "startChar": 19,
+      "endChar": 26
+    }
+  ]
+}

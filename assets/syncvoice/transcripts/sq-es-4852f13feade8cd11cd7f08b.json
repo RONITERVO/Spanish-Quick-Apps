@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "externalId": "sq-es-4852f13feade8cd11cd7f08b",
+  "text": "Sembrar y cosechar requieren calendarios y observación climática.",
+  "durationMs": 5120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 19
+    },
+    {
+      "startMs": 225,
+      "endMs": 1600,
+      "startChar": 19,
+      "endChar": 29
+    },
+    {
+      "startMs": 1600,
+      "endMs": 2240,
+      "startChar": 29,
+      "endChar": 41
+    },
+    {
+      "startMs": 2240,
+      "endMs": 3200,
+      "startChar": 41,
+      "endChar": 43
+    },
+    {
+      "startMs": 3200,
+      "endMs": 3440,
+      "startChar": 43,
+      "endChar": 55
+    },
+    {
+      "startMs": 3440,
+      "endMs": 4200,
+      "startChar": 55,
+      "endChar": 65
+    }
+  ]
+}

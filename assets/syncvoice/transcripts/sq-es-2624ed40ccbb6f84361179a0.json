@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2624ed40ccbb6f84361179a0",
+  "text": "Corriente de Magallanes",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 13,
+      "endChar": 23
+    }
+  ]
+}

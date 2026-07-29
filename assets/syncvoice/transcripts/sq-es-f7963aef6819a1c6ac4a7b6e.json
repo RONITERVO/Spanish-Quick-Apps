@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "externalId": "sq-es-f7963aef6819a1c6ac4a7b6e",
+  "text": "La memoria permite que un estado anterior influya en respuestas posteriores.",
+  "durationMs": 5680,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 19
+    },
+    {
+      "startMs": 225,
+      "endMs": 1400,
+      "startChar": 19,
+      "endChar": 23
+    },
+    {
+      "startMs": 1400,
+      "endMs": 1600,
+      "startChar": 23,
+      "endChar": 26
+    },
+    {
+      "startMs": 1600,
+      "endMs": 1760,
+      "startChar": 26,
+      "endChar": 33
+    },
+    {
+      "startMs": 1760,
+      "endMs": 2280,
+      "startChar": 33,
+      "endChar": 42
+    },
+    {
+      "startMs": 2280,
+      "endMs": 2960,
+      "startChar": 42,
+      "endChar": 50
+    },
+    {
+      "startMs": 2960,
+      "endMs": 3800,
+      "startChar": 50,
+      "endChar": 53
+    },
+    {
+      "startMs": 3800,
+      "endMs": 4000,
+      "startChar": 53,
+      "endChar": 64
+    },
+    {
+      "startMs": 4000,
+      "endMs": 4680,
+      "startChar": 64,
+      "endChar": 76
+    }
+  ]
+}

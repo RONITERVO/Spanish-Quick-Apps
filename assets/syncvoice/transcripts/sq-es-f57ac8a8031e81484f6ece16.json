@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-f57ac8a8031e81484f6ece16",
+  "text": "Señal → respuesta → nueva señal",
+  "durationMs": 3720,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 8
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 8,
+      "endChar": 18
+    },
+    {
+      "startMs": 225,
+      "endMs": 2200,
+      "startChar": 18,
+      "endChar": 20
+    },
+    {
+      "startMs": 2200,
+      "endMs": 2600,
+      "startChar": 20,
+      "endChar": 26
+    },
+    {
+      "startMs": 2600,
+      "endMs": 2960,
+      "startChar": 26,
+      "endChar": 31
+    }
+  ]
+}

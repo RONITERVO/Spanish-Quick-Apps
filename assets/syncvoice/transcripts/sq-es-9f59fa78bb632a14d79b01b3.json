@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-9f59fa78bb632a14d79b01b3",
+  "text": "mensajes lentos",
+  "durationMs": 2120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 1080,
+      "startChar": 9,
+      "endChar": 15
+    }
+  ]
+}

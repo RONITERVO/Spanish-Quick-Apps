@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-735a317a8961d6d57e20c341",
+  "text": "verde lima oscuro",
+  "durationMs": 2120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 11,
+      "endChar": 17
+    }
+  ]
+}

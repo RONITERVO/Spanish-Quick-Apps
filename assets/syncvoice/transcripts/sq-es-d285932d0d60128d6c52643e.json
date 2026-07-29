@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "externalId": "sq-es-d285932d0d60128d6c52643e",
+  "text": "Repetir un procedimiento comprueba si un resultado depende del observador o del azar.",
+  "durationMs": 5840,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 25
+    },
+    {
+      "startMs": 225,
+      "endMs": 1640,
+      "startChar": 25,
+      "endChar": 35
+    },
+    {
+      "startMs": 1640,
+      "endMs": 2240,
+      "startChar": 35,
+      "endChar": 38
+    },
+    {
+      "startMs": 2240,
+      "endMs": 2340,
+      "startChar": 38,
+      "endChar": 41
+    },
+    {
+      "startMs": 2340,
+      "endMs": 2440,
+      "startChar": 41,
+      "endChar": 51
+    },
+    {
+      "startMs": 2440,
+      "endMs": 3320,
+      "startChar": 51,
+      "endChar": 59
+    },
+    {
+      "startMs": 3320,
+      "endMs": 3960,
+      "startChar": 59,
+      "endChar": 63
+    },
+    {
+      "startMs": 3960,
+      "endMs": 4120,
+      "startChar": 63,
+      "endChar": 74
+    },
+    {
+      "startMs": 4120,
+      "endMs": 4500,
+      "startChar": 74,
+      "endChar": 76
+    },
+    {
+      "startMs": 4500,
+      "endMs": 4880,
+      "startChar": 76,
+      "endChar": 80
+    },
+    {
+      "startMs": 4880,
+      "endMs": 5280,
+      "startChar": 80,
+      "endChar": 85
+    }
+  ]
+}

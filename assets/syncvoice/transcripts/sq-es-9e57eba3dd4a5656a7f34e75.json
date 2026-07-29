@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "externalId": "sq-es-9e57eba3dd4a5656a7f34e75",
+  "text": "fuente de luz y energía",
+  "durationMs": 2640,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 960,
+      "startChar": 10,
+      "endChar": 14
+    },
+    {
+      "startMs": 960,
+      "endMs": 1480,
+      "startChar": 14,
+      "endChar": 16
+    },
+    {
+      "startMs": 1480,
+      "endMs": 1680,
+      "startChar": 16,
+      "endChar": 23
+    }
+  ]
+}

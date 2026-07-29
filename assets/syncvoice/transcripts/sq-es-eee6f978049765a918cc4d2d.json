@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-eee6f978049765a918cc4d2d",
+  "text": "Mecanismo general de regulación",
+  "durationMs": 2680,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 18
+    },
+    {
+      "startMs": 150,
+      "endMs": 815,
+      "startChar": 18,
+      "endChar": 21
+    },
+    {
+      "startMs": 815,
+      "endMs": 1480,
+      "startChar": 21,
+      "endChar": 31
+    }
+  ]
+}

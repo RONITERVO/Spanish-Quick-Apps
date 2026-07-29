@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2b35beaf029179dc3013f694",
+  "text": "Patrón tridimensional · capas de filamentos y vacíos",
+  "durationMs": 5120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 22
+    },
+    {
+      "startMs": 150,
+      "endMs": 1640,
+      "startChar": 22,
+      "endChar": 24
+    },
+    {
+      "startMs": 1640,
+      "endMs": 2360,
+      "startChar": 24,
+      "endChar": 30
+    },
+    {
+      "startMs": 2360,
+      "endMs": 3000,
+      "startChar": 30,
+      "endChar": 33
+    },
+    {
+      "startMs": 3000,
+      "endMs": 3200,
+      "startChar": 33,
+      "endChar": 44
+    },
+    {
+      "startMs": 3200,
+      "endMs": 4080,
+      "startChar": 44,
+      "endChar": 46
+    },
+    {
+      "startMs": 4080,
+      "endMs": 4280,
+      "startChar": 46,
+      "endChar": 52
+    }
+  ]
+}

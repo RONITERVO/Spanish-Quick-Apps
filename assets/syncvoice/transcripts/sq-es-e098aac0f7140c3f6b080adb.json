@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "externalId": "sq-es-e098aac0f7140c3f6b080adb",
+  "text": "Señales internas informan sobre posición, tensión y movimiento del cuerpo.",
+  "durationMs": 6360,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 17
+    },
+    {
+      "startMs": 150,
+      "endMs": 1440,
+      "startChar": 17,
+      "endChar": 26
+    },
+    {
+      "startMs": 1440,
+      "endMs": 2080,
+      "startChar": 26,
+      "endChar": 32
+    },
+    {
+      "startMs": 2080,
+      "endMs": 2520,
+      "startChar": 32,
+      "endChar": 42
+    },
+    {
+      "startMs": 2520,
+      "endMs": 3440,
+      "startChar": 42,
+      "endChar": 50
+    },
+    {
+      "startMs": 3440,
+      "endMs": 3960,
+      "startChar": 50,
+      "endChar": 52
+    },
+    {
+      "startMs": 3960,
+      "endMs": 4480,
+      "startChar": 52,
+      "endChar": 63
+    },
+    {
+      "startMs": 4480,
+      "endMs": 5480,
+      "startChar": 63,
+      "endChar": 67
+    },
+    {
+      "startMs": 5480,
+      "endMs": 5680,
+      "startChar": 67,
+      "endChar": 74
+    }
+  ]
+}

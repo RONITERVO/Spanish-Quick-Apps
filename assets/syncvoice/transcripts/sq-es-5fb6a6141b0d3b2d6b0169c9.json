@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-5fb6a6141b0d3b2d6b0169c9",
+  "text": "Pequeña Nube",
+  "durationMs": 1440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 12
+    }
+  ]
+}

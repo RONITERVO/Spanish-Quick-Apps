@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "externalId": "sq-es-a8bfc7a24c96aa9d27b3395c",
+  "text": "Señales incompletas + contexto + predicción → interpretación",
+  "durationMs": 5960,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 20
+    },
+    {
+      "startMs": 150,
+      "endMs": 1680,
+      "startChar": 20,
+      "endChar": 22
+    },
+    {
+      "startMs": 1680,
+      "endMs": 2240,
+      "startChar": 22,
+      "endChar": 31
+    },
+    {
+      "startMs": 2240,
+      "endMs": 3080,
+      "startChar": 31,
+      "endChar": 33
+    },
+    {
+      "startMs": 3080,
+      "endMs": 3600,
+      "startChar": 33,
+      "endChar": 44
+    },
+    {
+      "startMs": 3600,
+      "endMs": 4440,
+      "startChar": 44,
+      "endChar": 46
+    },
+    {
+      "startMs": 4440,
+      "endMs": 4760,
+      "startChar": 46,
+      "endChar": 60
+    }
+  ]
+}

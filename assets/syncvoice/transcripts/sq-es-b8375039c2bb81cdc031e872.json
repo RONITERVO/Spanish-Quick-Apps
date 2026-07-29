@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-b8375039c2bb81cdc031e872",
+  "text": "decaimiento del protón",
+  "durationMs": 2400,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 12
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 12,
+      "endChar": 16
+    },
+    {
+      "startMs": 150,
+      "endMs": 1560,
+      "startChar": 16,
+      "endChar": 22
+    }
+  ]
+}

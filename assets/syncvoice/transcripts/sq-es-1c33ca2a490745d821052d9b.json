@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-1c33ca2a490745d821052d9b",
+  "text": "planificación a largo plazo",
+  "durationMs": 2640,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 14
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 14,
+      "endChar": 16
+    },
+    {
+      "startMs": 150,
+      "endMs": 1200,
+      "startChar": 16,
+      "endChar": 22
+    },
+    {
+      "startMs": 1200,
+      "endMs": 1600,
+      "startChar": 22,
+      "endChar": 27
+    }
+  ]
+}

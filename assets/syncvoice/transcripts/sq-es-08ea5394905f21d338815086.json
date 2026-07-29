@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-08ea5394905f21d338815086",
+  "text": "borde del Vacío Local",
+  "durationMs": 2640,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 10,
+      "endChar": 16
+    },
+    {
+      "startMs": 1280,
+      "endMs": 1760,
+      "startChar": 16,
+      "endChar": 21
+    }
+  ]
+}

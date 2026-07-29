@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-9f02822ef6875ef357f2ac3a",
+  "text": "observador distante",
+  "durationMs": 1800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 11
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 11,
+      "endChar": 19
+    }
+  ]
+}

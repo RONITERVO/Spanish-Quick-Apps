@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-962ba5a4927545c0777f11e1",
+  "text": "Límite de Laniakea",
+  "durationMs": 2040,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 10,
+      "endChar": 18
+    }
+  ]
+}

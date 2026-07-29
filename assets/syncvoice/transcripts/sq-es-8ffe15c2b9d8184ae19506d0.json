@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-8ffe15c2b9d8184ae19506d0",
+  "text": "choque de terminación",
+  "durationMs": 2040,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 21
+    }
+  ]
+}

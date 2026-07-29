@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "externalId": "sq-es-7480d636c92d726abc18d7c6",
+  "text": "Un nodo representa una unidad del sistema: molécula, especie, neurona, central eléctrica, persona u otra entidad.",
+  "durationMs": 9640,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 8
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 8,
+      "endChar": 19
+    },
+    {
+      "startMs": 225,
+      "endMs": 1440,
+      "startChar": 19,
+      "endChar": 23
+    },
+    {
+      "startMs": 1440,
+      "endMs": 1720,
+      "startChar": 23,
+      "endChar": 30
+    },
+    {
+      "startMs": 1720,
+      "endMs": 2160,
+      "startChar": 30,
+      "endChar": 34
+    },
+    {
+      "startMs": 2160,
+      "endMs": 2360,
+      "startChar": 34,
+      "endChar": 43
+    },
+    {
+      "startMs": 2360,
+      "endMs": 2960,
+      "startChar": 43,
+      "endChar": 53
+    },
+    {
+      "startMs": 2960,
+      "endMs": 4160,
+      "startChar": 53,
+      "endChar": 62
+    },
+    {
+      "startMs": 4160,
+      "endMs": 5120,
+      "startChar": 62,
+      "endChar": 71
+    },
+    {
+      "startMs": 5120,
+      "endMs": 5960,
+      "startChar": 71,
+      "endChar": 79
+    },
+    {
+      "startMs": 5960,
+      "endMs": 6720,
+      "startChar": 79,
+      "endChar": 90
+    },
+    {
+      "startMs": 6720,
+      "endMs": 7520,
+      "startChar": 90,
+      "endChar": 98
+    },
+    {
+      "startMs": 7520,
+      "endMs": 7940,
+      "startChar": 98,
+      "endChar": 100
+    },
+    {
+      "startMs": 7940,
+      "endMs": 8360,
+      "startChar": 100,
+      "endChar": 105
+    },
+    {
+      "startMs": 8360,
+      "endMs": 8880,
+      "startChar": 105,
+      "endChar": 113
+    }
+  ]
+}

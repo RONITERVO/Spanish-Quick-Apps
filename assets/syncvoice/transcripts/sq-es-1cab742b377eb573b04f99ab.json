@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-1cab742b377eb573b04f99ab",
+  "text": "sin borde físico",
+  "durationMs": 1600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 16
+    }
+  ]
+}

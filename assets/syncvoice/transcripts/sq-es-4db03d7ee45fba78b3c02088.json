@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-4db03d7ee45fba78b3c02088",
+  "text": "Una sola historia incompleta",
+  "durationMs": 2800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 1160,
+      "startChar": 9,
+      "endChar": 18
+    },
+    {
+      "startMs": 1160,
+      "endMs": 1800,
+      "startChar": 18,
+      "endChar": 28
+    }
+  ]
+}

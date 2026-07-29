@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-6e106859237fc276b5988e50",
+  "text": "Decisión de responder",
+  "durationMs": 2200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1240,
+      "startChar": 12,
+      "endChar": 21
+    }
+  ]
+}

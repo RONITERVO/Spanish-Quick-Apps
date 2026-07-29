@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-73aa86cf0986b0655fe139c9",
+  "text": "filtración prematura",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 11
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 11,
+      "endChar": 20
+    }
+  ]
+}

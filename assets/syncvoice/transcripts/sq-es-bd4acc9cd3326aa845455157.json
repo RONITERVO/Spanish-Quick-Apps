@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "externalId": "sq-es-bd4acc9cd3326aa845455157",
+  "text": "roca sólida que fluye lentamente",
+  "durationMs": 3200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1320,
+      "startChar": 12,
+      "endChar": 16
+    },
+    {
+      "startMs": 1320,
+      "endMs": 1560,
+      "startChar": 16,
+      "endChar": 22
+    },
+    {
+      "startMs": 1560,
+      "endMs": 2080,
+      "startChar": 22,
+      "endChar": 32
+    }
+  ]
+}

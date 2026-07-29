@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-01a1c668221e98bb59ce0486",
+  "text": "Materia común · organización no garantizada",
+  "durationMs": 4000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 14
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 14,
+      "endChar": 16
+    },
+    {
+      "startMs": 1280,
+      "endMs": 1680,
+      "startChar": 16,
+      "endChar": 29
+    },
+    {
+      "startMs": 1680,
+      "endMs": 2680,
+      "startChar": 29,
+      "endChar": 32
+    },
+    {
+      "startMs": 2680,
+      "endMs": 2960,
+      "startChar": 32,
+      "endChar": 43
+    }
+  ]
+}

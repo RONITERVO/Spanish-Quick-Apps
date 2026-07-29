@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-084f0ac6a0a4c1c204cfd032",
+  "text": "Un efecto puede modificar su propia causa, produciendo estabilidad, crecimiento o ciclos.",
+  "durationMs": 6920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 16
+    },
+    {
+      "startMs": 225,
+      "endMs": 1120,
+      "startChar": 16,
+      "endChar": 26
+    },
+    {
+      "startMs": 1120,
+      "endMs": 1840,
+      "startChar": 26,
+      "endChar": 29
+    },
+    {
+      "startMs": 1840,
+      "endMs": 2000,
+      "startChar": 29,
+      "endChar": 36
+    },
+    {
+      "startMs": 2000,
+      "endMs": 2400,
+      "startChar": 36,
+      "endChar": 43
+    },
+    {
+      "startMs": 2400,
+      "endMs": 3000,
+      "startChar": 43,
+      "endChar": 55
+    },
+    {
+      "startMs": 3000,
+      "endMs": 3880,
+      "startChar": 55,
+      "endChar": 68
+    },
+    {
+      "startMs": 3880,
+      "endMs": 4880,
+      "startChar": 68,
+      "endChar": 80
+    },
+    {
+      "startMs": 4880,
+      "endMs": 5400,
+      "startChar": 80,
+      "endChar": 82
+    },
+    {
+      "startMs": 5400,
+      "endMs": 5920,
+      "startChar": 82,
+      "endChar": 89
+    }
+  ]
+}

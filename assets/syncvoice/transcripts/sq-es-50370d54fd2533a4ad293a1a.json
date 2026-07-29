@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-50370d54fd2533a4ad293a1a",
+  "text": "uso recursivo de herramientas",
+  "durationMs": 2320,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 14
+    },
+    {
+      "startMs": 150,
+      "endMs": 655,
+      "startChar": 14,
+      "endChar": 17
+    },
+    {
+      "startMs": 655,
+      "endMs": 1160,
+      "startChar": 17,
+      "endChar": 29
+    }
+  ]
+}

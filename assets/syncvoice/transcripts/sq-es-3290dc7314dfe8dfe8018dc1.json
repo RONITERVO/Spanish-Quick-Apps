@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "externalId": "sq-es-3290dc7314dfe8dfe8018dc1",
+  "text": "Un producto combina extracción, transformación, transporte, venta y consumo.",
+  "durationMs": 6920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 12,
+      "endChar": 20
+    },
+    {
+      "startMs": 225,
+      "endMs": 1440,
+      "startChar": 20,
+      "endChar": 32
+    },
+    {
+      "startMs": 1440,
+      "endMs": 2560,
+      "startChar": 32,
+      "endChar": 48
+    },
+    {
+      "startMs": 2560,
+      "endMs": 3880,
+      "startChar": 48,
+      "endChar": 60
+    },
+    {
+      "startMs": 3880,
+      "endMs": 5000,
+      "startChar": 60,
+      "endChar": 66
+    },
+    {
+      "startMs": 5000,
+      "endMs": 5420,
+      "startChar": 66,
+      "endChar": 68
+    },
+    {
+      "startMs": 5420,
+      "endMs": 5840,
+      "startChar": 68,
+      "endChar": 76
+    }
+  ]
+}

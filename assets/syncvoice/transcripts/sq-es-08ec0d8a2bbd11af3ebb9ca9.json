@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-08ec0d8a2bbd11af3ebb9ca9",
+  "text": "robot industrial",
+  "durationMs": 1720,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 16
+    }
+  ]
+}

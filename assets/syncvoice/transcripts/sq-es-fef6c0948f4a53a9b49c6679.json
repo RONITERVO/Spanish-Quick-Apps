@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "externalId": "sq-es-fef6c0948f4a53a9b49c6679",
+  "text": "Abundancia posible · silencio observado",
+  "durationMs": 4000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 11
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 11,
+      "endChar": 19
+    },
+    {
+      "startMs": 150,
+      "endMs": 1640,
+      "startChar": 19,
+      "endChar": 21
+    },
+    {
+      "startMs": 1640,
+      "endMs": 2120,
+      "startChar": 21,
+      "endChar": 30
+    },
+    {
+      "startMs": 2120,
+      "endMs": 3000,
+      "startChar": 30,
+      "endChar": 39
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-aaa39119b176e341850b4390",
+  "text": "Centro del Grupo Local",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 17
+    },
+    {
+      "startMs": 225,
+      "endMs": 1240,
+      "startChar": 17,
+      "endChar": 22
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-3324be8b1b1c905f29f9ec73",
+  "text": "aún no observado",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 7
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 7,
+      "endChar": 16
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "externalId": "sq-es-49fc9d9275e0bbd3403c4f22",
+  "text": "Comparar objetivo y resultado permite corregir continuamente una acción.",
+  "durationMs": 5400,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 18
+    },
+    {
+      "startMs": 150,
+      "endMs": 735,
+      "startChar": 18,
+      "endChar": 20
+    },
+    {
+      "startMs": 735,
+      "endMs": 1320,
+      "startChar": 20,
+      "endChar": 30
+    },
+    {
+      "startMs": 1320,
+      "endMs": 2160,
+      "startChar": 30,
+      "endChar": 38
+    },
+    {
+      "startMs": 2160,
+      "endMs": 2840,
+      "startChar": 38,
+      "endChar": 47
+    },
+    {
+      "startMs": 2840,
+      "endMs": 3480,
+      "startChar": 47,
+      "endChar": 61
+    },
+    {
+      "startMs": 3480,
+      "endMs": 4440,
+      "startChar": 61,
+      "endChar": 65
+    },
+    {
+      "startMs": 4440,
+      "endMs": 4720,
+      "startChar": 65,
+      "endChar": 72
+    }
+  ]
+}

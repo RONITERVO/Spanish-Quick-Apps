@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2721e0bdffd2d3ecf6ae3f0c",
+  "text": "flujos circulares",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 17
+    }
+  ]
+}

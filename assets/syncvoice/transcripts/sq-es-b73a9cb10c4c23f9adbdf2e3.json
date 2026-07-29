@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-b73a9cb10c4c23f9adbdf2e3",
+  "text": "prospección de asteroides",
+  "durationMs": 2200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 12
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 12,
+      "endChar": 15
+    },
+    {
+      "startMs": 150,
+      "endMs": 1040,
+      "startChar": 15,
+      "endChar": 25
+    }
+  ]
+}

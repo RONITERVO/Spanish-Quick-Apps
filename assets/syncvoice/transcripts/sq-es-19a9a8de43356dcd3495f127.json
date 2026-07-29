@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-19a9a8de43356dcd3495f127",
+  "text": "Era oscura",
+  "durationMs": 1000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 10
+    }
+  ]
+}

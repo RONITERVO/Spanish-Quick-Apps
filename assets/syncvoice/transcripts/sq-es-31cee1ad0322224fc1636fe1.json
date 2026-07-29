@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-31cee1ad0322224fc1636fe1",
+  "text": "inteligencia no controlada",
+  "durationMs": 2480,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 13
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 13,
+      "endChar": 16
+    },
+    {
+      "startMs": 150,
+      "endMs": 1520,
+      "startChar": 16,
+      "endChar": 26
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-49b4821ee2c43e19ea39749a",
+  "text": "pasado del emisor",
+  "durationMs": 1840,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1040,
+      "startChar": 11,
+      "endChar": 17
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "externalId": "sq-es-d30300e6a6e5783aeb588257",
+  "text": "Contener transforma el transporte, almacenamiento, cocción y reparto.",
+  "durationMs": 6040,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 20
+    },
+    {
+      "startMs": 150,
+      "endMs": 1480,
+      "startChar": 20,
+      "endChar": 23
+    },
+    {
+      "startMs": 1480,
+      "endMs": 1680,
+      "startChar": 23,
+      "endChar": 35
+    },
+    {
+      "startMs": 1680,
+      "endMs": 2640,
+      "startChar": 35,
+      "endChar": 51
+    },
+    {
+      "startMs": 2640,
+      "endMs": 3920,
+      "startChar": 51,
+      "endChar": 59
+    },
+    {
+      "startMs": 3920,
+      "endMs": 4420,
+      "startChar": 59,
+      "endChar": 61
+    },
+    {
+      "startMs": 4420,
+      "endMs": 4920,
+      "startChar": 61,
+      "endChar": 69
+    }
+  ]
+}

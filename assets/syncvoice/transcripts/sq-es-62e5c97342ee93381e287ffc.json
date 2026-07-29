@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "externalId": "sq-es-62e5c97342ee93381e287ffc",
+  "text": "Era de los agujeros negros",
+  "durationMs": 2440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 7
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 7,
+      "endChar": 11
+    },
+    {
+      "startMs": 225,
+      "endMs": 960,
+      "startChar": 11,
+      "endChar": 20
+    },
+    {
+      "startMs": 960,
+      "endMs": 1640,
+      "startChar": 20,
+      "endChar": 26
+    }
+  ]
+}

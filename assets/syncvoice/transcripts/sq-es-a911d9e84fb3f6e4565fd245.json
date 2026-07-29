@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "externalId": "sq-es-a911d9e84fb3f6e4565fd245",
+  "text": "El intercambio directo depende de necesidades coincidentes y valores negociados.",
+  "durationMs": 5200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 15
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 15,
+      "endChar": 23
+    },
+    {
+      "startMs": 225,
+      "endMs": 1280,
+      "startChar": 23,
+      "endChar": 31
+    },
+    {
+      "startMs": 1280,
+      "endMs": 1520,
+      "startChar": 31,
+      "endChar": 34
+    },
+    {
+      "startMs": 1520,
+      "endMs": 1760,
+      "startChar": 34,
+      "endChar": 46
+    },
+    {
+      "startMs": 1760,
+      "endMs": 2640,
+      "startChar": 46,
+      "endChar": 59
+    },
+    {
+      "startMs": 2640,
+      "endMs": 3100,
+      "startChar": 59,
+      "endChar": 61
+    },
+    {
+      "startMs": 3100,
+      "endMs": 3560,
+      "startChar": 61,
+      "endChar": 69
+    },
+    {
+      "startMs": 3560,
+      "endMs": 4200,
+      "startChar": 69,
+      "endChar": 80
+    }
+  ]
+}

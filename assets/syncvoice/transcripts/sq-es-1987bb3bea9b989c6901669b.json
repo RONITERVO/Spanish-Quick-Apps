@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-1987bb3bea9b989c6901669b",
+  "text": "depende de la escala",
+  "durationMs": 1360,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 14
+    },
+    {
+      "startMs": 225,
+      "endMs": 300,
+      "startChar": 14,
+      "endChar": 20
+    }
+  ]
+}

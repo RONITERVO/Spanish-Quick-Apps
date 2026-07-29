@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "externalId": "sq-es-690878cf6b31e8f65f37b7e0",
+  "text": "Un robot conecta información digital con acciones físicas en el mundo.",
+  "durationMs": 5160,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 17
+    },
+    {
+      "startMs": 225,
+      "endMs": 1160,
+      "startChar": 17,
+      "endChar": 29
+    },
+    {
+      "startMs": 1160,
+      "endMs": 1920,
+      "startChar": 29,
+      "endChar": 37
+    },
+    {
+      "startMs": 1920,
+      "endMs": 2520,
+      "startChar": 37,
+      "endChar": 41
+    },
+    {
+      "startMs": 2520,
+      "endMs": 2840,
+      "startChar": 41,
+      "endChar": 50
+    },
+    {
+      "startMs": 2840,
+      "endMs": 3440,
+      "startChar": 50,
+      "endChar": 58
+    },
+    {
+      "startMs": 3440,
+      "endMs": 3780,
+      "startChar": 58,
+      "endChar": 61
+    },
+    {
+      "startMs": 3780,
+      "endMs": 4120,
+      "startChar": 61,
+      "endChar": 64
+    },
+    {
+      "startMs": 4120,
+      "endMs": 4440,
+      "startChar": 64,
+      "endChar": 70
+    }
+  ]
+}

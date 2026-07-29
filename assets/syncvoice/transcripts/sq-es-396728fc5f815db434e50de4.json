@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-396728fc5f815db434e50de4",
+  "text": "mundo de ARN",
+  "durationMs": 2560,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 1240,
+      "startChar": 9,
+      "endChar": 12
+    }
+  ]
+}

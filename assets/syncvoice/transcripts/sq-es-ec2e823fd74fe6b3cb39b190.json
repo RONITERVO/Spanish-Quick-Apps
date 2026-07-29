@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ec2e823fd74fe6b3cb39b190",
+  "text": "Modelos verificables localmente ofrecen una vía para comprobar si parte del mensaje se entiende correctamente.",
+  "durationMs": 7800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 21
+    },
+    {
+      "startMs": 150,
+      "endMs": 1520,
+      "startChar": 21,
+      "endChar": 32
+    },
+    {
+      "startMs": 1520,
+      "endMs": 2360,
+      "startChar": 32,
+      "endChar": 40
+    },
+    {
+      "startMs": 2360,
+      "endMs": 3040,
+      "startChar": 40,
+      "endChar": 44
+    },
+    {
+      "startMs": 3040,
+      "endMs": 3280,
+      "startChar": 44,
+      "endChar": 48
+    },
+    {
+      "startMs": 3280,
+      "endMs": 3600,
+      "startChar": 48,
+      "endChar": 53
+    },
+    {
+      "startMs": 3600,
+      "endMs": 3920,
+      "startChar": 53,
+      "endChar": 63
+    },
+    {
+      "startMs": 3920,
+      "endMs": 4480,
+      "startChar": 63,
+      "endChar": 66
+    },
+    {
+      "startMs": 4480,
+      "endMs": 4760,
+      "startChar": 66,
+      "endChar": 72
+    },
+    {
+      "startMs": 4760,
+      "endMs": 5160,
+      "startChar": 72,
+      "endChar": 76
+    },
+    {
+      "startMs": 5160,
+      "endMs": 5360,
+      "startChar": 76,
+      "endChar": 84
+    },
+    {
+      "startMs": 5360,
+      "endMs": 6000,
+      "startChar": 84,
+      "endChar": 87
+    },
+    {
+      "startMs": 6000,
+      "endMs": 6200,
+      "startChar": 87,
+      "endChar": 96
+    },
+    {
+      "startMs": 6200,
+      "endMs": 6720,
+      "startChar": 96,
+      "endChar": 110
+    }
+  ]
+}

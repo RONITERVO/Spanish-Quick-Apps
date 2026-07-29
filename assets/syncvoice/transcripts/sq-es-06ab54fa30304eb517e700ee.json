@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-06ab54fa30304eb517e700ee",
+  "text": "ningún guion cerrado",
+  "durationMs": 1800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 13,
+      "endChar": 20
+    }
+  ]
+}

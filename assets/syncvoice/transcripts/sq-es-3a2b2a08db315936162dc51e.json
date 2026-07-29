@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-3a2b2a08db315936162dc51e",
+  "text": "reconocimiento de imágenes",
+  "durationMs": 2280,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 15
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 15,
+      "endChar": 18
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 18,
+      "endChar": 26
+    }
+  ]
+}

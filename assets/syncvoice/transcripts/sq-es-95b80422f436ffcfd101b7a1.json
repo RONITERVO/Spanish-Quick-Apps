@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-95b80422f436ffcfd101b7a1",
+  "text": "Hacia el horizonte final",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 19
+    },
+    {
+      "startMs": 225,
+      "endMs": 1240,
+      "startChar": 19,
+      "endChar": 24
+    }
+  ]
+}

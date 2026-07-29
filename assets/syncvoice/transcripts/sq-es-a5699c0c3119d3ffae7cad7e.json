@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "externalId": "sq-es-a5699c0c3119d3ffae7cad7e",
+  "text": "Cada modelo puede identificar condiciones extremas donde el otro deja de predecir correctamente.",
+  "durationMs": 6160,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 12,
+      "endChar": 18
+    },
+    {
+      "startMs": 225,
+      "endMs": 1120,
+      "startChar": 18,
+      "endChar": 30
+    },
+    {
+      "startMs": 1120,
+      "endMs": 1840,
+      "startChar": 30,
+      "endChar": 42
+    },
+    {
+      "startMs": 1840,
+      "endMs": 2520,
+      "startChar": 42,
+      "endChar": 51
+    },
+    {
+      "startMs": 2520,
+      "endMs": 3200,
+      "startChar": 51,
+      "endChar": 57
+    },
+    {
+      "startMs": 3200,
+      "endMs": 3360,
+      "startChar": 57,
+      "endChar": 60
+    },
+    {
+      "startMs": 3360,
+      "endMs": 3520,
+      "startChar": 60,
+      "endChar": 65
+    },
+    {
+      "startMs": 3520,
+      "endMs": 4000,
+      "startChar": 65,
+      "endChar": 70
+    },
+    {
+      "startMs": 4000,
+      "endMs": 4200,
+      "startChar": 70,
+      "endChar": 73
+    },
+    {
+      "startMs": 4200,
+      "endMs": 4400,
+      "startChar": 73,
+      "endChar": 82
+    },
+    {
+      "startMs": 4400,
+      "endMs": 5080,
+      "startChar": 82,
+      "endChar": 96
+    }
+  ]
+}

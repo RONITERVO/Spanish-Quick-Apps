@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-46303ba433c86d6d048ef092",
+  "text": "Hipotético · marcos competidores",
+  "durationMs": 2920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 11
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 11,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 13,
+      "endChar": 20
+    },
+    {
+      "startMs": 225,
+      "endMs": 1800,
+      "startChar": 20,
+      "endChar": 32
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-df361d865265c2f8a9cb9358",
+  "text": "movimiento de estrellas",
+  "durationMs": 2160,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 11
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 11,
+      "endChar": 14
+    },
+    {
+      "startMs": 150,
+      "endMs": 1240,
+      "startChar": 14,
+      "endChar": 23
+    }
+  ]
+}

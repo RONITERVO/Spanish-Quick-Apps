@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "externalId": "sq-es-cbe6f05362de29ba5be6a023",
+  "text": "Un vehículo aéreo combina sustentación, sensores, comunicación y control rápido.",
+  "durationMs": 6080,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 12,
+      "endChar": 18
+    },
+    {
+      "startMs": 225,
+      "endMs": 1160,
+      "startChar": 18,
+      "endChar": 26
+    },
+    {
+      "startMs": 1160,
+      "endMs": 1720,
+      "startChar": 26,
+      "endChar": 40
+    },
+    {
+      "startMs": 1720,
+      "endMs": 2840,
+      "startChar": 40,
+      "endChar": 50
+    },
+    {
+      "startMs": 2840,
+      "endMs": 3800,
+      "startChar": 50,
+      "endChar": 63
+    },
+    {
+      "startMs": 3800,
+      "endMs": 4280,
+      "startChar": 63,
+      "endChar": 65
+    },
+    {
+      "startMs": 4280,
+      "endMs": 4760,
+      "startChar": 65,
+      "endChar": 73
+    },
+    {
+      "startMs": 4760,
+      "endMs": 5400,
+      "startChar": 73,
+      "endChar": 80
+    }
+  ]
+}

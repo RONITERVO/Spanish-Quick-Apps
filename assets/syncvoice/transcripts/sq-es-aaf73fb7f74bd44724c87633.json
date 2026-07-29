@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-aaf73fb7f74bd44724c87633",
+  "text": "viveros que se apagan",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 12,
+      "endChar": 15
+    },
+    {
+      "startMs": 1000,
+      "endMs": 1200,
+      "startChar": 15,
+      "endChar": 21
+    }
+  ]
+}

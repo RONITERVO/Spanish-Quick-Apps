@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-166d697f901e1be7f65b65c2",
+  "text": "Nebulosa de la Tarántula",
+  "durationMs": 2200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1120,
+      "startChar": 12,
+      "endChar": 15
+    },
+    {
+      "startMs": 1120,
+      "endMs": 1280,
+      "startChar": 15,
+      "endChar": 24
+    }
+  ]
+}

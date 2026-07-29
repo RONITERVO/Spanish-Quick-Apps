@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-a517f43e3fcf657075c98664",
+  "text": "azul cielo claro",
+  "durationMs": 2480,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1600,
+      "startChar": 11,
+      "endChar": 16
+    }
+  ]
+}

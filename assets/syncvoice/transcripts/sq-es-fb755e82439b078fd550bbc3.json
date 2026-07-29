@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "externalId": "sq-es-fb755e82439b078fd550bbc3",
+  "text": "El recorrido separa datos, reconstrucciones, predicciones, hipótesis y desconocimiento en lugar de mezclarlos.",
+  "durationMs": 9600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 13,
+      "endChar": 20
+    },
+    {
+      "startMs": 225,
+      "endMs": 1520,
+      "startChar": 20,
+      "endChar": 27
+    },
+    {
+      "startMs": 1520,
+      "endMs": 2360,
+      "startChar": 27,
+      "endChar": 45
+    },
+    {
+      "startMs": 2360,
+      "endMs": 4000,
+      "startChar": 45,
+      "endChar": 59
+    },
+    {
+      "startMs": 4000,
+      "endMs": 5360,
+      "startChar": 59,
+      "endChar": 69
+    },
+    {
+      "startMs": 5360,
+      "endMs": 5900,
+      "startChar": 69,
+      "endChar": 71
+    },
+    {
+      "startMs": 5900,
+      "endMs": 6440,
+      "startChar": 71,
+      "endChar": 87
+    },
+    {
+      "startMs": 6440,
+      "endMs": 7160,
+      "startChar": 87,
+      "endChar": 90
+    },
+    {
+      "startMs": 7160,
+      "endMs": 7880,
+      "startChar": 90,
+      "endChar": 96
+    },
+    {
+      "startMs": 7880,
+      "endMs": 8200,
+      "startChar": 96,
+      "endChar": 99
+    },
+    {
+      "startMs": 8200,
+      "endMs": 8520,
+      "startChar": 99,
+      "endChar": 110
+    }
+  ]
+}

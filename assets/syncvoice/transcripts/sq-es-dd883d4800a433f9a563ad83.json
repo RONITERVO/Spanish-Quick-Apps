@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "externalId": "sq-es-dd883d4800a433f9a563ad83",
+  "text": "La posición del punto de apoyo determina cuánto se multiplica la fuerza y cuánto debe moverse el brazo.",
+  "durationMs": 7280,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 12,
+      "endChar": 16
+    },
+    {
+      "startMs": 225,
+      "endMs": 960,
+      "startChar": 16,
+      "endChar": 22
+    },
+    {
+      "startMs": 960,
+      "endMs": 1140,
+      "startChar": 22,
+      "endChar": 25
+    },
+    {
+      "startMs": 1140,
+      "endMs": 1320,
+      "startChar": 25,
+      "endChar": 31
+    },
+    {
+      "startMs": 1320,
+      "endMs": 1960,
+      "startChar": 31,
+      "endChar": 41
+    },
+    {
+      "startMs": 1960,
+      "endMs": 2720,
+      "startChar": 41,
+      "endChar": 48
+    },
+    {
+      "startMs": 2720,
+      "endMs": 3000,
+      "startChar": 48,
+      "endChar": 51
+    },
+    {
+      "startMs": 3000,
+      "endMs": 3280,
+      "startChar": 51,
+      "endChar": 62
+    },
+    {
+      "startMs": 3280,
+      "endMs": 3680,
+      "startChar": 62,
+      "endChar": 65
+    },
+    {
+      "startMs": 3680,
+      "endMs": 4080,
+      "startChar": 65,
+      "endChar": 72
+    },
+    {
+      "startMs": 4080,
+      "endMs": 4800,
+      "startChar": 72,
+      "endChar": 74
+    },
+    {
+      "startMs": 4800,
+      "endMs": 5080,
+      "startChar": 74,
+      "endChar": 81
+    },
+    {
+      "startMs": 5080,
+      "endMs": 5600,
+      "startChar": 81,
+      "endChar": 86
+    },
+    {
+      "startMs": 5600,
+      "endMs": 5960,
+      "startChar": 86,
+      "endChar": 94
+    },
+    {
+      "startMs": 5960,
+      "endMs": 6220,
+      "startChar": 94,
+      "endChar": 97
+    },
+    {
+      "startMs": 6220,
+      "endMs": 6480,
+      "startChar": 97,
+      "endChar": 103
+    }
+  ]
+}

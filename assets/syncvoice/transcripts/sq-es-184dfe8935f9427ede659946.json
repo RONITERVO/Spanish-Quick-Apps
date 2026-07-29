@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-184dfe8935f9427ede659946",
+  "text": "azul marino apagado",
+  "durationMs": 2320,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1360,
+      "startChar": 12,
+      "endChar": 19
+    }
+  ]
+}

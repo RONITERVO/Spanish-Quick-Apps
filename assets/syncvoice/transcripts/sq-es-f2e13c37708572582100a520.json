@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-f2e13c37708572582100a520",
+  "text": "Modelo Estándar comprobado",
+  "durationMs": 2120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 16
+    },
+    {
+      "startMs": 150,
+      "endMs": 1160,
+      "startChar": 16,
+      "endChar": 26
+    }
+  ]
+}

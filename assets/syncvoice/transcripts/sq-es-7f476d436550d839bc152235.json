@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-7f476d436550d839bc152235",
+  "text": "Gran Mancha Roja",
+  "durationMs": 1880,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1120,
+      "startChar": 12,
+      "endChar": 16
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-231b75c6c6a84bf4d4c1ed23",
+  "text": "crisis en cascada",
+  "durationMs": 1800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 17
+    }
+  ]
+}

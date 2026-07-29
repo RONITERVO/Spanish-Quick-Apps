@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ef64172e3752405c1ed55908",
+  "text": "Intervención sobre sistemas de escala terrestre",
+  "durationMs": 3480,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 13
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 13,
+      "endChar": 19
+    },
+    {
+      "startMs": 150,
+      "endMs": 1400,
+      "startChar": 19,
+      "endChar": 28
+    },
+    {
+      "startMs": 1400,
+      "endMs": 1760,
+      "startChar": 28,
+      "endChar": 31
+    },
+    {
+      "startMs": 1760,
+      "endMs": 2120,
+      "startChar": 31,
+      "endChar": 38
+    },
+    {
+      "startMs": 2120,
+      "endMs": 2720,
+      "startChar": 38,
+      "endChar": 47
+    }
+  ]
+}

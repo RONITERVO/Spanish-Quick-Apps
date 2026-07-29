@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2b3a05ad2340880423c6fdda",
+  "text": "Productores + consumidores + descomponedores + ciclos",
+  "durationMs": 5680,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 12
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 12,
+      "endChar": 14
+    },
+    {
+      "startMs": 150,
+      "endMs": 1120,
+      "startChar": 14,
+      "endChar": 27
+    },
+    {
+      "startMs": 1120,
+      "endMs": 2480,
+      "startChar": 27,
+      "endChar": 29
+    },
+    {
+      "startMs": 2480,
+      "endMs": 3040,
+      "startChar": 29,
+      "endChar": 45
+    },
+    {
+      "startMs": 3040,
+      "endMs": 4360,
+      "startChar": 45,
+      "endChar": 47
+    },
+    {
+      "startMs": 4360,
+      "endMs": 4840,
+      "startChar": 47,
+      "endChar": 53
+    }
+  ]
+}

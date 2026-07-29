@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-8173fad6b8e7c2bc293e6b1f",
+  "text": "cometa de período corto",
+  "durationMs": 2160,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 18
+    },
+    {
+      "startMs": 225,
+      "endMs": 1440,
+      "startChar": 18,
+      "endChar": 23
+    }
+  ]
+}

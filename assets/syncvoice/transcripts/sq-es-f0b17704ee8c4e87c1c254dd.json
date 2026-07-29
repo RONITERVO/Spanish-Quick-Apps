@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-f0b17704ee8c4e87c1c254dd",
+  "text": "flujo de calor",
+  "durationMs": 1720,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 9,
+      "endChar": 14
+    }
+  ]
+}

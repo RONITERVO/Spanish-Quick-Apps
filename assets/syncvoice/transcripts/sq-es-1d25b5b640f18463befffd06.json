@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-1d25b5b640f18463befffd06",
+  "text": "Era de los quarks",
+  "durationMs": 1800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 7
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 7,
+      "endChar": 11
+    },
+    {
+      "startMs": 225,
+      "endMs": 1000,
+      "startChar": 11,
+      "endChar": 17
+    }
+  ]
+}

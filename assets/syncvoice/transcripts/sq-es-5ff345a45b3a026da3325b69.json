@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-5ff345a45b3a026da3325b69",
+  "text": "tránsito extraño",
+  "durationMs": 2040,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 16
+    }
+  ]
+}

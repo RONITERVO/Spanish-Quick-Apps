@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-43949c327986ac1b0d75d916",
+  "text": "voz exterior",
+  "durationMs": 1600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 12
+    }
+  ]
+}

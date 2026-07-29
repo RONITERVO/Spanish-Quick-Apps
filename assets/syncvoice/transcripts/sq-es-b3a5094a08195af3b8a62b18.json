@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-b3a5094a08195af3b8a62b18",
+  "text": "carga destructiva",
+  "durationMs": 1400,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 17
+    }
+  ]
+}

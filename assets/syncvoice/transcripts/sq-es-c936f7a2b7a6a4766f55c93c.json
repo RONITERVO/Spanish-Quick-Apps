@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-c936f7a2b7a6a4766f55c93c",
+  "text": "Selección limitada y dinámica",
+  "durationMs": 2560,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 19
+    },
+    {
+      "startMs": 150,
+      "endMs": 1560,
+      "startChar": 19,
+      "endChar": 21
+    },
+    {
+      "startMs": 1560,
+      "endMs": 1720,
+      "startChar": 21,
+      "endChar": 29
+    }
+  ]
+}

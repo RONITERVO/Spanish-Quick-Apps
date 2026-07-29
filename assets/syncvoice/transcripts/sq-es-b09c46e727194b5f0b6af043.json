@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-b09c46e727194b5f0b6af043",
+  "text": "azul cielo pálido",
+  "durationMs": 2480,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1520,
+      "startChar": 11,
+      "endChar": 17
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "externalId": "sq-es-efede4e8ce9882cc116191ec",
+  "text": "El ruido reúne variaciones rápidas o impredecibles. Puede ocultar señales, pero también activar transiciones y exploración.",
+  "durationMs": 10000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 15
+    },
+    {
+      "startMs": 225,
+      "endMs": 1120,
+      "startChar": 15,
+      "endChar": 27
+    },
+    {
+      "startMs": 1120,
+      "endMs": 2000,
+      "startChar": 27,
+      "endChar": 35
+    },
+    {
+      "startMs": 2000,
+      "endMs": 2800,
+      "startChar": 35,
+      "endChar": 37
+    },
+    {
+      "startMs": 2800,
+      "endMs": 3080,
+      "startChar": 37,
+      "endChar": 52
+    },
+    {
+      "startMs": 3080,
+      "endMs": 4000,
+      "startChar": 52,
+      "endChar": 58
+    },
+    {
+      "startMs": 4000,
+      "endMs": 4080,
+      "startChar": 58,
+      "endChar": 66
+    },
+    {
+      "startMs": 4080,
+      "endMs": 5360,
+      "startChar": 66,
+      "endChar": 75
+    },
+    {
+      "startMs": 5360,
+      "endMs": 6080,
+      "startChar": 75,
+      "endChar": 80
+    },
+    {
+      "startMs": 6080,
+      "endMs": 6520,
+      "startChar": 80,
+      "endChar": 88
+    },
+    {
+      "startMs": 6520,
+      "endMs": 7160,
+      "startChar": 88,
+      "endChar": 96
+    },
+    {
+      "startMs": 7160,
+      "endMs": 7800,
+      "startChar": 96,
+      "endChar": 109
+    },
+    {
+      "startMs": 7800,
+      "endMs": 8280,
+      "startChar": 109,
+      "endChar": 111
+    },
+    {
+      "startMs": 8280,
+      "endMs": 8760,
+      "startChar": 111,
+      "endChar": 123
+    }
+  ]
+}

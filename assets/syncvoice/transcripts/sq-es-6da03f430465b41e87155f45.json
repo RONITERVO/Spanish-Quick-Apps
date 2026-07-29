@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-6da03f430465b41e87155f45",
+  "text": "carril de polvo",
+  "durationMs": 1480,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 15
+    }
+  ]
+}

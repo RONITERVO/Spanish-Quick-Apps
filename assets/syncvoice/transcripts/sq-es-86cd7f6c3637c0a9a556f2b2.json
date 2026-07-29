@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-86cd7f6c3637c0a9a556f2b2",
+  "text": "Tipos celulares distintos realizan tareas complementarias.",
+  "durationMs": 4480,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 16
+    },
+    {
+      "startMs": 150,
+      "endMs": 1120,
+      "startChar": 16,
+      "endChar": 26
+    },
+    {
+      "startMs": 1120,
+      "endMs": 1960,
+      "startChar": 26,
+      "endChar": 35
+    },
+    {
+      "startMs": 1960,
+      "endMs": 2680,
+      "startChar": 35,
+      "endChar": 42
+    },
+    {
+      "startMs": 2680,
+      "endMs": 3200,
+      "startChar": 42,
+      "endChar": 58
+    }
+  ]
+}

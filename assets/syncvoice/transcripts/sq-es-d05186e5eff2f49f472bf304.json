@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-d05186e5eff2f49f472bf304",
+  "text": "dos rutas",
+  "durationMs": 1440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 9
+    }
+  ]
+}

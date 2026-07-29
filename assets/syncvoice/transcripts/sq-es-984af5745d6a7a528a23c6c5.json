@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "externalId": "sq-es-984af5745d6a7a528a23c6c5",
+  "text": "Las ondas sísmicas cambian bruscamente al cruzar transformaciones minerales.",
+  "durationMs": 6000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 19
+    },
+    {
+      "startMs": 225,
+      "endMs": 1480,
+      "startChar": 19,
+      "endChar": 27
+    },
+    {
+      "startMs": 1480,
+      "endMs": 2160,
+      "startChar": 27,
+      "endChar": 39
+    },
+    {
+      "startMs": 2160,
+      "endMs": 3240,
+      "startChar": 39,
+      "endChar": 42
+    },
+    {
+      "startMs": 3240,
+      "endMs": 3560,
+      "startChar": 42,
+      "endChar": 49
+    },
+    {
+      "startMs": 3560,
+      "endMs": 4000,
+      "startChar": 49,
+      "endChar": 66
+    },
+    {
+      "startMs": 4000,
+      "endMs": 5120,
+      "startChar": 66,
+      "endChar": 76
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-8e539cc84c44bc39faf9fa99",
+  "text": "Burbuja Local",
+  "durationMs": 1440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 13
+    }
+  ]
+}

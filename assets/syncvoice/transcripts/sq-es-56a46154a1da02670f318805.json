@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "externalId": "sq-es-56a46154a1da02670f318805",
+  "text": "Los vuelos de gran altitud aprovechan el aire más estable cerca de la baja estratosfera.",
+  "durationMs": 6440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 14
+    },
+    {
+      "startMs": 225,
+      "endMs": 300,
+      "startChar": 14,
+      "endChar": 19
+    },
+    {
+      "startMs": 300,
+      "endMs": 1160,
+      "startChar": 19,
+      "endChar": 27
+    },
+    {
+      "startMs": 1160,
+      "endMs": 1880,
+      "startChar": 27,
+      "endChar": 38
+    },
+    {
+      "startMs": 1880,
+      "endMs": 2640,
+      "startChar": 38,
+      "endChar": 41
+    },
+    {
+      "startMs": 2640,
+      "endMs": 2840,
+      "startChar": 41,
+      "endChar": 46
+    },
+    {
+      "startMs": 2840,
+      "endMs": 3120,
+      "startChar": 46,
+      "endChar": 50
+    },
+    {
+      "startMs": 3120,
+      "endMs": 3520,
+      "startChar": 50,
+      "endChar": 58
+    },
+    {
+      "startMs": 3520,
+      "endMs": 4200,
+      "startChar": 58,
+      "endChar": 64
+    },
+    {
+      "startMs": 4200,
+      "endMs": 4440,
+      "startChar": 64,
+      "endChar": 67
+    },
+    {
+      "startMs": 4440,
+      "endMs": 4680,
+      "startChar": 67,
+      "endChar": 70
+    },
+    {
+      "startMs": 4680,
+      "endMs": 5000,
+      "startChar": 70,
+      "endChar": 75
+    },
+    {
+      "startMs": 5000,
+      "endMs": 5360,
+      "startChar": 75,
+      "endChar": 88
+    }
+  ]
+}

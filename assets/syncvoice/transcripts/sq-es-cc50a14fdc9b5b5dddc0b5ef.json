@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "externalId": "sq-es-cc50a14fdc9b5b5dddc0b5ef",
+  "text": "Memoria recombinada + simulación → escenarios posibles",
+  "durationMs": 5040,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 20
+    },
+    {
+      "startMs": 150,
+      "endMs": 1560,
+      "startChar": 20,
+      "endChar": 22
+    },
+    {
+      "startMs": 1560,
+      "endMs": 2160,
+      "startChar": 22,
+      "endChar": 33
+    },
+    {
+      "startMs": 2160,
+      "endMs": 3080,
+      "startChar": 33,
+      "endChar": 35
+    },
+    {
+      "startMs": 3080,
+      "endMs": 3360,
+      "startChar": 35,
+      "endChar": 46
+    },
+    {
+      "startMs": 3360,
+      "endMs": 4160,
+      "startChar": 46,
+      "endChar": 54
+    }
+  ]
+}

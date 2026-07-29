@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-4af38b22f9c131ec478e1c6d",
+  "text": "frío extremo",
+  "durationMs": 1400,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 12
+    }
+  ]
+}

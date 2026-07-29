@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-3f9b4b3f2ac4002729391cab",
+  "text": "Brazos y pinzas deben controlar posición, fuerza y contacto con objetos variados.",
+  "durationMs": 6760,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 16
+    },
+    {
+      "startMs": 225,
+      "endMs": 1560,
+      "startChar": 16,
+      "endChar": 22
+    },
+    {
+      "startMs": 1560,
+      "endMs": 2000,
+      "startChar": 22,
+      "endChar": 32
+    },
+    {
+      "startMs": 2000,
+      "endMs": 2640,
+      "startChar": 32,
+      "endChar": 42
+    },
+    {
+      "startMs": 2640,
+      "endMs": 3560,
+      "startChar": 42,
+      "endChar": 49
+    },
+    {
+      "startMs": 3560,
+      "endMs": 4360,
+      "startChar": 49,
+      "endChar": 51
+    },
+    {
+      "startMs": 4360,
+      "endMs": 4560,
+      "startChar": 51,
+      "endChar": 60
+    },
+    {
+      "startMs": 4560,
+      "endMs": 5200,
+      "startChar": 60,
+      "endChar": 64
+    },
+    {
+      "startMs": 5200,
+      "endMs": 5400,
+      "startChar": 64,
+      "endChar": 72
+    },
+    {
+      "startMs": 5400,
+      "endMs": 5920,
+      "startChar": 72,
+      "endChar": 81
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ac6d6d1b884e32bbe061aa78",
+  "text": "Cinturón de Kuiper",
+  "durationMs": 1840,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 12,
+      "endChar": 18
+    }
+  ]
+}
