@@ -14,6 +14,8 @@ Every app loads `learning-narration.js`. Apps 01 and 02 publish their purpose-bu
 
 Visible text and spoken text may intentionally differ when a value is calculated continuously. Set `data-learning-narration` on `feature-name`, `metric`, or `fact` to a stable Spanish catalog key. The overlay continues to show and progressively reveal the live value, while audio and translation use the stable key. Custom `spectrum:learning-target` publishers can provide the equivalent `detail.narrationParts` array aligned with `detail.parts`. Do not enumerate unbounded measurements or rely on fuzzy asset matching.
 
+Finite dynamic labels, such as the four musical octaves, must be included explicitly in the localization catalog so extraction generates exact audio assets for every possible value. Transcript requests revalidate their cache, and audio URLs include the transcript duration, so regenerated clips cannot be shadowed by an older browser-cached file. For QA, `window.SpectrumLearningNarration.diagnostics()` reports generated-asset plays and any Spanish browser fallback with its reason.
+
 ## Canonical files
 
 - `.syncvoice/project.json` is the generated, version-1 production manifest. Commit it.

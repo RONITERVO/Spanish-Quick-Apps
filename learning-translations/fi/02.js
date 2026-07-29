@@ -17,6 +17,10 @@
   "cristal": "kristalli",
   "aire": "ilmava",
   "cálido": "lämmin",
-  "profundo": "syvä"
+  "profundo": "syvä",
+  "octava 3": "oktaavi 3",
+  "octava 4": "oktaavi 4",
+  "octava 5": "oktaavi 5",
+  "octava 6": "oktaavi 6"
 };
 })();
