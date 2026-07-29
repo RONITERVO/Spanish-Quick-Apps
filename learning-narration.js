@@ -9,19 +9,42 @@
   const appId = appMatch[1];
   const baseUrl = new URL(".", script.src);
   const syncvoiceBaseUrl = new URL("assets/syncvoice/", baseUrl);
+  const remoteSyncvoiceBaseUrl = new URL("https://ronitervo.github.io/Spanish-Quick-Apps-audio/assets/syncvoice/");
+  const isLocalDevelopment = ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
+  const localCompanionBaseUrl = new URL("../Spanish-Quick-Apps-audio/assets/syncvoice/", baseUrl);
   const supportedLocales = new Set(["en", "fi"]);
   const browserLanguages = [...(navigator.languages || []), navigator.language || ""];
   const locale = browserLanguages
     .map(language => language.toLowerCase().split("-")[0])
     .find(language => supportedLocales.has(language)) || "en";
-  const speechLocale = locale === "fi"
-    ? "fi-FI"
-    : browserLanguages.find(language => /^en(?:-|$)/i.test(language)) || "en-US";
+  const speechLocale = locale === "fi" ? "fi-FI" : "en-US";
   const languageLabel = locale === "fi" ? "SUOMI" : "ENGLISH";
   const HOLD_DELAY_MS = 900;
   const JITTER_MIN = 28;
   const JITTER_MAX = 42;
-  const SYNCVOICE_CATALOG_REVISION = "4";
+  const SYNCVOICE_CATALOG_REVISION = "7";
+
+  function configuredAssetBaseUrl() {
+    const searches = [location.search];
+    try { if (parent !== window) searches.unshift(parent.location.search); } catch (_) {}
+    let stored = null;
+    try { stored = localStorage.getItem("syncvoice.assetBaseUrl"); } catch (_) {}
+    const configured = searches
+      .map(search => new URLSearchParams(search).get("syncvoice-assets"))
+      .find(Boolean) || stored;
+    if (!configured) return null;
+    try { return new URL(configured, baseUrl); } catch (_) { return null; }
+  }
+
+  function assetBaseUrls(assetLocale) {
+    if (assetLocale === "es-ES") return [syncvoiceBaseUrl];
+    const candidates = [];
+    const configured = configuredAssetBaseUrl();
+    if (configured) candidates.push(configured);
+    candidates.push(remoteSyncvoiceBaseUrl);
+    if (isLocalDevelopment) candidates.push(syncvoiceBaseUrl, localCompanionBaseUrl);
+    return candidates.filter((candidate, index) => candidates.findIndex(item => item.href === candidate.href) === index);
+  }
 
   let activePointer = null;
   let interactionUnlocked = false;
@@ -41,15 +64,19 @@
   let lastAssetFailure = null;
   const playbackDiagnostics = {
     assetPlays: 0,
+    browserFallbacks: 0,
     spanishBrowserFallbacks: 0,
     lastMode: null,
+    lastLocale: null,
     lastText: null,
     lastFailure: null
   };
   function publishPlaybackDiagnostics() {
     document.documentElement.dataset.syncvoiceAssetPlays = String(playbackDiagnostics.assetPlays);
+    document.documentElement.dataset.syncvoiceBrowserFallbacks = String(playbackDiagnostics.browserFallbacks);
     document.documentElement.dataset.syncvoiceSpanishFallbacks = String(playbackDiagnostics.spanishBrowserFallbacks);
     document.documentElement.dataset.syncvoiceLastMode = playbackDiagnostics.lastMode || "";
+    document.documentElement.dataset.syncvoiceLastLocale = playbackDiagnostics.lastLocale || "";
     document.documentElement.dataset.syncvoiceLastText = playbackDiagnostics.lastText || "";
     document.documentElement.dataset.syncvoiceLastFailure = playbackDiagnostics.lastFailure || "";
   }
@@ -214,7 +241,9 @@
 
   const catalogReady = new Promise(resolve => {
     const catalogScript = document.createElement("script");
-    catalogScript.src = new URL(`learning-translations/${locale}/${appId}.js`, baseUrl).href;
+    const catalogUrl = new URL(`learning-translations/${locale}/${appId}.js`, baseUrl);
+    catalogUrl.searchParams.set("v", SYNCVOICE_CATALOG_REVISION);
+    catalogScript.src = catalogUrl.href;
     catalogScript.onload = () => {
       catalog = window.SpectrumLearningTranslations?.[appId]?.[locale] || Object.create(null);
       document.documentElement.dataset.learningTranslations = String(Object.keys(catalog).length);
@@ -234,7 +263,9 @@
     assetCatalogScript.src = assetCatalogUrl.href;
     assetCatalogScript.onload = () => {
       assetCatalog = window.SpectrumSyncVoiceCatalogs?.[appId] || Object.create(null);
-      document.documentElement.dataset.syncvoiceEntries = String(Object.keys(assetCatalog).length);
+      document.documentElement.dataset.syncvoiceEntries = String(
+        Object.values(assetCatalog).reduce((sum, localeCatalog) => sum + Object.keys(localeCatalog || {}).length, 0)
+      );
       resolve(assetCatalog);
     };
     assetCatalogScript.onerror = () => {
@@ -433,7 +464,7 @@
     ink.textContent = text.slice(0, Math.max(0, Math.min(text.length, Math.round(revealedCharacters))));
   }
 
-  function normalizedTranscript(payload, externalId, text) {
+  function validatedTranscript(payload, externalId, text) {
     const durationMs = Number(payload?.durationMs);
     if (payload?.version !== 1 || payload.externalId !== externalId || payload.text !== text ||
         !Number.isFinite(durationMs) || durationMs <= 0 || !Array.isArray(payload.cues)) return null;
@@ -471,41 +502,41 @@
     return progress;
   }
 
-  async function playAssetChunk(text, onProgress, token) {
+  async function playAssetChunk(sourceKey, assetLocale, text, onProgress, token) {
     await assetCatalogReady;
     if (token !== runToken) return false;
     lastAssetFailure = null;
-    const externalId = assetCatalog[text];
+    const externalId = assetCatalog[assetLocale]?.[sourceKey];
     if (!externalId) {
       lastAssetFailure = "missing-catalog-entry";
       return null;
     }
-
-    let cues;
-    let durationMs;
-    try {
-      const transcriptUrl = new URL(`transcripts/${externalId}.json`, syncvoiceBaseUrl);
-      transcriptUrl.searchParams.set("v", SYNCVOICE_CATALOG_REVISION);
-      const response = await fetch(transcriptUrl.href, { cache: "no-cache" });
-      if (!response.ok) {
-        lastAssetFailure = `transcript-http-${response.status}`;
-        return null;
+    for (const assetBaseUrl of assetBaseUrls(assetLocale)) {
+      let cues;
+      let durationMs;
+      try {
+        const transcriptUrl = new URL(`transcripts/${externalId}.json`, assetBaseUrl);
+        transcriptUrl.searchParams.set("v", SYNCVOICE_CATALOG_REVISION);
+        const response = await fetch(transcriptUrl.href, { cache: "no-cache" });
+        if (!response.ok) {
+          lastAssetFailure = `transcript-http-${response.status}`;
+          continue;
+        }
+        const transcript = await response.json();
+        cues = validatedTranscript(transcript, externalId, text);
+        if (!cues) {
+          lastAssetFailure = "invalid-transcript";
+          continue;
+        }
+        durationMs = Number(transcript.durationMs);
+      } catch (_) {
+        lastAssetFailure = "transcript-unavailable";
+        continue;
       }
-      const transcript = await response.json();
-      cues = normalizedTranscript(transcript, externalId, text);
-      if (!cues) {
-        lastAssetFailure = "invalid-transcript";
-        return null;
-      }
-      durationMs = Number(transcript.durationMs);
-    } catch (_) {
-      lastAssetFailure = "transcript-unavailable";
-      return null;
-    }
-    if (token !== runToken) return false;
+      if (token !== runToken) return false;
 
-    return new Promise(resolve => {
-      const audioUrl = new URL(`audio/${externalId}.mp3`, syncvoiceBaseUrl);
+      const result = await new Promise(resolve => {
+      const audioUrl = new URL(`audio/${externalId}.mp3`, assetBaseUrl);
       audioUrl.searchParams.set("v", `${SYNCVOICE_CATALOG_REVISION}-${durationMs}`);
       const audio = new Audio(audioUrl.href);
       let settled = false;
@@ -522,6 +553,7 @@
           onProgress(text.length);
           playbackDiagnostics.assetPlays += 1;
           playbackDiagnostics.lastMode = "asset";
+          playbackDiagnostics.lastLocale = assetLocale;
           playbackDiagnostics.lastText = text;
           playbackDiagnostics.lastFailure = null;
           publishPlaybackDiagnostics();
@@ -555,20 +587,28 @@
       } else {
         activeAssetFrame = requestAnimationFrame(animate);
       }
-    });
+      });
+      if (result !== null) return result;
+    }
+    return null;
   }
 
-  async function speakChunk(text, language, onProgress, token, assetText = text) {
-    if (language === "es-ES") {
-      const assetResult = await playAssetChunk(assetText, onProgress, token);
-      if (assetResult !== null) return assetResult;
+  async function speakChunk(text, language, onProgress, token, sourceKey, assetLocale, assetText = text) {
+    const assetResult = await playAssetChunk(sourceKey, assetLocale, assetText, onProgress, token);
+    if (assetResult !== null) return assetResult;
+    playbackDiagnostics.browserFallbacks += 1;
+    if (assetLocale === "es-ES") {
       playbackDiagnostics.spanishBrowserFallbacks += 1;
-      playbackDiagnostics.lastMode = "browser";
-      playbackDiagnostics.lastText = assetText;
-      playbackDiagnostics.lastFailure = lastAssetFailure || "unknown";
-      publishPlaybackDiagnostics();
-      console.warn(`[SyncVoice] Browser fallback for ${JSON.stringify(assetText)} (${playbackDiagnostics.lastFailure}).`);
     }
+    playbackDiagnostics.lastMode = "browser";
+    playbackDiagnostics.lastLocale = assetLocale;
+    playbackDiagnostics.lastText = assetText;
+    playbackDiagnostics.lastFailure = lastAssetFailure || "unknown";
+    publishPlaybackDiagnostics();
+    console.warn(
+      `[SyncVoice] Browser fallback for ${assetLocale} ${JSON.stringify(sourceKey)} ` +
+      `(${playbackDiagnostics.lastFailure}).`
+    );
 
     return new Promise(resolve => {
       if (token !== runToken || !text) return resolve(false);
@@ -633,7 +673,7 @@
     });
   }
 
-  async function speakPhase(displayParts, spokenParts, phase, label, language, token) {
+  async function speakPhase(displayParts, spokenParts, sourceKeys, phase, label, language, assetLocale, token) {
     if (token !== runToken) return false;
     languageElement.textContent = phase === "spanish" ? "ESPAÑOL" : `ESPAÑOL → ${label}`;
     overlay.classList.remove("learning-narration--complete");
@@ -649,7 +689,15 @@
       line.classList.add("learning-narration__line--speaking");
       const spokenPart = /[.!?…:]$/.test(part) ? part : `${part}.`;
       const mapProgress = progress => revealLine(index, displayPart, displayPart.length * progress / Math.max(1, part.length));
-      const ok = await speakChunk(spokenPart, language, mapProgress, token, part);
+      const ok = await speakChunk(
+        spokenPart,
+        language,
+        mapProgress,
+        token,
+        sourceKeys[index] || part,
+        assetLocale,
+        part
+      );
       if (!ok) return false;
       revealLine(index, displayPart, displayPart.length);
       line.classList.remove("learning-narration__line--speaking");
@@ -680,13 +728,31 @@
     const translated = translatedParts(narrationParts);
     setOverlayLines(parts, translated, capturedTarget.color, capturedTarget);
 
-    const spanishDone = await speakPhase(parts, narrationParts, "spanish", "ESPAÑOL", "es-ES", token);
+    const spanishDone = await speakPhase(
+      parts,
+      narrationParts,
+      narrationParts,
+      "spanish",
+      "ESPAÑOL",
+      "es-ES",
+      "es-ES",
+      token
+    );
     if (!spanishDone || token !== runToken) {
       if (token === runToken) stopNarration();
       return;
     }
 
-    const translationDone = await speakPhase(translated, translated, "translation", languageLabel, speechLocale, token);
+    const translationDone = await speakPhase(
+      translated,
+      translated,
+      narrationParts,
+      "translation",
+      languageLabel,
+      speechLocale,
+      speechLocale,
+      token
+    );
     if (!translationDone || token !== runToken) {
       if (token === runToken) stopNarration();
       return;
