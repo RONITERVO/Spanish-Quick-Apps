@@ -6,13 +6,13 @@
   "cues": [
     {
       "startMs": 0,
-      "endMs": 75,
+      "endMs": 1100,
       "startChar": 0,
       "endChar": 13
     },
     {
-      "startMs": 75,
-      "endMs": 1160,
+      "startMs": 1100,
+      "endMs": 2200,
       "startChar": 13,
       "endChar": 22
     }
