@@ -10,11 +10,8 @@
   const baseUrl = new URL(".", script.src);
   const syncvoiceBaseUrl = new URL("assets/syncvoice/", baseUrl);
   const remoteSyncvoiceBaseUrl = new URL("https://ronitervo.github.io/Spanish-Quick-Apps-audio/assets/syncvoice/");
-  const syncvoiceAssetOrigins = {
-    "es-ES": syncvoiceBaseUrl,
-    "en-US": remoteSyncvoiceBaseUrl,
-    "fi-FI": remoteSyncvoiceBaseUrl
-  };
+  const isLocalDevelopment = ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
+  const localCompanionBaseUrl = new URL("../Spanish-Quick-Apps-audio/assets/syncvoice/", baseUrl);
   const supportedLocales = new Set(["en", "fi"]);
   const browserLanguages = [...(navigator.languages || []), navigator.language || ""];
   const locale = browserLanguages
@@ -25,7 +22,29 @@
   const HOLD_DELAY_MS = 900;
   const JITTER_MIN = 28;
   const JITTER_MAX = 42;
-  const SYNCVOICE_CATALOG_REVISION = "6";
+  const SYNCVOICE_CATALOG_REVISION = "7";
+
+  function configuredAssetBaseUrl() {
+    const searches = [location.search];
+    try { if (parent !== window) searches.unshift(parent.location.search); } catch (_) {}
+    let stored = null;
+    try { stored = localStorage.getItem("syncvoice.assetBaseUrl"); } catch (_) {}
+    const configured = searches
+      .map(search => new URLSearchParams(search).get("syncvoice-assets"))
+      .find(Boolean) || stored;
+    if (!configured) return null;
+    try { return new URL(configured, baseUrl); } catch (_) { return null; }
+  }
+
+  function assetBaseUrls(assetLocale) {
+    if (assetLocale === "es-ES") return [syncvoiceBaseUrl];
+    const candidates = [];
+    const configured = configuredAssetBaseUrl();
+    if (configured) candidates.push(configured);
+    candidates.push(remoteSyncvoiceBaseUrl);
+    if (isLocalDevelopment) candidates.push(syncvoiceBaseUrl, localCompanionBaseUrl);
+    return candidates.filter((candidate, index) => candidates.findIndex(item => item.href === candidate.href) === index);
+  }
 
   let activePointer = null;
   let interactionUnlocked = false;
@@ -445,7 +464,7 @@
     ink.textContent = text.slice(0, Math.max(0, Math.min(text.length, Math.round(revealedCharacters))));
   }
 
-  function normalizedTranscript(payload, externalId, text) {
+  function validatedTranscript(payload, externalId, text) {
     const durationMs = Number(payload?.durationMs);
     if (payload?.version !== 1 || payload.externalId !== externalId || payload.text !== text ||
         !Number.isFinite(durationMs) || durationMs <= 0 || !Array.isArray(payload.cues)) return null;
@@ -492,32 +511,31 @@
       lastAssetFailure = "missing-catalog-entry";
       return null;
     }
-    const assetBaseUrl = syncvoiceAssetOrigins[assetLocale] || syncvoiceBaseUrl;
-
-    let cues;
-    let durationMs;
-    try {
-      const transcriptUrl = new URL(`transcripts/${externalId}.json`, assetBaseUrl);
-      transcriptUrl.searchParams.set("v", SYNCVOICE_CATALOG_REVISION);
-      const response = await fetch(transcriptUrl.href, { cache: "no-cache" });
-      if (!response.ok) {
-        lastAssetFailure = `transcript-http-${response.status}`;
-        return null;
+    for (const assetBaseUrl of assetBaseUrls(assetLocale)) {
+      let cues;
+      let durationMs;
+      try {
+        const transcriptUrl = new URL(`transcripts/${externalId}.json`, assetBaseUrl);
+        transcriptUrl.searchParams.set("v", SYNCVOICE_CATALOG_REVISION);
+        const response = await fetch(transcriptUrl.href, { cache: "no-cache" });
+        if (!response.ok) {
+          lastAssetFailure = `transcript-http-${response.status}`;
+          continue;
+        }
+        const transcript = await response.json();
+        cues = validatedTranscript(transcript, externalId, text);
+        if (!cues) {
+          lastAssetFailure = "invalid-transcript";
+          continue;
+        }
+        durationMs = Number(transcript.durationMs);
+      } catch (_) {
+        lastAssetFailure = "transcript-unavailable";
+        continue;
       }
-      const transcript = await response.json();
-      cues = normalizedTranscript(transcript, externalId, text);
-      if (!cues) {
-        lastAssetFailure = "invalid-transcript";
-        return null;
-      }
-      durationMs = Number(transcript.durationMs);
-    } catch (_) {
-      lastAssetFailure = "transcript-unavailable";
-      return null;
-    }
-    if (token !== runToken) return false;
+      if (token !== runToken) return false;
 
-    return new Promise(resolve => {
+      const result = await new Promise(resolve => {
       const audioUrl = new URL(`audio/${externalId}.mp3`, assetBaseUrl);
       audioUrl.searchParams.set("v", `${SYNCVOICE_CATALOG_REVISION}-${durationMs}`);
       const audio = new Audio(audioUrl.href);
@@ -569,7 +587,10 @@
       } else {
         activeAssetFrame = requestAnimationFrame(animate);
       }
-    });
+      });
+      if (result !== null) return result;
+    }
+    return null;
   }
 
   async function speakChunk(text, language, onProgress, token, sourceKey, assetLocale, assetText = text) {

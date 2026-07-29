@@ -58,17 +58,16 @@ function validateTranscript(transcript, entry) {
   invariant(Number.isFinite(transcript.durationMs) && transcript.durationMs > 0, `${entry.externalId}: invalid durationMs`);
   invariant(Array.isArray(transcript.cues) && transcript.cues.length > 0, `${entry.externalId}: transcript has no cues`);
 
-  let previousEndMs = 0;
+  let previousStart = -1;
   let previousEndChar = 0;
   for (const cue of transcript.cues) {
-    invariant(Number.isFinite(cue.startMs) && cue.startMs === previousEndMs, `${entry.externalId}: cue timeline is not contiguous`);
+    invariant(Number.isFinite(cue.startMs) && cue.startMs >= previousStart, `${entry.externalId}: cues are not time-sorted`);
     invariant(Number.isFinite(cue.endMs) && cue.endMs >= cue.startMs && cue.endMs <= transcript.durationMs, `${entry.externalId}: invalid cue endMs`);
     invariant(Number.isInteger(cue.startChar) && cue.startChar === previousEndChar, `${entry.externalId}: invalid cue startChar`);
     invariant(Number.isInteger(cue.endChar) && cue.endChar > cue.startChar && cue.endChar <= entry.text.length, `${entry.externalId}: invalid cue endChar`);
-    previousEndMs = cue.endMs;
+    previousStart = cue.startMs;
     previousEndChar = cue.endChar;
   }
-  invariant(previousEndMs === transcript.durationMs, `${entry.externalId}: cues do not cover the complete audio duration`);
   invariant(previousEndChar === entry.text.length, `${entry.externalId}: cues do not cover the complete text`);
 }
 

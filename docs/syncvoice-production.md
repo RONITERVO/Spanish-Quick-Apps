@@ -56,7 +56,7 @@ The production contract is:
 1. Import `.syncvoice/project.json`.
 2. Generate only new or changed entries. Keep `speaker`, `locale`, `voice`, and `direction` from each manifest row.
 3. Export 96 kbps MPEG Layer III audio to the selected asset root at `audio/<externalId>.mp3`.
-4. Export normalized timing to the selected asset root at `transcripts/<externalId>.json`.
+4. Export Gemini-observed timing by default to `transcripts/<externalId>.json`. Add `--normalize-cues` only when deterministic full-duration pacing is preferred.
 5. Update the selected asset root's tracked `manifest.json` generation receipt.
 6. Require all three locales and inspect the asset diff:
 
@@ -93,7 +93,13 @@ Each UTF-8 sidecar uses JavaScript string offsets into the exact manifest `text`
 }
 ```
 
-Cues must be ordered, contiguous in character space, within `durationMs`, and cover the complete text including whitespace and terminal punctuation. The validator rejects mismatched IDs/text, invalid timing, gaps, missing audio, and missing sidecars.
+Cues must be time-ordered, contiguous in character space, within `durationMs`, and cover the complete text including whitespace and terminal punctuation. Provider-observed timing may contain natural temporal gaps or finish before the audio does. The optional normalizer produces a contiguous full-duration timeline. The validator accepts both modes and rejects mismatched IDs/text, invalid ordering, invalid character coverage, missing audio, and missing sidecars.
+
+## Local browser development
+
+For the VS Code Live Server button, open `D:\Projects` as the served workspace and launch `Spanish-Quick-Apps/index.html`. The app and sibling `Spanish-Quick-Apps-audio` checkout are then available on the same localhost origin. English and Finnish first try the hosted Pages library and automatically retry `../Spanish-Quick-Apps-audio/assets/syncvoice/` if it is unavailable, avoiding CORS entirely.
+
+To use another local asset directory, add `?syncvoice-assets=<same-origin-path-or-url>` before the app hash, or set `localStorage["syncvoice.assetBaseUrl"]`. An explicit override is tried first. Browser speech begins only after every configured, hosted, and automatic local asset candidate fails.
 
 All 25 HTML entry points version the shared runtime. The runtime also versions translation modules, per-app SyncVoice catalogs, transcripts, and audio URLs; audio URLs include transcript duration so a regenerated clip cannot be shadowed by an older GitHub Pages browser cache. Increment the shared revision in `learning-narration.js` and all HTML `learning-narration.js?v=` references whenever cache-sensitive runtime/catalog behavior changes.
 

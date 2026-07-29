@@ -6,19 +6,19 @@
   "cues": [
     {
       "startMs": 0,
-      "endMs": 707,
+      "endMs": 75,
       "startChar": 0,
       "endChar": 6
     },
     {
-      "startMs": 707,
-      "endMs": 1413,
+      "startMs": 75,
+      "endMs": 150,
       "startChar": 6,
       "endChar": 11
     },
     {
-      "startMs": 1413,
-      "endMs": 2120,
+      "startMs": 150,
+      "endMs": 1280,
       "startChar": 11,
       "endChar": 17
     }
