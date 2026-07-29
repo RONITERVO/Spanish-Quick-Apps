@@ -21,6 +21,7 @@
   const HOLD_DELAY_MS = 900;
   const JITTER_MIN = 28;
   const JITTER_MAX = 42;
+  const SYNCVOICE_CATALOG_REVISION = "4";
 
   let activePointer = null;
   let interactionUnlocked = false;
@@ -37,6 +38,22 @@
   let activeAssetFrame = 0;
   let semanticPublishQueued = false;
   let semanticPoint = null;
+  let lastAssetFailure = null;
+  const playbackDiagnostics = {
+    assetPlays: 0,
+    spanishBrowserFallbacks: 0,
+    lastMode: null,
+    lastText: null,
+    lastFailure: null
+  };
+  function publishPlaybackDiagnostics() {
+    document.documentElement.dataset.syncvoiceAssetPlays = String(playbackDiagnostics.assetPlays);
+    document.documentElement.dataset.syncvoiceSpanishFallbacks = String(playbackDiagnostics.spanishBrowserFallbacks);
+    document.documentElement.dataset.syncvoiceLastMode = playbackDiagnostics.lastMode || "";
+    document.documentElement.dataset.syncvoiceLastText = playbackDiagnostics.lastText || "";
+    document.documentElement.dataset.syncvoiceLastFailure = playbackDiagnostics.lastFailure || "";
+  }
+  publishPlaybackDiagnostics();
   const narratedSignaturesThisTouch = new Set();
 
   document.documentElement.dataset.learningLocale = locale;
@@ -212,7 +229,9 @@
 
   const assetCatalogReady = new Promise(resolve => {
     const assetCatalogScript = document.createElement("script");
-    assetCatalogScript.src = new URL(`catalogs/${appId}.js`, syncvoiceBaseUrl).href;
+    const assetCatalogUrl = new URL(`catalogs/${appId}.js`, syncvoiceBaseUrl);
+    assetCatalogUrl.searchParams.set("v", SYNCVOICE_CATALOG_REVISION);
+    assetCatalogScript.src = assetCatalogUrl.href;
     assetCatalogScript.onload = () => {
       assetCatalog = window.SpectrumSyncVoiceCatalogs?.[appId] || Object.create(null);
       document.documentElement.dataset.syncvoiceEntries = String(Object.keys(assetCatalog).length);
@@ -267,6 +286,32 @@
       .map(value => String(value || "").replace(/\s+/g, " ").trim())
       .filter(Boolean)
       .filter((value, index, values) => index === 0 || value !== values[index - 1]);
+  }
+
+  function cleanNarrationPairs(parts, narrationParts) {
+    const displays = Array.isArray(parts) ? parts : [];
+    const spoken = Array.isArray(narrationParts) ? narrationParts : [];
+    const semanticNarration = new Map(
+      ["feature-name", "metric", "fact"]
+        .map(id => document.getElementById(id))
+        .filter(Boolean)
+        .map(element => [
+          String(element.textContent || "").replace(/\s+/g, " ").trim(),
+          String(element.dataset.learningNarration || "").replace(/\s+/g, " ").trim()
+        ])
+        .filter(([display, narration]) => display && narration)
+    );
+    const pairs = [];
+    for (let index = 0; index < displays.length; index += 1) {
+      const display = String(displays[index] || "").replace(/\s+/g, " ").trim();
+      if (!display || pairs.at(-1)?.display === display) continue;
+      const supplied = String(spoken[index] || "").replace(/\s+/g, " ").trim();
+      const narration = supplied && supplied !== display
+        ? supplied
+        : semanticNarration.get(display) || supplied || display;
+      pairs.push({ display, narration });
+    }
+    return { parts: pairs.map(pair => pair.display), narrationParts: pairs.map(pair => pair.narration) };
   }
 
   function joinForDisplay(parts) {
@@ -429,23 +474,40 @@
   async function playAssetChunk(text, onProgress, token) {
     await assetCatalogReady;
     if (token !== runToken) return false;
+    lastAssetFailure = null;
     const externalId = assetCatalog[text];
-    if (!externalId) return null;
+    if (!externalId) {
+      lastAssetFailure = "missing-catalog-entry";
+      return null;
+    }
 
     let cues;
+    let durationMs;
     try {
       const transcriptUrl = new URL(`transcripts/${externalId}.json`, syncvoiceBaseUrl);
-      const response = await fetch(transcriptUrl.href, { cache: "force-cache" });
-      if (!response.ok) return null;
-      cues = normalizedTranscript(await response.json(), externalId, text);
-      if (!cues) return null;
+      transcriptUrl.searchParams.set("v", SYNCVOICE_CATALOG_REVISION);
+      const response = await fetch(transcriptUrl.href, { cache: "no-cache" });
+      if (!response.ok) {
+        lastAssetFailure = `transcript-http-${response.status}`;
+        return null;
+      }
+      const transcript = await response.json();
+      cues = normalizedTranscript(transcript, externalId, text);
+      if (!cues) {
+        lastAssetFailure = "invalid-transcript";
+        return null;
+      }
+      durationMs = Number(transcript.durationMs);
     } catch (_) {
+      lastAssetFailure = "transcript-unavailable";
       return null;
     }
     if (token !== runToken) return false;
 
     return new Promise(resolve => {
-      const audio = new Audio(new URL(`audio/${externalId}.mp3`, syncvoiceBaseUrl).href);
+      const audioUrl = new URL(`audio/${externalId}.mp3`, syncvoiceBaseUrl);
+      audioUrl.searchParams.set("v", `${SYNCVOICE_CATALOG_REVISION}-${durationMs}`);
+      const audio = new Audio(audioUrl.href);
       let settled = false;
       const finish = result => {
         if (settled) return;
@@ -456,7 +518,14 @@
         audio.onerror = null;
         if (activeAssetAudio === audio) activeAssetAudio = null;
         if (activeAssetFinish === cancel) activeAssetFinish = null;
-        if (result === true) onProgress(text.length);
+        if (result === true) {
+          onProgress(text.length);
+          playbackDiagnostics.assetPlays += 1;
+          playbackDiagnostics.lastMode = "asset";
+          playbackDiagnostics.lastText = text;
+          playbackDiagnostics.lastFailure = null;
+          publishPlaybackDiagnostics();
+        }
         resolve(result);
       };
       const cancel = result => finish(result === false ? false : null);
@@ -470,13 +539,19 @@
       activeAssetFinish = cancel;
       audio.preload = "auto";
       audio.onended = () => finish(true);
-      audio.onerror = () => finish(null);
+      audio.onerror = () => {
+        lastAssetFailure = "audio-load-error";
+        finish(null);
+      };
       onProgress(0);
       const playback = audio.play();
       if (playback && typeof playback.then === "function") {
         playback.then(() => {
           if (!settled) activeAssetFrame = requestAnimationFrame(animate);
-        }, () => finish(null));
+        }, () => {
+          lastAssetFailure = "audio-play-rejected";
+          finish(null);
+        });
       } else {
         activeAssetFrame = requestAnimationFrame(animate);
       }
@@ -487,6 +562,12 @@
     if (language === "es-ES") {
       const assetResult = await playAssetChunk(assetText, onProgress, token);
       if (assetResult !== null) return assetResult;
+      playbackDiagnostics.spanishBrowserFallbacks += 1;
+      playbackDiagnostics.lastMode = "browser";
+      playbackDiagnostics.lastText = assetText;
+      playbackDiagnostics.lastFailure = lastAssetFailure || "unknown";
+      publishPlaybackDiagnostics();
+      console.warn(`[SyncVoice] Browser fallback for ${JSON.stringify(assetText)} (${playbackDiagnostics.lastFailure}).`);
     }
 
     return new Promise(resolve => {
@@ -552,23 +633,25 @@
     });
   }
 
-  async function speakPhase(parts, phase, label, language, token) {
+  async function speakPhase(displayParts, spokenParts, phase, label, language, token) {
     if (token !== runToken) return false;
     languageElement.textContent = phase === "spanish" ? "ESPAÑOL" : `ESPAÑOL → ${label}`;
     overlay.classList.remove("learning-narration--complete");
 
-    for (let index = 0; index < parts.length; index += 1) {
+    for (let index = 0; index < spokenParts.length; index += 1) {
       if (token !== runToken) return false;
-      const part = parts[index];
+      const part = spokenParts[index];
+      const displayPart = displayParts[index] || part;
       const line = narrationLine(index);
       if (!line) continue;
       if (phase === "translation") line.classList.add("learning-narration__line--translating");
       line.querySelector(".learning-narration__ink").textContent = "";
       line.classList.add("learning-narration__line--speaking");
       const spokenPart = /[.!?…:]$/.test(part) ? part : `${part}.`;
-      const ok = await speakChunk(spokenPart, language, progress => revealLine(index, part, progress), token, part);
+      const mapProgress = progress => revealLine(index, displayPart, displayPart.length * progress / Math.max(1, part.length));
+      const ok = await speakChunk(spokenPart, language, mapProgress, token, part);
       if (!ok) return false;
-      revealLine(index, part, part.length);
+      revealLine(index, displayPart, displayPart.length);
       line.classList.remove("learning-narration__line--speaking");
       if (phase === "translation") {
         line.classList.remove("learning-narration__line--translating");
@@ -583,7 +666,8 @@
 
   async function narrate(capturedTarget) {
     if (!capturedTarget || capturedTarget !== target) return;
-    const parts = cleanParts(capturedTarget.parts);
+    const parts = capturedTarget.parts;
+    const narrationParts = capturedTarget.narrationParts;
     if (!parts.length) return;
 
     narratedSignaturesThisTouch.add(capturedTarget.signature);
@@ -593,16 +677,16 @@
 
     await catalogReady;
     if (token !== runToken) return;
-    const translated = translatedParts(parts);
+    const translated = translatedParts(narrationParts);
     setOverlayLines(parts, translated, capturedTarget.color, capturedTarget);
 
-    const spanishDone = await speakPhase(parts, "spanish", "ESPAÑOL", "es-ES", token);
+    const spanishDone = await speakPhase(parts, narrationParts, "spanish", "ESPAÑOL", "es-ES", token);
     if (!spanishDone || token !== runToken) {
       if (token === runToken) stopNarration();
       return;
     }
 
-    const translationDone = await speakPhase(translated, "translation", languageLabel, speechLocale, token);
+    const translationDone = await speakPhase(translated, translated, "translation", languageLabel, speechLocale, token);
     if (!translationDone || token !== runToken) {
       if (token === runToken) stopNarration();
       return;
@@ -630,16 +714,13 @@
   function publishSemanticReadout(point) {
     const readout = document.getElementById("readout");
     if (!readout?.classList.contains("visible")) return;
-    const parts = cleanParts([
-      document.getElementById("feature-name")?.textContent,
-      document.getElementById("metric")?.textContent,
-      document.getElementById("fact")?.textContent
-    ]);
-    if (!parts.length) return;
+    const elements = ["feature-name", "metric", "fact"].map(id => document.getElementById(id));
+    const parts = elements.map(element => element?.textContent);
+    const narrationParts = elements.map(element => element?.dataset.learningNarration || element?.textContent);
     window.dispatchEvent(new CustomEvent("spectrum:learning-target", {
       detail: {
         parts,
-        sourceKeys: parts,
+        narrationParts,
         x: point?.x,
         y: point?.y,
         color: getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#f59e0b"
@@ -661,11 +742,14 @@
 
   window.addEventListener("spectrum:learning-target", event => {
     const detail = event.detail || {};
-    const parts = cleanParts(detail.parts || [detail.text]);
+    const cleaned = cleanNarrationPairs(detail.parts || [detail.text], detail.narrationParts);
+    const parts = cleaned.parts;
     if (!parts.length) return;
-    const signature = parts.join("\u0000");
+    const narrationParts = cleaned.narrationParts;
+    const signature = `${parts.join("\u0000")}\u0001${narrationParts.join("\u0000")}`;
     const nextTarget = {
       parts,
+      narrationParts,
       signature,
       x: Number.isFinite(detail.x) ? detail.x : innerWidth * .5,
       y: Number.isFinite(detail.y) ? detail.y : innerHeight * .5,
@@ -736,6 +820,9 @@
     appId,
     speakCurrent() {
       if (target) narrate(target);
+    },
+    diagnostics() {
+      return { ...playbackDiagnostics };
     }
   });
 })();

@@ -17,6 +17,10 @@
   "cristal": "crystal",
   "aire": "airy",
   "cálido": "warm",
-  "profundo": "deep"
+  "profundo": "deep",
+  "octava 3": "octave 3",
+  "octava 4": "octave 4",
+  "octava 5": "octave 5",
+  "octava 6": "octave 6"
 };
 })();
