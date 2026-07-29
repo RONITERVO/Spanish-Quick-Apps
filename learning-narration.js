@@ -269,6 +269,19 @@
       .filter((value, index, values) => index === 0 || value !== values[index - 1]);
   }
 
+  function cleanNarrationPairs(parts, narrationParts) {
+    const displays = Array.isArray(parts) ? parts : [];
+    const spoken = Array.isArray(narrationParts) ? narrationParts : [];
+    const pairs = [];
+    for (let index = 0; index < displays.length; index += 1) {
+      const display = String(displays[index] || "").replace(/\s+/g, " ").trim();
+      if (!display || pairs.at(-1)?.display === display) continue;
+      const narration = String(spoken[index] || display).replace(/\s+/g, " ").trim() || display;
+      pairs.push({ display, narration });
+    }
+    return { parts: pairs.map(pair => pair.display), narrationParts: pairs.map(pair => pair.narration) };
+  }
+
   function joinForDisplay(parts) {
     return parts.join("\n");
   }
@@ -552,23 +565,25 @@
     });
   }
 
-  async function speakPhase(parts, phase, label, language, token) {
+  async function speakPhase(displayParts, spokenParts, phase, label, language, token) {
     if (token !== runToken) return false;
     languageElement.textContent = phase === "spanish" ? "ESPAÑOL" : `ESPAÑOL → ${label}`;
     overlay.classList.remove("learning-narration--complete");
 
-    for (let index = 0; index < parts.length; index += 1) {
+    for (let index = 0; index < spokenParts.length; index += 1) {
       if (token !== runToken) return false;
-      const part = parts[index];
+      const part = spokenParts[index];
+      const displayPart = displayParts[index] || part;
       const line = narrationLine(index);
       if (!line) continue;
       if (phase === "translation") line.classList.add("learning-narration__line--translating");
       line.querySelector(".learning-narration__ink").textContent = "";
       line.classList.add("learning-narration__line--speaking");
       const spokenPart = /[.!?…:]$/.test(part) ? part : `${part}.`;
-      const ok = await speakChunk(spokenPart, language, progress => revealLine(index, part, progress), token, part);
+      const mapProgress = progress => revealLine(index, displayPart, displayPart.length * progress / Math.max(1, part.length));
+      const ok = await speakChunk(spokenPart, language, mapProgress, token, part);
       if (!ok) return false;
-      revealLine(index, part, part.length);
+      revealLine(index, displayPart, displayPart.length);
       line.classList.remove("learning-narration__line--speaking");
       if (phase === "translation") {
         line.classList.remove("learning-narration__line--translating");
@@ -583,7 +598,8 @@
 
   async function narrate(capturedTarget) {
     if (!capturedTarget || capturedTarget !== target) return;
-    const parts = cleanParts(capturedTarget.parts);
+    const parts = capturedTarget.parts;
+    const narrationParts = capturedTarget.narrationParts;
     if (!parts.length) return;
 
     narratedSignaturesThisTouch.add(capturedTarget.signature);
@@ -593,16 +609,16 @@
 
     await catalogReady;
     if (token !== runToken) return;
-    const translated = translatedParts(parts);
+    const translated = translatedParts(narrationParts);
     setOverlayLines(parts, translated, capturedTarget.color, capturedTarget);
 
-    const spanishDone = await speakPhase(parts, "spanish", "ESPAÑOL", "es-ES", token);
+    const spanishDone = await speakPhase(parts, narrationParts, "spanish", "ESPAÑOL", "es-ES", token);
     if (!spanishDone || token !== runToken) {
       if (token === runToken) stopNarration();
       return;
     }
 
-    const translationDone = await speakPhase(translated, "translation", languageLabel, speechLocale, token);
+    const translationDone = await speakPhase(translated, translated, "translation", languageLabel, speechLocale, token);
     if (!translationDone || token !== runToken) {
       if (token === runToken) stopNarration();
       return;
@@ -630,16 +646,13 @@
   function publishSemanticReadout(point) {
     const readout = document.getElementById("readout");
     if (!readout?.classList.contains("visible")) return;
-    const parts = cleanParts([
-      document.getElementById("feature-name")?.textContent,
-      document.getElementById("metric")?.textContent,
-      document.getElementById("fact")?.textContent
-    ]);
-    if (!parts.length) return;
+    const elements = ["feature-name", "metric", "fact"].map(id => document.getElementById(id));
+    const parts = elements.map(element => element?.textContent);
+    const narrationParts = elements.map(element => element?.dataset.learningNarration || element?.textContent);
     window.dispatchEvent(new CustomEvent("spectrum:learning-target", {
       detail: {
         parts,
-        sourceKeys: parts,
+        narrationParts,
         x: point?.x,
         y: point?.y,
         color: getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#f59e0b"
@@ -661,11 +674,14 @@
 
   window.addEventListener("spectrum:learning-target", event => {
     const detail = event.detail || {};
-    const parts = cleanParts(detail.parts || [detail.text]);
+    const cleaned = cleanNarrationPairs(detail.parts || [detail.text], detail.narrationParts);
+    const parts = cleaned.parts;
     if (!parts.length) return;
-    const signature = parts.join("\u0000");
+    const narrationParts = cleaned.narrationParts;
+    const signature = `${parts.join("\u0000")}\u0001${narrationParts.join("\u0000")}`;
     const nextTarget = {
       parts,
+      narrationParts,
       signature,
       x: Number.isFinite(detail.x) ? detail.x : innerWidth * .5,
       y: Number.isFinite(detail.y) ? detail.y : innerHeight * .5,

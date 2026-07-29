@@ -1110,6 +1110,7 @@
         setTextIfChanged(zoneName, zone.name);
         setTextIfChanged(featureName, feature[0]);
         setTextIfChanged(metric, formatMetric(zone, yNorm));
+        metric.dataset.learningNarration = zone.material;
         setTextIfChanged(fact, feature[1] || zone.fact);
         setTextIfChanged(scaleText, zone.unit === "altitude" ? "hacia el espacio" : zone.unit === "depth" ? "hacia el centro" : "superficie terrestre");
 

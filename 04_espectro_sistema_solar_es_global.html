@@ -1249,6 +1249,7 @@
         zoneName.textContent = zone.name;
         featureName.textContent = feature[0];
         metric.textContent = formatMetric(zone, journey);
+        metric.dataset.learningNarration = zone.typeLabel;
         fact.textContent = feature[1];
         scaleValue.textContent = zone.metricMode === "sun"
           ? "Sol · centro del sistema"
