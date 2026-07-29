@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-17764024859a3adf2cba048c",
+  "text": "M32 y M110",
+  "durationMs": 3000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 6
+    },
+    {
+      "startMs": 150,
+      "endMs": 1240,
+      "startChar": 6,
+      "endChar": 10
+    }
+  ]
+}

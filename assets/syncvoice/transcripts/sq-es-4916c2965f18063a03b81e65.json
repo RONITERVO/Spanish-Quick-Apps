@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "externalId": "sq-es-4916c2965f18063a03b81e65",
+  "text": "Reconocer estructura no garantiza comprender símbolos, referencias o intenciones.",
+  "durationMs": 6280,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 21
+    },
+    {
+      "startMs": 150,
+      "endMs": 1480,
+      "startChar": 21,
+      "endChar": 24
+    },
+    {
+      "startMs": 1480,
+      "endMs": 1760,
+      "startChar": 24,
+      "endChar": 34
+    },
+    {
+      "startMs": 1760,
+      "endMs": 2480,
+      "startChar": 34,
+      "endChar": 45
+    },
+    {
+      "startMs": 2480,
+      "endMs": 3080,
+      "startChar": 45,
+      "endChar": 55
+    },
+    {
+      "startMs": 3080,
+      "endMs": 4040,
+      "startChar": 55,
+      "endChar": 67
+    },
+    {
+      "startMs": 4040,
+      "endMs": 5040,
+      "startChar": 67,
+      "endChar": 69
+    },
+    {
+      "startMs": 5040,
+      "endMs": 5320,
+      "startChar": 69,
+      "endChar": 81
+    }
+  ]
+}

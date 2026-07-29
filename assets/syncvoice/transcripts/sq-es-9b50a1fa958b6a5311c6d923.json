@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "externalId": "sq-es-9b50a1fa958b6a5311c6d923",
+  "text": "Estímulo → receptor → señal → respuesta",
+  "durationMs": 4880,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 697,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 697,
+      "endMs": 1394,
+      "startChar": 9,
+      "endChar": 11
+    },
+    {
+      "startMs": 1394,
+      "endMs": 2091,
+      "startChar": 11,
+      "endChar": 20
+    },
+    {
+      "startMs": 2091,
+      "endMs": 2789,
+      "startChar": 20,
+      "endChar": 22
+    },
+    {
+      "startMs": 2789,
+      "endMs": 3486,
+      "startChar": 22,
+      "endChar": 28
+    },
+    {
+      "startMs": 3486,
+      "endMs": 4183,
+      "startChar": 28,
+      "endChar": 30
+    },
+    {
+      "startMs": 4183,
+      "endMs": 4880,
+      "startChar": 30,
+      "endChar": 39
+    }
+  ]
+}

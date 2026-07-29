@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-e0c12e487a891f68f05aeb6f",
+  "text": "flujo del tiempo",
+  "durationMs": 1880,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 10,
+      "endChar": 16
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-b4f5697667ebf26e30dccde9",
+  "text": "El sonido percibido organiza vibraciones en tono, timbre, ritmo, fuente y significado.",
+  "durationMs": 8800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 20
+    },
+    {
+      "startMs": 225,
+      "endMs": 1560,
+      "startChar": 20,
+      "endChar": 29
+    },
+    {
+      "startMs": 1560,
+      "endMs": 2440,
+      "startChar": 29,
+      "endChar": 41
+    },
+    {
+      "startMs": 2440,
+      "endMs": 3440,
+      "startChar": 41,
+      "endChar": 44
+    },
+    {
+      "startMs": 3440,
+      "endMs": 3800,
+      "startChar": 44,
+      "endChar": 50
+    },
+    {
+      "startMs": 3800,
+      "endMs": 4320,
+      "startChar": 50,
+      "endChar": 58
+    },
+    {
+      "startMs": 4320,
+      "endMs": 5440,
+      "startChar": 58,
+      "endChar": 65
+    },
+    {
+      "startMs": 5440,
+      "endMs": 6440,
+      "startChar": 65,
+      "endChar": 72
+    },
+    {
+      "startMs": 6440,
+      "endMs": 6920,
+      "startChar": 72,
+      "endChar": 74
+    },
+    {
+      "startMs": 6920,
+      "endMs": 7400,
+      "startChar": 74,
+      "endChar": 86
+    }
+  ]
+}

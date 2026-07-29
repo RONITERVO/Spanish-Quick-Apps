@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-65fc29c1be471d85342a7ff4",
+  "text": "animación suspendida",
+  "durationMs": 1960,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 20
+    }
+  ]
+}

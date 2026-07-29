@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-385d18c723f9b406d179cd10",
+  "text": "intervalos vacíos",
+  "durationMs": 2200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 11
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 11,
+      "endChar": 17
+    }
+  ]
+}

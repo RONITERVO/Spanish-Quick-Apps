@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2659b5525a802ca80492300c",
+  "text": "ciclo de nutrientes",
+  "durationMs": 2080,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 960,
+      "startChar": 9,
+      "endChar": 19
+    }
+  ]
+}

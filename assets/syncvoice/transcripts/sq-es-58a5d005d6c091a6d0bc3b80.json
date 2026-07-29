@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-58a5d005d6c091a6d0bc3b80",
+  "text": "cadena de suministro",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 20
+    }
+  ]
+}

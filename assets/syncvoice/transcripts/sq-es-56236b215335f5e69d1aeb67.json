@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-56236b215335f5e69d1aeb67",
+  "text": "Las manos y el cuerpo pueden indicar dirección, tamaño, intención o emoción.",
+  "durationMs": 6800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 12
+    },
+    {
+      "startMs": 225,
+      "endMs": 300,
+      "startChar": 12,
+      "endChar": 15
+    },
+    {
+      "startMs": 300,
+      "endMs": 960,
+      "startChar": 15,
+      "endChar": 22
+    },
+    {
+      "startMs": 960,
+      "endMs": 1520,
+      "startChar": 22,
+      "endChar": 29
+    },
+    {
+      "startMs": 1520,
+      "endMs": 1960,
+      "startChar": 29,
+      "endChar": 37
+    },
+    {
+      "startMs": 1960,
+      "endMs": 2600,
+      "startChar": 37,
+      "endChar": 48
+    },
+    {
+      "startMs": 2600,
+      "endMs": 3640,
+      "startChar": 48,
+      "endChar": 56
+    },
+    {
+      "startMs": 3640,
+      "endMs": 4640,
+      "startChar": 56,
+      "endChar": 66
+    },
+    {
+      "startMs": 4640,
+      "endMs": 5180,
+      "startChar": 66,
+      "endChar": 68
+    },
+    {
+      "startMs": 5180,
+      "endMs": 5720,
+      "startChar": 68,
+      "endChar": 76
+    }
+  ]
+}

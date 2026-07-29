@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-251d43013a2b645e6deb3567",
+  "text": "Estado de mínima energía",
+  "durationMs": 2600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 1040,
+      "startChar": 10,
+      "endChar": 17
+    },
+    {
+      "startMs": 1040,
+      "endMs": 1640,
+      "startChar": 17,
+      "endChar": 24
+    }
+  ]
+}

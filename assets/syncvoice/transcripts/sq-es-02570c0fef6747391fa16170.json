@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-02570c0fef6747391fa16170",
+  "text": "otra longitud de onda",
+  "durationMs": 2120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 14
+    },
+    {
+      "startMs": 150,
+      "endMs": 775,
+      "startChar": 14,
+      "endChar": 17
+    },
+    {
+      "startMs": 775,
+      "endMs": 1400,
+      "startChar": 17,
+      "endChar": 21
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "externalId": "sq-es-e34fcc41ce93bc2f1c82bcb3",
+  "text": "Modelos experimentales, no antepasados confirmados",
+  "durationMs": 4200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 24
+    },
+    {
+      "startMs": 150,
+      "endMs": 1920,
+      "startChar": 24,
+      "endChar": 27
+    },
+    {
+      "startMs": 1920,
+      "endMs": 2400,
+      "startChar": 27,
+      "endChar": 39
+    },
+    {
+      "startMs": 2400,
+      "endMs": 3200,
+      "startChar": 39,
+      "endChar": 50
+    }
+  ]
+}

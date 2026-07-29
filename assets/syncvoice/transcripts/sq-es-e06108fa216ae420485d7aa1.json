@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-e06108fa216ae420485d7aa1",
+  "text": "simulaciones anidadas",
+  "durationMs": 2200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 13
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 13,
+      "endChar": 21
+    }
+  ]
+}

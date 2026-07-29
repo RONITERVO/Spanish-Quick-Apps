@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-561180fb5f22a31a420cf100",
+  "text": "temperaturas altas",
+  "durationMs": 2160,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 13
+    },
+    {
+      "startMs": 75,
+      "endMs": 1160,
+      "startChar": 13,
+      "endChar": 18
+    }
+  ]
+}

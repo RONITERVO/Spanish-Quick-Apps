@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-669897b07d9ac917f808538a",
+  "text": "tacto y temperatura",
+  "durationMs": 2080,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 8
+    },
+    {
+      "startMs": 150,
+      "endMs": 960,
+      "startChar": 8,
+      "endChar": 19
+    }
+  ]
+}

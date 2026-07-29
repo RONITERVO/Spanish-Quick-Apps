@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-c2f3a23600994055b4547a39",
+  "text": "línea de 21 centímetros",
+  "durationMs": 2600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 650,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 650,
+      "endMs": 1300,
+      "startChar": 6,
+      "endChar": 9
+    },
+    {
+      "startMs": 1300,
+      "endMs": 1950,
+      "startChar": 9,
+      "endChar": 12
+    },
+    {
+      "startMs": 1950,
+      "endMs": 2600,
+      "startChar": 12,
+      "endChar": 23
+    }
+  ]
+}

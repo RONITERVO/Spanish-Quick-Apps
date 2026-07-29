@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-1046b93d177cbd91e2cf6aff",
+  "text": "cono de luz",
+  "durationMs": 1200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 8
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 8,
+      "endChar": 11
+    }
+  ]
+}

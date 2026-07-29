@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-842e71e948d332694a942af0",
+  "text": "volumen de muestra",
+  "durationMs": 1760,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 18
+    }
+  ]
+}

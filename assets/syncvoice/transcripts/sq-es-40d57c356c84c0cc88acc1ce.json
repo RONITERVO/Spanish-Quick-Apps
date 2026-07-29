@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-40d57c356c84c0cc88acc1ce",
+  "text": "límite exterior",
+  "durationMs": 1760,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 15
+    }
+  ]
+}

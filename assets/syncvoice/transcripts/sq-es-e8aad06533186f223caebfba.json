@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-e8aad06533186f223caebfba",
+  "text": "mensajes en la oscuridad",
+  "durationMs": 2440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 735,
+      "startChar": 12,
+      "endChar": 15
+    },
+    {
+      "startMs": 735,
+      "endMs": 1320,
+      "startChar": 15,
+      "endChar": 24
+    }
+  ]
+}

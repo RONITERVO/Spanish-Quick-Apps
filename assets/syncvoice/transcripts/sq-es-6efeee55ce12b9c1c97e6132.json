@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-6efeee55ce12b9c1c97e6132",
+  "text": "galaxias que se alejan",
+  "durationMs": 2040,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1040,
+      "startChar": 13,
+      "endChar": 16
+    },
+    {
+      "startMs": 1040,
+      "endMs": 1200,
+      "startChar": 16,
+      "endChar": 22
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-402c18e8b33dc5b399e62da2",
+  "text": "Alfa Centauri A",
+  "durationMs": 1880,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 14
+    },
+    {
+      "startMs": 150,
+      "endMs": 1320,
+      "startChar": 14,
+      "endChar": 15
+    }
+  ]
+}

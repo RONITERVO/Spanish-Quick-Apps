@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "externalId": "sq-es-0bc26a4387f8fbb4ff9a4d64",
+  "text": "Un router elige el siguiente salto para cada paquete usando información de red.",
+  "durationMs": 5640,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 16
+    },
+    {
+      "startMs": 225,
+      "endMs": 653,
+      "startChar": 16,
+      "endChar": 19
+    },
+    {
+      "startMs": 653,
+      "endMs": 1080,
+      "startChar": 19,
+      "endChar": 29
+    },
+    {
+      "startMs": 1080,
+      "endMs": 1800,
+      "startChar": 29,
+      "endChar": 35
+    },
+    {
+      "startMs": 1800,
+      "endMs": 2280,
+      "startChar": 35,
+      "endChar": 40
+    },
+    {
+      "startMs": 2280,
+      "endMs": 2640,
+      "startChar": 40,
+      "endChar": 45
+    },
+    {
+      "startMs": 2640,
+      "endMs": 2960,
+      "startChar": 45,
+      "endChar": 53
+    },
+    {
+      "startMs": 2960,
+      "endMs": 3600,
+      "startChar": 53,
+      "endChar": 60
+    },
+    {
+      "startMs": 3600,
+      "endMs": 4200,
+      "startChar": 60,
+      "endChar": 72
+    },
+    {
+      "startMs": 4200,
+      "endMs": 4560,
+      "startChar": 72,
+      "endChar": 75
+    },
+    {
+      "startMs": 4560,
+      "endMs": 4920,
+      "startChar": 75,
+      "endChar": 79
+    }
+  ]
+}

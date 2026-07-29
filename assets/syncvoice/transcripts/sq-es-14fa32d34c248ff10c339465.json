@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-14fa32d34c248ff10c339465",
+  "text": "ritmo casi inmóvil",
+  "durationMs": 2080,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1160,
+      "startChar": 11,
+      "endChar": 18
+    }
+  ]
+}

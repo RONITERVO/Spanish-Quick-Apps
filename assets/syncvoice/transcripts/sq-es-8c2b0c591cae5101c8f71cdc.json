@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-8c2b0c591cae5101c8f71cdc",
+  "text": "hidrógeno y helio",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 12,
+      "endChar": 17
+    }
+  ]
+}

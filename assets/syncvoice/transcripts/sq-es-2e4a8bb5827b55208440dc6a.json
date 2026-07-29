@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2e4a8bb5827b55208440dc6a",
+  "text": "Región tenue · conexiones entre grandes concentraciones",
+  "durationMs": 4880,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 13,
+      "endChar": 15
+    },
+    {
+      "startMs": 1280,
+      "endMs": 1720,
+      "startChar": 15,
+      "endChar": 26
+    },
+    {
+      "startMs": 1720,
+      "endMs": 2720,
+      "startChar": 26,
+      "endChar": 32
+    },
+    {
+      "startMs": 2720,
+      "endMs": 3120,
+      "startChar": 32,
+      "endChar": 40
+    },
+    {
+      "startMs": 3120,
+      "endMs": 3600,
+      "startChar": 40,
+      "endChar": 55
+    }
+  ]
+}

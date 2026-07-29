@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-f5b70c2f262b29b6c0a30369",
+  "text": "azul cielo apagado",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1080,
+      "startChar": 11,
+      "endChar": 18
+    }
+  ]
+}

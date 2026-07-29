@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "externalId": "sq-es-67343e52290cd1dbf85d139e",
+  "text": "La Estación Espacial Internacional orbita dentro de la termosfera.",
+  "durationMs": 4720,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 12,
+      "endChar": 21
+    },
+    {
+      "startMs": 225,
+      "endMs": 1320,
+      "startChar": 21,
+      "endChar": 35
+    },
+    {
+      "startMs": 1320,
+      "endMs": 2280,
+      "startChar": 35,
+      "endChar": 42
+    },
+    {
+      "startMs": 2280,
+      "endMs": 2960,
+      "startChar": 42,
+      "endChar": 49
+    },
+    {
+      "startMs": 2960,
+      "endMs": 3520,
+      "startChar": 49,
+      "endChar": 52
+    },
+    {
+      "startMs": 3520,
+      "endMs": 3595,
+      "startChar": 52,
+      "endChar": 55
+    },
+    {
+      "startMs": 3595,
+      "endMs": 3670,
+      "startChar": 55,
+      "endChar": 66
+    }
+  ]
+}

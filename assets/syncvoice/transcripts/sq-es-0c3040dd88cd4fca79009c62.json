@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-0c3040dd88cd4fca79009c62",
+  "text": "Máquinas, energía concentrada y producción masiva",
+  "durationMs": 4440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 18
+    },
+    {
+      "startMs": 150,
+      "endMs": 1760,
+      "startChar": 18,
+      "endChar": 30
+    },
+    {
+      "startMs": 1760,
+      "endMs": 2720,
+      "startChar": 30,
+      "endChar": 32
+    },
+    {
+      "startMs": 2720,
+      "endMs": 2960,
+      "startChar": 32,
+      "endChar": 43
+    },
+    {
+      "startMs": 2960,
+      "endMs": 3640,
+      "startChar": 43,
+      "endChar": 49
+    }
+  ]
+}

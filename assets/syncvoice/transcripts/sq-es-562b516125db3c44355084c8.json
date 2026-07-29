@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "externalId": "sq-es-562b516125db3c44355084c8",
+  "text": "Múltiples rutas activas de investigación",
+  "durationMs": 3440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 16
+    },
+    {
+      "startMs": 150,
+      "endMs": 1480,
+      "startChar": 16,
+      "endChar": 24
+    },
+    {
+      "startMs": 1480,
+      "endMs": 1800,
+      "startChar": 24,
+      "endChar": 27
+    },
+    {
+      "startMs": 1800,
+      "endMs": 2120,
+      "startChar": 27,
+      "endChar": 40
+    }
+  ]
+}

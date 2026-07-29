@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-edfbc9823e5854a7c89305bc",
+  "text": "Una envoltura extensa alrededor del disco",
+  "durationMs": 3760,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 14
+    },
+    {
+      "startMs": 150,
+      "endMs": 1080,
+      "startChar": 14,
+      "endChar": 22
+    },
+    {
+      "startMs": 1080,
+      "endMs": 2000,
+      "startChar": 22,
+      "endChar": 32
+    },
+    {
+      "startMs": 2000,
+      "endMs": 2800,
+      "startChar": 32,
+      "endChar": 36
+    },
+    {
+      "startMs": 2800,
+      "endMs": 3000,
+      "startChar": 36,
+      "endChar": 41
+    }
+  ]
+}

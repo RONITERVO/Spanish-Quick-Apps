@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-d22c06c9cf72ac7108519e9d",
+  "text": "múltiples canales",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 17
+    }
+  ]
+}

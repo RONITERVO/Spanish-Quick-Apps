@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2ecae4229473ce08d3ee5a63",
+  "text": "red de reacciones",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 7
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 7,
+      "endChar": 17
+    }
+  ]
+}

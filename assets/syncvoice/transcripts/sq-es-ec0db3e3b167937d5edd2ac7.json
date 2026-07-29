@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ec0db3e3b167937d5edd2ac7",
+  "text": "Acción sostenida con menor supervisión directa",
+  "durationMs": 3480,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 17
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 17,
+      "endChar": 21
+    },
+    {
+      "startMs": 1280,
+      "endMs": 1520,
+      "startChar": 21,
+      "endChar": 27
+    },
+    {
+      "startMs": 1520,
+      "endMs": 1920,
+      "startChar": 27,
+      "endChar": 39
+    },
+    {
+      "startMs": 1920,
+      "endMs": 2680,
+      "startChar": 39,
+      "endChar": 46
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "externalId": "sq-es-4e0854251c03fbb697d4ca03",
+  "text": "La voz transmite palabras, ritmo, urgencia, identidad y estado emocional.",
+  "durationMs": 7120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 7
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 7,
+      "endChar": 17
+    },
+    {
+      "startMs": 225,
+      "endMs": 1360,
+      "startChar": 17,
+      "endChar": 27
+    },
+    {
+      "startMs": 1360,
+      "endMs": 2320,
+      "startChar": 27,
+      "endChar": 34
+    },
+    {
+      "startMs": 2320,
+      "endMs": 3280,
+      "startChar": 34,
+      "endChar": 44
+    },
+    {
+      "startMs": 3280,
+      "endMs": 4400,
+      "startChar": 44,
+      "endChar": 54
+    },
+    {
+      "startMs": 4400,
+      "endMs": 4940,
+      "startChar": 54,
+      "endChar": 56
+    },
+    {
+      "startMs": 4940,
+      "endMs": 5480,
+      "startChar": 56,
+      "endChar": 63
+    },
+    {
+      "startMs": 5480,
+      "endMs": 6200,
+      "startChar": 63,
+      "endChar": 73
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "externalId": "sq-es-c4f235ae0bed8476073e786b",
+  "text": "Fuente → propagación → sensor → calibración → datos sin procesar → análisis",
+  "durationMs": 8320,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 640,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 640,
+      "endMs": 1280,
+      "startChar": 7,
+      "endChar": 9
+    },
+    {
+      "startMs": 1280,
+      "endMs": 1920,
+      "startChar": 9,
+      "endChar": 21
+    },
+    {
+      "startMs": 1920,
+      "endMs": 2560,
+      "startChar": 21,
+      "endChar": 23
+    },
+    {
+      "startMs": 2560,
+      "endMs": 3200,
+      "startChar": 23,
+      "endChar": 30
+    },
+    {
+      "startMs": 3200,
+      "endMs": 3840,
+      "startChar": 30,
+      "endChar": 32
+    },
+    {
+      "startMs": 3840,
+      "endMs": 4480,
+      "startChar": 32,
+      "endChar": 44
+    },
+    {
+      "startMs": 4480,
+      "endMs": 5120,
+      "startChar": 44,
+      "endChar": 46
+    },
+    {
+      "startMs": 5120,
+      "endMs": 5760,
+      "startChar": 46,
+      "endChar": 52
+    },
+    {
+      "startMs": 5760,
+      "endMs": 6400,
+      "startChar": 52,
+      "endChar": 56
+    },
+    {
+      "startMs": 6400,
+      "endMs": 7040,
+      "startChar": 56,
+      "endChar": 65
+    },
+    {
+      "startMs": 7040,
+      "endMs": 7680,
+      "startChar": 65,
+      "endChar": 67
+    },
+    {
+      "startMs": 7680,
+      "endMs": 8320,
+      "startChar": 67,
+      "endChar": 75
+    }
+  ]
+}

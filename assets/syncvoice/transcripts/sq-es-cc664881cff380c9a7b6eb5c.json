@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-cc664881cff380c9a7b6eb5c",
+  "text": "Fuente de energía · entorno dinámico",
+  "durationMs": 3120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 18
+    },
+    {
+      "startMs": 225,
+      "endMs": 793,
+      "startChar": 18,
+      "endChar": 20
+    },
+    {
+      "startMs": 793,
+      "endMs": 1360,
+      "startChar": 20,
+      "endChar": 28
+    },
+    {
+      "startMs": 1360,
+      "endMs": 2240,
+      "startChar": 28,
+      "endChar": 36
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-63bf2c2e649488b5e5972b9f",
+  "text": "hierro y níquel sólidos",
+  "durationMs": 2520,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 1040,
+      "startChar": 9,
+      "endChar": 16
+    },
+    {
+      "startMs": 1040,
+      "endMs": 1520,
+      "startChar": 16,
+      "endChar": 23
+    }
+  ]
+}

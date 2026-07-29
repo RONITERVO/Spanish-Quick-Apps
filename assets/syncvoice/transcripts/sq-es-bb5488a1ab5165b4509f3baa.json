@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "externalId": "sq-es-bb5488a1ab5165b4509f3baa",
+  "text": "Simulación de lo ausente y lo posible",
+  "durationMs": 3440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 11
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 11,
+      "endChar": 14
+    },
+    {
+      "startMs": 150,
+      "endMs": 1120,
+      "startChar": 14,
+      "endChar": 17
+    },
+    {
+      "startMs": 1120,
+      "endMs": 1280,
+      "startChar": 17,
+      "endChar": 25
+    },
+    {
+      "startMs": 1280,
+      "endMs": 2040,
+      "startChar": 25,
+      "endChar": 27
+    },
+    {
+      "startMs": 2040,
+      "endMs": 2240,
+      "startChar": 27,
+      "endChar": 30
+    },
+    {
+      "startMs": 2240,
+      "endMs": 2440,
+      "startChar": 30,
+      "endChar": 37
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-33bff24966d46fd1cdf60a61",
+  "text": "puerta lógica",
+  "durationMs": 1600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 13
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-5d441d7057524c9fdc313892",
+  "text": "La primera anomalía",
+  "durationMs": 2040,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1040,
+      "startChar": 11,
+      "endChar": 19
+    }
+  ]
+}

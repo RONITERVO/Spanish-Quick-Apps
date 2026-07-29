@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "externalId": "sq-es-175923b91bf5c97999b99b98",
+  "text": "El umbral de la vida",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 960,
+      "startChar": 10,
+      "endChar": 13
+    },
+    {
+      "startMs": 960,
+      "endMs": 1120,
+      "startChar": 13,
+      "endChar": 16
+    },
+    {
+      "startMs": 1120,
+      "endMs": 1280,
+      "startChar": 16,
+      "endChar": 20
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "externalId": "sq-es-eee2bddb8dca25af0adb8c30",
+  "text": "Señal + contexto + atención mutua → mensaje interpretado",
+  "durationMs": 5280,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 8
+    },
+    {
+      "startMs": 150,
+      "endMs": 1120,
+      "startChar": 8,
+      "endChar": 17
+    },
+    {
+      "startMs": 1120,
+      "endMs": 2000,
+      "startChar": 17,
+      "endChar": 19
+    },
+    {
+      "startMs": 2000,
+      "endMs": 2360,
+      "startChar": 19,
+      "endChar": 28
+    },
+    {
+      "startMs": 2360,
+      "endMs": 2920,
+      "startChar": 28,
+      "endChar": 34
+    },
+    {
+      "startMs": 2920,
+      "endMs": 3480,
+      "startChar": 34,
+      "endChar": 36
+    },
+    {
+      "startMs": 3480,
+      "endMs": 3960,
+      "startChar": 36,
+      "endChar": 44
+    },
+    {
+      "startMs": 3960,
+      "endMs": 4280,
+      "startChar": 44,
+      "endChar": 56
+    }
+  ]
+}

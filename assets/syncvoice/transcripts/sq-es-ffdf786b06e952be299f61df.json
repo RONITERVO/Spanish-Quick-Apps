@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ffdf786b06e952be299f61df",
+  "text": "Espera interestelar",
+  "durationMs": 2200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 19
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ec074c85626b1c070e0b914e",
+  "text": "mensajes sin llegada",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 13,
+      "endChar": 20
+    }
+  ]
+}

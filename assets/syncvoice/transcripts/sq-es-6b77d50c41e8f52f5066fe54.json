@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "externalId": "sq-es-6b77d50c41e8f52f5066fe54",
+  "text": "Tres dimensiones espaciales + una dimensión temporal",
+  "durationMs": 4800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 17
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 17,
+      "endChar": 28
+    },
+    {
+      "startMs": 1280,
+      "endMs": 2240,
+      "startChar": 28,
+      "endChar": 30
+    },
+    {
+      "startMs": 2240,
+      "endMs": 2840,
+      "startChar": 30,
+      "endChar": 34
+    },
+    {
+      "startMs": 2840,
+      "endMs": 3360,
+      "startChar": 34,
+      "endChar": 44
+    },
+    {
+      "startMs": 3360,
+      "endMs": 4040,
+      "startChar": 44,
+      "endChar": 52
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ba197441398a30530828aaf5",
+  "text": "El silencio del universo",
+  "durationMs": 2320,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1080,
+      "startChar": 12,
+      "endChar": 16
+    },
+    {
+      "startMs": 1080,
+      "endMs": 1280,
+      "startChar": 16,
+      "endChar": 24
+    }
+  ]
+}

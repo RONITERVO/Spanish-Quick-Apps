@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-0a85bea90da90438a6ea947f",
+  "text": "roca sólida y quebradiza",
+  "durationMs": 2080,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 635,
+      "startChar": 12,
+      "endChar": 14
+    },
+    {
+      "startMs": 635,
+      "endMs": 1120,
+      "startChar": 14,
+      "endChar": 24
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-9e38836eac54b24bd5b8d02b",
+  "text": "rueda y eje",
+  "durationMs": 1600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 8
+    },
+    {
+      "startMs": 150,
+      "endMs": 1120,
+      "startChar": 8,
+      "endChar": 11
+    }
+  ]
+}

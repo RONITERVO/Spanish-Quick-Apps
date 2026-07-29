@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "externalId": "sq-es-bc440e02562f79440f4663ec",
+  "text": "Instrucciones numéricas controlan operaciones concretas del procesador.",
+  "durationMs": 5440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 14
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 14,
+      "endChar": 24
+    },
+    {
+      "startMs": 150,
+      "endMs": 1960,
+      "startChar": 24,
+      "endChar": 34
+    },
+    {
+      "startMs": 1960,
+      "endMs": 2680,
+      "startChar": 34,
+      "endChar": 46
+    },
+    {
+      "startMs": 2680,
+      "endMs": 3640,
+      "startChar": 46,
+      "endChar": 56
+    },
+    {
+      "startMs": 3640,
+      "endMs": 4000,
+      "startChar": 56,
+      "endChar": 60
+    },
+    {
+      "startMs": 4000,
+      "endMs": 4360,
+      "startChar": 60,
+      "endChar": 71
+    }
+  ]
+}

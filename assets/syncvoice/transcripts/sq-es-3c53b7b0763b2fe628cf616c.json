@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "externalId": "sq-es-3c53b7b0763b2fe628cf616c",
+  "text": "Supuestos ocultos + contexto perdido + demora → errores persistentes",
+  "durationMs": 7760,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 18
+    },
+    {
+      "startMs": 150,
+      "endMs": 1560,
+      "startChar": 18,
+      "endChar": 20
+    },
+    {
+      "startMs": 1560,
+      "endMs": 2200,
+      "startChar": 20,
+      "endChar": 29
+    },
+    {
+      "startMs": 2200,
+      "endMs": 2840,
+      "startChar": 29,
+      "endChar": 37
+    },
+    {
+      "startMs": 2840,
+      "endMs": 3520,
+      "startChar": 37,
+      "endChar": 39
+    },
+    {
+      "startMs": 3520,
+      "endMs": 4280,
+      "startChar": 39,
+      "endChar": 46
+    },
+    {
+      "startMs": 4280,
+      "endMs": 5000,
+      "startChar": 46,
+      "endChar": 48
+    },
+    {
+      "startMs": 5000,
+      "endMs": 5400,
+      "startChar": 48,
+      "endChar": 56
+    },
+    {
+      "startMs": 5400,
+      "endMs": 6560,
+      "startChar": 56,
+      "endChar": 68
+    }
+  ]
+}

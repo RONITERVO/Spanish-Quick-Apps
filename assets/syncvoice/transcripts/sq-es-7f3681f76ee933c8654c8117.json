@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-7f3681f76ee933c8654c8117",
+  "text": "cuatro lunas pequeñas",
+  "durationMs": 1960,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 13,
+      "endChar": 21
+    }
+  ]
+}

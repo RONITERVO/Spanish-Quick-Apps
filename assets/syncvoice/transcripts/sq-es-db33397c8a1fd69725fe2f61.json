@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-db33397c8a1fd69725fe2f61",
+  "text": "El cerebro integra señales para representar posiciones del cuerpo, objetos y rutas.",
+  "durationMs": 6800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 19
+    },
+    {
+      "startMs": 225,
+      "endMs": 1280,
+      "startChar": 19,
+      "endChar": 27
+    },
+    {
+      "startMs": 1280,
+      "endMs": 1960,
+      "startChar": 27,
+      "endChar": 32
+    },
+    {
+      "startMs": 1960,
+      "endMs": 2280,
+      "startChar": 32,
+      "endChar": 44
+    },
+    {
+      "startMs": 2280,
+      "endMs": 3120,
+      "startChar": 44,
+      "endChar": 55
+    },
+    {
+      "startMs": 3120,
+      "endMs": 3960,
+      "startChar": 55,
+      "endChar": 59
+    },
+    {
+      "startMs": 3960,
+      "endMs": 4120,
+      "startChar": 59,
+      "endChar": 67
+    },
+    {
+      "startMs": 4120,
+      "endMs": 4680,
+      "startChar": 67,
+      "endChar": 75
+    },
+    {
+      "startMs": 4680,
+      "endMs": 5720,
+      "startChar": 75,
+      "endChar": 77
+    },
+    {
+      "startMs": 5720,
+      "endMs": 6000,
+      "startChar": 77,
+      "endChar": 83
+    }
+  ]
+}

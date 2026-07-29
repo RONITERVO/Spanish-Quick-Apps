@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-212b02b7fa9b2530385fdbc7",
+  "text": "puente hacia Virgo",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1080,
+      "startChar": 13,
+      "endChar": 18
+    }
+  ]
+}

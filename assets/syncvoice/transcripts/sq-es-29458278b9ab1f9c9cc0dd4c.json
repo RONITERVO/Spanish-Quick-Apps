@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-29458278b9ab1f9c9cc0dd4c",
+  "text": "ceguera por inatención",
+  "durationMs": 2200,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1080,
+      "startChar": 12,
+      "endChar": 22
+    }
+  ]
+}

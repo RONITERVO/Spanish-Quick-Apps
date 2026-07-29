@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-05ee491d0213279c455521a7",
+  "text": "gas muy tenue y parcialmente ionizado",
+  "durationMs": 3680,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 8
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 8,
+      "endChar": 14
+    },
+    {
+      "startMs": 225,
+      "endMs": 873,
+      "startChar": 14,
+      "endChar": 16
+    },
+    {
+      "startMs": 873,
+      "endMs": 1520,
+      "startChar": 16,
+      "endChar": 29
+    },
+    {
+      "startMs": 1520,
+      "endMs": 2720,
+      "startChar": 29,
+      "endChar": 37
+    }
+  ]
+}

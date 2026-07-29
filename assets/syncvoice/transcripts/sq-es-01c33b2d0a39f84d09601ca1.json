@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "externalId": "sq-es-01c33b2d0a39f84d09601ca1",
+  "text": "Las casas organizan descanso, parentesco, trabajo, intimidad y almacenamiento.",
+  "durationMs": 7480,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 20
+    },
+    {
+      "startMs": 225,
+      "endMs": 1600,
+      "startChar": 20,
+      "endChar": 30
+    },
+    {
+      "startMs": 1600,
+      "endMs": 2560,
+      "startChar": 30,
+      "endChar": 42
+    },
+    {
+      "startMs": 2560,
+      "endMs": 3680,
+      "startChar": 42,
+      "endChar": 51
+    },
+    {
+      "startMs": 3680,
+      "endMs": 4720,
+      "startChar": 51,
+      "endChar": 61
+    },
+    {
+      "startMs": 4720,
+      "endMs": 5300,
+      "startChar": 61,
+      "endChar": 63
+    },
+    {
+      "startMs": 5300,
+      "endMs": 5880,
+      "startChar": 63,
+      "endChar": 78
+    }
+  ]
+}

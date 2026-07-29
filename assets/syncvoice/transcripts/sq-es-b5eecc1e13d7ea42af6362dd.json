@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-b5eecc1e13d7ea42af6362dd",
+  "text": "capa D doble prima",
+  "durationMs": 2120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 7
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 7,
+      "endChar": 13
+    },
+    {
+      "startMs": 1000,
+      "endMs": 1440,
+      "startChar": 13,
+      "endChar": 18
+    }
+  ]
+}

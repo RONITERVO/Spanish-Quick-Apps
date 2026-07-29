@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-e585ffcfd22796da6974e095",
+  "text": "siguiente viaje",
+  "durationMs": 1400,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 15
+    }
+  ]
+}

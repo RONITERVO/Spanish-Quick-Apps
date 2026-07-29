@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "externalId": "sq-es-1b768736c0672ae6d5c39644",
+  "text": "Pausas, cabeceras, ritmos o bloques repetidos podrían indicar unidades, pero también formar parte del canal.",
+  "durationMs": 10000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 19
+    },
+    {
+      "startMs": 150,
+      "endMs": 1960,
+      "startChar": 19,
+      "endChar": 26
+    },
+    {
+      "startMs": 1960,
+      "endMs": 3000,
+      "startChar": 26,
+      "endChar": 28
+    },
+    {
+      "startMs": 3000,
+      "endMs": 3280,
+      "startChar": 28,
+      "endChar": 36
+    },
+    {
+      "startMs": 3280,
+      "endMs": 3880,
+      "startChar": 36,
+      "endChar": 46
+    },
+    {
+      "startMs": 3880,
+      "endMs": 4640,
+      "startChar": 46,
+      "endChar": 54
+    },
+    {
+      "startMs": 4640,
+      "endMs": 5480,
+      "startChar": 54,
+      "endChar": 62
+    },
+    {
+      "startMs": 5480,
+      "endMs": 5960,
+      "startChar": 62,
+      "endChar": 72
+    },
+    {
+      "startMs": 5960,
+      "endMs": 6640,
+      "startChar": 72,
+      "endChar": 77
+    },
+    {
+      "startMs": 6640,
+      "endMs": 7360,
+      "startChar": 77,
+      "endChar": 85
+    },
+    {
+      "startMs": 7360,
+      "endMs": 8000,
+      "startChar": 85,
+      "endChar": 92
+    },
+    {
+      "startMs": 8000,
+      "endMs": 8680,
+      "startChar": 92,
+      "endChar": 98
+    },
+    {
+      "startMs": 8680,
+      "endMs": 9120,
+      "startChar": 98,
+      "endChar": 102
+    },
+    {
+      "startMs": 9120,
+      "endMs": 9320,
+      "startChar": 102,
+      "endChar": 108
+    }
+  ]
+}

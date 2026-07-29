@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-083376b26683726e49080959",
+  "text": "luz en viaje",
+  "durationMs": 1800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 7
+    },
+    {
+      "startMs": 150,
+      "endMs": 1240,
+      "startChar": 7,
+      "endChar": 12
+    }
+  ]
+}

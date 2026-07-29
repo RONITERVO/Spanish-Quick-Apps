@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "externalId": "sq-es-aad4e531863fa48611d08853",
+  "text": "Las personas transportan prácticas completas, no solo mercancías.",
+  "durationMs": 5000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 960,
+      "startChar": 13,
+      "endChar": 25
+    },
+    {
+      "startMs": 960,
+      "endMs": 1800,
+      "startChar": 25,
+      "endChar": 35
+    },
+    {
+      "startMs": 1800,
+      "endMs": 2480,
+      "startChar": 35,
+      "endChar": 46
+    },
+    {
+      "startMs": 2480,
+      "endMs": 3280,
+      "startChar": 46,
+      "endChar": 49
+    },
+    {
+      "startMs": 3280,
+      "endMs": 3760,
+      "startChar": 49,
+      "endChar": 54
+    },
+    {
+      "startMs": 3760,
+      "endMs": 4040,
+      "startChar": 54,
+      "endChar": 65
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-168f0f5df70d8ef09056d755",
+  "text": "cadena de software",
+  "durationMs": 1560,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 18
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-17cffa3b19878a546a464607",
+  "text": "condiciones iniciales",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 12
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 12,
+      "endChar": 21
+    }
+  ]
+}

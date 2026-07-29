@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-437b1bd039ddf1e2e1f52840",
+  "text": "continuo y discreto",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 11,
+      "endChar": 19
+    }
+  ]
+}

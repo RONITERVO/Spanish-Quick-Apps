@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-4a02188be1a08283ecacbee6",
+  "text": "verde lima apagado",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1240,
+      "startChar": 11,
+      "endChar": 18
+    }
+  ]
+}

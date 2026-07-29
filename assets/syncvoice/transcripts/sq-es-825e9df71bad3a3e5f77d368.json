@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-825e9df71bad3a3e5f77d368",
+  "text": "no es una pared",
+  "durationMs": 1640,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 6
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 6,
+      "endChar": 10
+    },
+    {
+      "startMs": 225,
+      "endMs": 960,
+      "startChar": 10,
+      "endChar": 15
+    }
+  ]
+}

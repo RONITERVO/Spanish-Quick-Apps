@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-c8948398eb998640571db13c",
+  "text": "sin centro único",
+  "durationMs": 1600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 960,
+      "startChar": 11,
+      "endChar": 16
+    }
+  ]
+}

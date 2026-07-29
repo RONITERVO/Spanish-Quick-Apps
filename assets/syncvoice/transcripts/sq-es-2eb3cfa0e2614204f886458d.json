@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2eb3cfa0e2614204f886458d",
+  "text": "Centro del sistema solar",
+  "durationMs": 2280,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 19
+    },
+    {
+      "startMs": 225,
+      "endMs": 1520,
+      "startChar": 19,
+      "endChar": 24
+    }
+  ]
+}

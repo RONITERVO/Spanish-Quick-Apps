@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-6d291d0fe1f02dc359721e60",
+  "text": "estado mínimo",
+  "durationMs": 1440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 13
+    }
+  ]
+}

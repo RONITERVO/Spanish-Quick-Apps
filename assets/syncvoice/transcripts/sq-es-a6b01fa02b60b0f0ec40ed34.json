@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "externalId": "sq-es-a6b01fa02b60b0f0ec40ed34",
+  "text": "Marco hipotético · ubicación desconocida",
+  "durationMs": 4280,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 17
+    },
+    {
+      "startMs": 150,
+      "endMs": 1800,
+      "startChar": 17,
+      "endChar": 19
+    },
+    {
+      "startMs": 1800,
+      "endMs": 2200,
+      "startChar": 19,
+      "endChar": 29
+    },
+    {
+      "startMs": 2200,
+      "endMs": 3120,
+      "startChar": 29,
+      "endChar": 40
+    }
+  ]
+}

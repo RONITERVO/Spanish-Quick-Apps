@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "externalId": "sq-es-1ddbdac371b4c21fa9d84064",
+  "text": "Detectar → decidir → generar fuerza → desplazarse",
+  "durationMs": 5560,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 1000,
+      "startChar": 9,
+      "endChar": 11
+    },
+    {
+      "startMs": 1000,
+      "endMs": 1480,
+      "startChar": 11,
+      "endChar": 19
+    },
+    {
+      "startMs": 1480,
+      "endMs": 2320,
+      "startChar": 19,
+      "endChar": 21
+    },
+    {
+      "startMs": 2320,
+      "endMs": 2520,
+      "startChar": 21,
+      "endChar": 29
+    },
+    {
+      "startMs": 2520,
+      "endMs": 3440,
+      "startChar": 29,
+      "endChar": 36
+    },
+    {
+      "startMs": 3440,
+      "endMs": 4160,
+      "startChar": 36,
+      "endChar": 38
+    },
+    {
+      "startMs": 4160,
+      "endMs": 4440,
+      "startChar": 38,
+      "endChar": 49
+    }
+  ]
+}

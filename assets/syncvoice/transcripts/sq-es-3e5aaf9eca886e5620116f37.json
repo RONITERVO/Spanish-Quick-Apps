@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-3e5aaf9eca886e5620116f37",
+  "text": "viento solar",
+  "durationMs": 1440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 12
+    }
+  ]
+}

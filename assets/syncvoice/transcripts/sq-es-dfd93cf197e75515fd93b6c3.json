@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-dfd93cf197e75515fd93b6c3",
+  "text": "inteligencia en red",
+  "durationMs": 1800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 13
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 13,
+      "endChar": 16
+    },
+    {
+      "startMs": 150,
+      "endMs": 1200,
+      "startChar": 16,
+      "endChar": 19
+    }
+  ]
+}

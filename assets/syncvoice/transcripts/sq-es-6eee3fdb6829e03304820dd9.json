@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "externalId": "sq-es-6eee3fdb6829e03304820dd9",
+  "text": "Capacidades futuras inciertas · control no garantizado",
+  "durationMs": 5080,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 12
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 12,
+      "endChar": 20
+    },
+    {
+      "startMs": 150,
+      "endMs": 1600,
+      "startChar": 20,
+      "endChar": 30
+    },
+    {
+      "startMs": 1600,
+      "endMs": 2400,
+      "startChar": 30,
+      "endChar": 32
+    },
+    {
+      "startMs": 2400,
+      "endMs": 2800,
+      "startChar": 32,
+      "endChar": 40
+    },
+    {
+      "startMs": 2800,
+      "endMs": 3480,
+      "startChar": 40,
+      "endChar": 43
+    },
+    {
+      "startMs": 3480,
+      "endMs": 4000,
+      "startChar": 43,
+      "endChar": 54
+    }
+  ]
+}

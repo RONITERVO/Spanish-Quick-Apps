@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "externalId": "sq-es-6aa51e26229f16d285792488",
+  "text": "Contenido auténtico · interpretación todavía incompleta",
+  "durationMs": 4400,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 20
+    },
+    {
+      "startMs": 150,
+      "endMs": 1440,
+      "startChar": 20,
+      "endChar": 22
+    },
+    {
+      "startMs": 1440,
+      "endMs": 1760,
+      "startChar": 22,
+      "endChar": 37
+    },
+    {
+      "startMs": 1760,
+      "endMs": 2760,
+      "startChar": 37,
+      "endChar": 45
+    },
+    {
+      "startMs": 2760,
+      "endMs": 3400,
+      "startChar": 45,
+      "endChar": 55
+    }
+  ]
+}

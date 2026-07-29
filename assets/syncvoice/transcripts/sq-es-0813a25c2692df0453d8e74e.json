@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-0813a25c2692df0453d8e74e",
+  "text": "Preguntar hace visible una ausencia de información y solicita cooperación para reducirla.",
+  "durationMs": 7400,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 15
+    },
+    {
+      "startMs": 150,
+      "endMs": 1400,
+      "startChar": 15,
+      "endChar": 23
+    },
+    {
+      "startMs": 1400,
+      "endMs": 2160,
+      "startChar": 23,
+      "endChar": 27
+    },
+    {
+      "startMs": 2160,
+      "endMs": 2560,
+      "startChar": 27,
+      "endChar": 36
+    },
+    {
+      "startMs": 2560,
+      "endMs": 2940,
+      "startChar": 36,
+      "endChar": 39
+    },
+    {
+      "startMs": 2940,
+      "endMs": 3320,
+      "startChar": 39,
+      "endChar": 51
+    },
+    {
+      "startMs": 3320,
+      "endMs": 3860,
+      "startChar": 51,
+      "endChar": 53
+    },
+    {
+      "startMs": 3860,
+      "endMs": 4400,
+      "startChar": 53,
+      "endChar": 62
+    },
+    {
+      "startMs": 4400,
+      "endMs": 5280,
+      "startChar": 62,
+      "endChar": 74
+    },
+    {
+      "startMs": 5280,
+      "endMs": 6200,
+      "startChar": 74,
+      "endChar": 79
+    },
+    {
+      "startMs": 6200,
+      "endMs": 6440,
+      "startChar": 79,
+      "endChar": 89
+    }
+  ]
+}

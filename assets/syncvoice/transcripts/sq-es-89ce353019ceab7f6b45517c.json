@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "externalId": "sq-es-89ce353019ceab7f6b45517c",
+  "text": "Narrar recorridos conserva rutas, peligros, encuentros y cambios.",
+  "durationMs": 5920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 18
+    },
+    {
+      "startMs": 150,
+      "endMs": 1480,
+      "startChar": 18,
+      "endChar": 27
+    },
+    {
+      "startMs": 1480,
+      "endMs": 2160,
+      "startChar": 27,
+      "endChar": 34
+    },
+    {
+      "startMs": 2160,
+      "endMs": 2920,
+      "startChar": 34,
+      "endChar": 44
+    },
+    {
+      "startMs": 2920,
+      "endMs": 3960,
+      "startChar": 44,
+      "endChar": 55
+    },
+    {
+      "startMs": 3960,
+      "endMs": 4480,
+      "startChar": 55,
+      "endChar": 57
+    },
+    {
+      "startMs": 4480,
+      "endMs": 5000,
+      "startChar": 57,
+      "endChar": 65
+    }
+  ]
+}

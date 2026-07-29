@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "externalId": "sq-es-3cbeae157b4ca7400f4bf528",
+  "text": "Sensores y modelos deben interpretar tráfico cambiante mientras los límites operativos siguen siendo decisivos.",
+  "durationMs": 9040,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1360,
+      "startChar": 11,
+      "endChar": 19
+    },
+    {
+      "startMs": 1360,
+      "endMs": 2160,
+      "startChar": 19,
+      "endChar": 25
+    },
+    {
+      "startMs": 2160,
+      "endMs": 2600,
+      "startChar": 25,
+      "endChar": 37
+    },
+    {
+      "startMs": 2600,
+      "endMs": 3360,
+      "startChar": 37,
+      "endChar": 45
+    },
+    {
+      "startMs": 3360,
+      "endMs": 4000,
+      "startChar": 45,
+      "endChar": 55
+    },
+    {
+      "startMs": 4000,
+      "endMs": 4760,
+      "startChar": 55,
+      "endChar": 64
+    },
+    {
+      "startMs": 4760,
+      "endMs": 5320,
+      "startChar": 64,
+      "endChar": 68
+    },
+    {
+      "startMs": 5320,
+      "endMs": 5560,
+      "startChar": 68,
+      "endChar": 76
+    },
+    {
+      "startMs": 5560,
+      "endMs": 6120,
+      "startChar": 76,
+      "endChar": 87
+    },
+    {
+      "startMs": 6120,
+      "endMs": 7000,
+      "startChar": 87,
+      "endChar": 94
+    },
+    {
+      "startMs": 7000,
+      "endMs": 7520,
+      "startChar": 94,
+      "endChar": 101
+    },
+    {
+      "startMs": 7520,
+      "endMs": 7960,
+      "startChar": 101,
+      "endChar": 111
+    }
+  ]
+}

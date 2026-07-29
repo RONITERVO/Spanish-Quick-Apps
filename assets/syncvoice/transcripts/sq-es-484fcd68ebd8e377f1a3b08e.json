@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-484fcd68ebd8e377f1a3b08e",
+  "text": "límite de 660 km",
+  "durationMs": 3720,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 7
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 7,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 1240,
+      "startChar": 10,
+      "endChar": 14
+    },
+    {
+      "startMs": 1240,
+      "endMs": 2720,
+      "startChar": 14,
+      "endChar": 16
+    }
+  ]
+}

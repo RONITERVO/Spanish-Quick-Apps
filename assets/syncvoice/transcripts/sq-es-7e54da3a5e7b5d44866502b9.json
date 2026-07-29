@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "externalId": "sq-es-7e54da3a5e7b5d44866502b9",
+  "text": "Un planeta que cruza frente a su estrella produce una disminución periódica de brillo.",
+  "durationMs": 5920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 15
+    },
+    {
+      "startMs": 225,
+      "endMs": 300,
+      "startChar": 15,
+      "endChar": 21
+    },
+    {
+      "startMs": 300,
+      "endMs": 1320,
+      "startChar": 21,
+      "endChar": 28
+    },
+    {
+      "startMs": 1320,
+      "endMs": 1520,
+      "startChar": 28,
+      "endChar": 30
+    },
+    {
+      "startMs": 1520,
+      "endMs": 1720,
+      "startChar": 30,
+      "endChar": 33
+    },
+    {
+      "startMs": 1720,
+      "endMs": 1920,
+      "startChar": 33,
+      "endChar": 42
+    },
+    {
+      "startMs": 1920,
+      "endMs": 2560,
+      "startChar": 42,
+      "endChar": 50
+    },
+    {
+      "startMs": 2560,
+      "endMs": 3240,
+      "startChar": 50,
+      "endChar": 54
+    },
+    {
+      "startMs": 3240,
+      "endMs": 3600,
+      "startChar": 54,
+      "endChar": 66
+    },
+    {
+      "startMs": 3600,
+      "endMs": 4480,
+      "startChar": 66,
+      "endChar": 76
+    },
+    {
+      "startMs": 4480,
+      "endMs": 4800,
+      "startChar": 76,
+      "endChar": 79
+    },
+    {
+      "startMs": 4800,
+      "endMs": 5120,
+      "startChar": 79,
+      "endChar": 86
+    }
+  ]
+}

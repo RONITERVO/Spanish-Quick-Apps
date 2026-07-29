@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-cbb0445b0478934715df6d4d",
+  "text": "corrimiento al rojo",
+  "durationMs": 2040,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 12
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 12,
+      "endChar": 15
+    },
+    {
+      "startMs": 150,
+      "endMs": 1360,
+      "startChar": 15,
+      "endChar": 19
+    }
+  ]
+}

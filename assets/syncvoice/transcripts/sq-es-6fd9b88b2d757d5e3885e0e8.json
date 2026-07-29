@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "externalId": "sq-es-6fd9b88b2d757d5e3885e0e8",
+  "text": "Un modelo de lenguaje estima continuaciones plausibles de símbolos y puede generar texto coherente sin verificar por sí mismo su verdad.",
+  "durationMs": 10120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 13
+    },
+    {
+      "startMs": 225,
+      "endMs": 300,
+      "startChar": 13,
+      "endChar": 22
+    },
+    {
+      "startMs": 300,
+      "endMs": 1520,
+      "startChar": 22,
+      "endChar": 29
+    },
+    {
+      "startMs": 1520,
+      "endMs": 2160,
+      "startChar": 29,
+      "endChar": 44
+    },
+    {
+      "startMs": 2160,
+      "endMs": 3200,
+      "startChar": 44,
+      "endChar": 55
+    },
+    {
+      "startMs": 3200,
+      "endMs": 3620,
+      "startChar": 55,
+      "endChar": 58
+    },
+    {
+      "startMs": 3620,
+      "endMs": 4040,
+      "startChar": 58,
+      "endChar": 67
+    },
+    {
+      "startMs": 4040,
+      "endMs": 4460,
+      "startChar": 67,
+      "endChar": 69
+    },
+    {
+      "startMs": 4460,
+      "endMs": 4880,
+      "startChar": 69,
+      "endChar": 75
+    },
+    {
+      "startMs": 4880,
+      "endMs": 5600,
+      "startChar": 75,
+      "endChar": 83
+    },
+    {
+      "startMs": 5600,
+      "endMs": 6160,
+      "startChar": 83,
+      "endChar": 89
+    },
+    {
+      "startMs": 6160,
+      "endMs": 6720,
+      "startChar": 89,
+      "endChar": 99
+    },
+    {
+      "startMs": 6720,
+      "endMs": 7480,
+      "startChar": 99,
+      "endChar": 103
+    },
+    {
+      "startMs": 7480,
+      "endMs": 7800,
+      "startChar": 103,
+      "endChar": 113
+    },
+    {
+      "startMs": 7800,
+      "endMs": 8480,
+      "startChar": 113,
+      "endChar": 117
+    },
+    {
+      "startMs": 8480,
+      "endMs": 8600,
+      "startChar": 117,
+      "endChar": 120
+    },
+    {
+      "startMs": 8600,
+      "endMs": 8720,
+      "startChar": 120,
+      "endChar": 126
+    },
+    {
+      "startMs": 8720,
+      "endMs": 9020,
+      "startChar": 126,
+      "endChar": 129
+    },
+    {
+      "startMs": 9020,
+      "endMs": 9320,
+      "startChar": 129,
+      "endChar": 136
+    }
+  ]
+}

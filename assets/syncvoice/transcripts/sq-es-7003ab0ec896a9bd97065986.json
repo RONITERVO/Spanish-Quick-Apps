@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-7003ab0ec896a9bd97065986",
+  "text": "horizonte de partículas",
+  "durationMs": 2120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 13,
+      "endChar": 23
+    }
+  ]
+}

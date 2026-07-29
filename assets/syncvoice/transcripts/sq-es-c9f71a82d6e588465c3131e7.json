@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-c9f71a82d6e588465c3131e7",
+  "text": "materia estable o inestable",
+  "durationMs": 3440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 16
+    },
+    {
+      "startMs": 150,
+      "endMs": 2000,
+      "startChar": 16,
+      "endChar": 18
+    },
+    {
+      "startMs": 2000,
+      "endMs": 2360,
+      "startChar": 18,
+      "endChar": 27
+    }
+  ]
+}

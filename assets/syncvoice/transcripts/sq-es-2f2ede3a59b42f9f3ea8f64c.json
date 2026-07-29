@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2f2ede3a59b42f9f3ea8f64c",
+  "text": "estructura a gran escala",
+  "durationMs": 2360,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 11
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 11,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1200,
+      "startChar": 13,
+      "endChar": 18
+    },
+    {
+      "startMs": 1200,
+      "endMs": 1520,
+      "startChar": 18,
+      "endChar": 24
+    }
+  ]
+}

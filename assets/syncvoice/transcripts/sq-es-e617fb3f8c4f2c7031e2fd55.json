@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "externalId": "sq-es-e617fb3f8c4f2c7031e2fd55",
+  "text": "Comunicación rápida dentro del organismo",
+  "durationMs": 2920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 13
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 13,
+      "endChar": 20
+    },
+    {
+      "startMs": 150,
+      "endMs": 1440,
+      "startChar": 20,
+      "endChar": 27
+    },
+    {
+      "startMs": 1440,
+      "endMs": 1920,
+      "startChar": 27,
+      "endChar": 31
+    },
+    {
+      "startMs": 1920,
+      "endMs": 2080,
+      "startChar": 31,
+      "endChar": 40
+    }
+  ]
+}

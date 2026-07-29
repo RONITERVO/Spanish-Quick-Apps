@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-d357984b4f09cca733ebeaeb",
+  "text": "valores extraños",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 16
+    }
+  ]
+}

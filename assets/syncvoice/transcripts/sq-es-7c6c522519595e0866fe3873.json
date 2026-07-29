@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-7c6c522519595e0866fe3873",
+  "text": "La escala de Planck",
+  "durationMs": 1640,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 13
+    },
+    {
+      "startMs": 225,
+      "endMs": 1000,
+      "startChar": 13,
+      "endChar": 19
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ff4c6c6bad62e5fbe6125164",
+  "text": "halo de materia oscura",
+  "durationMs": 2320,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 8
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 8,
+      "endChar": 16
+    },
+    {
+      "startMs": 225,
+      "endMs": 1480,
+      "startChar": 16,
+      "endChar": 22
+    }
+  ]
+}

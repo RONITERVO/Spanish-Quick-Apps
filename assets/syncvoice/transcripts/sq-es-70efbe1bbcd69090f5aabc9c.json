@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-70efbe1bbcd69090f5aabc9c",
+  "text": "verde oliva pálido",
+  "durationMs": 2440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1440,
+      "startChar": 12,
+      "endChar": 18
+    }
+  ]
+}

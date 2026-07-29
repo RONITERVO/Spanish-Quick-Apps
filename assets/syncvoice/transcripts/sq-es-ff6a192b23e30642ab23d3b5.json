@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ff6a192b23e30642ab23d3b5",
+  "text": "Galaxia del Triángulo",
+  "durationMs": 1960,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 1000,
+      "startChar": 12,
+      "endChar": 21
+    }
+  ]
+}

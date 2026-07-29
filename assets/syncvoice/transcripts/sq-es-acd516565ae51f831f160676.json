@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "externalId": "sq-es-acd516565ae51f831f160676",
+  "text": "Un enlace representa interacción, transporte, dependencia o comunicación entre nodos.",
+  "durationMs": 6600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 21
+    },
+    {
+      "startMs": 225,
+      "endMs": 1520,
+      "startChar": 21,
+      "endChar": 34
+    },
+    {
+      "startMs": 1520,
+      "endMs": 2560,
+      "startChar": 34,
+      "endChar": 46
+    },
+    {
+      "startMs": 2560,
+      "endMs": 3560,
+      "startChar": 46,
+      "endChar": 58
+    },
+    {
+      "startMs": 3560,
+      "endMs": 4120,
+      "startChar": 58,
+      "endChar": 60
+    },
+    {
+      "startMs": 4120,
+      "endMs": 4680,
+      "startChar": 60,
+      "endChar": 73
+    },
+    {
+      "startMs": 4680,
+      "endMs": 5680,
+      "startChar": 73,
+      "endChar": 79
+    },
+    {
+      "startMs": 5680,
+      "endMs": 5920,
+      "startChar": 79,
+      "endChar": 85
+    }
+  ]
+}

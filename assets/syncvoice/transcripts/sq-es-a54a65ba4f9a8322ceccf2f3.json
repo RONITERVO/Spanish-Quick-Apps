@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-a54a65ba4f9a8322ceccf2f3",
+  "text": "descripción del entorno",
+  "durationMs": 2600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 867,
+      "startChar": 0,
+      "endChar": 12
+    },
+    {
+      "startMs": 867,
+      "endMs": 1733,
+      "startChar": 12,
+      "endChar": 16
+    },
+    {
+      "startMs": 1733,
+      "endMs": 2600,
+      "startChar": 16,
+      "endChar": 23
+    }
+  ]
+}

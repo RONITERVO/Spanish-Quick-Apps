@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-282726b57007275df23b30b4",
+  "text": "Sistemas regionales de circulación",
+  "durationMs": 3320,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 20
+    },
+    {
+      "startMs": 150,
+      "endMs": 1960,
+      "startChar": 20,
+      "endChar": 23
+    },
+    {
+      "startMs": 1960,
+      "endMs": 2120,
+      "startChar": 23,
+      "endChar": 34
+    }
+  ]
+}

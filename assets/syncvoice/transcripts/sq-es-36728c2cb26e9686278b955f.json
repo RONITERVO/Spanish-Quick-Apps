@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "externalId": "sq-es-36728c2cb26e9686278b955f",
+  "text": "Nodos + conexiones → rutas, centros, cascadas",
+  "durationMs": 6160,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 880,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 880,
+      "endMs": 1760,
+      "startChar": 6,
+      "endChar": 8
+    },
+    {
+      "startMs": 1760,
+      "endMs": 2640,
+      "startChar": 8,
+      "endChar": 19
+    },
+    {
+      "startMs": 2640,
+      "endMs": 3520,
+      "startChar": 19,
+      "endChar": 21
+    },
+    {
+      "startMs": 3520,
+      "endMs": 4400,
+      "startChar": 21,
+      "endChar": 28
+    },
+    {
+      "startMs": 4400,
+      "endMs": 5280,
+      "startChar": 28,
+      "endChar": 37
+    },
+    {
+      "startMs": 5280,
+      "endMs": 6160,
+      "startChar": 37,
+      "endChar": 45
+    }
+  ]
+}

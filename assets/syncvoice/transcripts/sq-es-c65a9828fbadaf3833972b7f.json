@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-c65a9828fbadaf3833972b7f",
+  "text": "velocidad de la luz",
+  "durationMs": 1920,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 10
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 10,
+      "endChar": 13
+    },
+    {
+      "startMs": 150,
+      "endMs": 1160,
+      "startChar": 13,
+      "endChar": 16
+    },
+    {
+      "startMs": 1160,
+      "endMs": 1320,
+      "startChar": 16,
+      "endChar": 19
+    }
+  ]
+}

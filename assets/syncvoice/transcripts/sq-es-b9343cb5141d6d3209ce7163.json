@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "externalId": "sq-es-b9343cb5141d6d3209ce7163",
+  "text": "Quimiorreceptores detectan moléculas relacionadas con alimento, peligro, pareja o estado interno.",
+  "durationMs": 8440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 18
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 18,
+      "endChar": 27
+    },
+    {
+      "startMs": 150,
+      "endMs": 2200,
+      "startChar": 27,
+      "endChar": 37
+    },
+    {
+      "startMs": 2200,
+      "endMs": 3040,
+      "startChar": 37,
+      "endChar": 50
+    },
+    {
+      "startMs": 3040,
+      "endMs": 3960,
+      "startChar": 50,
+      "endChar": 54
+    },
+    {
+      "startMs": 3960,
+      "endMs": 4280,
+      "startChar": 54,
+      "endChar": 64
+    },
+    {
+      "startMs": 4280,
+      "endMs": 5160,
+      "startChar": 64,
+      "endChar": 73
+    },
+    {
+      "startMs": 5160,
+      "endMs": 6080,
+      "startChar": 73,
+      "endChar": 80
+    },
+    {
+      "startMs": 6080,
+      "endMs": 6540,
+      "startChar": 80,
+      "endChar": 82
+    },
+    {
+      "startMs": 6540,
+      "endMs": 7000,
+      "startChar": 82,
+      "endChar": 89
+    },
+    {
+      "startMs": 7000,
+      "endMs": 7680,
+      "startChar": 89,
+      "endChar": 97
+    }
+  ]
+}

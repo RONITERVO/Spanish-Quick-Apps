@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "externalId": "sq-es-ceda9936e40e3c3d10f02fa0",
+  "text": "La luz emitida cerca del horizonte llega cada vez más enrojecida y retrasada al observador lejano.",
+  "durationMs": 8080,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 7
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 7,
+      "endChar": 15
+    },
+    {
+      "startMs": 225,
+      "endMs": 1200,
+      "startChar": 15,
+      "endChar": 21
+    },
+    {
+      "startMs": 1200,
+      "endMs": 1640,
+      "startChar": 21,
+      "endChar": 25
+    },
+    {
+      "startMs": 1640,
+      "endMs": 1800,
+      "startChar": 25,
+      "endChar": 35
+    },
+    {
+      "startMs": 1800,
+      "endMs": 2560,
+      "startChar": 35,
+      "endChar": 41
+    },
+    {
+      "startMs": 2560,
+      "endMs": 3280,
+      "startChar": 41,
+      "endChar": 46
+    },
+    {
+      "startMs": 3280,
+      "endMs": 3720,
+      "startChar": 46,
+      "endChar": 50
+    },
+    {
+      "startMs": 3720,
+      "endMs": 4040,
+      "startChar": 50,
+      "endChar": 54
+    },
+    {
+      "startMs": 4040,
+      "endMs": 4440,
+      "startChar": 54,
+      "endChar": 65
+    },
+    {
+      "startMs": 4440,
+      "endMs": 5440,
+      "startChar": 65,
+      "endChar": 67
+    },
+    {
+      "startMs": 5440,
+      "endMs": 5680,
+      "startChar": 67,
+      "endChar": 77
+    },
+    {
+      "startMs": 5680,
+      "endMs": 6080,
+      "startChar": 77,
+      "endChar": 80
+    },
+    {
+      "startMs": 6080,
+      "endMs": 6480,
+      "startChar": 80,
+      "endChar": 91
+    },
+    {
+      "startMs": 6480,
+      "endMs": 7280,
+      "startChar": 91,
+      "endChar": 98
+    }
+  ]
+}

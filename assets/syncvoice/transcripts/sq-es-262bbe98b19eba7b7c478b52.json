@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-262bbe98b19eba7b7c478b52",
+  "text": "nueva pregunta",
+  "durationMs": 1440,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 14
+    }
+  ]
+}

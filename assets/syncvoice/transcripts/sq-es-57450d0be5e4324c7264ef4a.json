@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-57450d0be5e4324c7264ef4a",
+  "text": "error de predicción",
+  "durationMs": 1640,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 19
+    }
+  ]
+}

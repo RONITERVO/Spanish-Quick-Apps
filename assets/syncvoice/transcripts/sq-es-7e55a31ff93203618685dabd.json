@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "externalId": "sq-es-7e55a31ff93203618685dabd",
+  "text": "Ocaso de la formación estelar",
+  "durationMs": 2720,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 6
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 6,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 555,
+      "startChar": 9,
+      "endChar": 12
+    },
+    {
+      "startMs": 555,
+      "endMs": 960,
+      "startChar": 12,
+      "endChar": 22
+    },
+    {
+      "startMs": 960,
+      "endMs": 1840,
+      "startChar": 22,
+      "endChar": 29
+    }
+  ]
+}

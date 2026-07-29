@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "externalId": "sq-es-0e66b1a8c12ed638f6f935b8",
+  "text": "No vemos más allá del horizonte final.",
+  "durationMs": 2960,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 9
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 9,
+      "endChar": 13
+    },
+    {
+      "startMs": 225,
+      "endMs": 1240,
+      "startChar": 13,
+      "endChar": 18
+    },
+    {
+      "startMs": 1240,
+      "endMs": 1560,
+      "startChar": 18,
+      "endChar": 22
+    },
+    {
+      "startMs": 1560,
+      "endMs": 1760,
+      "startChar": 22,
+      "endChar": 32
+    },
+    {
+      "startMs": 1760,
+      "endMs": 2280,
+      "startChar": 32,
+      "endChar": 38
+    }
+  ]
+}

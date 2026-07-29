@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-2f6e5e1a266bd5a8ec11bf02",
+  "text": "Observación directa",
+  "durationMs": 2000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 12
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 12,
+      "endChar": 19
+    }
+  ]
+}

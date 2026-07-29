@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-6c272eada317cc5c8c845fd2",
+  "text": "Toma de decisiones",
+  "durationMs": 1680,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 8
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 8,
+      "endChar": 18
+    }
+  ]
+}

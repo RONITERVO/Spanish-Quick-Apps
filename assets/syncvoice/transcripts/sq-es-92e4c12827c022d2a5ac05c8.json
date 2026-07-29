@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "externalId": "sq-es-92e4c12827c022d2a5ac05c8",
+  "text": "hibernación lenta",
+  "durationMs": 1600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 12
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 12,
+      "endChar": 17
+    }
+  ]
+}

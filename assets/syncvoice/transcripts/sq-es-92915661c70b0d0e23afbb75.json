@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "externalId": "sq-es-92915661c70b0d0e23afbb75",
+  "text": "Bloquear el brillo estelar permite detectar algunos planetas grandes, jóvenes o muy separados.",
+  "durationMs": 7800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 12,
+      "endChar": 19
+    },
+    {
+      "startMs": 225,
+      "endMs": 1240,
+      "startChar": 19,
+      "endChar": 27
+    },
+    {
+      "startMs": 1240,
+      "endMs": 1880,
+      "startChar": 27,
+      "endChar": 35
+    },
+    {
+      "startMs": 1880,
+      "endMs": 2520,
+      "startChar": 35,
+      "endChar": 44
+    },
+    {
+      "startMs": 2520,
+      "endMs": 3240,
+      "startChar": 44,
+      "endChar": 52
+    },
+    {
+      "startMs": 3240,
+      "endMs": 3840,
+      "startChar": 52,
+      "endChar": 61
+    },
+    {
+      "startMs": 3840,
+      "endMs": 4520,
+      "startChar": 61,
+      "endChar": 70
+    },
+    {
+      "startMs": 4520,
+      "endMs": 5400,
+      "startChar": 70,
+      "endChar": 78
+    },
+    {
+      "startMs": 5400,
+      "endMs": 6320,
+      "startChar": 78,
+      "endChar": 80
+    },
+    {
+      "startMs": 6320,
+      "endMs": 6520,
+      "startChar": 80,
+      "endChar": 84
+    },
+    {
+      "startMs": 6520,
+      "endMs": 6800,
+      "startChar": 84,
+      "endChar": 94
+    }
+  ]
+}

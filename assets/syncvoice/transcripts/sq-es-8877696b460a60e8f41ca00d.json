@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "externalId": "sq-es-8877696b460a60e8f41ca00d",
+  "text": "Un circuito breve convierte un estímulo en respuesta rápida sin requerir deliberación consciente.",
+  "durationMs": 6840,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 3
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 3,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 12,
+      "endChar": 18
+    },
+    {
+      "startMs": 225,
+      "endMs": 1280,
+      "startChar": 18,
+      "endChar": 28
+    },
+    {
+      "startMs": 1280,
+      "endMs": 1960,
+      "startChar": 28,
+      "endChar": 31
+    },
+    {
+      "startMs": 1960,
+      "endMs": 2160,
+      "startChar": 31,
+      "endChar": 40
+    },
+    {
+      "startMs": 2160,
+      "endMs": 2880,
+      "startChar": 40,
+      "endChar": 43
+    },
+    {
+      "startMs": 2880,
+      "endMs": 3040,
+      "startChar": 43,
+      "endChar": 53
+    },
+    {
+      "startMs": 3040,
+      "endMs": 3680,
+      "startChar": 53,
+      "endChar": 60
+    },
+    {
+      "startMs": 3680,
+      "endMs": 4280,
+      "startChar": 60,
+      "endChar": 64
+    },
+    {
+      "startMs": 4280,
+      "endMs": 4560,
+      "startChar": 64,
+      "endChar": 73
+    },
+    {
+      "startMs": 4560,
+      "endMs": 5080,
+      "startChar": 73,
+      "endChar": 86
+    },
+    {
+      "startMs": 5080,
+      "endMs": 5920,
+      "startChar": 86,
+      "endChar": 97
+    }
+  ]
+}

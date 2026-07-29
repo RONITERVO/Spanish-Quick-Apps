@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "externalId": "sq-es-1ab8f19bd05c659cf4938353",
+  "text": "red energética global",
+  "durationMs": 2080,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 15
+    },
+    {
+      "startMs": 150,
+      "endMs": 1280,
+      "startChar": 15,
+      "endChar": 21
+    }
+  ]
+}

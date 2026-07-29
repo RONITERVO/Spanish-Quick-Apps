@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "externalId": "sq-es-a10f164efba7fae87d1b3b3f",
+  "text": "Cada región puede actuar independientemente y sincronizar solo resúmenes, decisiones o conflictos.",
+  "durationMs": 8080,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 5
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 5,
+      "endChar": 12
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 12,
+      "endChar": 18
+    },
+    {
+      "startMs": 225,
+      "endMs": 1360,
+      "startChar": 18,
+      "endChar": 25
+    },
+    {
+      "startMs": 1360,
+      "endMs": 1920,
+      "startChar": 25,
+      "endChar": 44
+    },
+    {
+      "startMs": 1920,
+      "endMs": 3400,
+      "startChar": 44,
+      "endChar": 46
+    },
+    {
+      "startMs": 3400,
+      "endMs": 3640,
+      "startChar": 46,
+      "endChar": 58
+    },
+    {
+      "startMs": 3640,
+      "endMs": 4520,
+      "startChar": 58,
+      "endChar": 63
+    },
+    {
+      "startMs": 4520,
+      "endMs": 4920,
+      "startChar": 63,
+      "endChar": 74
+    },
+    {
+      "startMs": 4920,
+      "endMs": 5920,
+      "startChar": 74,
+      "endChar": 85
+    },
+    {
+      "startMs": 5920,
+      "endMs": 6480,
+      "startChar": 85,
+      "endChar": 87
+    },
+    {
+      "startMs": 6480,
+      "endMs": 7040,
+      "startChar": 87,
+      "endChar": 98
+    }
+  ]
+}

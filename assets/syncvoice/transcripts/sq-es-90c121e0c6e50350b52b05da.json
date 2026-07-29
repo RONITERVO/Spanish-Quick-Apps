@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "externalId": "sq-es-90c121e0c6e50350b52b05da",
+  "text": "entrada a la red",
+  "durationMs": 1600,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 10
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 10,
+      "endChar": 13
+    },
+    {
+      "startMs": 225,
+      "endMs": 1120,
+      "startChar": 13,
+      "endChar": 16
+    }
+  ]
+}

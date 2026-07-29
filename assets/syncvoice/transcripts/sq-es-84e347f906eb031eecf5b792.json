@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "externalId": "sq-es-84e347f906eb031eecf5b792",
+  "text": "Mezclar elementos puede mejorar resistencia, corrosión, peso o temperatura de servicio.",
+  "durationMs": 6800,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 8
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 8,
+      "endChar": 18
+    },
+    {
+      "startMs": 150,
+      "endMs": 1320,
+      "startChar": 18,
+      "endChar": 24
+    },
+    {
+      "startMs": 1320,
+      "endMs": 1600,
+      "startChar": 24,
+      "endChar": 32
+    },
+    {
+      "startMs": 1600,
+      "endMs": 2080,
+      "startChar": 32,
+      "endChar": 45
+    },
+    {
+      "startMs": 2080,
+      "endMs": 3040,
+      "startChar": 45,
+      "endChar": 56
+    },
+    {
+      "startMs": 3040,
+      "endMs": 4080,
+      "startChar": 56,
+      "endChar": 61
+    },
+    {
+      "startMs": 4080,
+      "endMs": 4500,
+      "startChar": 61,
+      "endChar": 63
+    },
+    {
+      "startMs": 4500,
+      "endMs": 4920,
+      "startChar": 63,
+      "endChar": 75
+    },
+    {
+      "startMs": 4920,
+      "endMs": 5400,
+      "startChar": 75,
+      "endChar": 78
+    },
+    {
+      "startMs": 5400,
+      "endMs": 5880,
+      "startChar": 78,
+      "endChar": 87
+    }
+  ]
+}

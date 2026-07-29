@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "externalId": "sq-es-192368557b61d7bbb356d34e",
+  "text": "Una salida contrarresta la desviación y favorece estabilidad o recuperación.",
+  "durationMs": 6000,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 4
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 4,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 225,
+      "startChar": 11,
+      "endChar": 24
+    },
+    {
+      "startMs": 225,
+      "endMs": 933,
+      "startChar": 24,
+      "endChar": 27
+    },
+    {
+      "startMs": 933,
+      "endMs": 1640,
+      "startChar": 27,
+      "endChar": 38
+    },
+    {
+      "startMs": 1640,
+      "endMs": 2140,
+      "startChar": 38,
+      "endChar": 40
+    },
+    {
+      "startMs": 2140,
+      "endMs": 2640,
+      "startChar": 40,
+      "endChar": 49
+    },
+    {
+      "startMs": 2640,
+      "endMs": 3600,
+      "startChar": 49,
+      "endChar": 61
+    },
+    {
+      "startMs": 3600,
+      "endMs": 4140,
+      "startChar": 61,
+      "endChar": 63
+    },
+    {
+      "startMs": 4140,
+      "endMs": 4680,
+      "startChar": 63,
+      "endChar": 76
+    }
+  ]
+}

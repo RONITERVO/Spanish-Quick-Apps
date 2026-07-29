@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "externalId": "sq-es-d1888ce13951ce836d8cdcc4",
+  "text": "Sociedades separadas por minutos u horas de luz",
+  "durationMs": 4400,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 11
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 11,
+      "endChar": 21
+    },
+    {
+      "startMs": 150,
+      "endMs": 1760,
+      "startChar": 21,
+      "endChar": 25
+    },
+    {
+      "startMs": 1760,
+      "endMs": 2080,
+      "startChar": 25,
+      "endChar": 33
+    },
+    {
+      "startMs": 2080,
+      "endMs": 2520,
+      "startChar": 33,
+      "endChar": 35
+    },
+    {
+      "startMs": 2520,
+      "endMs": 2960,
+      "startChar": 35,
+      "endChar": 41
+    },
+    {
+      "startMs": 2960,
+      "endMs": 3320,
+      "startChar": 41,
+      "endChar": 44
+    },
+    {
+      "startMs": 3320,
+      "endMs": 3680,
+      "startChar": 44,
+      "endChar": 47
+    }
+  ]
+}

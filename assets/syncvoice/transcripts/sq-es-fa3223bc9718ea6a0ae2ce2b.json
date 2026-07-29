@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "externalId": "sq-es-fa3223bc9718ea6a0ae2ce2b",
+  "text": "Vivienda + agua + almacenamiento + caminos → comunidad estable",
+  "durationMs": 8120,
+  "cues": [
+    {
+      "startMs": 0,
+      "endMs": 75,
+      "startChar": 0,
+      "endChar": 9
+    },
+    {
+      "startMs": 75,
+      "endMs": 150,
+      "startChar": 9,
+      "endChar": 11
+    },
+    {
+      "startMs": 150,
+      "endMs": 1560,
+      "startChar": 11,
+      "endChar": 16
+    },
+    {
+      "startMs": 1560,
+      "endMs": 2320,
+      "startChar": 16,
+      "endChar": 18
+    },
+    {
+      "startMs": 2320,
+      "endMs": 2960,
+      "startChar": 18,
+      "endChar": 33
+    },
+    {
+      "startMs": 2960,
+      "endMs": 4480,
+      "startChar": 33,
+      "endChar": 35
+    },
+    {
+      "startMs": 4480,
+      "endMs": 5120,
+      "startChar": 35,
+      "endChar": 43
+    },
+    {
+      "startMs": 5120,
+      "endMs": 5960,
+      "startChar": 43,
+      "endChar": 45
+    },
+    {
+      "startMs": 5960,
+      "endMs": 6320,
+      "startChar": 45,
+      "endChar": 55
+    },
+    {
+      "startMs": 6320,
+      "endMs": 7200,
+      "startChar": 55,
+      "endChar": 62
+    }
+  ]
+}
