@@ -13,6 +13,8 @@ Spanish Quick Apps uses the `Kore` narrator for the held-target learning overlay
 
 Every app loads `learning-narration.js`. Apps 01 and 02 publish purpose-built learning targets. The shared semantic readout bridge publishes the common `feature-name`, `metric`, and `fact` target used by apps 03–25. Signature deduplication prevents duplicate narration.
 
+The runtime owns one persistent hidden `HTMLAudioElement` per app page. The first pointer or keyboard interaction unlocks that element with a short local silent WAV, and every Spanish, English, and Finnish asset reuses it. Do not create a new media element per narration chunk: embedded mobile browsers can expire transient user activation midway through a multi-line sequence and reject later `play()` calls. The persistent element is also the single cancellation boundary for swipe, visibility, and navigation events.
+
 Visible text and spoken text may intentionally differ when a value is calculated continuously. Set `data-learning-narration` on `feature-name`, `metric`, or `fact` to a stable Spanish catalog key. Custom `spectrum:learning-target` publishers can provide the equivalent `detail.narrationParts` array aligned with `detail.parts`. The overlay shows the live value while production lookup, translation, and audio use the stable Spanish source key.
 
 Finite dynamic labels must be explicit catalog rows. App 02 therefore includes all four possible octave labels (`octava 3` through `octava 6`) in both translation catalogs. Do not enumerate unbounded measurements or use fuzzy asset matching.
@@ -103,7 +105,7 @@ To use another local asset directory, add `?syncvoice-assets=<same-origin-path-o
 
 All 25 HTML entry points version the shared runtime. The runtime also versions translation modules, per-app SyncVoice catalogs, transcripts, and audio URLs; audio URLs include transcript duration so a regenerated clip cannot be shadowed by an older GitHub Pages browser cache. Increment the shared revision in `learning-narration.js` and all HTML `learning-narration.js?v=` references whenever cache-sensitive runtime/catalog behavior changes.
 
-For QA, `window.SpectrumLearningNarration.diagnostics()` reports generated-asset plays, browser fallbacks, the last locale, and the concrete failure reason. Cancellation is not recorded as an asset failure and never starts fallback speech.
+For QA, `window.SpectrumLearningNarration.diagnostics()` reports audio unlock attempts, asset starts/completions, rejected plays, browser fallbacks, speech failures, cancellation counts and reasons, the last locale, and the concrete failure reason. A missing browser speech API is a playback failure, never a simulated success. Cancellation is recorded separately from asset failure and never starts fallback speech.
 
 ## Registering a future locale
 
