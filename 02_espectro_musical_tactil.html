@@ -167,6 +167,10 @@
       let speechUnlocked = false;
       let speechTimer = 0;
       let lastSpoken = "";
+      window.addEventListener("spectrum:cancel-tts", () => {
+        clearTimeout(speechTimer);
+        speechTimer = 0;
+      });
 
       function initAudio() {
         if (audioCtx) {
