@@ -156,6 +156,11 @@
     postToFeed("spectrum-feed:activity");
   }
 
+  function cancelTts() {
+    window.dispatchEvent(new Event("spectrum:cancel-tts"));
+    if ("speechSynthesis" in window) speechSynthesis.cancel();
+  }
+
   function navigate(delta) {
     if (navigating) return;
     const targetIndex = currentIndex + delta;
@@ -290,6 +295,7 @@
 
     const deltaY = event.clientY - start.y;
     if (isNavigationSwipe(start, event.clientX, event.clientY, releaseTime, innerHeight)) {
+      cancelTts();
       navigate(deltaY < 0 ? 1 : -1);
     }
   }
@@ -299,6 +305,7 @@
 
   document.addEventListener("wheel", event => {
     if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    cancelTts();
     markActivity();
     const now = performance.now();
     if (now - lastWheelNavigation < 700) return;
@@ -318,9 +325,15 @@
       return;
     }
     event.preventDefault();
+    cancelTts();
     markActivity();
     navigate(event.key === "PageDown" ? 1 : -1);
   }, true);
+
+  window.addEventListener("message", event => {
+    if (!embedded || event.source !== window.parent || event.data?.type !== "spectrum-feed:cancel-tts") return;
+    cancelTts();
+  });
 
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {

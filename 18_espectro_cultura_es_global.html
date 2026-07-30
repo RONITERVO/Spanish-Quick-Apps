@@ -449,6 +449,7 @@
     let shownX = .5, shownY = .982;
     let lastZoneId = "", lastFeature = -1;
     let hideTimer = 0, speechTimer = 0, lastSpoken = "", speechUnlocked = false;
+    window.addEventListener('spectrum:cancel-tts',()=>{clearTimeout(speechTimer);speechTimer=0;});
     let lastFrame = performance.now(), elapsed = 0, currentProgress = .018, touchEnergy = 0;
 
     const particles = [], people = [], structures = [], routes = [], glyphs = [], bursts = [], waves = [];

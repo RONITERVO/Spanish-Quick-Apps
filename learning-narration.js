@@ -876,6 +876,7 @@
     finishPointer(event);
     stopNarration();
   }, true);
+  window.addEventListener("spectrum:cancel-tts", () => stopNarration());
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) stopNarration();
   });

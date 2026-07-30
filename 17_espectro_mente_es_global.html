@@ -481,6 +481,10 @@
     let hideTimer = 0;
     let speechTimer = 0;
     let lastSpoken = "";
+    window.addEventListener("spectrum:cancel-tts", () => {
+      clearTimeout(speechTimer);
+      speechTimer = 0;
+    });
     let speechUnlocked = false;
     let lastFrame = performance.now();
     let elapsed = 0;
