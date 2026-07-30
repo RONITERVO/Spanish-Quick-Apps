@@ -22,7 +22,7 @@
   const HOLD_DELAY_MS = 900;
   const JITTER_MIN = 28;
   const JITTER_MAX = 42;
-  const SYNCVOICE_CATALOG_REVISION = "7";
+  const SYNCVOICE_CATALOG_REVISION = "8";
 
   function configuredAssetBaseUrl() {
     const searches = [location.search];
@@ -46,6 +46,35 @@
     return candidates.filter((candidate, index) => candidates.findIndex(item => item.href === candidate.href) === index);
   }
 
+  function createSilentWavUrl() {
+    try {
+      const sampleRate = 8000;
+      const sampleCount = Math.round(sampleRate * .08);
+      const buffer = new ArrayBuffer(44 + sampleCount);
+      const view = new DataView(buffer);
+      const writeText = (offset, text) => {
+        for (let index = 0; index < text.length; index += 1) view.setUint8(offset + index, text.charCodeAt(index));
+      };
+      writeText(0, "RIFF");
+      view.setUint32(4, 36 + sampleCount, true);
+      writeText(8, "WAVE");
+      writeText(12, "fmt ");
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, 1, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate, true);
+      view.setUint16(32, 1, true);
+      view.setUint16(34, 8, true);
+      writeText(36, "data");
+      view.setUint32(40, sampleCount, true);
+      new Uint8Array(buffer, 44).fill(128);
+      return URL.createObjectURL(new Blob([buffer], { type: "audio/wav" }));
+    } catch (_) {
+      return null;
+    }
+  }
+
   let activePointer = null;
   let interactionUnlocked = false;
   let anchor = null;
@@ -56,7 +85,11 @@
   let hideTimer = 0;
   let catalog = Object.create(null);
   let assetCatalog = Object.create(null);
-  let activeAssetAudio = null;
+  const assetAudio = new Audio();
+  const assetUnlockUrl = createSilentWavUrl();
+  let assetAudioUnlocked = false;
+  let assetUnlockPromise = null;
+  let assetAudioMode = "idle";
   let activeAssetFinish = null;
   let activeAssetFrame = 0;
   let semanticPublishQueued = false;
@@ -64,21 +97,37 @@
   let lastAssetFailure = null;
   const playbackDiagnostics = {
     assetPlays: 0,
+    assetStarts: 0,
+    assetPlayRejections: 0,
+    audioUnlocks: 0,
+    audioUnlockFailures: 0,
+    audioUnlocked: false,
     browserFallbacks: 0,
     spanishBrowserFallbacks: 0,
+    speechFailures: 0,
+    cancellations: 0,
     lastMode: null,
     lastLocale: null,
     lastText: null,
-    lastFailure: null
+    lastFailure: null,
+    lastCancellation: null
   };
   function publishPlaybackDiagnostics() {
     document.documentElement.dataset.syncvoiceAssetPlays = String(playbackDiagnostics.assetPlays);
+    document.documentElement.dataset.syncvoiceAssetStarts = String(playbackDiagnostics.assetStarts);
+    document.documentElement.dataset.syncvoiceAssetRejections = String(playbackDiagnostics.assetPlayRejections);
+    document.documentElement.dataset.syncvoiceAudioUnlocks = String(playbackDiagnostics.audioUnlocks);
+    document.documentElement.dataset.syncvoiceAudioUnlockFailures = String(playbackDiagnostics.audioUnlockFailures);
+    document.documentElement.dataset.syncvoiceAudioUnlocked = String(playbackDiagnostics.audioUnlocked);
     document.documentElement.dataset.syncvoiceBrowserFallbacks = String(playbackDiagnostics.browserFallbacks);
     document.documentElement.dataset.syncvoiceSpanishFallbacks = String(playbackDiagnostics.spanishBrowserFallbacks);
+    document.documentElement.dataset.syncvoiceSpeechFailures = String(playbackDiagnostics.speechFailures);
+    document.documentElement.dataset.syncvoiceCancellations = String(playbackDiagnostics.cancellations);
     document.documentElement.dataset.syncvoiceLastMode = playbackDiagnostics.lastMode || "";
     document.documentElement.dataset.syncvoiceLastLocale = playbackDiagnostics.lastLocale || "";
     document.documentElement.dataset.syncvoiceLastText = playbackDiagnostics.lastText || "";
     document.documentElement.dataset.syncvoiceLastFailure = playbackDiagnostics.lastFailure || "";
+    document.documentElement.dataset.syncvoiceLastCancellation = playbackDiagnostics.lastCancellation || "";
   }
   publishPlaybackDiagnostics();
   const narratedSignaturesThisTouch = new Set();
@@ -236,6 +285,12 @@
   restingPointer.setAttribute("aria-hidden", "true");
   document.body.appendChild(restingPointer);
 
+  assetAudio.preload = "auto";
+  assetAudio.hidden = true;
+  assetAudio.setAttribute("playsinline", "");
+  assetAudio.setAttribute("aria-hidden", "true");
+  document.body.appendChild(assetAudio);
+
   const languageElement = overlay.querySelector(".learning-narration__language");
   const linesElement = overlay.querySelector(".learning-narration__lines");
 
@@ -284,21 +339,72 @@
     holdTimer = 0;
   }
 
-  function stopAssetNarration() {
-    cancelAnimationFrame(activeAssetFrame);
-    activeAssetFrame = 0;
-    if (activeAssetAudio) {
-      activeAssetAudio.pause();
-      activeAssetAudio.removeAttribute("src");
-      activeAssetAudio.load();
-      activeAssetAudio = null;
-    }
-    const finish = activeAssetFinish;
-    activeAssetFinish = null;
-    if (finish) finish(false);
+  function errorName(error) {
+    return String(error?.name || error?.code || "unknown").replace(/\s+/g, "-").toLowerCase();
   }
 
-  function stopNarration(hide = true) {
+  function recordUnlockFailure(error) {
+    playbackDiagnostics.audioUnlockFailures += 1;
+    playbackDiagnostics.lastMode = "none";
+    playbackDiagnostics.lastFailure = `audio-unlock-rejected:${errorName(error)}`;
+    publishPlaybackDiagnostics();
+  }
+
+  function unlockAssetAudio() {
+    if (assetAudioUnlocked) return Promise.resolve(true);
+    if (assetUnlockPromise) return assetUnlockPromise;
+    if (!assetUnlockUrl) {
+      recordUnlockFailure({ name: "silent-audio-unavailable" });
+      return Promise.resolve(false);
+    }
+
+    assetAudioMode = "unlock";
+    assetAudio.src = assetUnlockUrl;
+    try { assetAudio.currentTime = 0; } catch (_) {}
+    let playback;
+    try {
+      playback = assetAudio.play();
+    } catch (error) {
+      assetAudioMode = "idle";
+      recordUnlockFailure(error);
+      return Promise.resolve(false);
+    }
+
+    assetUnlockPromise = Promise.resolve(playback).then(() => {
+      assetAudioUnlocked = true;
+      playbackDiagnostics.audioUnlocks += 1;
+      playbackDiagnostics.audioUnlocked = true;
+      playbackDiagnostics.lastFailure = null;
+      publishPlaybackDiagnostics();
+      return true;
+    }, error => {
+      assetAudioMode = "idle";
+      assetAudio.removeAttribute("src");
+      assetAudio.load();
+      recordUnlockFailure(error);
+      return false;
+    }).finally(() => {
+      assetUnlockPromise = null;
+    });
+    return assetUnlockPromise;
+  }
+
+  function stopAssetNarration() {
+    const finish = activeAssetFinish;
+    if (finish) finish(false);
+    else {
+      cancelAnimationFrame(activeAssetFrame);
+      activeAssetFrame = 0;
+    }
+  }
+
+  function stopNarration(hide = true, reason = null) {
+    let speechActive = false;
+    try { speechActive = Boolean(speechSynthesis.speaking || speechSynthesis.pending); } catch (_) {}
+    const hadNarration = Boolean(
+      holdTimer || activeAssetFinish || animationFrame || speechActive ||
+      overlay.classList.contains("learning-narration--active")
+    );
     runToken += 1;
     cancelHold();
     cancelAnimationFrame(animationFrame);
@@ -306,6 +412,11 @@
     clearTimeout(hideTimer);
     stopAssetNarration();
     if ("speechSynthesis" in window) speechSynthesis.cancel();
+    if (reason && hadNarration) {
+      playbackDiagnostics.cancellations += 1;
+      playbackDiagnostics.lastCancellation = reason;
+      publishPlaybackDiagnostics();
+    }
     if (hide) {
       overlay.classList.remove("learning-narration--active", "learning-narration--leaving");
       hideRestingPointer(true);
@@ -504,6 +615,7 @@
 
   async function playAssetChunk(sourceKey, assetLocale, text, onProgress, token) {
     await assetCatalogReady;
+    if (assetUnlockPromise) await assetUnlockPromise;
     if (token !== runToken) return false;
     lastAssetFailure = null;
     const externalId = assetCatalog[assetLocale]?.[sourceKey];
@@ -517,7 +629,7 @@
       try {
         const transcriptUrl = new URL(`transcripts/${externalId}.json`, assetBaseUrl);
         transcriptUrl.searchParams.set("v", SYNCVOICE_CATALOG_REVISION);
-        const response = await fetch(transcriptUrl.href, { cache: "no-cache" });
+        const response = await fetch(transcriptUrl.href, { cache: "force-cache" });
         if (!response.ok) {
           lastAssetFailure = `transcript-http-${response.status}`;
           continue;
@@ -536,57 +648,111 @@
       if (token !== runToken) return false;
 
       const result = await new Promise(resolve => {
-      const audioUrl = new URL(`audio/${externalId}.mp3`, assetBaseUrl);
-      audioUrl.searchParams.set("v", `${SYNCVOICE_CATALOG_REVISION}-${durationMs}`);
-      const audio = new Audio(audioUrl.href);
-      let settled = false;
-      const finish = result => {
-        if (settled) return;
-        settled = true;
-        cancelAnimationFrame(activeAssetFrame);
-        activeAssetFrame = 0;
-        audio.onended = null;
-        audio.onerror = null;
-        if (activeAssetAudio === audio) activeAssetAudio = null;
-        if (activeAssetFinish === cancel) activeAssetFinish = null;
-        if (result === true) {
-          onProgress(text.length);
-          playbackDiagnostics.assetPlays += 1;
+        const audioUrl = new URL(`audio/${externalId}.mp3`, assetBaseUrl);
+        audioUrl.searchParams.set("v", `${SYNCVOICE_CATALOG_REVISION}-${durationMs}`);
+        const audio = assetAudio;
+        let settled = false;
+        let started = false;
+        const markStarted = () => {
+          if (started || settled) return;
+          started = true;
+          assetAudioUnlocked = true;
+          playbackDiagnostics.audioUnlocked = true;
+          playbackDiagnostics.assetStarts += 1;
           playbackDiagnostics.lastMode = "asset";
           playbackDiagnostics.lastLocale = assetLocale;
           playbackDiagnostics.lastText = text;
           playbackDiagnostics.lastFailure = null;
           publishPlaybackDiagnostics();
-        }
-        resolve(result);
-      };
-      const cancel = result => finish(result === false ? false : null);
-      const animate = () => {
-        if (token !== runToken || settled) return finish(false);
-        onProgress(transcriptProgress(cues, audio.currentTime * 1000));
-        activeAssetFrame = requestAnimationFrame(animate);
-      };
+        };
+        const finish = result => {
+          if (settled) return;
+          settled = true;
+          cancelAnimationFrame(activeAssetFrame);
+          activeAssetFrame = 0;
+          audio.onplaying = null;
+          audio.onended = null;
+          audio.onerror = null;
+          if (assetAudioMode === "narration") {
+            audio.pause();
+            if (result !== true) {
+              audio.removeAttribute("src");
+              audio.load();
+            }
+            assetAudioMode = "idle";
+          }
+          if (activeAssetFinish === cancel) activeAssetFinish = null;
+          if (result === true) {
+            onProgress(text.length);
+            playbackDiagnostics.assetPlays += 1;
+            playbackDiagnostics.lastMode = "asset";
+            playbackDiagnostics.lastLocale = assetLocale;
+            playbackDiagnostics.lastText = text;
+            playbackDiagnostics.lastFailure = null;
+            publishPlaybackDiagnostics();
+          }
+          resolve(result);
+        };
+        const cancel = result => finish(result === false ? false : null);
+        const animate = () => {
+          if (token !== runToken || settled) return finish(false);
+          onProgress(transcriptProgress(cues, audio.currentTime * 1000));
+          activeAssetFrame = requestAnimationFrame(animate);
+        };
 
-      activeAssetAudio = audio;
-      activeAssetFinish = cancel;
-      audio.preload = "auto";
-      audio.onended = () => finish(true);
-      audio.onerror = () => {
-        lastAssetFailure = "audio-load-error";
-        finish(null);
-      };
-      onProgress(0);
-      const playback = audio.play();
-      if (playback && typeof playback.then === "function") {
-        playback.then(() => {
-          if (!settled) activeAssetFrame = requestAnimationFrame(animate);
-        }, () => {
-          lastAssetFailure = "audio-play-rejected";
+        audio.pause();
+        audio.onplaying = null;
+        audio.onended = null;
+        audio.onerror = null;
+        assetAudioMode = "narration";
+        activeAssetFinish = cancel;
+        audio.preload = "auto";
+        audio.src = audioUrl.href;
+        try { audio.currentTime = 0; } catch (_) {}
+        audio.onplaying = markStarted;
+        audio.onended = () => finish(true);
+        audio.onerror = () => {
+          lastAssetFailure = `audio-load-error:${audio.error?.code || "unknown"}`;
+          playbackDiagnostics.lastMode = "none";
+          playbackDiagnostics.lastLocale = assetLocale;
+          playbackDiagnostics.lastText = text;
+          playbackDiagnostics.lastFailure = lastAssetFailure;
+          publishPlaybackDiagnostics();
           finish(null);
-        });
-      } else {
-        activeAssetFrame = requestAnimationFrame(animate);
-      }
+        };
+        onProgress(0);
+        let playback;
+        try {
+          playback = audio.play();
+        } catch (error) {
+          lastAssetFailure = `audio-play-rejected:${errorName(error)}`;
+          playbackDiagnostics.assetPlayRejections += 1;
+          playbackDiagnostics.lastMode = "none";
+          playbackDiagnostics.lastLocale = assetLocale;
+          playbackDiagnostics.lastText = text;
+          playbackDiagnostics.lastFailure = lastAssetFailure;
+          publishPlaybackDiagnostics();
+          finish(null);
+          return;
+        }
+        if (playback && typeof playback.then === "function") {
+          playback.then(() => {
+            markStarted();
+            if (!settled) activeAssetFrame = requestAnimationFrame(animate);
+          }, error => {
+            lastAssetFailure = `audio-play-rejected:${errorName(error)}`;
+            playbackDiagnostics.assetPlayRejections += 1;
+            playbackDiagnostics.lastMode = "none";
+            playbackDiagnostics.lastLocale = assetLocale;
+            playbackDiagnostics.lastText = text;
+            playbackDiagnostics.lastFailure = lastAssetFailure;
+            publishPlaybackDiagnostics();
+            finish(null);
+          });
+        } else {
+          markStarted();
+          activeAssetFrame = requestAnimationFrame(animate);
+        }
       });
       if (result !== null) return result;
     }
@@ -613,8 +779,11 @@
     return new Promise(resolve => {
       if (token !== runToken || !text) return resolve(false);
       if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
-        onProgress(text.length);
-        return window.setTimeout(() => resolve(token === runToken), 500);
+        playbackDiagnostics.speechFailures += 1;
+        playbackDiagnostics.lastMode = "none";
+        playbackDiagnostics.lastFailure = `speech-unavailable-after:${lastAssetFailure || "asset-failure"}`;
+        publishPlaybackDiagnostics();
+        return resolve(false);
       }
 
       const utterance = new SpeechSynthesisUtterance(text);
@@ -663,12 +832,22 @@
         resolve(success && token === runToken);
       };
       utterance.onend = () => finish(true);
-      utterance.onerror = event => finish(event.error === "interrupted" ? false : true);
+      utterance.onerror = event => {
+        playbackDiagnostics.speechFailures += 1;
+        playbackDiagnostics.lastMode = "none";
+        playbackDiagnostics.lastFailure = `speech-error:${event.error || "unknown"}`;
+        publishPlaybackDiagnostics();
+        finish(false);
+      };
 
       try {
         speechSynthesis.speak(utterance);
-      } catch (_) {
-        finish(true);
+      } catch (error) {
+        playbackDiagnostics.speechFailures += 1;
+        playbackDiagnostics.lastMode = "none";
+        playbackDiagnostics.lastFailure = `speech-exception:${errorName(error)}`;
+        publishPlaybackDiagnostics();
+        finish(false);
       }
     });
   }
@@ -739,7 +918,7 @@
       token
     );
     if (!spanishDone || token !== runToken) {
-      if (token === runToken) stopNarration();
+      if (token === runToken) stopNarration(true, "spanish-playback-failed");
       return;
     }
 
@@ -754,7 +933,7 @@
       token
     );
     if (!translationDone || token !== runToken) {
-      if (token === runToken) stopNarration();
+      if (token === runToken) stopNarration(true, "translation-playback-failed");
       return;
     }
 
@@ -834,8 +1013,9 @@
   });
 
   document.addEventListener("pointerdown", event => {
-    stopNarration();
+    stopNarration(true, "pointerdown");
     interactionUnlocked = true;
+    unlockAssetAudio();
     narratedSignaturesThisTouch.clear();
     activePointer = event.pointerId;
     anchor = { x: event.clientX, y: event.clientY };
@@ -847,6 +1027,7 @@
   document.addEventListener("keydown", event => {
     if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) {
       interactionUnlocked = true;
+      unlockAssetAudio();
       if (activePointer === null) narratedSignaturesThisTouch.clear();
       queueSemanticReadout(innerWidth * .5, innerHeight * .5);
     }
@@ -861,7 +1042,7 @@
     if (dx * dx + dy * dy <= radius * radius) return;
     anchor = { x: event.clientX, y: event.clientY };
     target = null;
-    stopNarration();
+    stopNarration(true, "pointer-move");
   }, true);
 
   function finishPointer(event) {
@@ -874,13 +1055,13 @@
   document.addEventListener("pointerup", finishPointer, true);
   document.addEventListener("pointercancel", event => {
     finishPointer(event);
-    stopNarration();
+    stopNarration(true, "pointer-cancel");
   }, true);
-  window.addEventListener("spectrum:cancel-tts", () => stopNarration());
+  window.addEventListener("spectrum:cancel-tts", () => stopNarration(true, "feed-navigation"));
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) stopNarration();
+    if (document.hidden) stopNarration(true, "document-hidden");
   });
-  addEventListener("pagehide", () => stopNarration());
+  addEventListener("pagehide", () => stopNarration(true, "pagehide"));
 
   window.SpectrumLearningNarration = Object.freeze({
     locale,

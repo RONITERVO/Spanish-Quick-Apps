@@ -84,7 +84,31 @@ async function validateAssets(entries) {
   return requiredEntries.length;
 }
 
+async function validateNarrationRuntime() {
+  const runtimePath = path.join(ROOT, "learning-narration.js");
+  const runtime = await readFile(runtimePath, "utf8");
+  const revision = runtime.match(/SYNCVOICE_CATALOG_REVISION\s*=\s*"([^"]+)"/)?.[1];
+  invariant(revision, "Narration runtime is missing its SyncVoice catalog revision");
+
+  const audioConstructorCount = runtime.match(/new\s+Audio\s*\(/g)?.length || 0;
+  invariant(
+    audioConstructorCount === 1,
+    `Narration runtime must own exactly one persistent Audio element, found ${audioConstructorCount}`
+  );
+  invariant(runtime.includes("const audio = assetAudio;"), "Asset chunks must reuse the persistent Audio element");
+  invariant(runtime.includes("unlockAssetAudio();"), "Narration runtime must unlock persistent audio from user interaction");
+
+  const entryFiles = (await readdir(ROOT)).filter(fileName => /^\d{2}_.*\.html$/.test(fileName)).sort();
+  invariant(entryFiles.length === 25, `Expected 25 HTML entry points, found ${entryFiles.length}`);
+  for (const fileName of entryFiles) {
+    const html = await readFile(path.join(ROOT, fileName), "utf8");
+    const scriptRevision = html.match(/learning-narration\.js\?v=([^"']+)/)?.[1];
+    invariant(scriptRevision === revision, `${fileName}: learning-narration.js revision must be ${revision}`);
+  }
+}
+
 async function main() {
+  await validateNarrationRuntime();
   const manifest = JSON.parse(await readFile(MANIFEST_PATH, "utf8"));
   invariant(manifest.version === 1, "Manifest version must be 1");
   invariant(manifest.project?.assetRoot === "assets/syncvoice", "Unexpected asset root");
