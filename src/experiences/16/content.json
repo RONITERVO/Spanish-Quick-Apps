@@ -1,0 +1,974 @@
+{
+  "ZONES": [
+    {
+      "id": "threshold",
+      "name": "El umbral de la vida",
+      "className": "Frontera histórica aún desconocida",
+      "p0": 0,
+      "p1": 0.052,
+      "color": [99, 255, 190],
+      "metric": "Compartimento + energía + copia + variación",
+      "fact": "No conocemos el instante exacto ni la ruta concreta por la que comenzó la vida. Los primeros sistemas vivos pudieron surgir mediante transiciones graduales entre química organizada y evolución biológica.",
+      "sound": {
+        "base": 46,
+        "filter": 520,
+        "noise": 0.06,
+        "pulse": 0.03,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "compartimento",
+          "Una frontera concentra reacciones y permite que un interior mantenga condiciones distintas del entorno."
+        ],
+        [
+          "red de reacciones",
+          "Reacciones acopladas pueden intercambiar materia y energía, producir componentes y sostener ciclos químicos."
+        ],
+        [
+          "gradiente",
+          "Una diferencia de concentración, temperatura o potencial puede impulsar procesos lejos del equilibrio."
+        ],
+        [
+          "replicación",
+          "La copia conserva parte de una organización, pero por sí sola no garantiza vida ni evolución abierta."
+        ],
+        [
+          "variación",
+          "Las diferencias heredables permiten que unas variantes persistan o se reproduzcan de manera distinta."
+        ],
+        [
+          "cooperación molecular",
+          "Moléculas diferentes pueden sostener funciones complementarias dentro del mismo sistema."
+        ],
+        [
+          "herencia imperfecta",
+          "La continuidad con errores combina memoria química y novedad."
+        ],
+        [
+          "pregunta abierta",
+          "No sabemos qué combinación apareció primero ni cuál fue la secuencia histórica real."
+        ]
+      ]
+    },
+    {
+      "id": "firstlife",
+      "name": "Primeros sistemas vivos",
+      "className": "Inferencia profunda a partir de la vida moderna",
+      "p0": 0.052,
+      "p1": 0.104,
+      "color": [72, 242, 210],
+      "metric": "Unidades capaces de mantenerse, heredarse y evolucionar",
+      "fact": "La primera vida no tuvo por qué parecerse a una célula moderna. El requisito decisivo fue formar poblaciones con continuidad, variación heredable y evolución acumulativa.",
+      "sound": {
+        "base": 52,
+        "filter": 690,
+        "noise": 0.055,
+        "pulse": 0.05,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "unidad",
+          "Para que la selección actúe con continuidad, ciertos procesos deben quedar asociados en unidades que producen descendencia."
+        ],
+        [
+          "mantenimiento",
+          "Los sistemas vivos reparan daños, reemplazan componentes y regulan condiciones internas."
+        ],
+        [
+          "descendencia",
+          "Una generación produce nuevas unidades relacionadas con ella, pero no necesariamente idénticas."
+        ],
+        [
+          "población",
+          "La evolución ocurre en poblaciones de variantes, no en una única entidad aislada."
+        ],
+        [
+          "entorno",
+          "La disponibilidad de energía, materiales y refugios determina qué formas de organización pueden persistir."
+        ],
+        [
+          "continuidad",
+          "La vida actual desciende de una historia ininterrumpida de sistemas que lograron reproducirse."
+        ],
+        [
+          "ancestro común",
+          "El ancestro común de la vida moderna no tiene por qué haber sido el primer sistema vivo."
+        ],
+        [
+          "extinción temprana",
+          "Pudieron existir muchas formas iniciales sin descendientes actuales."
+        ]
+      ]
+    },
+    {
+      "id": "cells",
+      "name": "Células primitivas",
+      "className": "Biología celular reconstruida con incertidumbre",
+      "p0": 0.104,
+      "p1": 0.158,
+      "color": [55, 220, 176],
+      "metric": "Membrana · interior · energía · reparación · división",
+      "fact": "La célula integra frontera, química interna, transporte, mantenimiento, reproducción y herencia. Las primeras células debieron ser mucho más simples que las actuales.",
+      "sound": {
+        "base": 59,
+        "filter": 850,
+        "noise": 0.05,
+        "pulse": 0.08,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "célula",
+          "Una célula es una unidad organizada capaz de intercambiar materia y energía mientras mantiene un interior regulado."
+        ],
+        [
+          "membrana",
+          "La membrana separa sin aislar: controla intercambios y ayuda a conservar gradientes."
+        ],
+        [
+          "interior",
+          "El citoplasma reúne agua, iones, moléculas y reacciones en un espacio compartido."
+        ],
+        [
+          "energía",
+          "La célula transforma fuentes externas en energía química utilizable."
+        ],
+        [
+          "alimento",
+          "Los nutrientes aportan átomos y energía para construir, reparar y reproducir componentes."
+        ],
+        [
+          "reparación",
+          "Los procesos de reparación reducen la acumulación de daños, aunque nunca eliminan todos los errores."
+        ],
+        [
+          "división",
+          "La división reparte membrana, química e información entre células descendientes."
+        ],
+        [
+          "entorno",
+          "Sensores y transportadores conectan la química interna con cambios externos."
+        ]
+      ]
+    },
+    {
+      "id": "metabolism",
+      "name": "Metabolismo",
+      "className": "Proceso universal de la vida celular",
+      "p0": 0.158,
+      "p1": 0.212,
+      "color": [104, 236, 111],
+      "metric": "Materia entra → reacciones acopladas → trabajo y desechos",
+      "fact": "Vivir requiere mantener organización interna lejos del equilibrio. El metabolismo enlaza reacciones, captura energía, fabrica componentes y elimina productos que ya no sirven.",
+      "sound": {
+        "base": 66,
+        "filter": 1060,
+        "noise": 0.065,
+        "pulse": 0.12,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "nutriente",
+          "Un nutriente proporciona materia, energía o ambas para las reacciones celulares."
+        ],
+        [
+          "reacción",
+          "Una reacción transforma enlaces y distribuye energía entre moléculas."
+        ],
+        [
+          "enzima",
+          "Una enzima acelera reacciones específicas y permite regular cuándo y dónde ocurren."
+        ],
+        [
+          "ruta metabólica",
+          "Las rutas conectan reacciones en secuencias donde el producto de una se vuelve sustrato de otra."
+        ],
+        [
+          "portador de energía",
+          "Moléculas como ATP acoplan reacciones favorables con procesos que requieren energía."
+        ],
+        [
+          "gradiente",
+          "Las membranas almacenan energía mediante diferencias de concentración o carga."
+        ],
+        [
+          "desecho",
+          "Los productos secundarios deben reciclarse, transformarse o expulsarse."
+        ],
+        [
+          "homeostasis",
+          "La regulación mantiene variables internas dentro de intervalos compatibles con la vida."
+        ]
+      ]
+    },
+    {
+      "id": "heredity",
+      "name": "Información heredable",
+      "className": "Mecanismos celulares ampliamente establecidos",
+      "p0": 0.212,
+      "p1": 0.268,
+      "color": [183, 244, 87],
+      "metric": "Secuencia química + lectura celular + copia + reparación",
+      "fact": "El ADN no es un plano consciente. Es información química almacenada en secuencias que la maquinaria celular copia, regula e interpreta para producir ARN y proteínas.",
+      "sound": {
+        "base": 74,
+        "filter": 1260,
+        "noise": 0.04,
+        "pulse": 0.16,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "ARN",
+          "El ARN puede transportar información, regular procesos y, en algunos casos, catalizar reacciones."
+        ],
+        [
+          "ADN",
+          "El ADN almacena secuencias heredables con gran estabilidad química, pero necesita una célula para ser copiado e interpretado."
+        ],
+        [
+          "gen",
+          "Un gen es una región de información que contribuye a productos o regulación dentro de un sistema celular."
+        ],
+        [
+          "código genético",
+          "El código relaciona tripletes de nucleótidos con aminoácidos durante la síntesis de proteínas."
+        ],
+        [
+          "proteína",
+          "Las proteínas pueden actuar como enzimas, estructuras, transportadores, señales y motores."
+        ],
+        [
+          "mutación",
+          "Una mutación modifica información heredable y puede ser perjudicial, neutral o beneficiosa según el contexto."
+        ],
+        [
+          "copia",
+          "La replicación molecular conserva secuencias mediante complementariedad química."
+        ],
+        [
+          "reparación",
+          "Sistemas de reparación detectan ciertos errores y daños, aumentando la fidelidad sin hacerla perfecta."
+        ]
+      ]
+    },
+    {
+      "id": "evolution",
+      "name": "Evolución darwiniana",
+      "className": "Principio central confirmado por múltiples evidencias",
+      "p0": 0.268,
+      "p1": 0.326,
+      "color": [245, 222, 74],
+      "metric": "Variación + herencia + reproducción diferencial + generaciones",
+      "fact": "Los individuos no evolucionan durante su vida; evolucionan las poblaciones a través de generaciones. Selección, deriva, mutación, migración y cooperación cambian la historia de los linajes.",
+      "sound": {
+        "base": 83,
+        "filter": 1480,
+        "noise": 0.05,
+        "pulse": 0.22,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "variación",
+          "Los miembros de una población difieren en rasgos heredables y no heredables."
+        ],
+        [
+          "selección",
+          "Las variantes que dejan más descendencia tienden a aumentar su frecuencia bajo esas condiciones."
+        ],
+        [
+          "adaptación",
+          "Una adaptación es un rasgo acumulado porque favoreció reproducción o supervivencia en ambientes anteriores."
+        ],
+        [
+          "deriva genética",
+          "El azar puede cambiar frecuencias génicas, especialmente en poblaciones pequeñas."
+        ],
+        [
+          "competencia",
+          "Organismos pueden depender de recursos limitados, pero la evolución no se reduce a lucha directa."
+        ],
+        [
+          "cooperación",
+          "La cooperación puede evolucionar cuando produce beneficios que favorecen su persistencia."
+        ],
+        [
+          "extinción",
+          "La mayoría de los linajes que existieron desapareció sin descendientes actuales."
+        ],
+        [
+          "ancestro común",
+          "La semejanza profunda entre seres vivos se explica por descendencia con modificación."
+        ]
+      ]
+    },
+    {
+      "id": "photosynthesis",
+      "name": "Fotosíntesis",
+      "className": "Innovación metabólica con impacto planetario",
+      "p0": 0.326,
+      "p1": 0.378,
+      "color": [255, 187, 65],
+      "metric": "Luz + pigmentos + carbono → energía química y biomasa",
+      "fact": "La fotosíntesis captura energía luminosa. La variante que libera oxígeno transformó océanos, atmósfera y posibilidades metabólicas durante enormes escalas de tiempo.",
+      "sound": {
+        "base": 93,
+        "filter": 1710,
+        "noise": 0.045,
+        "pulse": 0.28,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "luz solar",
+          "Los fotones entregan energía que los pigmentos pueden absorber."
+        ],
+        [
+          "pigmento",
+          "Un pigmento absorbe ciertas longitudes de onda y transfiere energía a reacciones químicas."
+        ],
+        [
+          "fijación de carbono",
+          "El carbono inorgánico se incorpora a moléculas orgánicas que forman biomasa."
+        ],
+        [
+          "tapete microbiano",
+          "Comunidades estratificadas de microbios pueden cooperar y modificar sedimentos y química local."
+        ],
+        [
+          "oxígeno",
+          "La fotosíntesis oxigénica libera oxígeno como producto secundario."
+        ],
+        [
+          "atmósfera",
+          "La acumulación de oxígeno alteró minerales, océanos, clima y metabolismo global."
+        ],
+        [
+          "estrés oxidativo",
+          "El oxígeno permite reacciones energéticas, pero también genera especies químicas dañinas."
+        ],
+        [
+          "transformación planetaria",
+          "La vida no solo se adapta al planeta: también cambia sus ciclos y condiciones."
+        ]
+      ]
+    },
+    {
+      "id": "complexcells",
+      "name": "Células complejas",
+      "className": "Eucariogénesis parcialmente reconstruida",
+      "p0": 0.378,
+      "p1": 0.436,
+      "color": [255, 131, 86],
+      "metric": "Núcleo + orgánulos + membranas internas + endosimbiosis",
+      "fact": "Las células eucariotas integraron compartimentos internos y antiguos socios microbianos. Las mitocondrias descienden de bacterias que se volvieron partes permanentes de otra célula.",
+      "sound": {
+        "base": 104,
+        "filter": 1970,
+        "noise": 0.04,
+        "pulse": 0.34,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "núcleo",
+          "El núcleo separa gran parte del ADN del citoplasma y organiza su acceso y copia."
+        ],
+        [
+          "orgánulo",
+          "Un orgánulo concentra funciones dentro de un compartimento celular."
+        ],
+        [
+          "mitocondria",
+          "Las mitocondrias transforman energía y conservan señales de su origen bacteriano."
+        ],
+        [
+          "endosimbiosis",
+          "Una asociación entre organismos distintos puede volverse dependencia e integración heredable."
+        ],
+        [
+          "membrana interna",
+          "Redes internas separan procesos incompatibles y permiten transporte dirigido."
+        ],
+        [
+          "citoesqueleto",
+          "Filamentos internos dan forma, mueven materiales y participan en división y movimiento."
+        ],
+        [
+          "genoma mayor",
+          "La regulación eucariota permite coordinar genomas extensos, aunque tamaño no equivale directamente a complejidad."
+        ],
+        [
+          "socio integrado",
+          "Una cooperación histórica puede convertirse en una nueva unidad evolutiva."
+        ]
+      ]
+    },
+    {
+      "id": "sex",
+      "name": "Reproducción sexual",
+      "className": "Proceso evolutivo diverso y costoso",
+      "p0": 0.436,
+      "p1": 0.488,
+      "color": [255, 101, 137],
+      "metric": "Meiosis + gametos + recombinación + herencia combinada",
+      "fact": "La reproducción sexual mezcla material genético y crea combinaciones nuevas. Aumenta diversidad, pero requiere coordinación y tiene costes; la vida utiliza muchas estrategias sexuales y asexuales.",
+      "sound": {
+        "base": 116,
+        "filter": 2210,
+        "noise": 0.038,
+        "pulse": 0.4,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "meiosis",
+          "La meiosis reduce el número de cromosomas y redistribuye variantes genéticas."
+        ],
+        [
+          "gameto",
+          "Un gameto es una célula reproductiva que puede fusionarse con otra."
+        ],
+        [
+          "fecundación",
+          "La fusión reúne información de dos células y forma una nueva combinación genética."
+        ],
+        [
+          "recombinación",
+          "Los cromosomas intercambian segmentos, produciendo combinaciones no presentes exactamente en los progenitores."
+        ],
+        [
+          "diversidad genética",
+          "La mezcla acelera la exploración de combinaciones heredables."
+        ],
+        [
+          "dos progenitores",
+          "Muchos organismos heredan material de dos progenitores, aunque existen sistemas reproductivos muy variados."
+        ],
+        [
+          "coste",
+          "Encontrar pareja, producir gametos y transmitir solo parte del genoma puede ser costoso."
+        ],
+        [
+          "ventaja contextual",
+          "La sexualidad puede ayudar frente a ambientes cambiantes, parásitos y acumulación de mutaciones."
+        ]
+      ]
+    },
+    {
+      "id": "multicellular",
+      "name": "Multicelularidad",
+      "className": "Evolucionó muchas veces de forma independiente",
+      "p0": 0.488,
+      "p1": 0.544,
+      "color": [235, 91, 202],
+      "metric": "Adhesión + comunicación + cooperación + especialización",
+      "fact": "Un organismo multicelular no es solo una colonia de células idénticas. Sus células coordinan crecimiento, división de tareas, reparación, reproducción y muerte programada.",
+      "sound": {
+        "base": 129,
+        "filter": 2460,
+        "noise": 0.04,
+        "pulse": 0.47,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "adhesión",
+          "Moléculas de unión permiten que células permanezcan juntas y transmitan fuerzas."
+        ],
+        [
+          "comunicación",
+          "Señales químicas y eléctricas coordinan decisiones entre células."
+        ],
+        [
+          "cooperación",
+          "Las células renuncian a parte de su independencia para sostener el organismo completo."
+        ],
+        [
+          "especialización",
+          "Tipos celulares distintos realizan tareas complementarias."
+        ],
+        [
+          "muerte programada",
+          "La eliminación controlada de células puede formar estructuras y proteger al organismo."
+        ],
+        [
+          "desarrollo",
+          "Reglas locales de división, movimiento y señalización construyen un cuerpo."
+        ],
+        [
+          "conflicto",
+          "Células que dejan de cooperar pueden proliferar de forma dañina, como ocurre en el cáncer."
+        ],
+        [
+          "plan corporal",
+          "Los patrones de desarrollo organizan ejes, regiones y relaciones entre partes."
+        ]
+      ]
+    },
+    {
+      "id": "development",
+      "name": "Diferenciación y desarrollo",
+      "className": "Un genoma, muchos estados celulares",
+      "p0": 0.544,
+      "p1": 0.598,
+      "color": [182, 105, 245],
+      "metric": "Regulación génica + señales + gradientes → tejidos y órganos",
+      "fact": "Casi todas las células de un organismo comparten el mismo genoma, pero activan programas diferentes. Señales, historia celular y posición producen tejidos, órganos y forma.",
+      "sound": {
+        "base": 143,
+        "filter": 2690,
+        "noise": 0.036,
+        "pulse": 0.53,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "célula madre",
+          "Una célula madre puede autorrenovarse y generar uno o más tipos celulares especializados."
+        ],
+        [
+          "regulación génica",
+          "Activar o silenciar genes cambia qué moléculas produce una célula."
+        ],
+        [
+          "gradiente químico",
+          "Una señal distribuida en concentración puede informar a las células sobre su posición."
+        ],
+        [
+          "tejido",
+          "Un tejido combina células y materiales extracelulares con una función compartida."
+        ],
+        ["órgano", "Un órgano integra varios tejidos en una unidad funcional."],
+        [
+          "crecimiento",
+          "El crecimiento coordina aumento de tamaño, división celular y disponibilidad de recursos."
+        ],
+        [
+          "forma",
+          "La forma emerge de fuerzas, señales, geometría, división y movimiento celular."
+        ],
+        [
+          "desarrollo",
+          "El desarrollo es un proceso dinámico que transforma una célula inicial en un organismo organizado."
+        ]
+      ]
+    },
+    {
+      "id": "organisms",
+      "name": "Organismos",
+      "className": "Diversidad de cuerpos y estrategias",
+      "p0": 0.598,
+      "p1": 0.652,
+      "color": [123, 137, 255],
+      "metric": "Cuerpos capaces de alimentarse, defenderse y reproducirse",
+      "fact": "La evolución produjo organismos microscópicos y gigantes, móviles y sésiles, simples y altamente diferenciados. No existe una única dirección inevitable hacia mayor complejidad.",
+      "sound": {
+        "base": 157,
+        "filter": 2910,
+        "noise": 0.045,
+        "pulse": 0.57,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "cuerpo",
+          "Un cuerpo coordina límites, soporte, transporte, intercambio y reproducción."
+        ],
+        [
+          "alimentación",
+          "Los organismos obtienen materia y energía mediante estrategias adaptadas a su ambiente."
+        ],
+        [
+          "defensa",
+          "Barreras, toxinas, camuflaje, inmunidad y conducta reducen daños."
+        ],
+        [
+          "reproducción",
+          "La reproducción transmite linajes, no garantiza supervivencia de cada individuo."
+        ],
+        [
+          "esqueleto",
+          "Estructuras internas o externas sostienen el cuerpo y permiten transmitir fuerzas."
+        ],
+        [
+          "músculo",
+          "Tejidos contráctiles convierten energía química en movimiento."
+        ],
+        [
+          "navegación",
+          "Un organismo puede orientar su conducta mediante señales externas e internas."
+        ],
+        [
+          "diversidad",
+          "Las formas actuales son ramas supervivientes de un árbol mucho más amplio de posibilidades."
+        ]
+      ]
+    },
+    {
+      "id": "ecosystems",
+      "name": "Ecosistemas",
+      "className": "Redes vivas de materia, energía e interacción",
+      "p0": 0.652,
+      "p1": 0.706,
+      "color": [72, 181, 255],
+      "metric": "Productores + consumidores + descomponedores + ciclos",
+      "fact": "Ningún organismo vive completamente aislado. Los ecosistemas conectan seres vivos, clima, agua, suelo y química mediante redes de alimentación, competencia, cooperación y reciclaje.",
+      "sound": {
+        "base": 171,
+        "filter": 3130,
+        "noise": 0.06,
+        "pulse": 0.61,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "productor",
+          "Los productores convierten energía externa y materia inorgánica en biomasa."
+        ],
+        [
+          "consumidor",
+          "Los consumidores obtienen materia y energía al alimentarse de otros organismos o sus productos."
+        ],
+        [
+          "descomponedor",
+          "Los descomponedores transforman restos y liberan nutrientes reutilizables."
+        ],
+        [
+          "red trófica",
+          "La alimentación forma redes, no cadenas simples, porque cada especie suele tener múltiples relaciones."
+        ],
+        [
+          "simbiosis",
+          "La convivencia estrecha puede beneficiar, perjudicar o afectar de manera distinta a cada participante."
+        ],
+        [
+          "competencia",
+          "Las especies compiten cuando dependen de recursos limitados compartidos."
+        ],
+        [
+          "nicho",
+          "Un nicho reúne condiciones, recursos e interacciones que permiten persistir a una población."
+        ],
+        [
+          "ciclo de nutrientes",
+          "Los átomos circulan entre organismos, aire, agua, suelo y roca."
+        ]
+      ]
+    },
+    {
+      "id": "movement",
+      "name": "Movimiento",
+      "className": "Interacción activa con un entorno cambiante",
+      "p0": 0.706,
+      "p1": 0.756,
+      "color": [58, 214, 239],
+      "metric": "Detectar → decidir → generar fuerza → desplazarse",
+      "fact": "Moverse permite buscar energía, escapar, explorar, reproducirse y modificar el entorno. También exige control, orientación, gasto energético y coordinación del cuerpo.",
+      "sound": {
+        "base": 185,
+        "filter": 3340,
+        "noise": 0.055,
+        "pulse": 0.66,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "locomoción",
+          "La locomoción desplaza el organismo mediante cilios, flagelos, músculos u otros mecanismos."
+        ],
+        [
+          "músculo",
+          "La contracción coordinada genera fuerzas internas que se transmiten al entorno."
+        ],
+        [
+          "esqueleto",
+          "Un soporte rígido o hidrostático permite convertir contracciones en movimiento dirigido."
+        ],
+        [
+          "alimentación",
+          "Moverse amplía el acceso a recursos, pero aumenta el consumo de energía."
+        ],
+        [
+          "huida",
+          "Respuestas rápidas pueden reducir el riesgo de depredación o daño."
+        ],
+        [
+          "búsqueda",
+          "Patrones de exploración equilibran información, distancia y energía."
+        ],
+        [
+          "orientación",
+          "Luz, gravedad, campos, sustancias y memoria pueden guiar una trayectoria."
+        ],
+        [
+          "conducta",
+          "El movimiento observable es la salida de procesos sensoriales, internos y motores."
+        ]
+      ]
+    },
+    {
+      "id": "senses",
+      "name": "Sentidos",
+      "className": "Conversión biológica de estímulos en señales",
+      "p0": 0.756,
+      "p1": 0.806,
+      "color": [71, 242, 205],
+      "metric": "Estímulo → receptor → señal → respuesta",
+      "fact": "Los sentidos no copian el mundo completo. Cada organismo detecta rangos limitados de energía y sustancias relevantes para su supervivencia, cuerpo y forma de vida.",
+      "sound": {
+        "base": 201,
+        "filter": 3520,
+        "noise": 0.045,
+        "pulse": 0.7,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "luz",
+          "Fotorreceptores responden a determinados rangos de radiación y permiten orientación o visión."
+        ],
+        [
+          "sustancia química",
+          "Quimiorreceptores detectan moléculas relacionadas con alimento, peligro, pareja o estado interno."
+        ],
+        [
+          "vibración",
+          "Vibraciones del aire, agua, suelo o cuerpo pueden revelar eventos distantes."
+        ],
+        [
+          "presión",
+          "Mecanorreceptores responden a contacto, estiramiento, flujo y fuerza."
+        ],
+        [
+          "temperatura",
+          "Termorreceptores detectan cambios que afectan metabolismo, daño y conducta."
+        ],
+        [
+          "orientación",
+          "Gravedad, aceleración y campos físicos pueden contribuir a mapas de dirección."
+        ],
+        [
+          "propiocepción",
+          "Señales internas informan sobre posición, tensión y movimiento del cuerpo."
+        ],
+        [
+          "interocepción",
+          "El organismo detecta hambre, oxígeno, presión y otros estados internos."
+        ]
+      ]
+    },
+    {
+      "id": "nervous",
+      "name": "Sistemas nerviosos",
+      "className": "Comunicación rápida dentro del organismo",
+      "p0": 0.806,
+      "p1": 0.858,
+      "color": [112, 203, 255],
+      "metric": "Neuronas + impulsos + sinapsis + circuitos",
+      "fact": "Los sistemas nerviosos integran señales, coordinan músculos y seleccionan respuestas. Pueden ser redes distribuidas, cordones, ganglios o estructuras centralizadas.",
+      "sound": {
+        "base": 218,
+        "filter": 3710,
+        "noise": 0.04,
+        "pulse": 0.74,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "neurona",
+          "Una neurona recibe, integra y transmite señales mediante cambios eléctricos y químicos."
+        ],
+        [
+          "impulso eléctrico",
+          "El potencial de acción propaga una señal regenerativa a lo largo de la membrana."
+        ],
+        [
+          "sinapsis",
+          "Una sinapsis modifica la actividad de otra célula mediante neurotransmisores o conexión eléctrica."
+        ],
+        [
+          "reflejo",
+          "Un circuito breve convierte un estímulo en respuesta rápida sin requerir deliberación consciente."
+        ],
+        [
+          "integración sensorial",
+          "Circuitos combinan señales de distintas fuentes y momentos."
+        ],
+        [
+          "control motor",
+          "La actividad neural coordina fuerza, secuencia y corrección del movimiento."
+        ],
+        [
+          "red distribuida",
+          "Un sistema nervioso puede funcionar sin un único centro dominante."
+        ],
+        [
+          "centralización",
+          "Concentrar procesamiento cerca de órganos sensoriales puede acelerar coordinación y predicción."
+        ]
+      ]
+    },
+    {
+      "id": "brains",
+      "name": "Cerebros y aprendizaje",
+      "className": "Procesamiento adaptable basado en experiencia",
+      "p0": 0.858,
+      "p1": 0.91,
+      "color": [167, 156, 255],
+      "metric": "Memoria + predicción + recompensa + plasticidad",
+      "fact": "El aprendizaje permite que la experiencia cambie conductas futuras. Los cerebros combinan respuestas heredadas con plasticidad, memoria, predicción y selección de acciones.",
+      "sound": {
+        "base": 236,
+        "filter": 3910,
+        "noise": 0.035,
+        "pulse": 0.79,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "memoria",
+          "La memoria conserva efectos del pasado que pueden modificar decisiones posteriores."
+        ],
+        [
+          "plasticidad",
+          "Las conexiones y propiedades neuronales cambian con actividad, desarrollo y experiencia."
+        ],
+        [
+          "predicción",
+          "Un cerebro puede anticipar consecuencias y reducir incertidumbre antes de actuar."
+        ],
+        [
+          "recompensa",
+          "Sistemas de valoración refuerzan acciones asociadas con resultados relevantes."
+        ],
+        [
+          "atención",
+          "La atención prioriza parte de la información disponible y regula procesamiento y conducta."
+        ],
+        [
+          "decisión",
+          "Decidir implica comparar estados, necesidades, riesgos, hábitos y posibilidades."
+        ],
+        [
+          "instinto",
+          "Un instinto es una predisposición evolucionada, pero puede interactuar con aprendizaje."
+        ],
+        [
+          "flexibilidad",
+          "La conducta flexible permite responder a situaciones no idénticas a las del pasado."
+        ]
+      ]
+    },
+    {
+      "id": "perception",
+      "name": "Percepción",
+      "className": "Representaciones construidas por sistemas nerviosos",
+      "p0": 0.91,
+      "p1": 0.96,
+      "color": [224, 157, 255],
+      "metric": "Señales incompletas + contexto + memoria → experiencia del mundo",
+      "fact": "No experimentamos una copia directa del exterior. El cerebro integra señales ambiguas con contexto, expectativas y estado corporal para construir una interpretación útil.",
+      "sound": {
+        "base": 257,
+        "filter": 4140,
+        "noise": 0.03,
+        "pulse": 0.84,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "color",
+          "El color es una experiencia construida a partir de luz, receptores, contexto y procesamiento neural."
+        ],
+        [
+          "sonido",
+          "El sonido percibido organiza vibraciones en tono, timbre, ritmo, fuente y significado."
+        ],
+        [
+          "forma",
+          "El sistema visual infiere bordes, superficies y objetos a partir de patrones incompletos."
+        ],
+        [
+          "movimiento",
+          "La percepción de movimiento combina cambios temporales, seguimiento y predicción."
+        ],
+        [
+          "mapa espacial",
+          "El cerebro integra señales para representar posiciones del cuerpo, objetos y rutas."
+        ],
+        [
+          "reconocimiento",
+          "Reconocer relaciona la entrada actual con categorías y recuerdos aprendidos."
+        ],
+        [
+          "cuerpo",
+          "La experiencia del cuerpo combina tacto, visión, equilibrio, propiocepción e interocepción."
+        ],
+        [
+          "interpretación",
+          "¿Experimentamos el mundo directamente o una interpretación construida por el cerebro?"
+        ]
+      ]
+    },
+    {
+      "id": "consciousness",
+      "name": "La experiencia consciente",
+      "className": "Frontera científica abierta",
+      "p0": 0.96,
+      "p1": 1.0001,
+      "color": [255, 220, 164],
+      "metric": "Actividad cerebral → experiencia subjetiva aún no explicada por completo",
+      "fact": "La evolución produjo organismos capaces de sentir, aprender y construir modelos de su entorno. Todavía no comprendemos por completo cómo la actividad física de un cerebro produce experiencia subjetiva.",
+      "sound": {
+        "base": 281,
+        "filter": 4500,
+        "noise": 0.022,
+        "pulse": 0.9,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "vigilia",
+          "La vigilia describe un nivel de activación y capacidad de interacción, pero no agota el concepto de conciencia."
+        ],
+        [
+          "experiencia subjetiva",
+          "La conciencia incluye que exista algo que se siente desde la perspectiva del organismo."
+        ],
+        [
+          "atención",
+          "Atención y conciencia se relacionan, pero no son necesariamente idénticas."
+        ],
+        [
+          "modelo de sí",
+          "Un sistema puede representar su cuerpo, historia, posibilidades y relación con otros."
+        ],
+        [
+          "comunicación",
+          "Poder informar una experiencia ayuda a estudiarla, aunque la ausencia de lenguaje no demuestra ausencia de conciencia."
+        ],
+        [
+          "conciencia animal",
+          "La evidencia sugiere capacidades conscientes en diversos animales, con grados y formas aún debatidos."
+        ],
+        [
+          "correlato neural",
+          "Los correlatos neurales identifican actividad asociada con experiencia, pero asociación no equivale a explicación completa."
+        ],
+        [
+          "teorías",
+          "Existen teorías competidoras sobre integración, acceso global, predicción y orden superior; ninguna ha resuelto definitivamente el problema."
+        ],
+        [
+          "siguiente viaje",
+          "Más allá: Espectro de la Mente, de la percepción al pensamiento, el lenguaje, la identidad y la cultura."
+        ]
+      ]
+    }
+  ]
+}

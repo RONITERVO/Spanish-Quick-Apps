@@ -1,0 +1,57 @@
+<canvas
+  id="cosmic-future-spectrum"
+  role="application"
+  tabindex="0"
+  aria-describedby="instructions"
+  aria-label="Mapa táctil del futuro del universo, desde el presente observado hasta la oscuridad cósmica y la física desconocida"
+></canvas>
+<p id="instructions" class="sr-only">
+  La aventura comienza exactamente donde termina la aplicación de evidencia
+  cósmica: en la frontera de lo conocible. Desde allí regresa al universo actual
+  y avanza hacia el futuro por el ocaso de la formación estelar, la era de las
+  enanas rojas, las últimas estrellas, la era degenerada, la era de los agujeros
+  negros, la evaporación de Hawking, la era oscura y un futuro indeterminado. La
+  altura ordena etapas futuras, pero no representa una escala temporal lineal.
+  Arrastra horizontalmente para descubrir conceptos distintos dentro de cada
+  región. También puedes usar las flechas del teclado.
+</p>
+
+<div id="light-field" aria-hidden="true"></div>
+<div id="scan-line" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<div id="hint" aria-hidden="true">
+  <div id="hint-ring"></div>
+  <div id="hint-text">El presente vuelve a comenzar</div>
+  <div id="hint-subtext">Asciende · proyecta el tiempo cósmico</div>
+</div>
+
+<div id="readout" aria-live="polite" aria-atomic="true">
+  <span id="certainty-class"></span>
+  <span id="zone-name"></span>
+  <span id="feature-name"></span>
+  <span id="metric"></span>
+  <span id="fact"></span>
+</div>
+
+<div id="touch-orb" aria-hidden="true"></div>
+
+<div id="journey-scale" aria-hidden="true">
+  <div id="scale-track"><div id="scale-fill"></div></div>
+  <div id="scale-dot"></div>
+  <span id="scale-bottom">Frontera → universo actual</span>
+  <span id="scale-value">Tiempo proyectado</span>
+  <span id="scale-top">Futuro indeterminado</span>
+</div>
+
+<!--
+    Visualización educativa sin dependencias externas.
+    La altura ordena una secuencia hacia el futuro, pero no es una escala temporal lineal: cada franja
+    puede abarcar órdenes de magnitud más tiempo que la anterior. La certeza visual disminuye al subir.
+
+    La aplicación no presenta como observados el decaimiento del protón ni la radiación de Hawking de
+    un agujero negro astrofísico; tampoco garantiza que la energía oscura sea constante, que exista una
+    cronología única, que la muerte térmica sea súbita o que Big Rip, Big Crunch y decaimiento del vacío
+    sean finales confirmados. La habitabilidad, la vida y la computación no reciben un límite exacto.
+  -->

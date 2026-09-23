@@ -1,0 +1,58 @@
+<canvas
+  id="cosmic-evidence-spectrum"
+  role="application"
+  tabindex="0"
+  aria-describedby="instructions"
+  aria-label="Mapa táctil de los grados de evidencia cosmológica, desde el límite de la física conocida hasta la frontera de lo conocible"
+></canvas>
+<p id="instructions" class="sr-only">
+  La aventura comienza exactamente donde termina el universo temprano: en el
+  límite de la física conocida. Toca o arrastra hacia arriba para recorrer
+  observación directa, huellas fósiles, inferencias robustas, predicciones
+  comprobables, señales aún no detectadas, modelos de gravedad cuántica,
+  condiciones iniciales y frontera de lo conocible. La altura ya no representa
+  un tiempo cada vez más temprano: representa una disminución gradual del grado
+  de evidencia. Arrastra horizontalmente para descubrir conceptos distintos
+  dentro de cada región. También puedes usar las flechas del teclado.
+</p>
+
+<div id="light-field" aria-hidden="true"></div>
+<div id="scan-line" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<div id="hint" aria-hidden="true">
+  <div id="hint-ring"></div>
+  <div id="hint-text">La cronología termina aquí</div>
+  <div id="hint-subtext">Asciende · compara la fuerza de la evidencia</div>
+</div>
+
+<div id="readout" aria-live="polite" aria-atomic="true">
+  <span id="evidence-class"></span>
+  <span id="zone-name"></span>
+  <span id="feature-name"></span>
+  <span id="metric"></span>
+  <span id="fact"></span>
+</div>
+
+<div id="touch-orb" aria-hidden="true"></div>
+
+<div id="journey-scale" aria-hidden="true">
+  <div id="scale-track"><div id="scale-fill"></div></div>
+  <div id="scale-dot"></div>
+  <span id="scale-bottom">Límite de la física conocida</span>
+  <span id="scale-value">Grado de evidencia</span>
+  <span id="scale-top">Frontera de lo conocible</span>
+</div>
+
+<!--
+    Visualización educativa sin dependencias externas.
+    A diferencia de las aplicaciones anteriores, la altura ya no representa una cronología ni una
+    escala espacial. Representa una transición conceptual desde datos observados y huellas medibles
+    hacia inferencias, predicciones, marcos teóricos competidores y preguntas abiertas.
+
+    La visualización evita presentar como hechos confirmados la inflación, las ondas gravitacionales
+    primordiales, una partícula concreta de materia oscura, el decaimiento del protón, una teoría de
+    gravedad cuántica, el multiverso, una singularidad física o unas condiciones iniciales definitivas.
+    “Antes del Big Bang” no se trata como una expresión necesariamente significativa.
+  -->

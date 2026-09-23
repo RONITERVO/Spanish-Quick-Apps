@@ -1,0 +1,375 @@
+{
+  "ZONES": [
+    {
+      "id": "handoff",
+      "name": "Límite de la física conocida",
+      "className": "Punto de partida",
+      "p0": 0,
+      "p1": 0.065,
+      "color": [222, 230, 255],
+      "metric": "Continuidad con el universo temprano · la cronología se detiene",
+      "fact": "Aquí termina el recorrido hacia épocas cada vez más tempranas. Desde este punto, subir ya no significa retroceder en el tiempo: significa alejarse gradualmente de la evidencia directa.",
+      "sound": {
+        "base": 78,
+        "filter": 920,
+        "noise": 0.08,
+        "pulse": 0.22,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "cambio de eje",
+          "La altura deja de representar tiempo y comienza a representar la fuerza relativa de la evidencia científica."
+        ],
+        [
+          "teorías insuficientes",
+          "La relatividad general y la física cuántica funcionan extraordinariamente bien en sus dominios, pero no forman todavía una descripción completa de condiciones extremas."
+        ],
+        [
+          "sin destino confirmado",
+          "El límite no contiene una singularidad observada, un primer instante fotografiado ni una respuesta definitiva sobre el origen."
+        ],
+        [
+          "disciplina científica",
+          "El recorrido separa datos, reconstrucciones, predicciones, hipótesis y desconocimiento en lugar de mezclarlos."
+        ],
+        [
+          "nueva pregunta",
+          "¿Qué puede sostener la evidencia y qué permanece abierto a nuevas observaciones o teorías?"
+        ]
+      ]
+    },
+    {
+      "id": "observed",
+      "name": "Observación directa",
+      "className": "Observado",
+      "p0": 0.065,
+      "p1": 0.205,
+      "color": [113, 211, 255],
+      "metric": "Datos medidos · estructuras nítidas · resultados reproducibles",
+      "fact": "La base más firme está formada por señales registradas con instrumentos, mapas del cielo, abundancias medidas y física de partículas comprobada en laboratorios.",
+      "sound": {
+        "base": 92,
+        "filter": 1500,
+        "noise": 0.035,
+        "pulse": 0.17,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "fondo cósmico",
+          "Los detectores miden un cielo de microondas con un espectro casi térmico y pequeñas variaciones angulares."
+        ],
+        [
+          "expansión cósmica",
+          "El desplazamiento al rojo, las distancias y múltiples observaciones muestran que la escala del universo cambia con el tiempo."
+        ],
+        [
+          "hidrógeno y helio",
+          "Las abundancias de elementos ligeros pueden medirse en entornos antiguos y compararse con cálculos físicos."
+        ],
+        [
+          "distribución de galaxias",
+          "Los sondeos cartografían galaxias, cúmulos, filamentos y vacíos a gran escala."
+        ],
+        [
+          "laboratorios",
+          "Aceleradores y detectores prueban partículas, campos e interacciones que también se aplican a la cosmología temprana."
+        ]
+      ]
+    },
+    {
+      "id": "fossil-traces",
+      "name": "Huellas fósiles",
+      "className": "Observado → reconstruido",
+      "p0": 0.205,
+      "p1": 0.35,
+      "color": [114, 244, 207],
+      "metric": "Patrones medidos · memoria física del universo temprano",
+      "fact": "Algunas observaciones funcionan como fósiles: no muestran directamente el proceso original, pero conservan patrones producidos por él.",
+      "sound": {
+        "base": 111,
+        "filter": 2050,
+        "noise": 0.055,
+        "pulse": 0.14,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "anisotropías",
+          "Las pequeñas diferencias del fondo cósmico codifican densidad, movimiento y condiciones físicas del plasma temprano."
+        ],
+        [
+          "polarización",
+          "La orientación de la radiación añade información independiente sobre dispersión, geometría y perturbaciones."
+        ],
+        [
+          "oscilaciones acústicas",
+          "Una escala preferente en la distribución de materia conserva la huella de ondas del plasma primordial."
+        ],
+        [
+          "semillas de estructura",
+          "Las regiones ligeramente más densas crecieron por gravedad hasta formar galaxias, cúmulos y la red cósmica."
+        ],
+        [
+          "fluctuaciones primordiales",
+          "Su forma estadística se reconstruye comparando mapas del fondo cósmico y estructura a gran escala."
+        ]
+      ]
+    },
+    {
+      "id": "inference",
+      "name": "Inferencias robustas",
+      "className": "Inferido",
+      "p0": 0.35,
+      "p1": 0.5,
+      "color": [255, 220, 112],
+      "metric": "Múltiples evidencias convergentes · reconstrucción física",
+      "fact": "Estas ideas no son fotografías directas, pero explican conjuntos amplios de datos mediante teorías que pueden contrastarse entre sí.",
+      "sound": {
+        "base": 132,
+        "filter": 2550,
+        "noise": 0.075,
+        "pulse": 0.11,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "plasma primordial",
+          "La opacidad previa al fondo cósmico se infiere a partir de la física de cargas libres y de los patrones observados."
+        ],
+        [
+          "nucleosíntesis",
+          "Las reacciones de los primeros minutos conectan parámetros cosmológicos con abundancias de deuterio y helio."
+        ],
+        [
+          "fondo de neutrinos",
+          "Es una predicción robusta del Big Bang caliente y deja efectos indirectos, aunque sus neutrinos relictos individuales no se han detectado directamente."
+        ],
+        [
+          "materia oscura",
+          "Su gravedad explica numerosos fenómenos, pero la naturaleza microscópica de la materia oscura sigue sin identificarse."
+        ],
+        [
+          "perturbaciones",
+          "Las ecuaciones describen cómo pequeñas variaciones evolucionan hasta convertirse en la estructura cósmica observada."
+        ],
+        [
+          "fase inflacionaria",
+          "Una fase inflacionaria puede explicar rasgos importantes, pero su mecanismo concreto y su escala de energía no están confirmados."
+        ]
+      ]
+    },
+    {
+      "id": "testable-predictions",
+      "name": "Predicciones comprobables",
+      "className": "Predicho",
+      "p0": 0.5,
+      "p1": 0.625,
+      "color": [255, 165, 108],
+      "metric": "Una teoría se arriesga · la observación puede apoyarla o descartarla",
+      "fact": "Una predicción científica valiosa especifica qué patrón debería aparecer, dónde buscarlo y qué resultado contaría en contra del modelo.",
+      "sound": {
+        "base": 154,
+        "filter": 3100,
+        "noise": 0.095,
+        "pulse": 0.085,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "patrón de polarización",
+          "Diferentes mecanismos tempranos pueden dejar correlaciones concretas en la polarización del fondo cósmico."
+        ],
+        [
+          "forma del espectro",
+          "Los modelos predicen la amplitud, inclinación y posibles desviaciones de las fluctuaciones primordiales."
+        ],
+        [
+          "no gaussianidad",
+          "Ciertos escenarios producirían relaciones estadísticas específicas entre modos del fondo cósmico y la estructura."
+        ],
+        [
+          "recalentamiento",
+          "La transición posterior a una posible inflación podría dejar consecuencias en partículas, ondas o distribución de perturbaciones."
+        ],
+        [
+          "consistencia cruzada",
+          "Una predicción gana fuerza cuando varios instrumentos y mensajeros independientes encuentran el mismo patrón."
+        ]
+      ]
+    },
+    {
+      "id": "undetected",
+      "name": "Señales aún no detectadas",
+      "className": "Buscado · no confirmado",
+      "p0": 0.625,
+      "p1": 0.745,
+      "color": [255, 116, 157],
+      "metric": "Instrumentos entre ruido · límites superiores · ausencia informativa",
+      "fact": "No detectar una señal no demuestra que sea imposible. Permite reducir el espacio de modelos y diseñar búsquedas más sensibles.",
+      "sound": {
+        "base": 176,
+        "filter": 3700,
+        "noise": 0.15,
+        "pulse": 0.06,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "ondas primordiales",
+          "Una señal gravitacional de épocas extremadamente tempranas sería extraordinaria, pero no existe una detección confirmada de ese fondo primordial."
+        ],
+        [
+          "modo B primordial",
+          "La polarización buscada debe separarse cuidadosamente del polvo galáctico, lentes gravitacionales y ruido instrumental."
+        ],
+        [
+          "partícula de materia oscura",
+          "Numerosos experimentos buscan interacciones no gravitatorias, sin una identificación confirmada de la partícula responsable."
+        ],
+        [
+          "decaimiento del protón",
+          "Algunas teorías de unificación lo predicen; los experimentos han establecido vidas medias mínimas cada vez mayores sin observar un caso confirmado."
+        ],
+        [
+          "nuevas simetrías",
+          "Partículas asociadas a simetrías adicionales podrían aparecer en colisionadores, astrofísica o experimentos de precisión."
+        ],
+        [
+          "huella del recalentamiento",
+          "Se buscan señales indirectas capaces de distinguir cómo terminó una posible etapa inflacionaria."
+        ]
+      ]
+    },
+    {
+      "id": "quantum-gravity",
+      "name": "Modelos de gravedad cuántica",
+      "className": "Hipotético · marcos competidores",
+      "p0": 0.745,
+      "p1": 0.855,
+      "color": [176, 129, 255],
+      "metric": "Sin teoría confirmada · geometrías alternativas · pruebas difíciles",
+      "fact": "Aquí las representaciones se vuelven abstractas porque todavía no existe una teoría de gravedad cuántica verificada de forma experimental.",
+      "sound": {
+        "base": 198,
+        "filter": 4250,
+        "noise": 0.125,
+        "pulse": 0.045,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "espacio-tiempo cuántico",
+          "A escalas extremas, el espacio y el tiempo clásicos podrían dejar de ser una base continua y fija."
+        ],
+        [
+          "longitud de Planck",
+          "Es una escala construida con constantes fundamentales; señala dónde nuestras extrapolaciones ordinarias pueden perder fiabilidad."
+        ],
+        [
+          "geometría emergente",
+          "Algunos enfoques exploran si el espacio-tiempo surge de grados de libertad más fundamentales."
+        ],
+        [
+          "teoría de cuerdas",
+          "Es un amplio marco de investigación con herramientas potentes, no una explicación cosmológica confirmada."
+        ],
+        [
+          "gravedad cuántica de bucles",
+          "Es otro programa de investigación que cuantiza aspectos de la geometría, sin estatus de respuesta establecida."
+        ],
+        [
+          "otras vías",
+          "Seguridad asintótica, conjuntos causales, triangulaciones y otros enfoques compiten sin un vencedor experimental."
+        ]
+      ]
+    },
+    {
+      "id": "initial-conditions",
+      "name": "Condiciones iniciales",
+      "className": "Pregunta abierta",
+      "p0": 0.855,
+      "p1": 0.94,
+      "color": [213, 188, 255],
+      "metric": "Varias posibilidades · ninguna selección confirmada",
+      "fact": "Las preguntas sustituyen a los objetos: no sabemos qué principio, proceso o condición determinó el estado inicial accesible a nuestras teorías.",
+      "sound": {
+        "base": 220,
+        "filter": 4800,
+        "noise": 0.17,
+        "pulse": 0.032,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "uniformidad",
+          "¿Por qué el universo observable comenzó en un estado tan uniforme y con entropía gravitatoria tan baja?"
+        ],
+        [
+          "leyes físicas",
+          "¿Por qué existen estas leyes y estos valores de constantes, en lugar de otros?"
+        ],
+        [
+          "fluctuaciones",
+          "¿Qué determinó el estado y las propiedades precisas de las perturbaciones iniciales?"
+        ],
+        [
+          "sentido de «antes»",
+          "Si el tiempo clásico emerge o tiene un límite, preguntar por un antes podría no estar bien definido."
+        ],
+        [
+          "comprobabilidad",
+          "¿Qué clases de explicaciones producirían consecuencias observables y cuáles quedarían fuera de contraste?"
+        ],
+        [
+          "sin selección",
+          "La visualización abre ramas compatibles, pero no escoge una como historia real del universo."
+        ]
+      ]
+    },
+    {
+      "id": "knowable-frontier",
+      "name": "Frontera de lo conocible",
+      "className": "Desconocido",
+      "p0": 0.94,
+      "p1": 1,
+      "color": [238, 239, 255],
+      "metric": "Límites de medición · horizontes causales · teorías incompletas",
+      "fact": "La ausencia de una respuesta confirmada no es un vacío de la ciencia. Es la frontera donde comienzan nuevas preguntas.",
+      "sound": {
+        "base": 242,
+        "filter": 5300,
+        "noise": 0.21,
+        "pulse": 0.022,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "horizonte causal",
+          "Hay regiones o sucesos cuya información no puede alcanzarnos debido a la historia y geometría del espacio-tiempo."
+        ],
+        [
+          "incertidumbre",
+          "Todo experimento tiene sensibilidad finita, ruido, degeneraciones y límites fundamentales de inferencia."
+        ],
+        [
+          "teoría incompleta",
+          "Una ecuación que falla en un límite extremo señala trabajo pendiente; no convierte automáticamente una extrapolación en realidad."
+        ],
+        [
+          "pregunta futura",
+          "Nuevos detectores, mensajeros y métodos podrían transformar algunas preguntas actuales en pruebas concretas."
+        ],
+        [
+          "fuera de observación",
+          "Algunas afirmaciones podrían no producir nunca diferencias medibles y quedar fuera del alcance de la ciencia empírica."
+        ],
+        [
+          "campo abierto",
+          "El final no contiene creador, multiverso, singularidad ni origen definitivo: contiene posibilidades y límites claramente etiquetados."
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+<canvas
+  id="solar-spectrum"
+  role="application"
+  tabindex="0"
+  aria-describedby="instructions"
+  aria-label="Mapa táctil del sistema solar completo, desde el Sol hasta Plutón"
+></canvas>
+<p id="instructions" class="sr-only">
+  La Tierra es el punto de continuidad desde la app anterior. Toca o arrastra
+  verticalmente: hacia abajo están Venus, Mercurio y el Sol; hacia arriba están
+  Marte, los planetas gigantes y Plutón. También puedes usar las flechas del
+  teclado.
+</p>
+<div id="light-field" aria-hidden="true"></div>
+<div id="scan-line" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<div id="hint" aria-hidden="true">
+  <div id="hint-ring"></div>
+  <div id="hint-text">Estás en la Tierra</div>
+  <div id="hint-subtext">
+    Desciende hacia Venus, Mercurio y el Sol · asciende hacia Marte y Plutón
+  </div>
+</div>
+
+<div id="readout" aria-live="polite" aria-atomic="true">
+  <span id="zone-name"></span>
+  <span id="feature-name"></span>
+  <span id="metric"></span>
+  <span id="fact"></span>
+</div>
+
+<div id="touch-orb" aria-hidden="true"></div>
+
+<div id="journey-scale" aria-hidden="true">
+  <div id="scale-track"><div id="scale-fill"></div></div>
+  <div id="scale-dot"></div>
+  <span id="scale-earth">Sol</span>
+  <span id="scale-home">Tierra</span>
+  <span id="scale-value">Escala educativa · no a escala</span>
+  <span id="scale-pluto">Plutón</span>
+</div>

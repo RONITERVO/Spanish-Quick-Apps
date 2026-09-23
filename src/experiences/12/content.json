@@ -1,0 +1,430 @@
+{
+  "ZONES": [
+    {
+      "id": "handoff",
+      "name": "Frontera de lo conocible",
+      "className": "Continuidad",
+      "p0": 0,
+      "p1": 0.045,
+      "color": [211, 222, 255],
+      "metric": "La ruta del origen termina · el eje temporal vuelve a empezar",
+      "fact": "La aplicación anterior terminó separando evidencia y desconocimiento. Aquí giramos la mirada: regresamos al universo observable de hoy y proyectamos su evolución hacia delante.",
+      "sound": {
+        "base": 76,
+        "filter": 820,
+        "noise": 0.045,
+        "pulse": 0.12,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "cambio de dirección",
+          "Subir vuelve a significar avanzar en el tiempo, no alejarse de la evidencia del origen."
+        ],
+        [
+          "presente como ancla",
+          "Toda proyección comienza en el universo que medimos hoy: galaxias, estrellas, expansión y materia en evolución."
+        ],
+        [
+          "tiempo no lineal",
+          "La altura ordena etapas, pero no representa una escala temporal uniforme: cada región puede durar muchísimo más que la anterior."
+        ],
+        [
+          "certeza decreciente",
+          "Cuanto más remoto es el futuro, más depende de que las leyes y constantes actuales sigan funcionando como esperamos."
+        ],
+        [
+          "ningún guion cerrado",
+          "El recorrido muestra una extrapolación científica, no una película confirmada del destino cósmico."
+        ]
+      ]
+    },
+    {
+      "id": "present",
+      "name": "Universo actual",
+      "className": "Observado hoy",
+      "p0": 0.045,
+      "p1": 0.17,
+      "color": [119, 207, 255],
+      "metric": "Presente cosmológico · ≈13,8 mil millones de años desde el Big Bang",
+      "fact": "El universo actual contiene galaxias activas, estrellas de muchas edades, planetas, agujeros negros, formación estelar y una expansión cuya aceleración se mide, aunque la naturaleza de la energía oscura sigue abierta.",
+      "sound": {
+        "base": 96,
+        "filter": 1700,
+        "noise": 0.035,
+        "pulse": 0.18,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "red cósmica",
+          "Galaxias y cúmulos forman filamentos y nodos separados por vacíos inmensos."
+        ],
+        [
+          "formación estelar",
+          "Nubes frías de gas todavía colapsan y producen nuevas generaciones de estrellas."
+        ],
+        [
+          "sistemas planetarios",
+          "Los planetas son resultados comunes de la formación estelar, con historias muy distintas."
+        ],
+        [
+          "agujeros negros",
+          "Agujeros negros estelares y supermasivos crecen, se fusionan y afectan a sus entornos."
+        ],
+        [
+          "expansión acelerada",
+          "Las observaciones favorecen una expansión acelerada; su comportamiento futuro no está garantizado."
+        ],
+        [
+          "materia reciclada",
+          "Las estrellas devuelven elementos al medio interestelar y alimentan nuevas estrellas, planetas y química compleja."
+        ]
+      ]
+    },
+    {
+      "id": "decline",
+      "name": "Ocaso de la formación estelar",
+      "className": "Evolución modelada",
+      "p0": 0.17,
+      "p1": 0.305,
+      "color": [255, 177, 116],
+      "metric": "10¹⁰–10¹⁴ años · menos gas frío disponible",
+      "fact": "La formación estelar no se apaga de golpe. Desciende gradualmente a medida que el gas se consume, se calienta, queda encerrado en remanentes o deja de poder enfriarse con eficacia.",
+      "sound": {
+        "base": 88,
+        "filter": 1320,
+        "noise": 0.05,
+        "pulse": 0.12,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "galaxias más rojas",
+          "Al nacer menos estrellas azules masivas, domina la luz de poblaciones estelares más viejas y frías."
+        ],
+        [
+          "viveros que se apagan",
+          "Las nebulosas brillantes se vuelven menos frecuentes conforme disminuye el gas capaz de colapsar."
+        ],
+        [
+          "fusiones galácticas",
+          "Las galaxias ligadas pueden fusionarse y reorganizar sus estrellas, gas y agujeros negros."
+        ],
+        [
+          "islas observables",
+          "Con expansión acelerada persistente, sistemas no ligados pueden cruzar horizontes cosmológicos y dejar de ser observables entre sí."
+        ],
+        [
+          "reciclaje insuficiente",
+          "La materia expulsada por estrellas prolonga la actividad, pero no mantiene indefinidamente el ritmo actual."
+        ],
+        [
+          "incertidumbre oscura",
+          "Cambios futuros en la energía oscura alterarían profundamente esta historia."
+        ]
+      ]
+    },
+    {
+      "id": "red-dwarfs",
+      "name": "Era de las enanas rojas",
+      "className": "Futuro probable",
+      "p0": 0.305,
+      "p1": 0.445,
+      "color": [255, 104, 86],
+      "metric": "Hasta ~10¹³–10¹⁴ años · las estrellas pequeñas dominan",
+      "fact": "Las enanas rojas consumen su combustible lentamente. Si la física estelar actual sigue siendo válida, muchas continuarán brillando cuando las estrellas semejantes al Sol hayan desaparecido hace muchísimo tiempo.",
+      "sound": {
+        "base": 72,
+        "filter": 920,
+        "noise": 0.025,
+        "pulse": 0.07,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "combustión lenta",
+          "Su baja masa y mezcla interna permiten aprovechar el hidrógeno durante tiempos enormemente largos."
+        ],
+        [
+          "luz tenue",
+          "El cielo pierde brillo global aunque sistemas individuales continúen emitiendo una luz roja estable."
+        ],
+        [
+          "últimos planetas cálidos",
+          "Algunos entornos planetarios podrían conservar fuentes de energía, pero su habitabilidad remota no puede darse por sentada."
+        ],
+        [
+          "espacio más aislado",
+          "Las distancias efectivamente accesibles crecen mientras la actividad luminosa se concentra en menos sistemas ligados."
+        ],
+        [
+          "ritmo casi inmóvil",
+          "La escena cambia tan lentamente que una vida estelar humana resulta inconcebiblemente breve en comparación."
+        ],
+        [
+          "sin privilegio biológico",
+          "La aplicación no asigna un límite exacto a la vida ni a la computación en esta era."
+        ]
+      ]
+    },
+    {
+      "id": "last-stars",
+      "name": "Las últimas estrellas",
+      "className": "Proyección robusta",
+      "p0": 0.445,
+      "p1": 0.555,
+      "color": [255, 215, 145],
+      "metric": "Orden de 10¹⁴ años · termina la formación estelar ordinaria",
+      "fact": "La última luz estelar no desaparece en un instante. Nacen cada vez menos estrellas; después quedan puntos aislados y raros episodios producidos por encuentros o fusiones de objetos subestelares.",
+      "sound": {
+        "base": 64,
+        "filter": 780,
+        "noise": 0.018,
+        "pulse": 0.055,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "último nacimiento natural",
+          "Llega una época en que las nubes ya no forman estrellas de manera ordinaria."
+        ],
+        [
+          "colisiones excepcionales",
+          "Encuentros entre enanas marrones u otros objetos podrían encender estrellas nuevas de forma esporádica."
+        ],
+        [
+          "puntos aislados",
+          "Las estrellas supervivientes aparecen como faros solitarios en una oscuridad creciente."
+        ],
+        [
+          "enanas blancas",
+          "Núcleos estelares agotados conservan calor residual y se enfrían durante tiempos enormes."
+        ],
+        [
+          "estrellas de neutrones",
+          "Remanentes compactos sobreviven después de explosiones estelares y pierden gradualmente su energía accesible."
+        ],
+        [
+          "materia ordinaria tenue",
+          "La mayor parte de la materia bariónica luminosa deja de estar en estrellas activas."
+        ]
+      ]
+    },
+    {
+      "id": "degenerate",
+      "name": "Era degenerada",
+      "className": "Escenario condicional",
+      "p0": 0.555,
+      "p1": 0.695,
+      "color": [179, 205, 232],
+      "metric": "Después de ~10¹⁴ años · remanentes fríos y física no confirmada",
+      "fact": "Predominan enanas blancas, estrellas de neutrones, enanas marrones, planetas congelados y objetos compactos. Su destino depende de procesos extremadamente lentos y de si partículas como el protón son realmente estables.",
+      "sound": {
+        "base": 54,
+        "filter": 610,
+        "noise": 0.035,
+        "pulse": 0.04,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "enanas negras",
+          "Una enana blanca suficientemente enfriada sería casi invisible; ninguna puede existir todavía porque el universo no es lo bastante antiguo."
+        ],
+        [
+          "protones: pregunta abierta",
+          "El decaimiento del protón no se ha observado. Si ocurre, los remanentes bariónicos evolucionan de una forma; si no, pueden persistir muchísimo más."
+        ],
+        [
+          "planetas congelados",
+          "Mundos expulsados o alejados de fuentes estelares pierden calor y vagan como cuerpos oscuros."
+        ],
+        [
+          "encuentros rarísimos",
+          "La gravedad puede expulsar, capturar o fusionar objetos, pero los intervalos entre sucesos crecen enormemente."
+        ],
+        [
+          "túnel y reacciones lentas",
+          "Algunos modelos permiten transformaciones nucleares o cuánticas a escalas de tiempo extremas, sin una cronología observada."
+        ],
+        [
+          "dos rutas",
+          "La estabilidad o inestabilidad de la materia ordinaria divide el futuro en escenarios físicamente distintos."
+        ]
+      ]
+    },
+    {
+      "id": "black-holes",
+      "name": "Era de los agujeros negros",
+      "className": "Modelo teórico",
+      "p0": 0.695,
+      "p1": 0.81,
+      "color": [142, 126, 226],
+      "metric": "Remoto · los agujeros negros concentran la energía restante",
+      "fact": "Cuando casi toda luz estelar ha terminado, los agujeros negros pueden ser algunos de los últimos depósitos compactos de masa y energía. Aun así, no deben representarse como eternos.",
+      "sound": {
+        "base": 44,
+        "filter": 430,
+        "noise": 0.07,
+        "pulse": 0.028,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "agujeros negros estelares",
+          "Los remanentes de estrellas masivas persisten mucho después de que sus galaxias dejen de brillar."
+        ],
+        [
+          "agujeros negros supermasivos",
+          "Los objetos centrales de antiguas galaxias dominan escalas enormes y pueden tardar muchísimo más en evaporarse."
+        ],
+        [
+          "fusiones aisladas",
+          "Sistemas ligados pueden producir encuentros tardíos, aunque cada vez quedan menos objetos próximos."
+        ],
+        [
+          "radiación mínima",
+          "Los agujeros negros astrofísicos grandes serían hoy más fríos que su entorno y su emisión de Hawking sería extraordinariamente débil."
+        ],
+        [
+          "energía concentrada",
+          "La mayor parte de la actividad disponible puede quedar encerrada en horizontes y liberarse sólo muy lentamente."
+        ],
+        [
+          "no son eternos",
+          "La teoría cuántica de campos en espacio-tiempo curvo predice que pierden masa mediante radiación de Hawking."
+        ]
+      ]
+    },
+    {
+      "id": "hawking",
+      "name": "Evaporación de Hawking",
+      "className": "Predicción teórica fuerte",
+      "p0": 0.81,
+      "p1": 0.895,
+      "color": [214, 173, 255],
+      "metric": "Hasta ~10¹⁰⁰ años para los mayores · no observada directamente en agujeros negros astrofísicos",
+      "fact": "Según la predicción de Hawking, un agujero negro aislado pierde masa, se calienta al hacerse más pequeño y termina con una fase final rápida. La conclusión es teóricamente sólida, pero no se ha medido directamente en un agujero negro astrofísico.",
+      "sound": {
+        "base": 50,
+        "filter": 980,
+        "noise": 0.095,
+        "pulse": 0.11,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "pérdida lentísima",
+          "Durante casi toda su vida, un agujero negro grande cambia de forma imperceptible."
+        ],
+        [
+          "más pequeño, más caliente",
+          "La temperatura de Hawking aumenta cuando disminuye la masa del agujero negro."
+        ],
+        [
+          "radiación creciente",
+          "La emisión se intensifica al acercarse la fase final, dentro del marco teórico estándar."
+        ],
+        [
+          "final breve",
+          "Después de una espera descomunal, la última etapa sería rápida comparada con la vida total del agujero negro."
+        ],
+        [
+          "sin detección directa",
+          "Experimentos análogos estudian fenómenos relacionados, pero no sustituyen una detección astrofísica de Hawking."
+        ],
+        [
+          "gravedad cuántica pendiente",
+          "El detalle último de la evaporación y la información sigue conectado a preguntas abiertas de gravedad cuántica."
+        ]
+      ]
+    },
+    {
+      "id": "dark-era",
+      "name": "Era oscura",
+      "className": "Futuro condicional",
+      "p0": 0.895,
+      "p1": 0.965,
+      "color": [129, 161, 213],
+      "metric": "Tras los últimos agujeros negros · expansión, partículas y campos residuales",
+      "fact": "Si la expansión continúa y los agujeros negros se evaporan como se espera, quedarían radiación de energía bajísima, neutrinos y partículas estables dispersas en un espacio cada vez más diluido.",
+      "sound": {
+        "base": 34,
+        "filter": 280,
+        "noise": 0.09,
+        "pulse": 0.018,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "fotones fríos",
+          "La longitud de onda de la radiación aumenta con la expansión y su energía accesible disminuye."
+        ],
+        [
+          "neutrinos relictos",
+          "Neutrinos extremadamente diluidos pueden permanecer como parte del fondo cósmico remoto."
+        ],
+        [
+          "electrones y positrones",
+          "Su presencia final depende de la estabilidad de la materia y de procesos de aniquilación o captura."
+        ],
+        [
+          "materia oscura estable",
+          "Si las partículas de materia oscura son estables, podrían persistir; aún no conocemos su identidad microscópica."
+        ],
+        [
+          "interacciones raras",
+          "El universo no se vuelve una pantalla vacía: quedan campos, fluctuaciones y sucesos de probabilidad diminuta."
+        ],
+        [
+          "equilibrio aproximado",
+          "La muerte térmica describe la pérdida gradual de energía libre utilizable, no un apagado súbito de toda física."
+        ]
+      ]
+    },
+    {
+      "id": "unknown",
+      "name": "Futuro indeterminado",
+      "className": "Física desconocida",
+      "p0": 0.965,
+      "p1": 1.001,
+      "color": [228, 231, 255],
+      "metric": "Sin una cronología única · las posibilidades se ramifican",
+      "fact": "El futuro más lejano no es una película ya conocida. Es una extrapolación basada en las leyes que podemos medir hoy, y esas leyes pueden resultar incompletas en escalas nunca observadas.",
+      "sound": {
+        "base": 30,
+        "filter": 240,
+        "noise": 0.115,
+        "pulse": 0.014,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "expansión eterna",
+          "Una energía oscura aproximadamente constante conduce hacia expansión continuada y equilibrio térmico, pero su constancia eterna no está demostrada."
+        ],
+        [
+          "energía oscura cambiante",
+          "Datos futuros podrían mostrar que la componente responsable de la aceleración evoluciona y cambia el destino global."
+        ],
+        [
+          "vacío metaestable",
+          "Algunos modelos permiten una transición del vacío, pero no existe evidencia de que ocurra ni un calendario verificable."
+        ],
+        [
+          "materia estable o inestable",
+          "La estabilidad del protón y de otras partículas determina qué estructuras pueden sobrevivir."
+        ],
+        [
+          "Big Rip o colapso",
+          "Estos finales requieren comportamientos cosmológicos específicos; no son destinos confirmados."
+        ],
+        [
+          "leyes aún desconocidas",
+          "Nueva física puede modificar por completo las proyecciones realizadas desde el presente."
+        ]
+      ]
+    }
+  ]
+}

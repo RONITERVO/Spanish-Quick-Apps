@@ -1,0 +1,574 @@
+{
+  "ZONES": [
+    {
+      "id": "sun",
+      "name": "Sol",
+      "x0": 0,
+      "x1": 0.09,
+      "au0": 0,
+      "au1": 0.15,
+      "color": [255, 198, 74],
+      "metricMode": "sun",
+      "distanceLabel": "Centro del sistema solar",
+      "period": "Gira en unos 25–35 días según la latitud",
+      "fact": "Es una estrella y concentra casi toda la masa del sistema solar. Su energía hace posibles el clima y la vida en la Tierra.",
+      "sound": {
+        "base": 196,
+        "filter": 5200,
+        "noise": 0.22,
+        "pulse": 0.16,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "núcleo",
+          "En el centro, la fusión nuclear convierte hidrógeno en helio y libera enormes cantidades de energía."
+        ],
+        [
+          "fotosfera",
+          "La superficie visible tiene una temperatura cercana a cinco mil quinientos grados Celsius."
+        ],
+        [
+          "mancha solar",
+          "Regiones más frías y oscuras aparecen donde el campo magnético es especialmente intenso."
+        ],
+        [
+          "corona",
+          "La atmósfera exterior del Sol alcanza temperaturas de millones de grados y se extiende al espacio."
+        ],
+        [
+          "viento solar",
+          "Un flujo de partículas cargadas sale del Sol y llena todo el sistema planetario."
+        ]
+      ]
+    },
+    {
+      "id": "mercury",
+      "name": "Mercurio",
+      "x0": 0.09,
+      "x1": 0.17,
+      "au0": 0.15,
+      "au1": 0.55,
+      "distanceAu": 0.39,
+      "period": "88 días terrestres",
+      "typeLabel": "Planeta rocoso",
+      "color": [185, 173, 157],
+      "fact": "Es el planeta más cercano al Sol y el más pequeño de los ocho planetas.",
+      "sound": {
+        "base": 180,
+        "filter": 3600,
+        "noise": 0.12,
+        "pulse": 0.18,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "cráter",
+          "Su superficie conserva una larga historia de impactos, parecida a la de la Luna."
+        ],
+        [
+          "acantilado",
+          "Al enfriarse y contraerse, el planeta formó enormes escarpes que atraviesan el terreno."
+        ],
+        [
+          "día extremo",
+          "Sin una atmósfera densa, la temperatura cambia radicalmente entre el día y la noche."
+        ],
+        [
+          "hielo polar",
+          "Cráteres que nunca reciben luz solar pueden conservar hielo de agua cerca de los polos."
+        ],
+        [
+          "órbita rápida",
+          "Mercurio completa una vuelta alrededor del Sol en solo ochenta y ocho días terrestres."
+        ]
+      ]
+    },
+    {
+      "id": "venus",
+      "name": "Venus",
+      "x0": 0.17,
+      "x1": 0.25,
+      "au0": 0.55,
+      "au1": 0.85,
+      "distanceAu": 0.72,
+      "period": "225 días terrestres",
+      "typeLabel": "Planeta rocoso",
+      "color": [255, 190, 100],
+      "fact": "Aunque no es el más cercano al Sol, es el planeta más caliente por su intenso efecto invernadero.",
+      "sound": {
+        "base": 160,
+        "filter": 2850,
+        "noise": 0.18,
+        "pulse": 0.2,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "nubes de ácido",
+          "Una capa global de nubes de ácido sulfúrico oculta casi por completo la superficie."
+        ],
+        [
+          "efecto invernadero",
+          "Su atmósfera rica en dióxido de carbono retiene calor de forma extrema."
+        ],
+        [
+          "rotación retrógrada",
+          "Venus gira lentamente en sentido contrario al de la mayoría de los planetas."
+        ],
+        [
+          "volcán",
+          "Grandes llanuras volcánicas y montañas cubren buena parte de la superficie."
+        ],
+        [
+          "presión",
+          "En el suelo, la presión atmosférica es unas noventa veces mayor que en la superficie terrestre."
+        ]
+      ]
+    },
+    {
+      "id": "earth",
+      "name": "Tierra",
+      "x0": 0.25,
+      "x1": 0.34,
+      "au0": 0.85,
+      "au1": 1.15,
+      "distanceAu": 1,
+      "period": "365,25 días",
+      "typeLabel": "Planeta rocoso · punto de continuidad",
+      "color": [88, 204, 255],
+      "metricMode": "earth",
+      "fact": "Aquí termina la exploración de la atmósfera de la app anterior y comienza el mapa completo del sistema solar.",
+      "sound": {
+        "base": 146,
+        "filter": 2400,
+        "noise": 0.14,
+        "pulse": 0.12,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "atmósfera",
+          "Una envoltura fina regula la temperatura, transporta agua y permite respirar."
+        ],
+        [
+          "océano",
+          "El agua líquida cubre cerca de siete décimas de la superficie y redistribuye calor por el planeta."
+        ],
+        [
+          "continente",
+          "La corteza continental conserva montañas, ríos, suelos y una larga historia geológica."
+        ],
+        [
+          "Luna",
+          "Nuestro satélite estabiliza parcialmente la inclinación terrestre y produce la mayor parte de las mareas."
+        ],
+        [
+          "magnetosfera",
+          "El campo magnético desvía gran parte del viento solar y protege la atmósfera."
+        ]
+      ]
+    },
+    {
+      "id": "mars",
+      "name": "Marte",
+      "x0": 0.34,
+      "x1": 0.43,
+      "au0": 1.15,
+      "au1": 1.85,
+      "distanceAu": 1.52,
+      "period": "687 días terrestres",
+      "typeLabel": "Planeta rocoso",
+      "color": [238, 112, 70],
+      "fact": "Es un desierto frío con volcanes gigantes, cañones profundos y señales de antiguos ríos y lagos.",
+      "sound": {
+        "base": 111,
+        "filter": 1950,
+        "noise": 0.16,
+        "pulse": 0.18,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "casquete polar",
+          "Hielo de agua y dióxido de carbono cambia con las estaciones marcianas."
+        ],
+        [
+          "Olympus Mons",
+          "El volcán más alto conocido del sistema solar se eleva más de veinte kilómetros."
+        ],
+        [
+          "Valles Marineris",
+          "Un sistema de cañones recorre miles de kilómetros junto al ecuador."
+        ],
+        [
+          "rover",
+          "Laboratorios móviles estudian rocas, clima y antiguos ambientes potencialmente habitables."
+        ],
+        ["Fobos y Deimos", "Dos pequeñas lunas irregulares acompañan a Marte."]
+      ]
+    },
+    {
+      "id": "asteroid-belt",
+      "name": "Cinturón de asteroides",
+      "x0": 0.43,
+      "x1": 0.52,
+      "au0": 1.85,
+      "au1": 3.3,
+      "rangeLabel": "Aprox. 2,1–3,3 UA del Sol",
+      "period": "Millones de órbitas distintas",
+      "typeLabel": "Región de cuerpos rocosos",
+      "color": [197, 172, 143],
+      "fact": "Es una región enorme y poco densa: una nave puede atravesarla sin acercarse a ningún asteroide grande.",
+      "sound": {
+        "base": 94,
+        "filter": 1550,
+        "noise": 0.2,
+        "pulse": 0.24,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "Ceres",
+          "El mayor objeto del cinturón es un planeta enano con sales y abundante hielo de agua."
+        ],
+        [
+          "Vesta",
+          "Un gran asteroide rocoso conserva una enorme cuenca de impacto cerca de su polo sur."
+        ],
+        [
+          "asteroide metálico",
+          "Algunos fragmentos exponen hierro y níquel que antes estuvieron dentro de cuerpos mayores."
+        ],
+        [
+          "familia de asteroides",
+          "Una colisión puede repartir miles de fragmentos por órbitas parecidas."
+        ],
+        [
+          "hueco de Kirkwood",
+          "La gravedad repetida de Júpiter vacía ciertas órbitas resonantes."
+        ]
+      ]
+    },
+    {
+      "id": "jupiter",
+      "name": "Júpiter",
+      "x0": 0.52,
+      "x1": 0.63,
+      "au0": 3.3,
+      "au1": 6.25,
+      "distanceAu": 5.2,
+      "period": "11,86 años terrestres",
+      "typeLabel": "Gigante gaseoso",
+      "color": [233, 188, 137],
+      "fact": "El planeta más grande reúne más masa que todos los demás planetas juntos.",
+      "sound": {
+        "base": 72,
+        "filter": 980,
+        "noise": 0.22,
+        "pulse": 0.31,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "aurora polar",
+          "Su enorme magnetosfera acelera partículas y crea auroras mucho más potentes que las terrestres."
+        ],
+        [
+          "bandas de nubes",
+          "Corrientes opuestas forman franjas claras y oscuras alrededor del planeta."
+        ],
+        [
+          "Gran Mancha Roja",
+          "Una tormenta anticiclónica gigantesca gira desde hace siglos."
+        ],
+        [
+          "Europa",
+          "Bajo una corteza de hielo podría existir un océano global de agua salada."
+        ],
+        [
+          "lunas galileanas",
+          "Ío, Europa, Ganímedes y Calisto son cuatro mundos muy diferentes."
+        ]
+      ]
+    },
+    {
+      "id": "saturn",
+      "name": "Saturno",
+      "x0": 0.63,
+      "x1": 0.73,
+      "au0": 6.25,
+      "au1": 11.2,
+      "distanceAu": 9.58,
+      "period": "29,45 años terrestres",
+      "typeLabel": "Gigante gaseoso",
+      "color": [244, 218, 151],
+      "fact": "Sus anillos parecen sólidos desde lejos, pero están formados por incontables partículas de hielo y roca.",
+      "sound": {
+        "base": 61,
+        "filter": 780,
+        "noise": 0.17,
+        "pulse": 0.36,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "hexágono polar",
+          "Una corriente atmosférica forma una figura de seis lados alrededor del polo norte."
+        ],
+        [
+          "anillo B",
+          "La sección más brillante y densa contiene ondas, huecos y estructuras temporales."
+        ],
+        [
+          "división de Cassini",
+          "Una amplia región relativamente vacía separa los anillos A y B."
+        ],
+        [
+          "Titán",
+          "Esta luna posee una atmósfera densa y mares de metano y etano líquidos."
+        ],
+        [
+          "Encélado",
+          "Géiseres de hielo lanzan al espacio material de un océano subterráneo."
+        ]
+      ]
+    },
+    {
+      "id": "uranus",
+      "name": "Urano",
+      "x0": 0.73,
+      "x1": 0.82,
+      "au0": 11.2,
+      "au1": 22,
+      "distanceAu": 19.2,
+      "period": "84 años terrestres",
+      "typeLabel": "Gigante de hielo",
+      "color": [133, 231, 229],
+      "fact": "Gira casi acostado: su eje está inclinado unos noventa y ocho grados respecto a su órbita.",
+      "sound": {
+        "base": 51,
+        "filter": 620,
+        "noise": 0.11,
+        "pulse": 0.42,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "polo iluminado",
+          "Durante parte de su larga órbita, un polo apunta casi directamente hacia el Sol."
+        ],
+        [
+          "metano",
+          "Este gas absorbe luz roja y contribuye al tono azul verdoso del planeta."
+        ],
+        [
+          "anillos oscuros",
+          "Urano está rodeado por anillos estrechos y mucho menos brillantes que los de Saturno."
+        ],
+        [
+          "Miranda",
+          "Su pequeña luna presenta acantilados, surcos y terrenos ensamblados de forma extraña."
+        ],
+        [
+          "vientos",
+          "En su atmósfera extremadamente fría soplan corrientes de cientos de kilómetros por hora."
+        ]
+      ]
+    },
+    {
+      "id": "neptune",
+      "name": "Neptuno",
+      "x0": 0.82,
+      "x1": 0.9,
+      "au0": 22,
+      "au1": 33,
+      "distanceAu": 30.05,
+      "period": "164,8 años terrestres",
+      "typeLabel": "Gigante de hielo",
+      "color": [72, 111, 255],
+      "fact": "Es el planeta más lejano del Sol y posee algunos de los vientos más rápidos medidos en el sistema solar.",
+      "sound": {
+        "base": 43,
+        "filter": 500,
+        "noise": 0.13,
+        "pulse": 0.48,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "nubes de metano",
+          "Nubes brillantes aparecen a gran altura sobre una atmósfera azul profunda."
+        ],
+        [
+          "tormenta oscura",
+          "Grandes vórtices pueden surgir, cambiar y desaparecer en pocos años."
+        ],
+        [
+          "viento supersónico",
+          "Algunas corrientes superan los dos mil kilómetros por hora."
+        ],
+        [
+          "Tritón",
+          "La gran luna orbita en sentido retrógrado y probablemente fue capturada del cinturón de Kuiper."
+        ],
+        [
+          "géiseres de nitrógeno",
+          "Voyager 2 observó columnas oscuras elevándose desde la superficie helada de Tritón."
+        ]
+      ]
+    },
+    {
+      "id": "kuiper",
+      "name": "Cinturón de Kuiper",
+      "x0": 0.9,
+      "x1": 0.96,
+      "au0": 33,
+      "au1": 39,
+      "rangeLabel": "Aprox. 30–50 UA del Sol",
+      "period": "Órbitas de siglos",
+      "typeLabel": "Región de mundos helados",
+      "color": [164, 180, 222],
+      "fact": "Más allá de Neptuno orbitan innumerables cuerpos helados: restos conservados de la formación planetaria.",
+      "sound": {
+        "base": 35,
+        "filter": 390,
+        "noise": 0.08,
+        "pulse": 0.55,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "mundo helado",
+          "Agua, metano, amoníaco y nitrógeno pueden permanecer congelados bajo un Sol diminuto."
+        ],
+        [
+          "Haumea",
+          "Este planeta enano gira tan rápido que tiene una forma muy alargada y además posee un anillo."
+        ],
+        [
+          "Makemake",
+          "Una superficie brillante rica en hielos rodea a uno de los grandes objetos transneptunianos."
+        ],
+        [
+          "resonancia orbital",
+          "La gravedad de Neptuno organiza muchos cuerpos en ritmos orbitales estables."
+        ],
+        [
+          "cometa de período corto",
+          "Algunas órbitas alteradas envían cuerpos helados hacia el sistema solar interior."
+        ]
+      ]
+    },
+    {
+      "id": "pluto",
+      "name": "Plutón",
+      "x0": 0.96,
+      "x1": 1,
+      "au0": 39,
+      "au1": 39.482,
+      "distanceAu": 39.48,
+      "period": "248 años terrestres",
+      "typeLabel": "Planeta enano · cinturón de Kuiper",
+      "color": [235, 195, 165],
+      "fact": "Es un mundo activo de hielos móviles, montañas de agua congelada y una atmósfera estacional.",
+      "sound": {
+        "base": 29,
+        "filter": 310,
+        "noise": 0.045,
+        "pulse": 0.64,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "atmósfera tenue",
+          "Nitrógeno, metano y monóxido de carbono forman una envoltura que cambia con la distancia al Sol."
+        ],
+        [
+          "Sputnik Planitia",
+          "Una llanura de hielo de nitrógeno ocupa el lóbulo occidental del famoso corazón brillante."
+        ],
+        [
+          "montañas de hielo",
+          "Bloques de agua congelada se elevan varios kilómetros sobre la superficie."
+        ],
+        [
+          "Caronte",
+          "Plutón y su gran luna muestran siempre la misma cara el uno al otro mientras orbitan un punto común."
+        ],
+        [
+          "cuatro lunas pequeñas",
+          "Nix, Hidra, Cerbero y Estigia acompañan al sistema doble de Plutón y Caronte."
+        ]
+      ]
+    }
+  ],
+  "BODY_LAYOUT": [
+    {
+      "id": "sun",
+      "x": 0.025,
+      "lane": 0,
+      "r": 92
+    },
+    {
+      "id": "mercury",
+      "x": 0.13,
+      "lane": -0.12,
+      "r": 8
+    },
+    {
+      "id": "venus",
+      "x": 0.21,
+      "lane": 0.13,
+      "r": 18
+    },
+    {
+      "id": "earth",
+      "x": 0.295,
+      "lane": -0.08,
+      "r": 21
+    },
+    {
+      "id": "mars",
+      "x": 0.385,
+      "lane": 0.15,
+      "r": 14
+    },
+    {
+      "id": "ceres",
+      "x": 0.475,
+      "lane": -0.13,
+      "r": 5
+    },
+    {
+      "id": "jupiter",
+      "x": 0.575,
+      "lane": 0.05,
+      "r": 44
+    },
+    {
+      "id": "saturn",
+      "x": 0.68,
+      "lane": -0.11,
+      "r": 32
+    },
+    {
+      "id": "uranus",
+      "x": 0.775,
+      "lane": 0.15,
+      "r": 23
+    },
+    {
+      "id": "neptune",
+      "x": 0.86,
+      "lane": -0.14,
+      "r": 23
+    },
+    {
+      "id": "pluto",
+      "x": 0.98,
+      "lane": 0.075,
+      "r": 12
+    }
+  ]
+}

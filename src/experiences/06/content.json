@@ -1,0 +1,402 @@
+{
+  "ZONES": [
+    {
+      "id": "galactic-edge",
+      "name": "Borde galáctico",
+      "p0": 0,
+      "p1": 0.07,
+      "color": [232, 190, 255],
+      "metric": "Continuidad · salida de la Vía Láctea",
+      "fact": "Aquí termina exactamente el mapa anterior. La luz del disco se debilita, pero la gravedad de la Vía Láctea todavía alcanza mucho más lejos.",
+      "sound": {
+        "base": 76,
+        "filter": 980,
+        "noise": 0.08,
+        "pulse": 0.33,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "Vía Láctea",
+          "Nuestra galaxia queda debajo: una gran espiral barrada con el Sol situado lejos de su centro."
+        ],
+        [
+          "borde difuso",
+          "Una galaxia no termina como una esfera sólida; sus estrellas, gas y materia oscura se vuelven gradualmente más dispersos."
+        ],
+        [
+          "salida galáctica",
+          "La ruta abandona el disco brillante y entra en una escala donde galaxias enteras se convierten en vecinas."
+        ],
+        [
+          "Grupo Local",
+          "La Vía Láctea forma parte de una familia gravitatoria con Andrómeda, Triángulo y numerosas galaxias pequeñas."
+        ],
+        [
+          "escala comprimida",
+          "Las distancias reales son inmensas. El recorrido las comprime para poder compararlas en una sola pantalla."
+        ]
+      ]
+    },
+    {
+      "id": "outer-halo",
+      "name": "Halo exterior",
+      "p0": 0.07,
+      "p1": 0.18,
+      "color": [159, 139, 255],
+      "metric": "Más allá del disco · envoltura extensa",
+      "fact": "El halo exterior contiene estrellas antiguas, cúmulos, corrientes estelares, gas caliente y una gran envoltura invisible de materia oscura.",
+      "sound": {
+        "base": 70,
+        "filter": 820,
+        "noise": 0.095,
+        "pulse": 0.4,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "halo de materia oscura",
+          "Una envoltura invisible concentra gran parte de la masa que mantiene unida a la galaxia."
+        ],
+        [
+          "corriente estelar",
+          "Restos de galaxias pequeñas pueden formar cintas de estrellas al ser estiradas por la gravedad."
+        ],
+        [
+          "cúmulo globular",
+          "Cientos de miles de estrellas antiguas pueden reunirse en una esfera compacta que orbita lejos del disco."
+        ],
+        [
+          "corona galáctica",
+          "Gas muy caliente y tenue rodea la Vía Láctea mucho más allá de la parte que vemos a simple vista."
+        ],
+        [
+          "estrella fugitiva",
+          "Algunas estrellas viajan por el halo en órbitas extremas o incluso pueden escapar de la galaxia."
+        ]
+      ]
+    },
+    {
+      "id": "dwarf-galaxies",
+      "name": "Galaxias enanas",
+      "p0": 0.18,
+      "p1": 0.3,
+      "color": [120, 183, 255],
+      "metric": "Decenas de pequeñas compañeras",
+      "fact": "La mayor parte de las galaxias del Grupo Local son pequeñas. Muchas orbitan la Vía Láctea o Andrómeda y cambian por sus fuerzas de marea.",
+      "sound": {
+        "base": 82,
+        "filter": 1180,
+        "noise": 0.075,
+        "pulse": 0.29,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "galaxia enana",
+          "Puede contener desde unos miles hasta miles de millones de estrellas, mucho menos que una gran galaxia espiral."
+        ],
+        [
+          "Sagitario Enana",
+          "Esta pequeña galaxia está siendo deformada y absorbida gradualmente por la Vía Láctea."
+        ],
+        [
+          "Fornax",
+          "Una galaxia enana esferoidal puede tener muy poco gas y una población dominada por estrellas antiguas."
+        ],
+        [
+          "galaxia ultradébil",
+          "Algunas compañeras son tan tenues que solo se descubren contando cuidadosamente sus estrellas."
+        ],
+        [
+          "fuerza de marea",
+          "La gravedad de una galaxia grande puede estirar, calentar y deshacer lentamente a una galaxia pequeña."
+        ]
+      ]
+    },
+    {
+      "id": "intergalactic-space",
+      "name": "Espacio intergaláctico",
+      "p0": 0.3,
+      "p1": 0.42,
+      "color": [90, 221, 225],
+      "metric": "Entre galaxias · materia extremadamente tenue",
+      "fact": "El espacio entre galaxias parece vacío, pero contiene gas ionizado, campos magnéticos, radiación y la estructura gravitatoria invisible del Grupo Local.",
+      "sound": {
+        "base": 58,
+        "filter": 620,
+        "noise": 0.135,
+        "pulse": 0.5,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "gas intergaláctico",
+          "Átomos y partículas muy separados ocupan el enorme volumen entre una galaxia y otra."
+        ],
+        [
+          "materia oscura",
+          "La gravedad del Grupo Local depende en gran medida de materia que no emite ni refleja luz."
+        ],
+        [
+          "fotón viajero",
+          "La luz necesita millones de años para cruzar las distancias que separan a las grandes galaxias vecinas."
+        ],
+        [
+          "campo magnético",
+          "Campos muy débiles pueden extenderse por regiones enormes y guiar partículas cargadas."
+        ],
+        [
+          "vacío aparente",
+          "Vacío no significa nada absoluto: incluso aquí existen partículas, radiación y gravedad."
+        ]
+      ]
+    },
+    {
+      "id": "magellanic-clouds",
+      "name": "Nubes de Magallanes",
+      "p0": 0.42,
+      "p1": 0.55,
+      "color": [255, 125, 191],
+      "metric": "Dos galaxias irregulares vecinas",
+      "fact": "La Gran y la Pequeña Nube de Magallanes son galaxias satélite visibles desde el hemisferio sur y están interactuando con la Vía Láctea.",
+      "sound": {
+        "base": 98,
+        "filter": 1550,
+        "noise": 0.095,
+        "pulse": 0.25,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "Gran Nube",
+          "Es la mayor de las dos y contiene regiones intensas de formación estelar."
+        ],
+        [
+          "Pequeña Nube",
+          "Esta galaxia irregular está más lejos y aparece unida a su compañera por gas y fuerzas gravitatorias."
+        ],
+        [
+          "Corriente de Magallanes",
+          "Una larga cinta de gas sigue a las Nubes mientras se mueven alrededor de la Vía Láctea."
+        ],
+        [
+          "Nebulosa de la Tarántula",
+          "Una enorme región de nacimiento estelar brilla dentro de la Gran Nube de Magallanes."
+        ],
+        [
+          "interacción galáctica",
+          "Las Nubes se deforman entre sí y también por la gravedad de nuestra galaxia."
+        ]
+      ]
+    },
+    {
+      "id": "triangulum",
+      "name": "Galaxia del Triángulo",
+      "p0": 0.55,
+      "p1": 0.66,
+      "color": [108, 201, 255],
+      "metric": "M33 · gran espiral del Grupo Local",
+      "fact": "La galaxia del Triángulo, M33, es la tercera gran espiral del Grupo Local y destaca por sus brillantes regiones de formación estelar.",
+      "sound": {
+        "base": 121,
+        "filter": 2050,
+        "noise": 0.06,
+        "pulse": 0.19,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "M33",
+          "El número procede del catálogo de Messier, una lista histórica de objetos difusos del cielo."
+        ],
+        [
+          "galaxia espiral",
+          "Sus estrellas, gas y polvo forman un disco con brazos curvos alrededor del centro."
+        ],
+        [
+          "NGC 604",
+          "Una de las regiones de formación estelar más grandes del Grupo Local resplandece dentro de M33."
+        ],
+        [
+          "tercera gran galaxia",
+          "Es menor que Andrómeda y la Vía Láctea, pero mucho mayor que la mayoría de las galaxias enanas."
+        ],
+        [
+          "vecina de Andrómeda",
+          "Su movimiento y su historia están estrechamente ligados al subgrupo dominado por Andrómeda."
+        ]
+      ]
+    },
+    {
+      "id": "andromeda",
+      "name": "Galaxia de Andrómeda",
+      "p0": 0.66,
+      "p1": 0.82,
+      "color": [255, 205, 137],
+      "metric": "M31 · gran destino del recorrido",
+      "fact": "Andrómeda es la gran galaxia espiral vecina de la Vía Láctea. Su disco inclinado domina visualmente esta parte del viaje.",
+      "sound": {
+        "base": 147,
+        "filter": 2850,
+        "noise": 0.05,
+        "pulse": 0.13,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "M31",
+          "Andrómeda también se conoce como M31 y puede verse a simple vista desde cielos oscuros."
+        ],
+        [
+          "bulbo central",
+          "Una enorme concentración de estrellas antiguas produce el resplandor brillante del centro."
+        ],
+        [
+          "bandas de polvo",
+          "Franjas oscuras de polvo cruzan el disco y revelan su estructura inclinada."
+        ],
+        [
+          "M32 y M110",
+          "Dos galaxias elípticas pequeñas acompañan a Andrómeda como satélites destacados."
+        ],
+        [
+          "encuentro futuro",
+          "Andrómeda y la Vía Láctea se aproximan; dentro de varios miles de millones de años su estructura cambiará profundamente."
+        ]
+      ]
+    },
+    {
+      "id": "local-group-center",
+      "name": "Centro del Grupo Local",
+      "p0": 0.82,
+      "p1": 0.92,
+      "color": [213, 157, 255],
+      "metric": "Baricentro dinámico · no es un objeto visible",
+      "fact": "El centro del Grupo Local es una idea gravitatoria: un baricentro que depende de cómo se distribuye y se mueve toda la masa del sistema.",
+      "sound": {
+        "base": 174,
+        "filter": 3450,
+        "noise": 0.045,
+        "pulse": 0.095,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "baricentro",
+          "Es el punto alrededor del cual se equilibra idealmente el movimiento de un conjunto de masas."
+        ],
+        [
+          "dos subgrupos",
+          "Una gran familia rodea a la Vía Láctea y otra a Andrómeda, con M33 vinculada al entorno de Andrómeda."
+        ],
+        [
+          "gravedad compartida",
+          "Todas las galaxias del Grupo Local alteran, aunque sea ligeramente, el movimiento de las demás."
+        ],
+        [
+          "movimiento colectivo",
+          "El Grupo Local viaja por una región mucho mayor del universo mientras sus miembros orbitan e interactúan."
+        ],
+        [
+          "mapa invisible",
+          "No hay una señal luminosa en el centro: se deduce a partir de masas, velocidades y distancias."
+        ]
+      ]
+    },
+    {
+      "id": "local-group-limit",
+      "name": "Límite del Grupo Local",
+      "p0": 0.92,
+      "p1": 1,
+      "color": [189, 203, 255],
+      "metric": "Frontera gravitatoria · transición a escalas mayores",
+      "fact": "El Grupo Local tampoco tiene una pared nítida. En su límite, la gravedad local cede paso a estructuras mayores y al flujo general de expansión cósmica.",
+      "sound": {
+        "base": 208,
+        "filter": 4300,
+        "noise": 0.035,
+        "pulse": 0.065,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "frontera difusa",
+          "La pertenencia se decide por movimiento y gravedad, no por una línea visible en el espacio."
+        ],
+        [
+          "superficie de velocidad cero",
+          "Cerca de esta región ideal, la atracción del grupo y la expansión del universo se equilibran aproximadamente."
+        ],
+        [
+          "Supercúmulo de Virgo",
+          "El siguiente salto reúne al Grupo Local con muchos otros grupos y cúmulos de galaxias."
+        ],
+        [
+          "Laniakea",
+          "Una estructura todavía mayor describe el flujo de numerosas galaxias hacia regiones gravitatorias comunes."
+        ],
+        [
+          "Más allá",
+          "Más allá: el Supercúmulo de Virgo y Laniakea. Allí comienza la siguiente aplicación de la secuencia."
+        ]
+      ]
+    }
+  ],
+  "LANDMARKS": [
+    {
+      "id": "milky-edge",
+      "p": 0.035,
+      "lane": -0.04,
+      "size": 170
+    },
+    {
+      "id": "outer-halo",
+      "p": 0.125,
+      "lane": 0.05,
+      "size": 118
+    },
+    {
+      "id": "dwarfs",
+      "p": 0.24,
+      "lane": -0.03,
+      "size": 84
+    },
+    {
+      "id": "intergalactic",
+      "p": 0.36,
+      "lane": 0.06,
+      "size": 104
+    },
+    {
+      "id": "magellanic",
+      "p": 0.49,
+      "lane": -0.07,
+      "size": 94
+    },
+    {
+      "id": "triangulum",
+      "p": 0.605,
+      "lane": 0.15,
+      "size": 68
+    },
+    {
+      "id": "andromeda",
+      "p": 0.745,
+      "lane": -0.02,
+      "size": 168
+    },
+    {
+      "id": "center",
+      "p": 0.868,
+      "lane": 0.09,
+      "size": 86
+    },
+    {
+      "id": "boundary",
+      "p": 0.965,
+      "lane": 0,
+      "size": 150
+    }
+  ]
+}

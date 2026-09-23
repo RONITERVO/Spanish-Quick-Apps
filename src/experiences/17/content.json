@@ -1,0 +1,926 @@
+{
+  "ZONES": [
+    {
+      "id": "consciousness",
+      "name": "La experiencia consciente",
+      "className": "Frontera científica abierta",
+      "color": [255, 220, 164],
+      "metric": "Vigilia + experiencia + cuerpo + atención + actividad neural",
+      "fact": "La experiencia consciente es el punto de partida de este viaje, no una explicación terminada. Experimentar algo no es lo mismo que comprenderlo, recordarlo o expresarlo.",
+      "sound": {
+        "base": 58,
+        "filter": 780,
+        "noise": 0.018,
+        "pulse": 0.08,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "vigilia",
+          "La vigilia permite responder al entorno, pero estar despierto no describe por sí solo todo el contenido de la conciencia."
+        ],
+        [
+          "experiencia subjetiva",
+          "Una experiencia posee una perspectiva: existe algo que se siente para el organismo que la vive."
+        ],
+        [
+          "conciencia sensorial",
+          "Colores, sonidos, tacto y dolor pueden formar parte del campo consciente sin estar plenamente comprendidos."
+        ],
+        [
+          "atención",
+          "Atención y conciencia se relacionan, pero una puede cambiar sin que la otra cambie de la misma manera."
+        ],
+        [
+          "conciencia corporal",
+          "La experiencia del cuerpo integra tacto, postura, equilibrio, movimiento e información de los órganos internos."
+        ],
+        [
+          "estado interno",
+          "Hambre, fatiga, respiración y activación corporal modifican lo que destaca y cómo se interpreta."
+        ],
+        [
+          "actividad neural",
+          "Se conocen correlatos neurales de la experiencia, pero correlación no equivale todavía a una explicación completa."
+        ],
+        [
+          "pregunta abierta",
+          "Aún se debate cómo procesos físicos distribuidos producen una experiencia unificada y subjetiva."
+        ]
+      ],
+      "p0": 0,
+      "p1": 0.055556
+    },
+    {
+      "id": "sensation",
+      "name": "Sensación",
+      "className": "Transducción biológica ampliamente establecida",
+      "color": [111, 221, 255],
+      "metric": "Evento físico o químico → receptor → señal biológica",
+      "fact": "Los sentidos no envían copias completas del mundo. Receptores especializados convierten ciertas formas de energía y sustancias en señales que el sistema nervioso puede procesar.",
+      "sound": {
+        "base": 66,
+        "filter": 1050,
+        "noise": 0.035,
+        "pulse": 0.13,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "luz",
+          "Los fotorreceptores responden a rangos de radiación; el color percibido surge después, mediante comparación y contexto."
+        ],
+        [
+          "sonido",
+          "Las vibraciones mueven estructuras del oído y se transforman en patrones eléctricos, no en pequeños sonidos dentro del cerebro."
+        ],
+        [
+          "presión",
+          "Receptores de la piel y tejidos detectan deformación, contacto, vibración y estiramiento."
+        ],
+        [
+          "calor",
+          "Termorreceptores responden a cambios de temperatura dentro de intervalos biológicamente relevantes."
+        ],
+        [
+          "dolor",
+          "La nocicepción detecta amenaza o daño potencial; la experiencia de dolor también depende de contexto, atención y aprendizaje."
+        ],
+        [
+          "equilibrio",
+          "El sistema vestibular registra aceleraciones y orientación de la cabeza para estabilizar postura y mirada."
+        ],
+        [
+          "cuerpo",
+          "La propiocepción informa sobre posición y tensión de músculos y articulaciones."
+        ],
+        [
+          "interocepción",
+          "Señales del interior corporal contribuyen a hambre, sed, respiración, latido y estado emocional."
+        ]
+      ],
+      "p0": 0.055556,
+      "p1": 0.111111
+    },
+    {
+      "id": "perception",
+      "name": "Percepción",
+      "className": "Construcción activa apoyada por amplia evidencia",
+      "color": [176, 163, 255],
+      "metric": "Señales incompletas + contexto + predicción → interpretación",
+      "fact": "La percepción organiza señales ambiguas en formas, objetos, movimientos y escenas. Es una interpretación activa y útil, no una fotografía perfecta de la realidad.",
+      "sound": {
+        "base": 74,
+        "filter": 1370,
+        "noise": 0.026,
+        "pulse": 0.18,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "bordes",
+          "El sistema visual compara regiones y cambios locales para inferir límites que no siempre coinciden con objetos reales."
+        ],
+        [
+          "color",
+          "La misma luz puede parecer distinta según iluminación, contraste, adaptación y expectativas."
+        ],
+        [
+          "movimiento",
+          "El cerebro integra cambios a través del tiempo y puede percibir movimiento incluso en imágenes estáticas secuenciales."
+        ],
+        [
+          "profundidad",
+          "Perspectiva, disparidad binocular, movimiento y experiencia previa ayudan a inferir distancia."
+        ],
+        [
+          "ritmo",
+          "La mente agrupa eventos en pulsos y patrones temporales que no están contenidos en un instante aislado."
+        ],
+        [
+          "objeto",
+          "Reconocer un objeto exige separar figura y fondo, completar partes ocultas y mantener identidad pese a cambios de vista."
+        ],
+        [
+          "rostro",
+          "Los rostros reciben procesamiento especializado, pero el contexto todavía puede alterar identidad, emoción y dirección de la mirada."
+        ],
+        [
+          "ambigüedad",
+          "Una misma figura puede admitir interpretaciones incompatibles; el contexto inclina cuál se vuelve dominante."
+        ]
+      ],
+      "p0": 0.111111,
+      "p1": 0.166667
+    },
+    {
+      "id": "attention",
+      "name": "Atención",
+      "className": "Selección limitada y dinámica",
+      "color": [255, 242, 142],
+      "metric": "Muchos estímulos → selección → procesamiento prioritario",
+      "fact": "La capacidad de procesamiento es limitada. La atención vuelve algunas señales más nítidas mientras otras permanecen débiles, aunque sigan influyendo en la conducta.",
+      "sound": {
+        "base": 82,
+        "filter": 1680,
+        "noise": 0.018,
+        "pulse": 0.25,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "selección",
+          "Atender favorece cierta información sobre alternativas que compiten por procesamiento y acción."
+        ],
+        [
+          "foco",
+          "El foco puede concentrarse en una posición, una característica, un objeto, una tarea o un pensamiento."
+        ],
+        [
+          "distracción",
+          "Un estímulo novedoso, intenso o relevante puede capturar atención incluso contra la intención actual."
+        ],
+        [
+          "novedad",
+          "Los cambios inesperados reciben prioridad porque pueden señalar oportunidades, errores o peligro."
+        ],
+        [
+          "objetivo",
+          "Las metas preparan al sistema para buscar unas señales e ignorar otras."
+        ],
+        [
+          "atención dividida",
+          "Realizar varias tareas a la vez suele implicar alternar recursos y aceptar pérdidas de precisión o velocidad."
+        ],
+        [
+          "ceguera por inatención",
+          "Un evento visible puede pasar inadvertido cuando la atención está comprometida con otra tarea."
+        ],
+        [
+          "vigilancia",
+          "Mantener atención durante largos periodos requiere esfuerzo y suele degradarse con fatiga y monotonía."
+        ]
+      ],
+      "p0": 0.166667,
+      "p1": 0.222222
+    },
+    {
+      "id": "emotion",
+      "name": "Emoción",
+      "className": "Sistemas de valoración, cuerpo y acción",
+      "color": [255, 122, 135],
+      "metric": "Valoración + estado corporal + motivación + expresión",
+      "fact": "Las emociones no son enemigas de la razón. Coordinan cambios corporales, valoración, memoria, atención y tendencias de acción para señalar qué importa ahora.",
+      "sound": {
+        "base": 92,
+        "filter": 1880,
+        "noise": 0.045,
+        "pulse": 0.36,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "alegría",
+          "La alegría puede reforzar exploración, vínculo y repetición de situaciones valoradas positivamente."
+        ],
+        [
+          "miedo",
+          "El miedo prioriza posibles amenazas, acelera aprendizaje defensivo y prepara huida, inmovilidad o protección."
+        ],
+        [
+          "sorpresa",
+          "La sorpresa marca una discrepancia entre lo esperado y lo ocurrido, orientando atención y actualización."
+        ],
+        [
+          "tristeza",
+          "La tristeza puede acompañar pérdida, reducción de actividad y búsqueda de apoyo o reevaluación."
+        ],
+        [
+          "ira",
+          "La ira suele aparecer ante obstáculos, daño o injusticia percibida y prepara confrontación o corrección."
+        ],
+        [
+          "calma",
+          "La calma implica menor urgencia y puede ampliar la exploración, la regulación y la deliberación."
+        ],
+        [
+          "expresión",
+          "Rostro, voz y postura comunican estados, aunque las expresiones varían con contexto, cultura y control voluntario."
+        ],
+        [
+          "regulación",
+          "Reinterpretar, respirar, cambiar atención o modificar la situación puede transformar una respuesta emocional."
+        ]
+      ],
+      "p0": 0.222222,
+      "p1": 0.277778
+    },
+    {
+      "id": "memory",
+      "name": "Memoria",
+      "className": "Múltiples sistemas reconstructivos",
+      "color": [104, 180, 255],
+      "metric": "Codificación + conservación + recuperación + reconstrucción",
+      "fact": "La memoria permite que el pasado modifique el presente, pero recordar no significa reproducir una grabación exacta. Cada recuperación reconstruye con pistas, conocimiento y estado actual.",
+      "sound": {
+        "base": 104,
+        "filter": 2140,
+        "noise": 0.022,
+        "pulse": 0.42,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "memoria de trabajo",
+          "Mantiene y manipula una cantidad limitada de información durante segundos para comprender, calcular o planificar."
+        ],
+        [
+          "memoria episódica",
+          "Relaciona acontecimientos con lugares, tiempos y una perspectiva autobiográfica."
+        ],
+        [
+          "memoria semántica",
+          "Conserva conceptos, palabras y conocimientos sin exigir recordar cuándo se aprendieron."
+        ],
+        [
+          "memoria procedimental",
+          "El entrenamiento transforma secuencias en habilidades que pueden ejecutarse sin describir cada paso."
+        ],
+        [
+          "reconocimiento",
+          "Una sensación de familiaridad puede aparecer antes de recuperar detalles sobre el origen de un recuerdo."
+        ],
+        [
+          "olvido",
+          "Olvidar puede reflejar pérdida, interferencia, falta de pistas o una selección útil de información relevante."
+        ],
+        [
+          "reconstrucción",
+          "Nuevos datos, preguntas y expectativas pueden alterar la forma en que se reconstruye un episodio."
+        ],
+        [
+          "consolidación",
+          "Sueño, repetición y reactivación ayudan a estabilizar cambios, aunque ninguna memoria queda completamente inmóvil."
+        ]
+      ],
+      "p0": 0.277778,
+      "p1": 0.333333
+    },
+    {
+      "id": "learning",
+      "name": "Aprendizaje",
+      "className": "Cambio duradero producido por experiencia",
+      "color": [116, 238, 157],
+      "metric": "Experiencia + error de predicción + práctica → cambio",
+      "fact": "Aprender significa cambiar de manera relativamente duradera por experiencia. El organismo detecta regularidades, consecuencias, modelos sociales y diferencias entre lo esperado y lo ocurrido.",
+      "sound": {
+        "base": 116,
+        "filter": 2380,
+        "noise": 0.025,
+        "pulse": 0.48,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "asociación",
+          "Eventos que coinciden o se predicen mutuamente pueden quedar vinculados, aunque correlación no demuestra causalidad."
+        ],
+        [
+          "refuerzo",
+          "Las consecuencias modifican la probabilidad de repetir una acción en contextos semejantes."
+        ],
+        [
+          "imitación",
+          "Observar a otros permite adquirir conductas sin descubrir cada paso mediante ensayo directo."
+        ],
+        [
+          "práctica",
+          "La repetición con retroalimentación mejora precisión, velocidad y automatización."
+        ],
+        [
+          "error de predicción",
+          "La diferencia entre resultado esperado y real impulsa actualización de expectativas."
+        ],
+        [
+          "hábito",
+          "Una conducta repetida puede volverse dependiente de señales del contexto y menos sensible a la meta actual."
+        ],
+        [
+          "generalización",
+          "Lo aprendido se extiende a situaciones parecidas, a veces de manera útil y otras de manera excesiva."
+        ],
+        [
+          "aprendizaje social",
+          "Enseñanza, cooperación, prestigio y conformidad influyen en qué información se adopta y transmite."
+        ]
+      ],
+      "p0": 0.333333,
+      "p1": 0.388889
+    },
+    {
+      "id": "concepts",
+      "name": "Conceptos",
+      "className": "Categorías flexibles construidas y aprendidas",
+      "color": [142, 132, 255],
+      "metric": "Experiencias distintas → rasgos y relaciones → categoría",
+      "fact": "Los conceptos permiten tratar experiencias diferentes como ejemplos de una misma idea. Sus límites pueden ser claros, graduales, contextuales o discutidos.",
+      "sound": {
+        "base": 128,
+        "filter": 2620,
+        "noise": 0.018,
+        "pulse": 0.54,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "objeto",
+          "El concepto de objeto reúne continuidad, forma, función y expectativas sobre cómo algo puede comportarse."
+        ],
+        [
+          "animal",
+          "Una categoría biológica cotidiana puede combinar movimiento, apariencia, conocimiento cultural y excepciones."
+        ],
+        [
+          "herramienta",
+          "Las herramientas se agrupan por función y posibilidad de acción, no solo por aspecto visual."
+        ],
+        [
+          "peligro",
+          "El peligro integra señales sensoriales, memoria, probabilidad y posibles consecuencias."
+        ],
+        [
+          "número",
+          "Los números permiten representar cantidades y relaciones más allá de conjuntos visibles inmediatos."
+        ],
+        [
+          "causa",
+          "Pensar causalmente distingue entre sucesión, correlación y mecanismos que producen cambios."
+        ],
+        [
+          "semejanza",
+          "Dos experiencias pueden parecer similares según forma, función, origen o cualquier dimensión relevante para la tarea."
+        ],
+        [
+          "frontera de categoría",
+          "Los ejemplos atípicos muestran que muchas categorías no poseen una única característica necesaria y suficiente."
+        ]
+      ],
+      "p0": 0.388889,
+      "p1": 0.444444
+    },
+    {
+      "id": "language",
+      "name": "Lenguaje",
+      "className": "Sistema simbólico biológico y cultural",
+      "color": [239, 145, 255],
+      "metric": "Sonidos o gestos + símbolos + reglas + diálogo",
+      "fact": "El lenguaje permite referirse a lo ausente, coordinar perspectivas y conservar ideas. No solo etiqueta pensamientos terminados: también reorganiza memoria, abstracción y cooperación.",
+      "sound": {
+        "base": 142,
+        "filter": 2860,
+        "noise": 0.032,
+        "pulse": 0.61,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "palabra",
+          "Una palabra enlaza una forma sonora, escrita o gestual con usos y significados compartidos."
+        ],
+        [
+          "nombre",
+          "Nombrar permite volver a identificar, comparar y comunicar una entidad o categoría."
+        ],
+        [
+          "frase",
+          "La combinación ordenada de palabras expresa relaciones que ninguna palabra contiene por sí sola."
+        ],
+        [
+          "significado",
+          "El significado depende de convenciones, contexto, intención, conocimiento y relación con otras expresiones."
+        ],
+        [
+          "pregunta",
+          "Preguntar hace visible una ausencia de información y solicita cooperación para reducirla."
+        ],
+        [
+          "respuesta",
+          "Una respuesta puede informar, explicar, corregir, persuadir o revelar nueva incertidumbre."
+        ],
+        [
+          "metáfora",
+          "La metáfora traslada estructura entre dominios y permite pensar lo abstracto mediante relaciones conocidas."
+        ],
+        [
+          "escritura",
+          "La escritura separa el mensaje del momento de habla y amplía memoria, revisión y transmisión entre generaciones."
+        ]
+      ],
+      "p0": 0.444444,
+      "p1": 0.5
+    },
+    {
+      "id": "reasoning",
+      "name": "Razonamiento",
+      "className": "Inferencias falibles guiadas por reglas y evidencia",
+      "color": [101, 200, 255],
+      "metric": "Premisas + relaciones + método → conclusión provisional",
+      "fact": "Razonar conecta ideas para producir inferencias. No garantiza una conclusión correcta: depende de premisas, evidencia, métodos y de cómo se representan las alternativas.",
+      "sound": {
+        "base": 156,
+        "filter": 3100,
+        "noise": 0.015,
+        "pulse": 0.67,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "comparación",
+          "Comparar exige elegir dimensiones relevantes; cambiar el criterio puede invertir cuál opción parece mejor."
+        ],
+        [
+          "deducción",
+          "Una deducción válida preserva la verdad desde premisas a conclusión, pero no demuestra que las premisas sean ciertas."
+        ],
+        [
+          "inducción",
+          "La inducción generaliza desde casos observados y siempre conserva algún grado de incertidumbre."
+        ],
+        [
+          "analogía",
+          "Una analogía transfiere relaciones entre situaciones, pero falla cuando las diferencias relevantes superan las semejanzas."
+        ],
+        [
+          "causalidad",
+          "Inferir una causa requiere considerar mecanismos, controles y explicaciones alternativas."
+        ],
+        [
+          "probabilidad",
+          "El razonamiento probabilístico representa grados de posibilidad en vez de exigir certeza completa."
+        ],
+        [
+          "evidencia",
+          "La fuerza de una evidencia depende de su calidad, independencia y capacidad de distinguir hipótesis."
+        ],
+        [
+          "incertidumbre",
+          "Reconocer incertidumbre permite buscar datos, comparar escenarios y evitar una confianza injustificada."
+        ]
+      ],
+      "p0": 0.5,
+      "p1": 0.555556
+    },
+    {
+      "id": "decisions",
+      "name": "Toma de decisiones",
+      "className": "Competencia entre metas, valores y restricciones",
+      "color": [255, 184, 92],
+      "metric": "Opciones + valor + riesgo + tiempo + contexto → acción",
+      "fact": "Decidir combina metas, recompensas, hábitos, emociones, información social y consecuencias futuras. La misma elección puede cambiar bajo presión, incertidumbre o un marco diferente.",
+      "sound": {
+        "base": 172,
+        "filter": 3300,
+        "noise": 0.028,
+        "pulse": 0.73,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "meta",
+          "Una meta define qué resultados cuentan como progreso y qué información merece atención."
+        ],
+        [
+          "recompensa",
+          "El valor esperado integra atractivo, probabilidad, demora y estado actual del organismo."
+        ],
+        [
+          "riesgo",
+          "El riesgo combina posibles resultados con incertidumbre, no solo con la magnitud del daño."
+        ],
+        [
+          "hábito",
+          "Una respuesta habitual puede dominar aunque la situación actual favorezca otra opción."
+        ],
+        [
+          "emoción",
+          "Las emociones aportan señales de urgencia, importancia y aprendizaje previo a la comparación de alternativas."
+        ],
+        [
+          "información social",
+          "Consejos, normas y comportamiento ajeno pueden mejorar decisiones o propagar errores."
+        ],
+        [
+          "presión temporal",
+          "Con menos tiempo, la mente usa reglas rápidas y explora menos consecuencias posibles."
+        ],
+        [
+          "consecuencia diferida",
+          "Elegir entre beneficio inmediato y resultado futuro exige representar un yo y un mundo que todavía no existen."
+        ]
+      ],
+      "p0": 0.555556,
+      "p1": 0.611111
+    },
+    {
+      "id": "imagination",
+      "name": "Imaginación",
+      "className": "Simulación de lo ausente y lo posible",
+      "color": [208, 133, 255],
+      "metric": "Memoria recombinada + simulación → escenarios posibles",
+      "fact": "Imaginar combina elementos conservados para construir escenas que no están presentes. Permite explorar posibilidades sin tener que vivirlas primero.",
+      "sound": {
+        "base": 188,
+        "filter": 3500,
+        "noise": 0.022,
+        "pulse": 0.78,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "imagen mental",
+          "Una imagen mental puede representar forma, espacio o movimiento sin entrada sensorial equivalente en ese momento."
+        ],
+        [
+          "simulación",
+          "La mente ensaya acciones y consecuencias posibles antes de comprometer el cuerpo."
+        ],
+        [
+          "contrafactual",
+          "Pensar qué habría ocurrido de otro modo ayuda a explicar, aprender y asignar responsabilidad."
+        ],
+        [
+          "creatividad",
+          "La creatividad combina novedad con utilidad, expresividad o adecuación a una meta."
+        ],
+        [
+          "planificación",
+          "Planificar organiza pasos futuros, recursos y contingencias alrededor de un objetivo."
+        ],
+        [
+          "sueño",
+          "Los sueños mezclan memoria, emoción y generación interna con menor control del entorno inmediato."
+        ],
+        [
+          "relato",
+          "Una narración ordena agentes, causas, conflictos y cambios en una secuencia significativa."
+        ],
+        [
+          "futuro posible",
+          "Representar varios futuros permite comparar caminos, aunque ninguna simulación elimina la incertidumbre real."
+        ]
+      ],
+      "p0": 0.611111,
+      "p1": 0.666667
+    },
+    {
+      "id": "identity",
+      "name": "Identidad",
+      "className": "Continuidad construida a través del cambio",
+      "color": [255, 153, 183],
+      "metric": "Cuerpo + memoria autobiográfica + valores + relaciones + relato",
+      "fact": "La identidad combina continuidad y transformación. No es un objeto perfectamente fijo ni queda reducida a una ilusión: emerge de cuerpo, memoria, rasgos, compromisos y reconocimiento social.",
+      "sound": {
+        "base": 202,
+        "filter": 3680,
+        "noise": 0.018,
+        "pulse": 0.82,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "cuerpo",
+          "El cuerpo proporciona una perspectiva estable pero cambiante desde la que se actúa y se siente."
+        ],
+        [
+          "memoria autobiográfica",
+          "Los recuerdos enlazan episodios en una historia personal, aunque esa historia se reconstruya."
+        ],
+        [
+          "personalidad",
+          "Tendencias relativamente estables orientan conducta, pero se expresan de manera distinta según situación y desarrollo."
+        ],
+        [
+          "rol social",
+          "Una persona ocupa funciones y relaciones que influyen en expectativas, conducta y autodescripción."
+        ],
+        [
+          "valor",
+          "Los valores organizan prioridades y permiten juzgar qué clase de acción concuerda con el yo que se desea sostener."
+        ],
+        [
+          "relato personal",
+          "El relato de sí conecta causas, cambios y metas, pero siempre selecciona entre muchos hechos posibles."
+        ],
+        [
+          "continuidad",
+          "Sentirse la misma persona depende de conexiones corporales, psicológicas y sociales a través del tiempo."
+        ],
+        [
+          "transformación",
+          "Aprender, perder, elegir y relacionarse puede cambiar profundamente una identidad sin borrar toda continuidad."
+        ]
+      ],
+      "p0": 0.666667,
+      "p1": 0.722222
+    },
+    {
+      "id": "intelligence",
+      "name": "Inteligencia",
+      "className": "Familia plural de capacidades adaptativas",
+      "color": [91, 235, 214],
+      "metric": "Aprender + adaptar + resolver + comunicar + crear",
+      "fact": "La inteligencia no es una sola facultad ni pertenece únicamente a los humanos. Incluye capacidades diferentes para aprender, adaptarse, resolver problemas, cooperar, planificar y usar herramientas.",
+      "sound": {
+        "base": 218,
+        "filter": 3860,
+        "noise": 0.021,
+        "pulse": 0.86,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "aprendizaje",
+          "Un sistema inteligente modifica representaciones o estrategias a partir de experiencia."
+        ],
+        [
+          "adaptación",
+          "Adaptarse significa cambiar conducta o estructura para funcionar bajo condiciones nuevas."
+        ],
+        [
+          "resolución de problemas",
+          "Resolver problemas exige representar una meta, restricciones y operaciones posibles."
+        ],
+        [
+          "comunicación",
+          "Coordinar información con otros amplía las capacidades disponibles para cada individuo."
+        ],
+        [
+          "planificación",
+          "La planificación compara secuencias antes de actuar y reserva recursos para metas futuras."
+        ],
+        [
+          "creatividad",
+          "Generar posibilidades originales puede abrir soluciones que las reglas habituales no producen."
+        ],
+        [
+          "inteligencia social",
+          "Comprender atención, intención, emoción y reputación facilita cooperación y competencia."
+        ],
+        [
+          "uso de herramientas",
+          "Una herramienta extiende acción y cognición al incorporar propiedades del entorno en la solución."
+        ]
+      ],
+      "p0": 0.722222,
+      "p1": 0.777778
+    },
+    {
+      "id": "metacognition",
+      "name": "Metacognición",
+      "className": "Pensamiento que supervisa pensamiento",
+      "color": [206, 224, 255],
+      "metric": "Estimación + control + revisión + cambio de estrategia",
+      "fact": "La metacognición permite evaluar confianza, detectar errores y elegir estrategias. No ofrece acceso perfecto a la propia mente: también puede estar sesgada o equivocada.",
+      "sound": {
+        "base": 236,
+        "filter": 4040,
+        "noise": 0.012,
+        "pulse": 0.9,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "confianza",
+          "La confianza estima la probabilidad de estar en lo correcto, pero puede separarse de la precisión real."
+        ],
+        [
+          "incertidumbre",
+          "Representar que falta información es el primer paso para buscarla o suspender una conclusión."
+        ],
+        [
+          "detección de error",
+          "Conflicto, sorpresa o retroalimentación pueden señalar que una respuesta necesita revisión."
+        ],
+        [
+          "autocorrección",
+          "Corregirse exige conservar el error, identificar su origen y modificar el proceso que lo produjo."
+        ],
+        [
+          "reflexión",
+          "La reflexión desacopla parcialmente respuesta inmediata y acción para examinar razones y alternativas."
+        ],
+        [
+          "estrategia",
+          "Elegir una estrategia implica anticipar qué método se ajusta mejor a la tarea y a los recursos disponibles."
+        ],
+        [
+          "límite",
+          "Saber que la memoria, atención o conocimiento son limitados ayuda a usar notas, herramientas y colaboración."
+        ],
+        [
+          "ignorancia reconocida",
+          "Una mente mejora cuando puede distinguir entre no saber, creer saber y disponer de evidencia suficiente."
+        ]
+      ],
+      "p0": 0.777778,
+      "p1": 0.833333
+    },
+    {
+      "id": "connected",
+      "name": "Mentes conectadas",
+      "className": "Cognición distribuida entre personas y herramientas",
+      "color": [97, 208, 255],
+      "metric": "Atención compartida + enseñanza + cooperación + memoria externa",
+      "fact": "Una comunidad puede conservar y procesar más información que cualquier individuo aislado. Esto no crea necesariamente una conciencia única, sino una red de capacidades coordinadas.",
+      "sound": {
+        "base": 252,
+        "filter": 4210,
+        "noise": 0.02,
+        "pulse": 0.93,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "atención compartida",
+          "Dos personas pueden orientar la mirada y la acción hacia el mismo referente y saber que lo comparten."
+        ],
+        [
+          "enseñanza",
+          "Enseñar modifica deliberadamente la experiencia de otro para acelerar aprendizaje y evitar repetir todos los errores."
+        ],
+        [
+          "imitación",
+          "La imitación transmite habilidades visibles, pero también puede copiar acciones irrelevantes o convencionales."
+        ],
+        [
+          "cooperación",
+          "La cooperación divide tareas, combina especialización y permite metas inaccesibles a un individuo."
+        ],
+        [
+          "desacuerdo",
+          "El desacuerdo revela modelos distintos y puede producir corrección cuando existen reglas para comparar razones y pruebas."
+        ],
+        [
+          "memoria distribuida",
+          "Las personas recuerdan quién sabe qué, mientras notas, mapas y dispositivos conservan contenido fuera del cerebro."
+        ],
+        [
+          "institución",
+          "Una institución estabiliza roles, procedimientos y registros más allá de participantes concretos."
+        ],
+        [
+          "acción coordinada",
+          "Lenguaje, señales y normas sincronizan muchas decisiones en tiempo y espacio."
+        ]
+      ],
+      "p0": 0.833333,
+      "p1": 0.888889
+    },
+    {
+      "id": "culture",
+      "name": "Cultura",
+      "className": "Herencia acumulativa transmitida socialmente",
+      "color": [255, 163, 103],
+      "metric": "Aprendizaje social + símbolos + prácticas + acumulación",
+      "fact": "La cultura es un sistema de herencia aprendido: transmite costumbres, herramientas, relatos, arte, valores e instituciones. Cambia por innovación, selección, mezcla, conflicto y olvido.",
+      "sound": {
+        "base": 268,
+        "filter": 4380,
+        "noise": 0.028,
+        "pulse": 0.96,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "costumbre",
+          "Una costumbre coordina expectativas mediante prácticas repetidas y socialmente reconocidas."
+        ],
+        [
+          "relato",
+          "Los relatos conservan modelos de personas, lugares, causas y valores en formas fáciles de recordar y transmitir."
+        ],
+        [
+          "herramienta",
+          "Las herramientas encarnan conocimiento acumulado que el usuario no necesita reinventar por completo."
+        ],
+        [
+          "arte",
+          "El arte explora percepción, emoción, identidad y significado mediante formas compartidas y abiertas a interpretación."
+        ],
+        [
+          "valor cultural",
+          "Los valores aprendidos orientan qué conductas se elogian, toleran, prohíben o consideran sagradas."
+        ],
+        [
+          "ritual",
+          "Los rituales sincronizan atención, emoción y pertenencia mediante secuencias reconocibles."
+        ],
+        [
+          "tecnología",
+          "La tecnología organiza materiales, energía e información para extender capacidades humanas."
+        ],
+        [
+          "institución",
+          "Leyes, escuelas, mercados, archivos y gobiernos conservan reglas y recursos a gran escala."
+        ]
+      ],
+      "p0": 0.888889,
+      "p1": 0.944444
+    },
+    {
+      "id": "knowledge",
+      "name": "El conocimiento compartido",
+      "className": "Ideas conservadas, contrastadas y revisables",
+      "color": [255, 243, 211],
+      "metric": "Observación + registro + prueba + crítica + revisión",
+      "fact": "Cuando muchas mentes comparten símbolos, corrigen errores y conservan descubrimientos, el pensamiento individual se convierte en cultura y conocimiento acumulativo.",
+      "sound": {
+        "base": 286,
+        "filter": 4560,
+        "noise": 0.009,
+        "pulse": 0.99,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "observación",
+          "Observar de forma sistemática separa lo que se encontró de lo que se esperaba encontrar."
+        ],
+        [
+          "testimonio",
+          "El testimonio transmite experiencia ajena, pero su fiabilidad depende de memoria, competencia, incentivos y corroboración."
+        ],
+        [
+          "escritura",
+          "Los registros permiten comparar afirmaciones con versiones anteriores y ampliar la memoria de una comunidad."
+        ],
+        [
+          "medición",
+          "Medir relaciona observaciones con procedimientos y unidades que otros pueden repetir y criticar."
+        ],
+        [
+          "archivo",
+          "Un archivo conserva información, procedencia y contexto para que el pasado siga disponible a nuevas preguntas."
+        ],
+        [
+          "matemáticas",
+          "Las matemáticas expresan estructuras y relaciones con precisión, revelando consecuencias que la intuición no siempre anticipa."
+        ],
+        [
+          "modelo científico",
+          "Un modelo comprime observaciones, explica mecanismos y produce predicciones que pueden fallar."
+        ],
+        [
+          "crítica y revisión",
+          "El conocimiento se fortalece cuando las afirmaciones pueden ser examinadas, replicadas, corregidas o reemplazadas."
+        ],
+        [
+          "siguiente viaje",
+          "Más allá: Espectro de la Cultura, del lenguaje compartido a herramientas, ciudades, ciencia, industria y civilización planetaria."
+        ]
+      ],
+      "p0": 0.944444,
+      "p1": 1.0001
+    }
+  ]
+}

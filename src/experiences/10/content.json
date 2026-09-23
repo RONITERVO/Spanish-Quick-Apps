@@ -1,0 +1,350 @@
+{
+  "ZONES": [
+    {
+      "id": "cmb",
+      "name": "Fondo cósmico de microondas",
+      "p0": 0,
+      "p1": 0.09,
+      "color": [255, 203, 148],
+      "metric": "≈ 380 000 años · la luz electromagnética más antigua observable",
+      "fact": "El recorrido comienza exactamente en la superficie de última dispersión: un mapa de pequeñas variaciones de temperatura, no una pared ni el borde del universo.",
+      "sound": {
+        "base": 62,
+        "filter": 760,
+        "noise": 0.085,
+        "pulse": 0.31,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "luz fósil",
+          "La expansión estiró esta radiación hasta las microondas que llenan el cielo actual."
+        ],
+        [
+          "anisotropía",
+          "Diferencias diminutas de temperatura revelan pequeñas variaciones de densidad en el universo joven."
+        ],
+        [
+          "polarización",
+          "La orientación de la luz conserva información adicional sobre su último encuentro con la materia."
+        ],
+        [
+          "última dispersión",
+          "Los fotones dejaron de chocar continuamente con electrones libres y comenzaron a viajar grandes distancias."
+        ],
+        [
+          "punto de partida",
+          "Desde aquí el viaje deja de avanzar hacia objetos lejanos y comienza a reconstruir épocas anteriores mediante huellas físicas."
+        ]
+      ]
+    },
+    {
+      "id": "recombination",
+      "name": "Recombinación",
+      "p0": 0.09,
+      "p1": 0.2,
+      "color": [255, 174, 112],
+      "metric": "≈ 380 000 años · ≈ 3 000 K · el universo se vuelve transparente",
+      "fact": "Electrones y núcleos pudieron formar átomos neutros, sobre todo hidrógeno. Al disminuir los electrones libres, la luz dejó de quedar atrapada en el plasma.",
+      "sound": {
+        "base": 70,
+        "filter": 920,
+        "noise": 0.075,
+        "pulse": 0.28,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "átomo neutro",
+          "Un electrón ligado a un núcleo ya no dispersa la luz del mismo modo que un electrón libre abundante."
+        ],
+        [
+          "hidrógeno",
+          "La mayor parte de la materia ordinaria quedó en átomos sencillos de hidrógeno y helio."
+        ],
+        [
+          "desacoplamiento",
+          "Materia y radiación dejaron de intercambiar energía de manera tan intensa; los fotones pudieron propagarse casi libremente."
+        ],
+        [
+          "universo transparente",
+          "La transparencia no apareció desde un borde: ocurrió en todo el espacio observable a medida que el plasma se enfrió."
+        ],
+        [
+          "superficie aparente",
+          "Cada dirección del cielo muestra el lugar lejano donde sus fotones sufrieron su última dispersión."
+        ]
+      ]
+    },
+    {
+      "id": "primordial-plasma",
+      "name": "Plasma primordial",
+      "p0": 0.2,
+      "p1": 0.34,
+      "color": [255, 113, 91],
+      "metric": "Antes de 380 000 años · materia ionizada · luz atrapada",
+      "fact": "Antes de recombinarse, el universo era una mezcla caliente de núcleos, electrones y fotones. La dispersión constante hacía el medio opaco a la luz electromagnética.",
+      "sound": {
+        "base": 82,
+        "filter": 1280,
+        "noise": 0.14,
+        "pulse": 0.22,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "electrón libre",
+          "Las cargas libres dispersaban los fotones una y otra vez, como una niebla extremadamente densa."
+        ],
+        [
+          "Big Bang caliente",
+          "El Big Bang describe una fase temprana, caliente y densa y la expansión del propio espacio, no una explosión desde un lugar central."
+        ],
+        [
+          "fotón dispersado",
+          "La luz recorría distancias cortas entre colisiones; no podía entregarnos una fotografía directa de épocas más tempranas."
+        ],
+        [
+          "oscilación acústica",
+          "Presión de radiación y gravedad produjeron ondas en el plasma; sus huellas aparecen en el fondo cósmico y la distribución de materia."
+        ],
+        [
+          "sin imagen directa",
+          "La opacidad marca el límite de la astronomía basada en luz, no el límite de toda evidencia física."
+        ]
+      ]
+    },
+    {
+      "id": "nucleosynthesis",
+      "name": "Nucleosíntesis primordial",
+      "p0": 0.34,
+      "p1": 0.47,
+      "color": [255, 211, 94],
+      "metric": "Primeros minutos · se forman núcleos ligeros",
+      "fact": "Al enfriarse el universo, protones y neutrones pudieron unirse brevemente para producir deuterio, helio y pequeñas cantidades de litio.",
+      "sound": {
+        "base": 98,
+        "filter": 1720,
+        "noise": 0.085,
+        "pulse": 0.18,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "protón",
+          "Un protón es el núcleo del hidrógeno común y uno de los componentes básicos de los núcleos más pesados."
+        ],
+        [
+          "neutrón",
+          "Los neutrones disponibles se incorporaron principalmente al helio antes de que muchos pudieran desintegrarse."
+        ],
+        [
+          "deuterio",
+          "Este isótopo del hidrógeno es una prueba sensible de la densidad de materia ordinaria durante los primeros minutos."
+        ],
+        [
+          "helio primordial",
+          "Una fracción importante de la masa de materia ordinaria terminó como helio, antes de que existiera ninguna estrella."
+        ],
+        [
+          "litio primordial",
+          "Se produjo en trazas; su abundancia observada todavía presenta una tensión conocida con predicciones sencillas."
+        ]
+      ]
+    },
+    {
+      "id": "lepton-era",
+      "name": "Era de los leptones",
+      "p0": 0.47,
+      "p1": 0.59,
+      "color": [127, 225, 255],
+      "metric": "Alrededor del primer segundo · leptones, fotones y neutrinos",
+      "fact": "A temperaturas aún mayores, electrones, positrones, neutrinos y fotones dominaban gran parte del contenido energético mientras el universo seguía expandiéndose y enfriándose.",
+      "sound": {
+        "base": 118,
+        "filter": 2300,
+        "noise": 0.12,
+        "pulse": 0.14,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "electrón",
+          "Es un leptón con carga eléctrica; más tarde quedaría ligado a núcleos para formar átomos."
+        ],
+        [
+          "positrón",
+          "Es la antipartícula del electrón. Pares de electrones y positrones podían crearse y aniquilarse en el baño caliente."
+        ],
+        [
+          "neutrino",
+          "Interactúa muy débilmente. Un fondo relicto de neutrinos es una predicción importante, aunque todavía no se ha observado directamente."
+        ],
+        [
+          "antimateria",
+          "Partículas y antipartículas se transformaban continuamente en radiación; una pequeña asimetría dejó la materia que vemos hoy."
+        ],
+        [
+          "desacoplamiento de neutrinos",
+          "Al caer la temperatura, los neutrinos dejaron de interactuar con frecuencia y continuaron propagándose como población relicta."
+        ]
+      ]
+    },
+    {
+      "id": "quark-era",
+      "name": "Era de los quarks",
+      "p0": 0.59,
+      "p1": 0.72,
+      "color": [219, 111, 255],
+      "metric": "Antes de ≈ 10⁻⁶ s · plasma de quarks y gluones",
+      "fact": "A energías extremas, quarks y gluones no estaban confinados dentro de protones y neutrones. Formaban un fluido de partículas elementales fuertemente interactuante.",
+      "sound": {
+        "base": 144,
+        "filter": 3100,
+        "noise": 0.17,
+        "pulse": 0.1,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "quark",
+          "Los quarks son componentes elementales de protones, neutrones y muchas otras partículas compuestas."
+        ],
+        [
+          "gluón",
+          "El gluón transmite la interacción fuerte que une a los quarks y domina el comportamiento de este plasma."
+        ],
+        [
+          "plasma de quarks y gluones",
+          "Experimentos de colisiones recrean por instantes estados de materia comparables, no el universo completo."
+        ],
+        [
+          "confinamiento",
+          "Al enfriarse el cosmos, los quarks quedaron ligados en hadrones como protones y neutrones."
+        ],
+        [
+          "física de partículas",
+          "Aceleradores, teoría cuántica de campos y cálculos numéricos ayudan a probar esta reconstrucción."
+        ]
+      ]
+    },
+    {
+      "id": "electroweak",
+      "name": "Transición electrodébil",
+      "p0": 0.72,
+      "p1": 0.83,
+      "color": [118, 143, 255],
+      "metric": "Escala aproximada ≈ 10⁻¹² s · simetrías de altas energías",
+      "fact": "En el modelo de partículas, el electromagnetismo y la interacción débil se describen como aspectos de una teoría electrodébil común a energías suficientemente altas.",
+      "sound": {
+        "base": 171,
+        "filter": 3900,
+        "noise": 0.12,
+        "pulse": 0.075,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "campo de Higgs",
+          "La transición asociada al campo de Higgs modificó cómo ciertas partículas adquieren masa efectiva."
+        ],
+        [
+          "simetría electrodébil",
+          "A energías altas, fenómenos hoy distintos encajan en una descripción unificada comprobada por la física de partículas."
+        ],
+        [
+          "bosones W y Z",
+          "Estas partículas median la interacción débil y obtienen masa mediante el mecanismo de Higgs."
+        ],
+        [
+          "electromagnetismo",
+          "Tras la transición, el fotón permanece sin masa y transmite la interacción electromagnética."
+        ],
+        [
+          "frontera experimental",
+          "Cuanto más retrocedemos, más depende la cosmología de teorías probadas en laboratorios pero extrapoladas a energías mayores."
+        ]
+      ]
+    },
+    {
+      "id": "inflation",
+      "name": "Universo inflacionario",
+      "p0": 0.83,
+      "p1": 0.94,
+      "color": [174, 129, 255],
+      "metric": "Época propuesta · expansión acelerada extremadamente temprana",
+      "fact": "La inflación es un escenario en el que el propio espacio se expandió de forma extraordinariamente rápida. No fue una explosión dentro de un vacío ni tuvo un centro espacial.",
+      "sound": {
+        "base": 205,
+        "filter": 4800,
+        "noise": 0.08,
+        "pulse": 0.045,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "expansión del espacio",
+          "Las distancias entre regiones aumentan porque cambia la geometría del espacio en todas partes simultáneamente."
+        ],
+        [
+          "fluctuación cuántica",
+          "Pequeñas variaciones microscópicas pudieron estirarse y convertirse en semillas de la estructura cósmica."
+        ],
+        [
+          "horizonte",
+          "La inflación ayuda a explicar por qué regiones muy separadas del fondo cósmico presentan propiedades tan parecidas."
+        ],
+        [
+          "planitud",
+          "Una expansión enorme puede hacer que la geometría observable parezca muy cercana a plana, como una pequeña zona de una superficie inmensa."
+        ],
+        [
+          "evidencia indirecta",
+          "El fondo cósmico y la estructura apoyan rasgos generales del escenario, pero el mecanismo exacto y su energía no están confirmados."
+        ],
+        [
+          "ondas gravitacionales relictas",
+          "Una señal primordial sería una prueba extraordinaria, pero todavía no existe una detección confirmada de esas ondas procedentes de la inflación."
+        ]
+      ]
+    },
+    {
+      "id": "known-physics-limit",
+      "name": "Límite de la física conocida",
+      "p0": 0.94,
+      "p1": 1,
+      "color": [236, 220, 255],
+      "metric": "Frontera teórica · gravedad cuántica y condiciones iniciales",
+      "fact": "La imagen se disuelve porque nuestras teorías actuales dejan de ser suficientes. Esta región no muestra una singularidad observada, un primer punto confirmado ni algo conocido antes de la inflación.",
+      "sound": {
+        "base": 238,
+        "filter": 5400,
+        "noise": 0.21,
+        "pulse": 0.025,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "gravedad cuántica",
+          "Se necesita una teoría que describa conjuntamente la gravedad y los fenómenos cuánticos en condiciones extremas."
+        ],
+        [
+          "escala de Planck",
+          "Cerca de esta escala convencional, las extrapolaciones clásicas del espacio y el tiempo pierden fiabilidad."
+        ],
+        [
+          "condiciones iniciales",
+          "No sabemos qué selección física produjo el estado temprano del que surgió la evolución observable."
+        ],
+        [
+          "sin singularidad observada",
+          "Una singularidad matemática señala el fallo de una descripción, no una fotografía confirmada de un objeto real."
+        ],
+        [
+          "pregunta abierta",
+          "La ciencia distingue entre evidencia, modelo y especulación; el campo superior representa esa incertidumbre sin inventar un destino."
+        ]
+      ]
+    }
+  ]
+}

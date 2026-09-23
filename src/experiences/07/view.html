@@ -1,0 +1,51 @@
+<canvas
+  id="laniakea-spectrum"
+  role="application"
+  tabindex="0"
+  aria-describedby="instructions"
+  aria-label="Mapa táctil desde el límite del Grupo Local hasta el Gran Atractor y el límite de Laniakea"
+></canvas>
+<p id="instructions" class="sr-only">
+  La aventura continúa exactamente en el límite del Grupo Local. Toca o arrastra
+  hacia arriba para viajar por el Volumen Local, Virgo, las corrientes
+  galácticas, el Gran Atractor y la cuenca de Laniakea. Arrastra horizontalmente
+  para descubrir palabras distintas dentro de cada región. También puedes usar
+  las flechas del teclado.
+</p>
+
+<div id="light-field" aria-hidden="true"></div>
+<div id="scan-line" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<div id="hint" aria-hidden="true">
+  <div id="hint-ring"></div>
+  <div id="hint-text">El Grupo Local queda debajo</div>
+  <div id="hint-subtext">
+    Asciende por las corrientes de Laniakea · explora de lado a lado
+  </div>
+</div>
+
+<div id="readout" aria-live="polite" aria-atomic="true">
+  <span id="zone-name"></span>
+  <span id="feature-name"></span>
+  <span id="metric"></span>
+  <span id="fact"></span>
+</div>
+
+<div id="touch-orb" aria-hidden="true"></div>
+
+<div id="journey-scale" aria-hidden="true">
+  <div id="scale-track"><div id="scale-fill"></div></div>
+  <div id="scale-dot"></div>
+  <span id="scale-bottom">Límite local</span>
+  <span id="scale-home">Grupo Local</span>
+  <span id="scale-value">Escala educativa · distancias comprimidas</span>
+  <span id="scale-top">Límite de Laniakea</span>
+</div>
+
+<!--
+    Base científica: Tully et al., “The Laniakea supercluster of galaxies”, Nature 513 (2014),
+    y literatura posterior sobre velocidades peculiares. La visualización es educativa: comprime
+    distancias y presenta el Gran Atractor como una región de convergencia dependiente de la escala.
+  -->

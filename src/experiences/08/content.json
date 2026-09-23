@@ -1,0 +1,422 @@
+{
+  "ZONES": [
+    {
+      "id": "laniakea-limit",
+      "name": "Límite de Laniakea",
+      "p0": 0,
+      "p1": 0.065,
+      "color": [194, 205, 255],
+      "metric": "Continuidad · una cuenca dentro de una red mayor",
+      "fact": "El recorrido comienza exactamente donde terminó el anterior: la divisoria dinámica de Laniakea se desvanece dentro de una estructura mucho más extensa.",
+      "sound": {
+        "base": 72,
+        "filter": 850,
+        "noise": 0.07,
+        "pulse": 0.31,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "Laniakea",
+          "Nuestra cuenca cósmica sigue siendo reconocible abajo, pero pronto se reduce a una sola región entre muchas."
+        ],
+        [
+          "divisoria dinámica",
+          "La frontera separa patrones reconstruidos de velocidad; no es una pared material."
+        ],
+        [
+          "cuenca vecina",
+          "Al otro lado aparecen otras cuencas de flujo conectadas por la distribución de materia a gran escala."
+        ],
+        [
+          "escala ampliada",
+          "Los nombres locales pierden protagonismo a medida que el campo de visión abarca centenares de millones de años luz."
+        ],
+        [
+          "entrada a la red",
+          "Filamentos, nodos, paredes y vacíos reemplazan a una única dirección dominante."
+        ]
+      ]
+    },
+    {
+      "id": "intersupercluster-space",
+      "name": "Espacio intersupercúmulo",
+      "p0": 0.065,
+      "p1": 0.155,
+      "color": [112, 166, 229],
+      "metric": "Región tenue · conexiones entre grandes concentraciones",
+      "fact": "Entre complejos de supercúmulos no hay una nada absoluta: persisten galaxias dispersas, gas difuso, materia oscura y conexiones muy débiles.",
+      "sound": {
+        "base": 79,
+        "filter": 980,
+        "noise": 0.085,
+        "pulse": 0.28,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "materia tenue",
+          "La densidad cae mucho, aunque el espacio conserva materia y campos gravitatorios."
+        ],
+        [
+          "galaxia de campo",
+          "Algunas galaxias viven lejos de los grandes cúmulos y parecen aisladas en mapas poco profundos."
+        ],
+        [
+          "puente débil",
+          "Estructuras de baja densidad pueden enlazar regiones masivas sin formar un filamento brillante y compacto."
+        ],
+        [
+          "distancia inmensa",
+          "Las separaciones entre concentraciones alcanzan decenas o centenares de millones de años luz."
+        ],
+        [
+          "mapa incompleto",
+          "Cuanto más tenue es la materia, más difícil resulta reconstruir su distribución tridimensional."
+        ]
+      ]
+    },
+    {
+      "id": "galactic-filaments",
+      "name": "Filamentos galácticos",
+      "p0": 0.155,
+      "p1": 0.255,
+      "color": [86, 210, 255],
+      "metric": "Hebras de materia · galaxias alineadas por la estructura",
+      "fact": "Los filamentos son regiones alargadas donde se concentran materia oscura, gas y galaxias. Sus luces dibujan la columna vertebral de la red cósmica.",
+      "sound": {
+        "base": 91,
+        "filter": 1280,
+        "noise": 0.06,
+        "pulse": 0.23,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "filamento",
+          "Una franja alargada de sobredensidad conecta grupos y cúmulos a través de enormes distancias."
+        ],
+        [
+          "materia oscura",
+          "La mayor parte del andamiaje gravitatorio no emite luz, pero organiza la materia visible."
+        ],
+        [
+          "gas intergaláctico",
+          "Gas caliente y templado ocupa parte de las conexiones entre galaxias y cúmulos."
+        ],
+        [
+          "galaxias alineadas",
+          "Las galaxias aparecen preferentemente cerca de las crestas de densidad, no dentro de un tubo sólido."
+        ],
+        [
+          "trazo luminoso",
+          "En esta aplicación, la luz representa distribución de materia y potencial gravitatorio, no una autopista visible en el espacio."
+        ]
+      ]
+    },
+    {
+      "id": "cluster-nodes",
+      "name": "Nodos de cúmulos",
+      "p0": 0.255,
+      "p1": 0.355,
+      "color": [255, 199, 128],
+      "metric": "Intersecciones densas · cúmulos y materia caliente",
+      "fact": "Donde varios filamentos se encuentran, la densidad aumenta y nacen nodos dominados por grandes cúmulos de galaxias.",
+      "sound": {
+        "base": 106,
+        "filter": 1760,
+        "noise": 0.065,
+        "pulse": 0.18,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "nodo",
+          "Es una región de alta conectividad donde convergen varias crestas de la red."
+        ],
+        [
+          "cúmulo de galaxias",
+          "Miles de galaxias pueden compartir un enorme halo de materia oscura y gas caliente."
+        ],
+        [
+          "gas de rayos X",
+          "El plasma entre galaxias alcanza temperaturas extremas y delata la profundidad del potencial gravitatorio."
+        ],
+        [
+          "lente gravitatoria",
+          "La masa del nodo curva la luz de objetos situados detrás y ayuda a cartografiar materia invisible."
+        ],
+        [
+          "crecimiento jerárquico",
+          "Los nodos aumentan al incorporar grupos, gas y materia procedentes de su entorno."
+        ]
+      ]
+    },
+    {
+      "id": "cosmic-voids",
+      "name": "Vacíos cósmicos",
+      "p0": 0.355,
+      "p1": 0.455,
+      "color": [103, 128, 204],
+      "metric": "Grandes regiones subdensas · el volumen dominante",
+      "fact": "Los vacíos ocupan enormes volúmenes con muchas menos galaxias que el promedio. No están completamente vacíos, pero hacen visible la geometría celular de la red.",
+      "sound": {
+        "base": 64,
+        "filter": 660,
+        "noise": 0.11,
+        "pulse": 0.36,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "vacío",
+          "Una región subdensa rodeada por filamentos y paredes, parecida a una gran celda cósmica."
+        ],
+        [
+          "interior tenue",
+          "Puede contener galaxias pequeñas y gas, aunque con una densidad muy inferior a la de los bordes."
+        ],
+        [
+          "expansión local",
+          "Las regiones subdensas se expanden relativamente más; con el tiempo, la materia queda comparativamente más concentrada en sus límites."
+        ],
+        [
+          "borde del vacío",
+          "Las galaxias se acumulan en las superficies y filamentos que separan vacíos vecinos."
+        ],
+        [
+          "volumen cósmico",
+          "Buena parte del espacio pertenece a vacíos, mientras la mayor parte de la materia se concentra en la red que los rodea."
+        ]
+      ]
+    },
+    {
+      "id": "galactic-walls",
+      "name": "Paredes galácticas",
+      "p0": 0.455,
+      "p1": 0.56,
+      "color": [187, 137, 255],
+      "metric": "Láminas inmensas · superficies entre vacíos",
+      "fact": "Las paredes son distribuciones anchas y relativamente delgadas de galaxias que separan grandes vacíos y alimentan filamentos más densos.",
+      "sound": {
+        "base": 98,
+        "filter": 1480,
+        "noise": 0.055,
+        "pulse": 0.21,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "pared",
+          "Una estructura extensa y aplanada, mucho más ancha que gruesa."
+        ],
+        [
+          "lámina de galaxias",
+          "Las galaxias dibujan superficies curvas, no planos perfectos ni barreras sólidas."
+        ],
+        [
+          "frontera entre vacíos",
+          "Dos regiones subdensas pueden compartir una pared donde la materia se ha acumulado."
+        ],
+        [
+          "ramificación",
+          "Dentro de una pared aparecen filamentos más estrechos y nodos todavía más densos."
+        ],
+        [
+          "perspectiva tridimensional",
+          "Una pared vista de canto puede parecer un filamento; la forma depende del ángulo de observación."
+        ]
+      ]
+    },
+    {
+      "id": "filament-intersections",
+      "name": "Intersecciones de filamentos",
+      "p0": 0.56,
+      "p1": 0.665,
+      "color": [255, 132, 192],
+      "metric": "Conectividad máxima · cruces, puentes y bifurcaciones",
+      "fact": "La red no es una cuadrícula regular. Sus filamentos se dividen, curvan y conectan en intersecciones de distinta masa y complejidad.",
+      "sound": {
+        "base": 119,
+        "filter": 2260,
+        "noise": 0.05,
+        "pulse": 0.16,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "bifurcación",
+          "Un filamento puede dividirse en ramas que enlazan nodos diferentes."
+        ],
+        [
+          "conectividad",
+          "El número y grosor de las conexiones revela cómo se integra un nodo en la red."
+        ],
+        [
+          "puente de materia",
+          "Las zonas de enlace contienen materia difusa además de galaxias visibles."
+        ],
+        [
+          "anisotropía",
+          "La materia llega desde direcciones preferentes; la distribución no es igual alrededor de cada nodo."
+        ],
+        [
+          "nodo secundario",
+          "No toda intersección contiene un cúmulo gigantesco: existen cruces menores dentro de paredes y filamentos."
+        ]
+      ]
+    },
+    {
+      "id": "supercluster-complexes",
+      "name": "Complejos de supercúmulos",
+      "p0": 0.665,
+      "p1": 0.775,
+      "color": [255, 174, 107],
+      "metric": "Asociaciones enormes · múltiples cuencas y nodos",
+      "fact": "A esta escala, varios supercúmulos, paredes, filamentos y vacíos forman complejos extensos sin comportarse necesariamente como un único objeto ligado.",
+      "sound": {
+        "base": 133,
+        "filter": 2760,
+        "noise": 0.045,
+        "pulse": 0.135,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "complejo",
+          "Una asociación espacial de estructuras gigantes que puede contener numerosos cúmulos y supercúmulos."
+        ],
+        [
+          "supercúmulo",
+          "Es una concentración regional de grupos y cúmulos; no siempre colapsará como una sola unidad."
+        ],
+        [
+          "cuencas múltiples",
+          "Laniakea ya es solo una de varias cuencas dinámicas reconocibles dentro del campo."
+        ],
+        [
+          "pared extensa",
+          "Algunas concentraciones forman arcos o láminas que atraviesan grandes porciones del mapa."
+        ],
+        [
+          "sin centro único",
+          "En esta vista no existe un destino gravitatorio universal que domine toda la estructura."
+        ]
+      ]
+    },
+    {
+      "id": "deep-cosmic-web",
+      "name": "Red cósmica profunda",
+      "p0": 0.775,
+      "p1": 0.88,
+      "color": [112, 214, 239],
+      "metric": "Patrón tridimensional · capas de filamentos y vacíos",
+      "fact": "Al ampliar aún más, la red se repite en profundidad: las conexiones cercanas se mezclan con capas lejanas hasta formar un entramado tridimensional.",
+      "sound": {
+        "base": 148,
+        "filter": 3380,
+        "noise": 0.04,
+        "pulse": 0.105,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "profundidad",
+          "Las estructuras ocupan distintas distancias; una imagen plana superpone capas que en realidad están separadas."
+        ],
+        [
+          "corrimiento al rojo",
+          "La expansión del universo ayuda a estimar la distancia y construir mapas tridimensionales de galaxias."
+        ],
+        [
+          "catálogo galáctico",
+          "Millones de posiciones permiten revelar patrones que ninguna galaxia aislada puede mostrar."
+        ],
+        [
+          "simulación cosmológica",
+          "Los modelos numéricos reproducen cómo pequeñas fluctuaciones iniciales crecen hasta formar la red."
+        ],
+        [
+          "red completa",
+          "Ningún filamento domina: el patrón surge de muchas conexiones, nodos y vacíos superpuestos."
+        ]
+      ]
+    },
+    {
+      "id": "homogeneity-scale",
+      "name": "Escala de homogeneidad",
+      "p0": 0.88,
+      "p1": 0.95,
+      "color": [164, 204, 255],
+      "metric": "Promedio estadístico · las diferencias locales se suavizan",
+      "fact": "En volúmenes suficientemente grandes, las concentraciones y vacíos dejan de dominar el promedio: el universo se aproxima a una distribución homogénea e isótropa en sentido estadístico.",
+      "sound": {
+        "base": 172,
+        "filter": 4020,
+        "noise": 0.03,
+        "pulse": 0.075,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "homogeneidad estadística",
+          "No significa que desaparezcan las estructuras, sino que sus contrastes se compensan al promediar regiones muy grandes."
+        ],
+        [
+          "isotropía",
+          "A gran escala, las propiedades promedio no privilegian una dirección espacial."
+        ],
+        [
+          "volumen de muestra",
+          "El resultado depende de observar un volumen suficientemente amplio y corregir límites y sesgos del catálogo."
+        ],
+        [
+          "promedio cósmico",
+          "Filamentos y vacíos continúan presentes, pero ninguna región individual representa por sí sola el conjunto."
+        ],
+        [
+          "principio cosmológico",
+          "Los modelos modernos describen un universo aproximadamente homogéneo e isótropo cuando se considera la escala adecuada."
+        ]
+      ]
+    },
+    {
+      "id": "large-scale-structure",
+      "name": "Estructura a gran escala",
+      "p0": 0.95,
+      "p1": 1,
+      "color": [215, 226, 255],
+      "metric": "Destino visual · la red cósmica como sistema completo",
+      "fact": "La vista culmina en una red tridimensional de filamentos, paredes, nodos y vacíos. Laniakea es apenas una cuenca reconocible dentro de este patrón.",
+      "sound": {
+        "base": 198,
+        "filter": 4680,
+        "noise": 0.025,
+        "pulse": 0.055,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "estructura a gran escala",
+          "Es el patrón colectivo de la materia cuando se cartografían volúmenes cosmológicos inmensos."
+        ],
+        [
+          "red tridimensional",
+          "Las conexiones se extienden hacia todas las direcciones y profundidades, no solo a lo largo de la pantalla."
+        ],
+        [
+          "universo sin borde visible",
+          "Esta escala todavía no es el horizonte cósmico: solo describe cómo se organiza la materia dentro de la parte observable."
+        ],
+        [
+          "Laniakea diminuta",
+          "Nuestra cuenca se ha reducido a una marca local entre incontables regiones semejantes."
+        ],
+        [
+          "Más allá",
+          "Más allá: la luz antigua, el horizonte cósmico y el universo observable."
+        ]
+      ]
+    }
+  ]
+}

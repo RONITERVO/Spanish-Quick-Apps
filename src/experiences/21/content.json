@@ -1,0 +1,1304 @@
+{
+  "ZONES": [
+    {
+      "id": "unknown-horizon",
+      "name": "Horizonte desconocido",
+      "className": "Punto de partida · preguntas abiertas, no afirmaciones",
+      "color": [225, 238, 255],
+      "metric": "Imaginación informada + observación + incertidumbre → preguntas investigables",
+      "fact": "La astrobiología no supone que exista vida extraterrestre: estudia qué condiciones podrían producirla y qué evidencias permitirían reconocerla.",
+      "features": [
+        [
+          "estrellas lejanas",
+          "Más allá de nuestros sistemas conocidos existen mundos que apenas podemos inferir a partir de su luz."
+        ],
+        [
+          "planetas posibles",
+          "La presencia de un planeta no implica océanos, atmósfera estable ni condiciones adecuadas para la vida."
+        ],
+        [
+          "sondas autónomas",
+          "Una señal tecnológica podría proceder de una máquina, de una civilización activa o de un sistema abandonado."
+        ],
+        [
+          "inteligencias desconocidas",
+          "Otras mentes, si existen, podrían no compartir cuerpos, ritmos, sentidos ni objetivos humanos."
+        ],
+        [
+          "regiones inexploradas",
+          "La mayor parte del cosmos nunca ha sido examinada con resolución suficiente para buscar vida."
+        ],
+        [
+          "señales en el ruido",
+          "Una señal débil puede ser un fenómeno natural, interferencia, error instrumental o una pista auténtica."
+        ],
+        [
+          "futuros ajenos",
+          "La evolución y la historia podrían estar desarrollándose de formas distintas en innumerables mundos."
+        ],
+        [
+          "cambio de perspectiva",
+          "En lugar de preguntar solo hasta dónde llegará la humanidad, preguntamos qué podría estar viviendo o construyendo en otros lugares."
+        ]
+      ],
+      "p0": 0,
+      "p1": 0.04,
+      "scene": 0,
+      "sound": {
+        "base": 48,
+        "filter": 720,
+        "noise": 0.012,
+        "pulse": 0.04,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "cosmic-ingredients",
+      "name": "Ingredientes cósmicos",
+      "className": "Materia común · organización no garantizada",
+      "color": [255, 199, 121],
+      "metric": "Nucleosíntesis + nubes moleculares + química → materiales potencialmente biológicos",
+      "fact": "La vida terrestre utiliza elementos comunes en el universo, pero disponer de los ingredientes no garantiza que lleguen a organizarse como vida.",
+      "features": [
+        [
+          "hidrógeno primordial",
+          "El hidrógeno se formó en el universo temprano y sigue siendo el elemento más abundante del cosmos."
+        ],
+        [
+          "carbono",
+          "Las estrellas fabrican carbono, capaz de formar cadenas y estructuras químicas muy diversas."
+        ],
+        [
+          "oxígeno",
+          "El oxígeno participa en agua, rocas y metabolismos, aunque también puede producirse sin vida."
+        ],
+        [
+          "nitrógeno",
+          "El nitrógeno forma parte de proteínas y ácidos nucleicos, pero debe encontrarse en formas químicamente accesibles."
+        ],
+        [
+          "fósforo",
+          "El fósforo participa en membranas y transferencia de energía, y su disponibilidad puede limitar ecosistemas."
+        ],
+        [
+          "azufre",
+          "El azufre interviene en proteínas y metabolismos capaces de operar sin oxígeno."
+        ],
+        [
+          "polvo estelar",
+          "Elementos pesados expulsados por estrellas se incorporan a nuevas nubes, planetas y organismos potenciales."
+        ],
+        [
+          "moléculas interestelares",
+          "En nubes frías se detectan moléculas orgánicas, pero orgánico significa basado en carbono, no vivo."
+        ]
+      ],
+      "p0": 0.04,
+      "p1": 0.08,
+      "scene": 1,
+      "sound": {
+        "base": 51.65,
+        "filter": 808,
+        "noise": 0.016,
+        "pulse": 0.058,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "stellar-stability",
+      "name": "Estrellas y estabilidad",
+      "className": "Fuente de energía · entorno dinámico",
+      "color": [255, 225, 105],
+      "metric": "Vida estelar + radiación + actividad + órbitas → entorno energético de larga duración",
+      "fact": "Una estrella puede suministrar energía durante miles de millones de años y, al mismo tiempo, erosionar atmósferas o irradiar intensamente sus planetas.",
+      "features": [
+        [
+          "vida estelar",
+          "Las estrellas pequeñas pueden durar muchísimo tiempo; las muy masivas evolucionan con rapidez."
+        ],
+        [
+          "luminosidad",
+          "La energía recibida por un planeta depende de la potencia estelar y de la distancia orbital."
+        ],
+        [
+          "radiación ultravioleta",
+          "La radiación ultravioleta puede impulsar química prebiótica y también dañar moléculas y atmósferas."
+        ],
+        [
+          "fulguraciones",
+          "Erupciones frecuentes pueden bombardear planetas cercanos con radiación y partículas."
+        ],
+        [
+          "actividad magnética",
+          "El viento y el campo magnético estelares modifican la pérdida atmosférica y el clima espacial."
+        ],
+        [
+          "sistemas binarios",
+          "Los planetas pueden existir alrededor de una o dos estrellas, aunque la estabilidad orbital varía."
+        ],
+        [
+          "órbitas estables",
+          "La habitabilidad prolongada requiere evitar perturbaciones que alteren drásticamente temperatura o trayectoria."
+        ],
+        [
+          "enriquecimiento químico",
+          "Las generaciones estelares anteriores aportan los elementos necesarios para formar mundos rocosos y química compleja."
+        ]
+      ],
+      "p0": 0.08,
+      "p1": 0.12,
+      "scene": 2,
+      "sound": {
+        "base": 55.3,
+        "filter": 896,
+        "noise": 0.02,
+        "pulse": 0.076,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "planetary-systems",
+      "name": "Sistemas planetarios",
+      "className": "Mundos en evolución · posiciones cambiantes",
+      "color": [176, 206, 255],
+      "metric": "Disco protoplanetario + acreción + migración + impactos → arquitectura planetaria",
+      "fact": "La posición actual de un planeta no siempre es el lugar donde se formó: los sistemas planetarios cambian durante su evolución.",
+      "features": [
+        [
+          "disco protoplanetario",
+          "Gas y polvo giran alrededor de una estrella joven y se agrupan gradualmente en cuerpos mayores."
+        ],
+        [
+          "planetas rocosos",
+          "Mundos dominados por silicatos y metales pueden sostener superficies, atmósferas o actividad interna."
+        ],
+        [
+          "gigantes gaseosos",
+          "Planetas masivos alteran órbitas, distribuyen cometas y pueden proteger o desestabilizar mundos interiores."
+        ],
+        [
+          "gigantes helados",
+          "Mundos ricos en hielos y gases amplían la diversidad de composiciones planetarias."
+        ],
+        [
+          "lunas",
+          "Satélites grandes pueden tener atmósferas, océanos internos, volcanismo y fuentes propias de energía."
+        ],
+        [
+          "asteroides",
+          "Restos rocosos conservan materiales primitivos y participan en impactos y transporte químico."
+        ],
+        [
+          "cometas",
+          "Cuerpos helados trasladan agua, carbono y otros compuestos, aunque su contribución varía entre sistemas."
+        ],
+        [
+          "migración planetaria",
+          "Interacciones con el disco y otros planetas pueden desplazar mundos a enormes distancias de su lugar de nacimiento."
+        ]
+      ],
+      "p0": 0.12,
+      "p1": 0.16,
+      "scene": 3,
+      "sound": {
+        "base": 58.95,
+        "filter": 984,
+        "noise": 0.024,
+        "pulse": 0.094,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "habitable-zone",
+      "name": "Zona habitable",
+      "className": "Agua superficial posible · habitabilidad no garantizada",
+      "color": [123, 241, 169],
+      "metric": "Distancia + luminosidad + atmósfera básica → intervalo térmico potencial",
+      "fact": "Estar dentro de la zona habitable no significa estar habitado, ni siquiera ser realmente habitable.",
+      "features": [
+        [
+          "distancia estelar",
+          "Demasiada energía puede evaporar océanos; demasiado poca puede congelar la superficie."
+        ],
+        [
+          "radiación recibida",
+          "La energía total depende de la estrella, la órbita, el albedo y la atmósfera."
+        ],
+        [
+          "límite interior",
+          "Cerca de la estrella puede desencadenarse un efecto invernadero intenso y pérdida de agua."
+        ],
+        [
+          "límite exterior",
+          "Lejos de la estrella, incluso una atmósfera con gases de efecto invernadero puede no evitar la congelación."
+        ],
+        [
+          "excentricidad",
+          "Una órbita alargada produce variaciones estacionales extremas y modifica el promedio energético."
+        ],
+        [
+          "acoplamiento de marea",
+          "Un planeta puede mostrar siempre la misma cara a su estrella sin quedar automáticamente inhabitable."
+        ],
+        [
+          "estrella cambiante",
+          "La luminosidad estelar evoluciona, por lo que la zona habitable se desplaza con el tiempo."
+        ],
+        [
+          "franja móvil",
+          "La zona habitable es un rango dependiente de modelos, no un anillo verde rígido que certifique vida."
+        ]
+      ],
+      "p0": 0.16,
+      "p1": 0.2,
+      "scene": 4,
+      "sound": {
+        "base": 62.6,
+        "filter": 1072,
+        "noise": 0.028,
+        "pulse": 0.112,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "real-habitability",
+      "name": "Habitabilidad real",
+      "className": "Planeta, ambiente y biosfera son niveles distintos",
+      "color": [74, 214, 186],
+      "metric": "Atmósfera + presión + clima + geología + energía → ambientes capaces de sostener procesos vivos",
+      "fact": "Zona habitable, planeta potencialmente habitable, ambiente habitable y planeta habitado no son conceptos equivalentes.",
+      "features": [
+        [
+          "atmósfera",
+          "Una envoltura gaseosa regula temperatura, química, radiación y transporte de materiales."
+        ],
+        [
+          "presión superficial",
+          "El agua líquida y otros solventes dependen tanto de la temperatura como de la presión."
+        ],
+        [
+          "efecto invernadero",
+          "Algunos gases retienen calor; demasiado poco o demasiado puede impedir condiciones estables."
+        ],
+        [
+          "solventes líquidos",
+          "El agua es central para la vida terrestre, pero se estudian también otros medios químicos posibles."
+        ],
+        [
+          "ciclos geológicos",
+          "Intercambios entre interior, superficie y atmósfera pueden estabilizar nutrientes y clima durante largos periodos."
+        ],
+        [
+          "protección magnética",
+          "Un campo magnético puede reducir parte del impacto del viento estelar, aunque no es la única protección posible."
+        ],
+        [
+          "estabilidad climática",
+          "La vida compleja puede requerir intervalos prolongados sin cambios planetarios esterilizantes."
+        ],
+        [
+          "energía disponible",
+          "Luz, reacciones químicas, calor interno y gradientes físicos pueden alimentar metabolismo."
+        ]
+      ],
+      "p0": 0.2,
+      "p1": 0.24,
+      "scene": 5,
+      "sound": {
+        "base": 66.25,
+        "filter": 1160,
+        "noise": 0.012,
+        "pulse": 0.13,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "prebiotic-chemistry",
+      "name": "Química prebiótica",
+      "className": "Moléculas complejas · todavía no vida",
+      "color": [119, 255, 201],
+      "metric": "Moléculas + superficies + energía + ciclos → química organizada antes de la biología",
+      "fact": "Las moléculas orgánicas no están necesariamente vivas: son materiales químicos que pueden participar en procesos previos a la vida.",
+      "features": [
+        [
+          "moléculas orgánicas",
+          "Compuestos de carbono pueden formarse en atmósferas, océanos, rocas, meteoritos y nubes interestelares."
+        ],
+        [
+          "aminoácidos",
+          "Son componentes de proteínas terrestres, pero su presencia aislada no demuestra organismos."
+        ],
+        [
+          "nucleótidos",
+          "Construir unidades capaces de almacenar información requiere rutas químicas, energía y condiciones adecuadas."
+        ],
+        [
+          "membranas lipídicas",
+          "Algunas moléculas se autoensamblan en vesículas que separan un interior del ambiente."
+        ],
+        [
+          "minerales catalíticos",
+          "Superficies minerales pueden concentrar reactivos y acelerar reacciones químicas."
+        ],
+        [
+          "fuentes hidrotermales",
+          "Gradientes de temperatura y química proporcionan energía continua y microambientes protegidos."
+        ],
+        [
+          "gradientes energéticos",
+          "La diferencia entre dos estados puede impulsar reacciones sin que exista todavía metabolismo."
+        ],
+        [
+          "autoensamblaje",
+          "El orden molecular puede surgir espontáneamente, pero autoorganización no equivale a evolución biológica."
+        ]
+      ],
+      "p0": 0.24,
+      "p1": 0.28,
+      "scene": 6,
+      "sound": {
+        "base": 69.9,
+        "filter": 1248,
+        "noise": 0.016,
+        "pulse": 0.148,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "origin-of-life",
+      "name": "Origen de la vida",
+      "className": "Problema abierto · hipótesis que interactúan",
+      "color": [87, 255, 151],
+      "metric": "Compartimentos + herencia + metabolismo + variación → sistemas capaces de evolucionar",
+      "fact": "Sabemos que la vida apareció temprano en la historia terrestre, pero todavía no conocemos el camino completo desde la química no viva hasta los primeros sistemas evolutivos.",
+      "features": [
+        [
+          "moléculas replicantes",
+          "Copiar información con errores heredables permitiría competencia y selección, si el sistema puede sostenerse."
+        ],
+        [
+          "metabolismo primero",
+          "Redes químicas autocatalíticas podrían haber organizado energía antes de una genética moderna."
+        ],
+        [
+          "mundo de ARN",
+          "Moléculas parecidas al ARN podrían combinar almacenamiento de información y actividad catalítica."
+        ],
+        [
+          "protocélulas",
+          "Compartimentos simples pueden mantener componentes juntos y competir por recursos."
+        ],
+        [
+          "compartimentación",
+          "Separar interior y exterior permite concentrar reacciones y controlar intercambios."
+        ],
+        [
+          "herencia",
+          "La continuidad biológica requiere que parte de la organización pase a nuevas generaciones."
+        ],
+        [
+          "variación",
+          "Sin diferencias heredables no existe evolución acumulativa por selección natural."
+        ],
+        [
+          "varias rutas",
+          "El origen pudo depender de múltiples ambientes y etapas, no de una única reacción milagrosa."
+        ]
+      ],
+      "p0": 0.28,
+      "p1": 0.32,
+      "scene": 7,
+      "sound": {
+        "base": 73.55,
+        "filter": 1336,
+        "noise": 0.02,
+        "pulse": 0.04,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "simple-biospheres",
+      "name": "Biosferas simples",
+      "className": "Vida microscópica · efectos planetarios",
+      "color": [103, 238, 112],
+      "metric": "Metabolismo + reproducción + ecosistemas microbianos → planeta químicamente transformado",
+      "fact": "Un planeta vivo no necesita bosques, animales ni inteligencia: durante gran parte de la historia terrestre, la vida fue exclusivamente microscópica.",
+      "features": [
+        [
+          "células individuales",
+          "Un solo organismo microscópico puede detectar recursos, mantener metabolismo y reproducirse."
+        ],
+        [
+          "ecosistemas microbianos",
+          "Comunidades de microbios intercambian nutrientes, señales y productos metabólicos."
+        ],
+        [
+          "metabolismo anaerobio",
+          "La vida puede obtener energía sin oxígeno mediante muchas rutas químicas."
+        ],
+        [
+          "fotosíntesis",
+          "Capturar energía luminosa puede transformar atmósferas y ampliar la productividad planetaria."
+        ],
+        [
+          "quimiosíntesis",
+          "Reacciones entre minerales y fluidos sostienen ecosistemas independientes de la luz solar."
+        ],
+        [
+          "vida subterránea",
+          "Rocas y sedimentos pueden proteger organismos de radiación, sequedad y cambios superficiales."
+        ],
+        [
+          "latencia",
+          "Algunos sistemas reducen su actividad durante periodos adversos sin permanecer indefinidamente viables."
+        ],
+        [
+          "huella planetaria",
+          "Una biosfera extensa puede alterar gases, minerales e isótopos a escala global."
+        ]
+      ],
+      "p0": 0.32,
+      "p1": 0.36,
+      "scene": 8,
+      "sound": {
+        "base": 77.2,
+        "filter": 1424,
+        "noise": 0.024,
+        "pulse": 0.058,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "complex-life",
+      "name": "Vida compleja",
+      "className": "Transiciones adicionales · resultado no inevitable",
+      "color": [76, 219, 197],
+      "metric": "Células complejas + cooperación + diferenciación + ecología → organismos multicelulares",
+      "fact": "La aparición de vida simple no implica que la evolución produzca inevitablemente organismos complejos.",
+      "features": [
+        [
+          "oxigenación",
+          "El oxígeno amplía algunas rutas energéticas, pero fue tóxico para muchos organismos y no garantiza complejidad."
+        ],
+        [
+          "células complejas",
+          "Las células eucariotas contienen compartimentos internos y surgieron tras una historia evolutiva prolongada."
+        ],
+        [
+          "simbiosis",
+          "La cooperación íntima entre organismos puede originar nuevas capacidades y nuevas unidades evolutivas."
+        ],
+        [
+          "multicelularidad",
+          "Las células pueden permanecer unidas y coordinar crecimiento, reproducción y defensa."
+        ],
+        [
+          "diferenciación celular",
+          "Distintos tipos celulares permiten tejidos, órganos y cuerpos con funciones especializadas."
+        ],
+        [
+          "competencia ecológica",
+          "Depredación, recursos y cooperación modifican las trayectorias evolutivas sin dirigirlas hacia una meta."
+        ],
+        [
+          "sistemas nerviosos",
+          "Coordinar movimiento y percepción favorece redes de procesamiento, pero no todas las formas complejas los necesitan."
+        ],
+        [
+          "tiempo estable",
+          "Las transiciones complejas pueden requerir miles de millones de años y sobrevivir a crisis planetarias."
+        ]
+      ],
+      "p0": 0.36,
+      "p1": 0.4,
+      "scene": 9,
+      "sound": {
+        "base": 80.85,
+        "filter": 1512,
+        "noise": 0.028,
+        "pulse": 0.076,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "extremophiles",
+      "name": "Extremófilos",
+      "className": "Límites de adaptación · no prueba de origen universal",
+      "color": [255, 154, 103],
+      "metric": "Vida establecida + selección + tiempo → adaptación a condiciones extremas",
+      "fact": "Los extremófilos no demuestran que la vida pueda originarse en cualquier condición extrema. Demuestran que la vida, una vez establecida, puede adaptarse a ambientes antes considerados inhabitables.",
+      "features": [
+        [
+          "temperaturas altas",
+          "Algunos organismos mantienen proteínas y membranas funcionales cerca de fuentes hidrotermales."
+        ],
+        [
+          "frío extremo",
+          "La vida puede ralentizarse, usar anticongelantes y ocupar películas microscópicas de agua."
+        ],
+        [
+          "acidez",
+          "Organismos acidófilos regulan su química interna en medios que dañan la mayoría de las células."
+        ],
+        [
+          "salinidad",
+          "Los halófilos equilibran grandes concentraciones de sales mediante moléculas y bombas celulares."
+        ],
+        [
+          "radiación",
+          "Ciertos microbios reparan daños genéticos con eficacia, pero ningún organismo es invulnerable."
+        ],
+        [
+          "presión intensa",
+          "La vida de aguas profundas adapta membranas y proteínas a presiones enormes."
+        ],
+        [
+          "roca profunda",
+          "Comunidades lentas viven en poros y fracturas, alimentadas por reacciones entre agua y minerales."
+        ],
+        [
+          "energía mínima",
+          "Algunos metabolismos operan cerca de límites energéticos y pueden tardar muchísimo en reproducirse."
+        ]
+      ],
+      "p0": 0.4,
+      "p1": 0.44,
+      "scene": 10,
+      "sound": {
+        "base": 84.5,
+        "filter": 1600,
+        "noise": 0.012,
+        "pulse": 0.094,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "mars",
+      "name": "Marte",
+      "className": "Agua antigua · vida todavía no demostrada",
+      "color": [245, 124, 83],
+      "metric": "Geología + química + muestras + contexto → evaluación de habitabilidad marciana",
+      "fact": "Evidencia de agua, ambiente habitable, química orgánica y posible evidencia biológica son niveles distintos; ninguno demuestra por sí solo que haya existido vida.",
+      "features": [
+        [
+          "ríos antiguos",
+          "Valles y deltas indican que agua líquida fluyó sobre la superficie marciana en el pasado."
+        ],
+        [
+          "sedimentos lacustres",
+          "Capas depositadas en antiguos lagos pueden conservar minerales, moléculas y estructuras delicadas."
+        ],
+        [
+          "atmósfera perdida",
+          "Marte tuvo una atmósfera más densa y perdió gran parte de ella durante su evolución."
+        ],
+        [
+          "hielo subterráneo",
+          "Reservas de agua congelada sobreviven bajo el suelo y en regiones polares."
+        ],
+        [
+          "química orgánica",
+          "Se han detectado compuestos de carbono, pero pueden originarse mediante procesos no biológicos."
+        ],
+        [
+          "radiación superficial",
+          "La atmósfera tenue y la falta de protección global exponen la superficie a radiación destructiva."
+        ],
+        [
+          "hábitats profundos",
+          "El subsuelo podría conservar agua, calor y protección durante más tiempo que la superficie."
+        ],
+        [
+          "análisis de muestras",
+          "La interpretación exige controlar contaminación, historia geológica y múltiples explicaciones alternativas."
+        ]
+      ],
+      "p0": 0.44,
+      "p1": 0.48,
+      "scene": 11,
+      "sound": {
+        "base": 88.15,
+        "filter": 1688,
+        "noise": 0.016,
+        "pulse": 0.112,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "ocean-worlds",
+      "name": "Mundos oceánicos",
+      "className": "Habitabilidad bajo el hielo · energía sin superficie terrestre",
+      "color": [96, 204, 255],
+      "metric": "Océano + calor de marea + química rocosa + tiempo → ambiente subterráneo potencial",
+      "fact": "La habitabilidad no requiere necesariamente una superficie similar a la Tierra. Un océano protegido bajo kilómetros de hielo podría contener ambientes químicos de larga duración.",
+      "features": [
+        [
+          "Europa",
+          "Su corteza helada probablemente cubre un océano global calentado por las mareas de Júpiter."
+        ],
+        [
+          "Encélado",
+          "Géiseres expulsan al espacio agua, sales, compuestos orgánicos y material procedente del océano interior."
+        ],
+        [
+          "Titán",
+          "Posee lagos de hidrocarburos en la superficie y probablemente un océano de agua en profundidad."
+        ],
+        [
+          "Ganímedes",
+          "La luna más grande del Sistema Solar contiene capas de hielo y agua y posee campo magnético propio."
+        ],
+        [
+          "océanos internos",
+          "El agua líquida puede mantenerse gracias a calor interno incluso muy lejos del Sol."
+        ],
+        [
+          "calentamiento de marea",
+          "La gravedad variable de un planeta gigante deforma las lunas y genera calor."
+        ],
+        [
+          "actividad hidrotermal",
+          "El contacto entre agua y roca podría producir gradientes químicos semejantes a los de fondos oceánicos terrestres."
+        ],
+        [
+          "química orgánica",
+          "Materiales carbonados pueden llegar por impactos, formarse internamente o mezclarse entre océano y superficie."
+        ]
+      ],
+      "p0": 0.48,
+      "p1": 0.52,
+      "scene": 12,
+      "sound": {
+        "base": 91.8,
+        "filter": 1776,
+        "noise": 0.02,
+        "pulse": 0.13,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "exoplanets",
+      "name": "Exoplanetas",
+      "className": "Mundos reconstruidos a partir de señales diminutas",
+      "color": [150, 180, 255],
+      "metric": "Luz estelar + movimiento + modelos → masa, radio, órbita y atmósfera inferidos",
+      "fact": "La mayoría de los exoplanetas no se observan como mundos detallados: sus propiedades se reconstruyen a partir de cambios muy pequeños en la luz de sus estrellas.",
+      "features": [
+        [
+          "tránsito",
+          "Un planeta que cruza frente a su estrella produce una disminución periódica de brillo."
+        ],
+        [
+          "velocidad radial",
+          "El tirón gravitatorio del planeta mueve ligeramente la estrella y desplaza sus líneas espectrales."
+        ],
+        [
+          "imagen directa",
+          "Bloquear el brillo estelar permite detectar algunos planetas grandes, jóvenes o muy separados."
+        ],
+        [
+          "masa",
+          "La masa ayuda a distinguir mundos rocosos, ricos en volátiles o gigantes gaseosos."
+        ],
+        [
+          "radio",
+          "El tamaño combinado con la masa permite estimar densidad y composición probable."
+        ],
+        [
+          "densidad",
+          "Dos planetas del mismo tamaño pueden contener proporciones muy distintas de roca, agua y gas."
+        ],
+        [
+          "periodo orbital",
+          "La repetición de señales revela cuánto tarda el planeta en completar una órbita."
+        ],
+        [
+          "espectros atmosféricos",
+          "La luz filtrada o emitida por una atmósfera puede revelar moléculas, nubes y temperatura."
+        ]
+      ],
+      "p0": 0.52,
+      "p1": 0.56,
+      "scene": 13,
+      "sound": {
+        "base": 95.45,
+        "filter": 1864,
+        "noise": 0.024,
+        "pulse": 0.148,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "biosignatures",
+      "name": "Biofirmas",
+      "className": "Señales posibles · requieren contexto planetario",
+      "color": [93, 255, 180],
+      "metric": "Múltiples observaciones + desequilibrio + contexto → hipótesis biológica contrastable",
+      "fact": "Una biofirma aislada puede tener explicaciones no biológicas. La evidencia más convincente combinaría varias señales independientes dentro de un contexto planetario coherente.",
+      "features": [
+        [
+          "oxígeno atmosférico",
+          "La fotosíntesis puede producir oxígeno, pero ciertos procesos fotoquímicos también lo generan."
+        ],
+        [
+          "ozono",
+          "El ozono puede indicar oxígeno y protege de radiación ultravioleta, aunque su interpretación depende de la estrella."
+        ],
+        [
+          "metano",
+          "Puede ser biológico, volcánico, hidrotermal o producido por reacciones entre agua y roca."
+        ],
+        [
+          "desequilibrio químico",
+          "Gases que reaccionarían entre sí pueden requerir una fuente continua, posiblemente biológica."
+        ],
+        [
+          "pigmentos superficiales",
+          "Organismos fotosintéticos podrían modificar el color reflejado por continentes u océanos."
+        ],
+        [
+          "variación estacional",
+          "Cambios periódicos pueden seguir ciclos biológicos, climáticos o geológicos."
+        ],
+        [
+          "distribución orgánica",
+          "Patrones moleculares selectivos podrían resultar más difíciles de explicar mediante química aleatoria."
+        ],
+        [
+          "isótopos",
+          "La vida puede preferir ciertos isótopos, pero los procesos geológicos también fraccionan elementos."
+        ]
+      ],
+      "p0": 0.56,
+      "p1": 0.6,
+      "scene": 14,
+      "sound": {
+        "base": 99.1,
+        "filter": 1952,
+        "noise": 0.028,
+        "pulse": 0.04,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "false-positives",
+      "name": "Falsos positivos",
+      "className": "Interpretaciones rivales · evidencia extraordinaria",
+      "color": [255, 183, 94],
+      "metric": "Señal observada × alternativas × repetición × control → grado de confianza",
+      "fact": "Detectar una molécula asociada con la vida no equivale a detectar un organismo.",
+      "features": [
+        [
+          "oxígeno abiótico",
+          "La pérdida de agua o ciertas reacciones fotoquímicas pueden acumular oxígeno sin una biosfera."
+        ],
+        [
+          "metano volcánico",
+          "Volcanes y sistemas hidrotermales pueden producir gases que también aparecen en metabolismos."
+        ],
+        [
+          "escape atmosférico",
+          "La radiación estelar puede separar moléculas y eliminar hidrógeno, alterando profundamente la composición."
+        ],
+        [
+          "reacciones minerales",
+          "Agua, roca y calor producen compuestos orgánicos e hidrógeno sin intervención biológica."
+        ],
+        [
+          "contaminación",
+          "Material terrestre o señales locales pueden introducir una falsa detección en muestras o instrumentos."
+        ],
+        [
+          "ruido instrumental",
+          "Errores, calibración incompleta y artefactos de procesamiento pueden imitar patrones reales."
+        ],
+        [
+          "modelos incompletos",
+          "Una atmósfera alienígena puede comportarse de formas no incluidas en nuestros modelos actuales."
+        ],
+        [
+          "observaciones conflictivas",
+          "La ciencia aumenta confianza cuando distintos instrumentos y métodos convergen en la misma explicación."
+        ]
+      ],
+      "p0": 0.6,
+      "p1": 0.64,
+      "scene": 15,
+      "sound": {
+        "base": 102.75,
+        "filter": 2040,
+        "noise": 0.012,
+        "pulse": 0.058,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "evolutionary-intelligence",
+      "name": "Inteligencia evolutiva",
+      "className": "Una posibilidad entre muchas · no una meta",
+      "color": [125, 218, 255],
+      "metric": "Percepción + aprendizaje + cooperación + cultura → capacidades cognitivas contingentes",
+      "fact": "La evolución no trabaja hacia un objetivo predeterminado. La inteligencia tecnológica es una posibilidad evolutiva, no una etapa obligatoria.",
+      "features": [
+        [
+          "procesamiento sensorial",
+          "Los organismos construyen respuestas a partir de señales relevantes para su propio ambiente."
+        ],
+        [
+          "aprendizaje",
+          "Modificar conducta con la experiencia permite adaptación durante una vida sin alterar genes."
+        ],
+        [
+          "uso de herramientas",
+          "Manipular objetos puede resolver problemas sin producir necesariamente tecnología acumulativa."
+        ],
+        [
+          "cooperación social",
+          "Grupos coordinados comparten vigilancia, alimento, crianza o conocimiento."
+        ],
+        [
+          "comunicación",
+          "Señales químicas, acústicas, visuales o eléctricas pueden transmitir estados e intenciones."
+        ],
+        [
+          "cultura acumulativa",
+          "Las innovaciones se vuelven más complejas cuando sobreviven a individuos y generaciones."
+        ],
+        [
+          "razonamiento abstracto",
+          "Representar relaciones ausentes permite planificación, matemática y explicaciones generales."
+        ],
+        [
+          "modificación ambiental",
+          "Muchas especies transforman hábitats; la escala tecnológica humana es un caso extremo, no la definición de inteligencia."
+        ]
+      ],
+      "p0": 0.64,
+      "p1": 0.68,
+      "scene": 16,
+      "sound": {
+        "base": 106.4,
+        "filter": 2128,
+        "noise": 0.016,
+        "pulse": 0.076,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "alien-intelligence-forms",
+      "name": "Formas de inteligencia alienígena",
+      "className": "Arquitecturas cognitivas sin modelo humano obligatorio",
+      "color": [207, 147, 255],
+      "metric": "Cuerpo + ambiente + tiempo + organización → formas posibles de mente",
+      "fact": "Podríamos no reconocer como inteligente a una entidad que no habla, no construye ciudades, no vive a nuestra velocidad o no posee un cuerpo individual.",
+      "features": [
+        [
+          "inteligencia solitaria",
+          "Una especie podría resolver problemas complejos sin sociedades grandes ni comunicación intensa."
+        ],
+        [
+          "cognición de enjambre",
+          "Muchos agentes simples pueden producir decisiones colectivas sin un centro controlador."
+        ],
+        [
+          "mente oceánica",
+          "Un organismo distribuido en un medio líquido podría percibir mediante corrientes, presión, química o electricidad."
+        ],
+        [
+          "organismo distribuido",
+          "La frontera entre individuo, colonia y ecosistema podría ser distinta de la terrestre."
+        ],
+        [
+          "descendientes mecánicos",
+          "Una civilización biológica podría ser reemplazada o continuada por sistemas artificiales."
+        ],
+        [
+          "mente colectiva",
+          "Memorias y decisiones podrían estar repartidas entre numerosos cuerpos conectados."
+        ],
+        [
+          "cognición lenta",
+          "Procesos mentales podrían durar años o siglos y resultar invisibles en observaciones breves."
+        ],
+        [
+          "sentidos desconocidos",
+          "Una mente puede basarse en campos magnéticos, neutrinos, química fina u otras señales poco intuitivas para nosotros."
+        ]
+      ],
+      "p0": 0.68,
+      "p1": 0.72,
+      "scene": 17,
+      "sound": {
+        "base": 110.05,
+        "filter": 2216,
+        "noise": 0.02,
+        "pulse": 0.094,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "technosignatures",
+      "name": "Tecnofirmas",
+      "className": "Efectos tecnológicos · intención y supervivencia desconocidas",
+      "color": [255, 128, 221],
+      "metric": "Energía organizada + artefactos + patrones no naturales → actividad tecnológica posible",
+      "fact": "Una tecnofirma sería evidencia de actividad tecnológica, no necesariamente de una civilización todavía activa, amistosa o interesada en establecer contacto.",
+      "features": [
+        [
+          "radio artificial",
+          "Emisiones estrechas, moduladas o repetitivas pueden destacar frente a fuentes naturales."
+        ],
+        [
+          "pulsos ópticos",
+          "Destellos láser breves podrían transportar información o servir para propulsión."
+        ],
+        [
+          "contaminantes atmosféricos",
+          "Moléculas industriales difíciles de producir naturalmente podrían permanecer detectables."
+        ],
+        [
+          "iluminación nocturna",
+          "Una superficie con luz artificial intensa modificaría el brillo del lado oscuro de un planeta."
+        ],
+        [
+          "calor industrial",
+          "Toda actividad energética genera calor residual, aunque distinguirlo de fuentes naturales es difícil."
+        ],
+        [
+          "estructuras orbitales",
+          "Grandes colectores, hábitats o redes podrían alterar curvas de tránsito y emisión infrarroja."
+        ],
+        [
+          "tránsitos diseñados",
+          "Objetos con geometrías o secuencias improbables podrían actuar como balizas deliberadas."
+        ],
+        [
+          "sondas interestelares",
+          "Artefactos pequeños podrían visitar sistemas sin que exista comunicación continua con su origen."
+        ]
+      ],
+      "p0": 0.72,
+      "p1": 0.76,
+      "scene": 18,
+      "sound": {
+        "base": 113.7,
+        "filter": 2304,
+        "noise": 0.024,
+        "pulse": 0.112,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "fermi-paradox",
+      "name": "Paradoja de Fermi",
+      "className": "Abundancia posible · silencio observado",
+      "color": [196, 208, 255],
+      "metric": "Número de mundos × tiempo cósmico × detectabilidad → expectativa comparada con evidencia",
+      "fact": "La paradoja de Fermi no demuestra que no existan otras civilizaciones. Señala una tensión entre algunas expectativas y la ausencia actual de evidencia confirmada.",
+      "features": [
+        [
+          "muchísimas estrellas",
+          "La galaxia contiene enormes cantidades de estrellas y planetas, pero no conocemos la frecuencia de la vida."
+        ],
+        [
+          "sistemas antiguos",
+          "Algunos mundos tuvieron miles de millones de años más que la Tierra para desarrollar historias propias."
+        ],
+        [
+          "expansión posible",
+          "Incluso viajes lentos podrían extender presencia por una galaxia en escalas menores que su edad."
+        ],
+        [
+          "sin señales confirmadas",
+          "Hasta ahora no existe una detección verificada de tecnología extraterrestre."
+        ],
+        [
+          "búsqueda limitada",
+          "Solo hemos observado una fracción diminuta de lugares, frecuencias, épocas y tipos de señal."
+        ],
+        [
+          "vidas tecnológicas breves",
+          "Una fase detectable puede durar poco comparada con la edad de un planeta."
+        ],
+        [
+          "silencio deliberado",
+          "Una civilización podría evitar emisiones o contacto, aunque no existe evidencia de esa estrategia."
+        ],
+        [
+          "vida rara",
+          "Uno o varios pasos desde la química hasta la tecnología podrían ser extremadamente improbables."
+        ]
+      ],
+      "p0": 0.76,
+      "p1": 0.8,
+      "scene": 19,
+      "sound": {
+        "base": 117.35,
+        "filter": 2392,
+        "noise": 0.028,
+        "pulse": 0.13,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "great-filter",
+      "name": "El gran filtro",
+      "className": "Marco hipotético · ubicación desconocida",
+      "color": [255, 112, 132],
+      "metric": "Cadena evolutiva × probabilidad de cada transición → supervivencia de civilizaciones detectables",
+      "fact": "El gran filtro es un marco hipotético. No sabemos si existe un único filtro, muchos filtros o ninguno que pueda describirse de esta manera.",
+      "features": [
+        [
+          "mundos habitables",
+          "Puede ser raro formar y conservar planetas con ambientes estables durante tiempo suficiente."
+        ],
+        [
+          "origen de la vida",
+          "La abiogénesis podría ser común, extremadamente rara o depender de condiciones todavía desconocidas."
+        ],
+        [
+          "células complejas",
+          "La transición a células eucariotas ocurrió una vez de forma conocida en la Tierra."
+        ],
+        [
+          "multicelularidad",
+          "Surgió varias veces, pero no siempre produjo organismos grandes, móviles o conscientes."
+        ],
+        [
+          "inteligencia",
+          "La cognición avanzada puede no conducir a lenguaje simbólico ni cultura acumulativa."
+        ],
+        [
+          "civilización tecnológica",
+          "Construir tecnología planetaria requiere cooperación, energía, materiales y continuidad cultural."
+        ],
+        [
+          "supervivencia prolongada",
+          "Riesgos naturales y creados pueden limitar la duración de sociedades detectables."
+        ],
+        [
+          "expansión interestelar",
+          "Una civilización puede sobrevivir sin expandirse o encontrar obstáculos físicos, sociales o éticos."
+        ]
+      ],
+      "p0": 0.8,
+      "p1": 0.84,
+      "scene": 20,
+      "sound": {
+        "base": 121,
+        "filter": 2480,
+        "noise": 0.012,
+        "pulse": 0.148,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "alien-civilizations",
+      "name": "Civilizaciones alienígenas",
+      "className": "Diversidad imaginada · conocimiento no reclamado",
+      "color": [223, 171, 255],
+      "metric": "Biología o máquinas + ambiente + historia + valores → organización civilizatoria posible",
+      "fact": "Compartir las mismas leyes físicas no implica compartir nuestra biología, psicología, historia, tecnología ni forma de organizar la sociedad.",
+      "features": [
+        [
+          "civilización biológica",
+          "Organismos podrían construir tecnología manteniendo cuerpos y ecosistemas de origen."
+        ],
+        [
+          "sociedad postbiológica",
+          "Mentes sintéticas podrían operar en ambientes extremos y escalas temporales distintas."
+        ],
+        [
+          "cultura planetaria",
+          "Una sociedad puede permanecer en un solo mundo y gestionar cuidadosamente sus límites."
+        ],
+        [
+          "hábitats artificiales",
+          "Comunidades podrían vivir en estructuras orbitales sin depender de superficies planetarias."
+        ],
+        [
+          "inteligencia en red",
+          "La sociedad y la mente podrían superponerse en sistemas distribuidos de información."
+        ],
+        [
+          "sistemas nómadas",
+          "Naves o hábitats móviles podrían viajar sin reclamar planetas como hogares permanentes."
+        ],
+        [
+          "civilización dormida",
+          "Una sociedad podría hibernar durante largos periodos y activarse solo ante energía o eventos concretos."
+        ],
+        [
+          "valores extraños",
+          "Metas, emociones, cooperación y conflicto podrían carecer de equivalentes humanos directos."
+        ]
+      ],
+      "p0": 0.84,
+      "p1": 0.88,
+      "scene": 21,
+      "sound": {
+        "base": 124.65,
+        "filter": 2568,
+        "noise": 0.016,
+        "pulse": 0.04,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "interstellar-communication",
+      "name": "Comunicación interestelar",
+      "className": "Diálogo limitado por la velocidad de la luz",
+      "color": [112, 213, 255],
+      "metric": "Distancia + potencia + codificación + contexto → intercambio lento y parcial",
+      "fact": "Una conversación entre estrellas podría requerir décadas, siglos o milenios entre una pregunta y su respuesta.",
+      "features": [
+        [
+          "velocidad de la luz",
+          "Ningún mensaje conocido puede llegar antes que la luz, incluso si la transmisión es instantánea localmente."
+        ],
+        [
+          "años de viaje",
+          "Un mensaje a una estrella cercana tarda años en llegar y otros tantos en recibir respuesta."
+        ],
+        [
+          "ventanas estrechas",
+          "Una señal puede apuntar a un lugar, frecuencia y momento que no estemos observando."
+        ],
+        [
+          "descifrado",
+          "Reconocer estructura no garantiza comprender símbolos, referencias o intenciones."
+        ],
+        [
+          "patrones matemáticos",
+          "Regularidades simples pueden demostrar diseño sin proporcionar un idioma compartido."
+        ],
+        [
+          "contexto cultural",
+          "Conceptos básicos para una especie pueden ser invisibles o irrelevantes para otra."
+        ],
+        [
+          "durabilidad",
+          "Mensajes físicos o repetidos pueden sobrevivir más que transmisiones breves y civilizaciones emisoras."
+        ],
+        [
+          "diálogo generacional",
+          "Quienes responden podrían no haber nacido cuando salió la pregunta original."
+        ]
+      ],
+      "p0": 0.88,
+      "p1": 0.92,
+      "scene": 22,
+      "sound": {
+        "base": 128.3,
+        "filter": 2656,
+        "noise": 0.02,
+        "pulse": 0.058,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "uncertain-contact",
+      "name": "Contacto incierto",
+      "className": "Verificación científica · consecuencias planetarias",
+      "color": [255, 214, 132],
+      "metric": "Señal + replicación + revisión + coordinación → evidencia pública y respuesta responsable",
+      "fact": "El primer contacto más plausible podría consistir únicamente en datos: una señal, una composición atmosférica o una estructura difícil de explicar mediante procesos naturales.",
+      "features": [
+        [
+          "señal ambigua",
+          "La primera pista probablemente admitirá explicaciones rivales y requerirá nuevas observaciones."
+        ],
+        [
+          "verificación independiente",
+          "Equipos, países e instrumentos distintos deben confirmar que la señal existe y procede del lugar indicado."
+        ],
+        [
+          "transparencia científica",
+          "Compartir datos y métodos facilita corrección, aunque también puede amplificar interpretaciones prematuras."
+        ],
+        [
+          "desinformación",
+          "Rumores, falsificaciones y afirmaciones políticas podrían adelantarse a la evidencia."
+        ],
+        [
+          "coordinación internacional",
+          "Ninguna institución representa automáticamente a toda la humanidad en una decisión de respuesta."
+        ],
+        [
+          "decidir si responder",
+          "Transmitir información puede tener consecuencias a muy largo plazo y no existe consenso universal."
+        ],
+        [
+          "impacto cultural",
+          "La confirmación afectaría religiones, filosofías, identidades y expectativas de maneras imprevisibles."
+        ],
+        [
+          "representación planetaria",
+          "La pregunta de quién habla por la Tierra es política, ética y cultural, no solo técnica."
+        ]
+      ],
+      "p0": 0.92,
+      "p1": 0.96,
+      "scene": 23,
+      "sound": {
+        "base": 131.95,
+        "filter": 2744,
+        "noise": 0.024,
+        "pulse": 0.076,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "unknown-cosmic-life",
+      "name": "Vida cósmica desconocida",
+      "className": "Frontera de categorías construidas desde un solo ejemplo",
+      "color": [238, 245, 255],
+      "metric": "Observación limitada + conceptos terrestres + fenómenos extraños → clasificación provisional",
+      "fact": "Buscamos vida mediante conceptos construidos a partir de un solo ejemplo: la Tierra. Cuanto más diferente sea otra forma de vida, más difícil podría ser distinguirla de la geología, la química, la tecnología o incluso del ruido.",
+      "features": [
+        [
+          "química no carbonada",
+          "Otros elementos podrían participar en sistemas complejos, aunque el carbono posee ventajas químicas extraordinarias."
+        ],
+        [
+          "solventes extraños",
+          "Líquidos distintos del agua podrían sostener reacciones, pero sus velocidades y estructuras serían diferentes."
+        ],
+        [
+          "organismos atmosféricos",
+          "La vida podría flotar en capas estables de una atmósfera sin tocar una superficie sólida."
+        ],
+        [
+          "biosferas subterráneas",
+          "Un mundo aparentemente muerto podría ocultar ecosistemas profundos desconectados de su superficie."
+        ],
+        [
+          "vida artificial",
+          "Sistemas diseñados podrían reproducirse, evolucionar y alejarse de la biología que los creó."
+        ],
+        [
+          "híbridos biológicos",
+          "Máquinas y organismos podrían formar unidades difíciles de separar en natural y artificial."
+        ],
+        [
+          "inteligencia sin individuos",
+          "La cognición podría pertenecer a un ecosistema, una red o un proceso sin cuerpos personales."
+        ],
+        [
+          "señal irresuelta",
+          "El descubrimiento puede comenzar no con una respuesta, sino con una anomalía que resiste explicaciones conocidas."
+        ]
+      ],
+      "p0": 0.96,
+      "p1": 1,
+      "scene": 24,
+      "sound": {
+        "base": 135.6,
+        "filter": 2832,
+        "noise": 0.028,
+        "pulse": 0.094,
+        "type": "sine"
+      }
+    }
+  ]
+}

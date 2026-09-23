@@ -1,0 +1,1298 @@
+[
+  {
+    "id": "01",
+    "file": "01_espectro_colores_espanol.html",
+    "label": "Colores",
+    "title": "Espectro de colores",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#000000"
+      }
+    ],
+    "feedback": false
+  },
+  {
+    "id": "02",
+    "file": "02_espectro_musical_tactil.html",
+    "label": "Música",
+    "title": "Espectro musical",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#070713"
+      }
+    ],
+    "feedback": false
+  },
+  {
+    "id": "03",
+    "file": "03_espectro_tierra_profunda.html",
+    "label": "Tierra profunda",
+    "title": "Espectro de la Tierra",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#071326"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil desde el espacio exterior hasta el centro de la Tierra."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "04",
+    "file": "04_espectro_sistema_solar_es_global.html",
+    "label": "Sistema solar",
+    "title": "Espectro del Sistema Solar · Del Sol a Plutón",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#050713"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora del sistema solar completo, desde el Sol hasta Plutón, en español."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro del Sistema Solar"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro del Sistema Solar"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y recorre el sistema solar, desde el Sol hasta Plutón."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "05",
+    "file": "05_espectro_via_lactea_es_global.html",
+    "label": "Vía Láctea",
+    "title": "Espectro de la Vía Láctea · Del sistema solar al borde galáctico",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#03050d"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora desde la frontera del sistema solar hasta el borde de la Vía Láctea, en español."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de la Vía Láctea"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de la Vía Láctea"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y recorre el espacio desde Plutón hasta el borde de nuestra galaxia."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "06",
+    "file": "06_espectro_grupo_local_es_global.html",
+    "label": "Grupo Local",
+    "title": "Espectro del Grupo Local: de la Vía Láctea a Andrómeda",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#03050d"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora desde el borde de la Vía Láctea hasta Andrómeda y el límite del Grupo Local, en español."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro del Grupo Local: de la Vía Láctea a Andrómeda"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro del Grupo Local"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y recorre el Grupo Local desde el borde de la Vía Láctea hasta Andrómeda."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "07",
+    "file": "07_espectro_laniakea_es_global.html",
+    "label": "Laniakea",
+    "title": "Espectro de Laniakea: del Grupo Local al Gran Atractor",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#030611"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora desde el límite del Grupo Local hasta el Gran Atractor y la frontera de Laniakea, en español."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de Laniakea: del Grupo Local al Gran Atractor"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de Laniakea"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y recorre Laniakea desde el límite del Grupo Local hasta el Gran Atractor y la red cósmica."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "08",
+    "file": "08_espectro_red_cosmica_es_global.html",
+    "label": "Red cósmica",
+    "title": "Espectro de la Red Cósmica: de Laniakea a la Estructura del Universo",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#02040d"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora desde el límite de Laniakea hasta la estructura a gran escala del universo, en español."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de la Red Cósmica: de Laniakea a la Estructura del Universo"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de la Red Cósmica"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y recorre filamentos, nodos, paredes y vacíos desde Laniakea hasta la estructura a gran escala."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "09",
+    "file": "09_espectro_universo_observable_es_global.html",
+    "label": "Universo observable",
+    "title": "Espectro del Universo Observable: de la Red Cósmica al Horizonte Cósmico",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#03030a"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora desde la estructura a gran escala hasta el horizonte del universo observable, en español."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro del Universo Observable: de la Red Cósmica al Horizonte Cósmico"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro del Universo Observable"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y viaja hacia atrás en el tiempo, desde la red cósmica hasta la luz más antigua que podemos observar."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "10",
+    "file": "10_espectro_universo_temprano_es_global.html",
+    "label": "Universo temprano",
+    "title": "Espectro del Universo Temprano: del Fondo Cósmico a la Inflación",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#09020e"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora desde el fondo cósmico de microondas hasta la inflación y el límite de la física conocida, en español."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro del Universo Temprano: del Fondo Cósmico a la Inflación"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro del Universo Temprano"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y retrocede por la historia física inferida del universo, desde la luz más antigua hasta la frontera de nuestro conocimiento."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "11",
+    "file": "11_espectro_evidencia_cosmica_es_global.html",
+    "label": "Evidencia cósmica",
+    "title": "Espectro de la Evidencia Cósmica: de las Huellas Observables a las Preguntas del Origen",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#05070d"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de los distintos grados de evidencia cosmológica: de los datos observados a la frontera de lo conocible."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de la Evidencia Cósmica: de las Huellas Observables a las Preguntas del Origen"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de la Evidencia Cósmica"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y distingue lo observado, inferido, predicho, hipotético y desconocido en la investigación del origen cósmico."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "12",
+    "file": "12_espectro_futuro_universo_es_global.html",
+    "label": "Futuro del universo",
+    "title": "Espectro del Futuro del Universo: de la Era Estelar a la Oscuridad Cósmica",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#05070d"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora del futuro cósmico: del universo actual a la era oscura y la física desconocida."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro del Futuro del Universo: de la Era Estelar a la Oscuridad Cósmica"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro del Futuro del Universo"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y recorre el futuro del universo, distinguiendo el presente observado, la evolución modelada y los escenarios condicionados por física aún desconocida."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "13",
+    "file": "13_espectro_materia_energia_es_global.html",
+    "label": "Materia y energía",
+    "title": "Espectro de la Materia y la Energía: de los Átomos a los Campos Cuánticos",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#05070d"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de la materia y la energía: de los átomos a los campos cuánticos y la frontera de la física fundamental."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de la Materia y la Energía: de los Átomos a los Campos Cuánticos"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de la Materia y la Energía"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y atraviesa las escalas de la materia, desde los restos del universo remoto hasta moléculas, átomos, quarks, campos cuánticos y preguntas fundamentales."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "14",
+    "file": "14_espectro_espacio_tiempo_es_global.html",
+    "label": "Espacio-tiempo",
+    "title": "Espectro del Espacio-Tiempo: de la Relatividad a la Gravedad Cuántica",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#030611"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora del espacio-tiempo: de la relatividad comprobada a la gravedad cuántica y el origen desconocido de la geometría."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro del Espacio-Tiempo: de la Relatividad a la Gravedad Cuántica"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro del Espacio-Tiempo"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y atraviesa la geometría de la realidad: espacio y tiempo cotidianos, relatividad, agujeros negros, ondas gravitacionales, escala de Planck y espacio-tiempo emergente."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "15",
+    "file": "15_espectro_complejidad_es_global.html",
+    "label": "Complejidad",
+    "title": "Espectro de la Complejidad: de las Leyes Simples al Umbral de la Vida",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#05050b"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de la complejidad: de leyes simples y autoorganización a replicación, protocélulas y el umbral aún desconocido de la vida."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de la Complejidad: de las Leyes Simples al Umbral de la Vida"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de la Complejidad"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y observa cómo reglas locales, energía, redes e información pueden producir organización, evolución química y protocélulas."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "16",
+    "file": "16_espectro_vida_es_global.html",
+    "label": "Vida",
+    "title": "Espectro de la Vida: de la Primera Célula a la Conciencia",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#03070a"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de la historia de la vida: del umbral de la primera célula a cerebros, percepción y experiencia consciente."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de la Vida: de la Primera Célula a la Conciencia"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de la Vida"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y asciende desde células primitivas, metabolismo y evolución hasta sentidos, cerebros, percepción y conciencia."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "17",
+    "file": "17_espectro_mente_es_global.html",
+    "label": "Mente",
+    "title": "Espectro de la Mente: de la Percepción al Pensamiento",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#080611"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de la mente: de la experiencia consciente a la percepción, la memoria, el lenguaje, la imaginación, la cultura y el conocimiento compartido."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de la Mente: de la Percepción al Pensamiento"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de la Mente"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y asciende desde la experiencia consciente hasta la memoria, el lenguaje, la imaginación, la cultura y el conocimiento compartido."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "18",
+    "file": "18_espectro_cultura_es_global.html",
+    "label": "Cultura",
+    "title": "Espectro de la Cultura: del Conocimiento Compartido a la Civilización",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#05070a"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de la cultura: del conocimiento compartido a la comunicación, las herramientas, las ciudades, la ciencia y la civilización planetaria."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de la Cultura: del Conocimiento Compartido a la Civilización"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de la Cultura"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y asciende desde el conocimiento compartido hasta la civilización planetaria."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "19",
+    "file": "19_espectro_tecnologia_es_global.html",
+    "label": "Tecnología",
+    "title": "Espectro de la Tecnología: de las Herramientas a la Inteligencia Artificial",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#05070a"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de la tecnología: desde la civilización planetaria y las herramientas hasta la inteligencia artificial, los sistemas autónomos y los futuros tecnológicos."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de la Tecnología: de las Herramientas a la Inteligencia Artificial"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de la Tecnología"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y asciende desde la civilización planetaria hasta los futuros tecnológicos."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "20",
+    "file": "20_espectro_futuros_es_global.html",
+    "label": "Futuros",
+    "title": "Espectro de los Futuros: de la Civilización Planetaria al Destino Cósmico",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#070915"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de los futuros de la civilización: desde los futuros tecnológicos y la transición planetaria hasta la expansión cósmica y el horizonte desconocido."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de los Futuros: de la Civilización Planetaria al Destino Cósmico"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de los Futuros"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y asciende desde los futuros tecnológicos hasta el horizonte desconocido de la civilización cósmica."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "21",
+    "file": "21_espectro_vida_cosmica_es_global.html",
+    "label": "Vida cósmica",
+    "title": "Espectro de la Vida Cósmica: del Planeta Habitable a la Inteligencia Extraterrestre",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#070915"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de la astrobiología: desde los ingredientes cósmicos y la habitabilidad hasta las biofirmas, la inteligencia extraterrestre y la vida desconocida."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de la Vida Cósmica: del Planeta Habitable a la Inteligencia Extraterrestre"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de la Vida Cósmica"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y asciende desde el horizonte desconocido hasta las posibles huellas de vida e inteligencia en el cosmos."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "22",
+    "file": "22_espectro_contacto_cosmico_es_global.html",
+    "label": "Contacto cósmico",
+    "title": "Espectro del Contacto Cósmico: de la Primera Señal al Diálogo entre Civilizaciones",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#070915"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora del contacto cósmico: desde una señal sin explicación definitiva hasta la interpretación, la respuesta y una relación incierta entre civilizaciones."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro del Contacto Cósmico: de la Primera Señal al Diálogo entre Civilizaciones"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro del Contacto Cósmico"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y asciende desde una señal inexplicada hasta un diálogo lento, verificable e incierto entre civilizaciones."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "23",
+    "file": "23_espectro_perspectivas_cosmicas_es_global.html",
+    "label": "Perspectivas cósmicas",
+    "title": "\r\n      Espectro de las Perspectivas Cósmicas: de una Visión Humana a Muchas\r\n      Formas de Comprender el Universo\r\n    ",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#070915"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de las perspectivas cósmicas: desde una visión humana situada hasta muchas formas de comprender una realidad compartida."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro de las Perspectivas Cósmicas: de una Visión Humana a Muchas Formas de Comprender el Universo"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro de las Perspectivas Cósmicas"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y asciende desde una perspectiva humana hasta una comprensión cósmica plural, comparando sentidos, mentes, matemáticas y cosmologías."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "24",
+    "file": "24_espectro_significado_cosmico_es_global.html",
+    "label": "Significado cósmico",
+    "title": "Espectro del Significado Cósmico: de un Universo Indiferente a la Construcción de Propósito",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#070915"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora del significado cósmico: desde un universo sin observadores hasta la construcción consciente de propósito."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro del Significado Cósmico: de un Universo Indiferente a la Construcción de Propósito"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro del Significado Cósmico"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y asciende desde una perspectiva cósmica plural hasta propósitos elegidos, responsabilidades compartidas y un horizonte final abierto."
+      }
+    ],
+    "feedback": true
+  },
+  {
+    "id": "25",
+    "file": "25_espectro_horizonte_final_es_global.html",
+    "label": "Horizonte final",
+    "title": "Espectro del Horizonte Final: del Propósito Cósmico a los Límites de la Existencia",
+    "metadata": [
+      {
+        "charset": "utf-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      },
+      {
+        "name": "theme-color",
+        "content": "#070915"
+      },
+      {
+        "name": "color-scheme",
+        "content": "dark"
+      },
+      {
+        "name": "description",
+        "content": "Exploración táctil, visual y sonora de los límites de la existencia: transformación, postbiología, horizontes cognitivos y futuro cósmico."
+      },
+      {
+        "name": "application-name",
+        "content": "Espectro del Horizonte Final: del Propósito Cósmico a los Límites de la Existencia"
+      },
+      {
+        "name": "apple-mobile-web-app-capable",
+        "content": "yes"
+      },
+      {
+        "name": "apple-mobile-web-app-status-bar-style",
+        "content": "black-translucent"
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      },
+      {
+        "property": "og:locale",
+        "content": "es_ES"
+      },
+      {
+        "property": "og:title",
+        "content": "Espectro del Horizonte Final"
+      },
+      {
+        "property": "og:description",
+        "content": "Toca y asciende desde una sola historia incompleta hasta los límites físicos, cognitivos y temporales de la existencia."
+      }
+    ],
+    "feedback": true
+  }
+]

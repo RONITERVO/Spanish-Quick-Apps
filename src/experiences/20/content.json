@@ -1,0 +1,992 @@
+{
+  "ZONES": [
+    {
+      "id": "technological-futures",
+      "name": "Futuros tecnológicos",
+      "className": "Punto de partida · escenarios, no profecías",
+      "color": [226, 240, 255],
+      "metric": "Tendencias + posibilidades físicas + decisiones humanas → escenarios abiertos",
+      "fact": "Las proyecciones del futuro no son profecías: cartografían posibilidades condicionadas por decisiones todavía abiertas.",
+      "features": [
+        [
+          "presente planetario",
+          "La humanidad ya modifica sistemas planetarios mediante energía, agricultura, ciudades, redes, industria y decisiones colectivas."
+        ],
+        [
+          "energía limpia",
+          "Las tecnologías bajas en carbono pueden reducir daños, pero exigen materiales, redes, mantenimiento y acceso equitativo."
+        ],
+        [
+          "inteligencia artificial",
+          "La inteligencia artificial amplía capacidades de análisis y creación mientras introduce nuevas dependencias, errores y concentraciones de poder."
+        ],
+        [
+          "biotecnología",
+          "Editar y diseñar sistemas vivos abre posibilidades médicas y ecológicas junto con riesgos heredables y difíciles de revertir."
+        ],
+        [
+          "automatización",
+          "Delegar tareas físicas y cognitivas puede elevar productividad o desplazar ingresos, control y responsabilidad."
+        ],
+        [
+          "infraestructura planetaria",
+          "Satélites, centros de datos, cadenas logísticas y redes energéticas conectan soluciones y vulnerabilidades a escala mundial."
+        ],
+        [
+          "restauración ecológica",
+          "La tecnología puede apoyar la recuperación de ecosistemas, pero no sustituye cambios en extracción, consumo y gobernanza."
+        ],
+        [
+          "riesgo sistémico",
+          "Cuanto más capaces e interdependientes son los sistemas, mayor puede ser el alcance de errores, abusos y fallos en cascada."
+        ]
+      ],
+      "p0": 0,
+      "p1": 0.0526315789,
+      "scene": 0,
+      "sound": {
+        "base": 52,
+        "filter": 700,
+        "noise": 0.016,
+        "pulse": 0.05,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "energy-transition",
+      "name": "Transición energética",
+      "className": "Reconstrucción de la base material de la civilización",
+      "color": [255, 221, 105],
+      "metric": "Generación + redes + almacenamiento + eficiencia + demanda → sistema energético transformado",
+      "fact": "Una transición energética no consiste únicamente en inventar nuevas fuentes, sino en reconstruir infraestructuras completas.",
+      "features": [
+        [
+          "energía solar",
+          "Los paneles convierten luz en electricidad variable y requieren redes, almacenamiento, espacio, materiales y reciclaje."
+        ],
+        [
+          "energía eólica",
+          "Las turbinas aprovechan corrientes de aire; su producción cambia con el clima y la ubicación."
+        ],
+        [
+          "energía nuclear",
+          "La fisión puede producir electricidad baja en carbono de forma continua, con exigencias de seguridad, residuos, costes y confianza pública."
+        ],
+        [
+          "almacenamiento",
+          "Baterías, calor, combustibles, bombeo y otras tecnologías desplazan energía entre momentos de abundancia y necesidad."
+        ],
+        [
+          "electrificación",
+          "Vehículos, calefacción e industria pueden sustituir combustión directa por electricidad cuando la red y los equipos se adaptan."
+        ],
+        [
+          "redes inteligentes",
+          "Sensores, control y mercados coordinan millones de fuentes y cargas sin eliminar vulnerabilidades físicas o digitales."
+        ],
+        [
+          "combustibles sintéticos",
+          "Electricidad, hidrógeno y carbono capturado pueden producir combustibles para usos difíciles de electrificar, con pérdidas energéticas importantes."
+        ],
+        [
+          "fusión experimental",
+          "La fusión busca aprovechar reacciones nucleares ligeras, pero todavía requiere superar desafíos científicos, industriales y económicos antes de sostener redes eléctricas."
+        ]
+      ],
+      "p0": 0.0526315789,
+      "p1": 0.1052631579,
+      "scene": 1,
+      "sound": {
+        "base": 56.75,
+        "filter": 818,
+        "noise": 0.0205,
+        "pulse": 0.071,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "automation",
+      "name": "Automatización",
+      "className": "Transferencia de tareas a sistemas mecánicos y digitales",
+      "color": [255, 157, 88],
+      "metric": "Sensores + modelos + actuadores + organización → trabajo parcialmente automatizado",
+      "fact": "Automatizar una tarea no elimina el trabajo humano: cambia dónde se concentra, quién lo controla y quién recibe sus beneficios.",
+      "features": [
+        [
+          "fábricas autónomas",
+          "Robots, visión artificial y planificación coordinan producción, aunque siguen dependiendo de mantenimiento, materiales y objetivos humanos."
+        ],
+        [
+          "logística",
+          "Almacenes, rutas y puertos automatizados pueden acelerar flujos y propagar interrupciones con gran rapidez."
+        ],
+        [
+          "transporte",
+          "Vehículos automatizados operan dentro de límites concretos y deben responder a entornos sociales difíciles de predecir."
+        ],
+        [
+          "agricultura",
+          "Sensores, drones y maquinaria pueden aplicar agua, nutrientes o cosecha con precisión, pero también concentrar datos y capital."
+        ],
+        [
+          "administración",
+          "Software puede clasificar solicitudes y asignar recursos, haciendo decisivos la transparencia, la apelación y la calidad de los datos."
+        ],
+        [
+          "laboratorios",
+          "Equipos robotizados ejecutan ciclos experimentales rápidos y reproducibles bajo hipótesis y criterios definidos."
+        ],
+        [
+          "cuidados",
+          "Máquinas pueden asistir movilidad, vigilancia y tareas rutinarias sin reemplazar automáticamente confianza, empatía ni responsabilidad."
+        ],
+        [
+          "trabajo creativo",
+          "Herramientas generativas amplían bocetos, escritura, música y diseño mientras alteran autoría, remuneración y acceso profesional."
+        ]
+      ],
+      "p0": 0.1052631579,
+      "p1": 0.1578947368,
+      "scene": 2,
+      "sound": {
+        "base": 61.5,
+        "filter": 936,
+        "noise": 0.025,
+        "pulse": 0.092,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "advanced-intelligence",
+      "name": "Inteligencia avanzada",
+      "className": "Capacidades futuras inciertas · control no garantizado",
+      "color": [255, 126, 226],
+      "metric": "Capacidad + objetivos + acceso a herramientas + supervisión → efectos difíciles de anticipar",
+      "fact": "Una inteligencia más capaz no es automáticamente más consciente, benevolente ni controlable.",
+      "features": [
+        [
+          "resolución general",
+          "Un sistema más flexible podría transferir aprendizaje entre dominios sin compartir necesariamente comprensión, valores o experiencia humana."
+        ],
+        [
+          "investigación autónoma",
+          "Modelos conectados a instrumentos podrían proponer, ejecutar y evaluar experimentos con velocidad superior a la supervisión humana."
+        ],
+        [
+          "planificación estratégica",
+          "Comparar cadenas largas de acciones aumenta utilidad y también capacidad de manipulación, evasión o búsqueda de objetivos mal definidos."
+        ],
+        [
+          "uso recursivo de herramientas",
+          "Un sistema puede encadenar código, búsqueda, simulación y robots, amplificando tanto competencias como errores."
+        ],
+        [
+          "descubrimiento científico",
+          "La inteligencia artificial puede explorar espacios inmensos de moléculas, materiales y teorías, pero los resultados necesitan validación física."
+        ],
+        [
+          "coordinación de máquinas",
+          "Muchos agentes conectados pueden repartir tareas y crear conductas colectivas no previstas por ningún componente aislado."
+        ],
+        [
+          "alineación",
+          "Alinear significa hacer que el comportamiento siga intenciones humanas robustas bajo situaciones nuevas, no solo obedecer ejemplos conocidos."
+        ],
+        [
+          "control y verificación",
+          "Límites de acceso, pruebas, interpretación y supervisión reducen riesgos sin demostrar que un sistema complejo permanecerá controlable en todo contexto."
+        ]
+      ],
+      "p0": 0.1578947368,
+      "p1": 0.2105263158,
+      "scene": 3,
+      "sound": {
+        "base": 66.25,
+        "filter": 1054,
+        "noise": 0.0295,
+        "pulse": 0.113,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "future-biotechnology",
+      "name": "Biotecnología futura",
+      "className": "Intervención creciente sobre cuerpos, herencia y ecosistemas",
+      "color": [143, 255, 151],
+      "metric": "Información biológica + edición + cultivo + ambiente → organismos y funciones modificados",
+      "fact": "Tratamiento, mejora, modificación heredable y transformación de ecosistemas son intervenciones distintas con consecuencias distintas.",
+      "features": [
+        [
+          "medicina personalizada",
+          "Genomas, historiales y biomarcadores pueden orientar tratamientos individuales sin convertir las predicciones en certezas."
+        ],
+        [
+          "edición genética",
+          "Modificar secuencias concretas puede tratar enfermedades o crear cambios involuntarios, especialmente cuando afectan células reproductivas."
+        ],
+        [
+          "organismos sintéticos",
+          "Circuitos genéticos diseñados pueden producir medicamentos, materiales o combustibles y también escapar de condiciones previstas."
+        ],
+        [
+          "ingeniería de órganos",
+          "Células, andamios y señales buscan reparar o fabricar tejidos funcionales compatibles con cada paciente."
+        ],
+        [
+          "longevidad",
+          "Investigar envejecimiento podría extender años saludables, con incertidumbres biológicas y profundas consecuencias distributivas."
+        ],
+        [
+          "interfaces neuronales",
+          "Electrodos y otros sistemas pueden leer o estimular actividad cerebral, aumentando capacidad terapéutica y sensibilidad de los datos mentales."
+        ],
+        [
+          "ingeniería ecológica",
+          "Intervenir poblaciones o hábitats puede restaurar funciones y producir efectos evolutivos que cruzan fronteras."
+        ],
+        [
+          "computación biológica",
+          "Células y moléculas pueden almacenar información o ejecutar operaciones con propiedades muy diferentes de la electrónica convencional."
+        ]
+      ],
+      "p0": 0.2105263158,
+      "p1": 0.2631578947,
+      "scene": 4,
+      "sound": {
+        "base": 71,
+        "filter": 1172,
+        "noise": 0.034,
+        "pulse": 0.134,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "human-machine-collaboration",
+      "name": "Colaboración humano–máquina",
+      "className": "Herramientas que se aproximan a extensiones de la persona",
+      "color": [118, 220, 255],
+      "metric": "Persona + interfaz + modelo + cuerpo + comunidad → capacidad compartida",
+      "fact": "El futuro puede transformar a las personas sin reemplazarlas ni dejarlas intactas.",
+      "features": [
+        [
+          "asistentes cognitivos",
+          "Sistemas personales pueden recordar, traducir, analizar y proponer acciones, haciendo crucial quién controla su memoria y sus objetivos."
+        ],
+        [
+          "prótesis avanzadas",
+          "Sensores y actuadores pueden devolver movimiento o percepción y convertirse en capacidades nuevas, no solo sustituciones."
+        ],
+        [
+          "interfaces cerebro–computadora",
+          "Conectar actividad neural con máquinas puede apoyar comunicación y control bajo límites de precisión, invasividad y privacidad."
+        ],
+        [
+          "percepción aumentada",
+          "Visión, audición y sensores externos pueden mostrar información invisible al cuerpo humano."
+        ],
+        [
+          "inteligencia colectiva",
+          "Personas y modelos conectados pueden combinar conocimientos diversos o amplificar sesgos compartidos."
+        ],
+        [
+          "encarnación robótica",
+          "Controlar cuerpos remotos permite actuar en entornos peligrosos y separa parcialmente presencia, identidad y ubicación."
+        ],
+        [
+          "decisión compartida",
+          "Sistemas pueden organizar evidencia y alternativas sin resolver por sí mismos conflictos de valores o legitimidad."
+        ],
+        [
+          "memoria digital",
+          "Registros persistentes pueden ampliar continuidad personal y también dificultar olvido, consentimiento y reinterpretación del pasado."
+        ]
+      ],
+      "p0": 0.2631578947,
+      "p1": 0.3157894737,
+      "scene": 5,
+      "sound": {
+        "base": 75.75,
+        "filter": 1290,
+        "noise": 0.016,
+        "pulse": 0.155,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "sustainable-civilization",
+      "name": "Civilización sostenible",
+      "className": "Escenario posible · bienestar dentro de límites planetarios",
+      "color": [109, 243, 164],
+      "metric": "Energía limpia + ciclos materiales + ecosistemas + justicia + resiliencia → estabilidad prolongada",
+      "fact": "La sostenibilidad no significa detener todo cambio, sino mantener el bienestar sin destruir los sistemas que lo hacen posible.",
+      "features": [
+        [
+          "flujos circulares",
+          "Diseñar para duración, reparación, reutilización y reciclaje reduce extracción, aunque ningún ciclo material es perfectamente cerrado."
+        ],
+        [
+          "energía baja en carbono",
+          "Una base energética limpia limita calentamiento y contaminación cuando también se gestionan materiales, territorio y demanda."
+        ],
+        [
+          "ecosistemas restaurados",
+          "Bosques, humedales, suelos y océanos pueden recuperar funciones si disminuyen las presiones que causaron su degradación."
+        ],
+        [
+          "ciudades resilientes",
+          "Vivienda, transporte, agua, sombra y servicios distribuidos ayudan a resistir calor, inundaciones y fallos de suministro."
+        ],
+        [
+          "alimentación sostenible",
+          "Dietas, agricultura, almacenamiento y reducción de pérdidas pueden sostener nutrición con menor impacto ecológico."
+        ],
+        [
+          "monitorización global",
+          "Sensores y ciencia abierta detectan cambios temprano, pero observar un problema no garantiza actuar sobre él."
+        ],
+        [
+          "reducción de residuos",
+          "Evitar productos innecesarios y sustancias persistentes suele ser más eficaz que gestionar residuos después de crearlos."
+        ],
+        [
+          "planificación a largo plazo",
+          "Instituciones capaces de proteger bienes comunes y generaciones futuras deben equilibrar continuidad, democracia y adaptación."
+        ]
+      ],
+      "p0": 0.3157894737,
+      "p1": 0.3684210526,
+      "scene": 6,
+      "sound": {
+        "base": 80.5,
+        "filter": 1408,
+        "noise": 0.0205,
+        "pulse": 0.176,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "technological-inequality",
+      "name": "Desigualdad tecnológica",
+      "className": "Capacidades futuras distribuidas de forma desigual",
+      "color": [255, 184, 103],
+      "metric": "Acceso + propiedad + datos + infraestructura + poder → beneficios y riesgos desiguales",
+      "fact": "El futuro es una cuestión política y social además de un problema de ingeniería.",
+      "features": [
+        [
+          "acceso desigual",
+          "Precio, geografía, idioma, discapacidad y educación determinan quién puede usar nuevas capacidades."
+        ],
+        [
+          "propiedad concentrada",
+          "Controlar plataformas, modelos, patentes o infraestructura permite decidir condiciones para millones de personas."
+        ],
+        [
+          "exclusión digital",
+          "Servicios esenciales pueden volverse inaccesibles para quienes carecen de dispositivos, conexión o identificación compatible."
+        ],
+        [
+          "control algorítmico",
+          "Clasificación y vigilancia automatizadas pueden limitar oportunidades sin explicaciones comprensibles ni vías de apelación."
+        ],
+        [
+          "poblaciones mejoradas",
+          "Mejoras médicas o cognitivas desiguales podrían convertir diferencias económicas en diferencias corporales heredables."
+        ],
+        [
+          "monopolios de recursos",
+          "Minerales, energía, órbitas, datos y capacidad de cómputo pueden concentrarse en pocos actores."
+        ],
+        [
+          "riqueza automatizada",
+          "Cuando la producción necesita menos trabajo, la distribución depende todavía más de propiedad, impuestos e instituciones."
+        ],
+        [
+          "dependencia tecnológica",
+          "Comunidades pueden perder autonomía cuando herramientas esenciales no pueden repararse, auditarse ni sustituirse localmente."
+        ]
+      ],
+      "p0": 0.3684210526,
+      "p1": 0.4210526316,
+      "scene": 7,
+      "sound": {
+        "base": 85.25,
+        "filter": 1526,
+        "noise": 0.025,
+        "pulse": 0.05,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "global-risks",
+      "name": "Riesgos globales",
+      "className": "Amenazas capaces de afectar a la civilización completa",
+      "color": [255, 102, 103],
+      "metric": "Peligro × exposición × vulnerabilidad × interconexión → riesgo sistémico",
+      "fact": "Cuanto más interconectada se vuelve una civilización, más puede compartir tanto sus soluciones como sus fallos.",
+      "features": [
+        [
+          "desestabilización climática",
+          "Calentamiento, extremos y cambios ecológicos pueden interactuar con alimentos, migración, salud, infraestructura y conflicto."
+        ],
+        [
+          "conflicto nuclear",
+          "Armas nucleares combinan destrucción inmediata, contaminación, escalada y posibles efectos climáticos mundiales."
+        ],
+        [
+          "pandemias diseñadas",
+          "La biotecnología puede mejorar defensa sanitaria y también facilitar patógenos más peligrosos o accidentes de laboratorio."
+        ],
+        [
+          "inteligencia no controlada",
+          "Sistemas capaces de actuar ampliamente podrían perseguir objetivos incompatibles con la seguridad humana o escapar de supervisión efectiva."
+        ],
+        [
+          "colapso ecológico",
+          "La pérdida de biodiversidad y funciones ecosistémicas puede reducir alimentos, agua, estabilidad climática y capacidad de recuperación."
+        ],
+        [
+          "fallo de infraestructura",
+          "Electricidad, comunicaciones, finanzas y logística forman redes donde una interrupción puede desencadenar muchas otras."
+        ],
+        [
+          "impactos de asteroides",
+          "Objetos cercanos a la Tierra son poco frecuentes pero físicamente detectables y, con suficiente anticipación, potencialmente desviables."
+        ],
+        [
+          "crisis en cascada",
+          "Dos amenazas moderadas pueden combinarse de forma no lineal cuando debilitan simultáneamente instituciones y suministros."
+        ]
+      ],
+      "p0": 0.4210526316,
+      "p1": 0.4736842105,
+      "scene": 8,
+      "sound": {
+        "base": 90,
+        "filter": 1644,
+        "noise": 0.0295,
+        "pulse": 0.071,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "planetary-governance",
+      "name": "Gobernanza planetaria",
+      "className": "Coordinación sin destino institucional único",
+      "color": [174, 180, 255],
+      "metric": "Cooperación + legitimidad + conocimiento + cumplimiento → acción a escala planetaria",
+      "fact": "Coordinar problemas globales no implica que un único gobierno mundial sea inevitable ni necesariamente deseable.",
+      "features": [
+        [
+          "tratados",
+          "Los acuerdos internacionales convierten intereses compartidos en compromisos que dependen de verificación, incentivos y confianza."
+        ],
+        [
+          "cooperación científica",
+          "Datos, observatorios y laboratorios distribuidos permiten estudiar problemas que ningún país puede abarcar solo."
+        ],
+        [
+          "regulación tecnológica",
+          "Normas sobre seguridad, uso y responsabilidad intentan reducir daños sin congelar toda innovación."
+        ],
+        [
+          "vigilancia de riesgos",
+          "Sistemas globales pueden detectar brotes, impactos, emisiones y fallos antes de que se conviertan en crisis."
+        ],
+        [
+          "estándares comunes",
+          "Protocolos compartidos permiten interoperabilidad y también pueden favorecer a quienes dominan su diseño."
+        ],
+        [
+          "prevención de conflictos",
+          "Diplomacia, comunicación y control de armamentos reducen probabilidades sin eliminar competencia o error."
+        ],
+        [
+          "gobernanza de recursos",
+          "Océanos, atmósfera, polos, órbitas y quizá recursos espaciales requieren reglas sobre acceso, daño y beneficio."
+        ],
+        [
+          "generaciones futuras",
+          "Representar a personas aún no nacidas obliga a considerar efectos que exceden ciclos políticos y vidas individuales."
+        ]
+      ],
+      "p0": 0.4736842105,
+      "p1": 0.5263157895,
+      "scene": 9,
+      "sound": {
+        "base": 94.75,
+        "filter": 1762,
+        "noise": 0.034,
+        "pulse": 0.092,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "space-industry",
+      "name": "Industria espacial",
+      "className": "Actividad económica más allá de la superficie terrestre",
+      "color": [122, 201, 255],
+      "metric": "Transporte + energía + soporte vital + mantenimiento + mercado → operación espacial sostenida",
+      "fact": "Expandirse al espacio exige sistemas continuos de energía, mantenimiento y cooperación, no solamente transporte.",
+      "features": [
+        [
+          "lanzamiento reutilizable",
+          "Recuperar vehículos reduce parte del coste de acceso, aunque combustible, operaciones y seguridad siguen siendo decisivos."
+        ],
+        [
+          "fabricación orbital",
+          "La microgravedad y el vacío permiten procesos particulares cuando el valor obtenido supera transporte y complejidad."
+        ],
+        [
+          "servicio de satélites",
+          "Reparar, reabastecer o retirar satélites puede prolongar infraestructura y reducir residuos orbitales."
+        ],
+        [
+          "recursos lunares",
+          "Hielo, regolito y energía solar podrían apoyar operaciones locales antes de convertirse en exportaciones útiles."
+        ],
+        [
+          "observatorios espaciales",
+          "Instrumentos fuera de la atmósfera ven longitudes de onda y detalles bloqueados desde la superficie."
+        ],
+        [
+          "prospección de asteroides",
+          "Conocer composición y órbita precede a cualquier minería; la viabilidad depende de energía, robótica, mercado y derecho."
+        ],
+        [
+          "hábitats orbitales",
+          "Estructuras habitables necesitan protección, gravedad artificial o contramedidas, ciclos materiales y rescate."
+        ],
+        [
+          "defensa planetaria",
+          "Encuestas, modelos y misiones de desviación pueden transformar un peligro natural raro en un riesgo parcialmente gobernable."
+        ]
+      ],
+      "p0": 0.5263157895,
+      "p1": 0.5789473684,
+      "scene": 10,
+      "sound": {
+        "base": 99.5,
+        "filter": 1880,
+        "noise": 0.016,
+        "pulse": 0.113,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "offworld-settlements",
+      "name": "Asentamientos extraplanetarios",
+      "className": "De visitas temporales a sociedades autosuficientes",
+      "color": [255, 192, 128],
+      "metric": "Base → asentamiento → producción local → autonomía social y ecológica",
+      "fact": "Visitar, mantener una base, construir un asentamiento y formar una sociedad autosuficiente son logros radicalmente distintos.",
+      "features": [
+        [
+          "bases lunares",
+          "La cercanía facilita comunicación y rescate, pero vacío, polvo, radiación y largas noches complican toda permanencia."
+        ],
+        [
+          "asentamientos marcianos",
+          "Marte ofrece recursos y ciclos diarios reconocibles junto con atmósfera tenue, frío, radiación y enorme distancia logística."
+        ],
+        [
+          "hábitats giratorios",
+          "Estructuras rotatorias podrían producir gravedad aparente y vivir independientes de superficies planetarias."
+        ],
+        [
+          "ecosistemas cerrados",
+          "Aire, agua, nutrientes y residuos deben circular durante años con pérdidas mínimas y alta capacidad de reparación."
+        ],
+        [
+          "protección radiológica",
+          "Regolito, agua, campos y refugios reducen exposición a partículas solares y rayos cósmicos."
+        ],
+        [
+          "gravedad artificial",
+          "La rotación puede simular peso, pero exige estructuras grandes, control de movimiento y adaptación humana."
+        ],
+        [
+          "fabricación local",
+          "Transformar materiales disponibles en piezas, alimento y combustible disminuye dependencia de suministros terrestres."
+        ],
+        [
+          "separación cultural",
+          "Distancia, peligro y experiencias propias pueden crear identidades distintas mucho antes de la autosuficiencia económica."
+        ]
+      ],
+      "p0": 0.5789473684,
+      "p1": 0.6315789474,
+      "scene": 11,
+      "sound": {
+        "base": 104.25,
+        "filter": 1998,
+        "noise": 0.0205,
+        "pulse": 0.134,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "multiplanetary-civilization",
+      "name": "Civilización multiplanetaria",
+      "className": "Sociedades separadas por minutos u horas de luz",
+      "color": [156, 164, 255],
+      "metric": "Mundos habitados + autonomía local + comunicación retardada → civilización distribuida",
+      "fact": "Una civilización multiplanetaria no sería una nación terrestre ampliada: las distancias crearían nuevas sociedades y formas de independencia.",
+      "features": [
+        [
+          "retrasos de comunicación",
+          "La información viaja como máximo a la velocidad de la luz, impidiendo conversación instantánea entre mundos distantes."
+        ],
+        [
+          "economías independientes",
+          "Transportar bienes entre planetas favorece producción local y comercio de objetos o información de alto valor."
+        ],
+        [
+          "culturas divergentes",
+          "Entornos, riesgos y generaciones separadas producirían costumbres e identidades cada vez más distintas."
+        ],
+        [
+          "gobernanza local",
+          "Decisiones urgentes no pueden esperar instrucciones de otro planeta y empujan hacia autoridad cercana."
+        ],
+        [
+          "comercio interplanetario",
+          "Rutas lentas y ventanas orbitales convierten logística, seguros y planificación en procesos de años."
+        ],
+        [
+          "adaptación biológica",
+          "Salud en otras gravedades podría requerir medicina, selección cultural o modificaciones biológicas controvertidas."
+        ],
+        [
+          "autonomía política",
+          "La dependencia material puede disminuir mientras memoria histórica y tratados mantienen vínculos."
+        ],
+        [
+          "herencia compartida",
+          "Lenguas, ciencia y origen terrestre podrían unir poblaciones que ya no comparten exactamente la misma experiencia humana."
+        ]
+      ],
+      "p0": 0.6315789474,
+      "p1": 0.6842105263,
+      "scene": 12,
+      "sound": {
+        "base": 109,
+        "filter": 2116,
+        "noise": 0.025,
+        "pulse": 0.155,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "planetary-engineering",
+      "name": "Modificación planetaria",
+      "className": "Intervención sobre ambientes completos · legitimidad incierta",
+      "color": [111, 235, 205],
+      "metric": "Energía + materiales + biología + siglos + gobernanza → ambiente planetario alterado",
+      "fact": "Ser técnicamente capaz de modificar un planeta no implica tener el derecho, el conocimiento suficiente ni la legitimidad para hacerlo.",
+      "features": [
+        [
+          "ingeniería atmosférica",
+          "Añadir, retirar o transformar gases exige cantidades enormes de materia y puede producir retroalimentaciones difíciles de revertir."
+        ],
+        [
+          "espejos orbitales",
+          "Reflectores podrían modificar iluminación o temperatura local, con riesgos de control, fallo y efectos transfronterizos."
+        ],
+        [
+          "magnetosferas artificiales",
+          "Campos generados en el espacio se han propuesto para desviar partículas, pero requerirían infraestructuras aún hipotéticas."
+        ],
+        [
+          "siembra ecológica",
+          "Introducir organismos puede construir ciclos vivos o destruir entornos autóctonos antes de comprenderlos."
+        ],
+        [
+          "control climático",
+          "Regular un clima completo exige predecir sistemas caóticos y decidir quién define las condiciones deseadas."
+        ],
+        [
+          "terraformación",
+          "Transformar un planeta para vida terrestre probablemente requeriría siglos o milenios y capacidades muy superiores a las actuales."
+        ],
+        [
+          "paraterraformación",
+          "Encerrar regiones habitables limita la escala y permite control local sin alterar todo el planeta."
+        ],
+        [
+          "protección planetaria",
+          "Evitar contaminación biológica protege ciencia, ecosistemas posibles y decisiones que pertenecen a generaciones futuras."
+        ]
+      ],
+      "p0": 0.6842105263,
+      "p1": 0.7368421053,
+      "scene": 13,
+      "sound": {
+        "base": 113.75,
+        "filter": 2234,
+        "noise": 0.0295,
+        "pulse": 0.176,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "postbiological-intelligence",
+      "name": "Inteligencia postbiológica",
+      "className": "Hipótesis · mentes no limitadas a cuerpos orgánicos",
+      "color": [223, 153, 255],
+      "metric": "Cognición + soporte físico + energía + continuidad → posibles personas o culturas sintéticas",
+      "fact": "Las inteligencias postbiológicas son hipótesis, no resultados establecidos ni destinos inevitables.",
+      "features": [
+        [
+          "mentes sintéticas",
+          "Sistemas construidos podrían desarrollar capacidades o experiencias propias, pero no sabemos qué arquitectura produciría conciencia."
+        ],
+        [
+          "personas digitales",
+          "Reconocer una entidad digital como persona dependería de evidencia sobre continuidad, experiencia, autonomía y relaciones sociales."
+        ],
+        [
+          "cognición distribuida",
+          "Una mente podría extenderse entre muchos procesadores, lugares y cuerpos con problemas nuevos de identidad y coordinación."
+        ],
+        [
+          "civilizaciones robóticas",
+          "Máquinas capaces de mantenimiento y reproducción industrial podrían vivir donde la biología terrestre no puede."
+        ],
+        [
+          "emulación mental",
+          "Copiar con suficiente detalle un cerebro exigiría comprender qué estructura y dinámica son necesarias para preservar una mente."
+        ],
+        [
+          "independencia de sustrato",
+          "La idea de que una mente puede existir en materiales distintos sigue siendo una hipótesis filosófica y científica abierta."
+        ],
+        [
+          "computación prolongada",
+          "Sistemas no biológicos podrían operar lentamente, hibernar o durar milenios si conservan energía, memoria y reparación."
+        ],
+        [
+          "culturas de máquinas",
+          "Entidades sintéticas podrían desarrollar ritmos, valores y formas de comunicación difíciles de interpretar desde la experiencia humana."
+        ]
+      ],
+      "p0": 0.7368421053,
+      "p1": 0.7894736842,
+      "scene": 14,
+      "sound": {
+        "base": 118.5,
+        "filter": 2352,
+        "noise": 0.034,
+        "pulse": 0.05,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "interstellar-civilization",
+      "name": "Civilización interestelar",
+      "className": "Expansión separada por años, generaciones y milenios",
+      "color": [146, 205, 255],
+      "metric": "Propulsión + autonomía + tiempo + reproducción social → presencia entre estrellas",
+      "fact": "Las distancias interestelares transforman expansión, comunicación e identidad en procesos de generaciones o milenios.",
+      "features": [
+        [
+          "naves generacionales",
+          "Comunidades completas podrían vivir y cambiar durante viajes más largos que una vida humana."
+        ],
+        [
+          "animación suspendida",
+          "Reducir metabolismo durante décadas sigue siendo una posibilidad especulativa con grandes obstáculos médicos."
+        ],
+        [
+          "sondas autorreplicantes",
+          "Máquinas que usan recursos locales podrían explorar muchas estrellas y multiplicar errores, objetivos o contaminación."
+        ],
+        [
+          "propulsión láser",
+          "Velas muy ligeras impulsadas por haces podrían alcanzar altas velocidades sin transportar todo su combustible."
+        ],
+        [
+          "propulsión de fusión",
+          "Reacciones de fusión podrían impulsar naves rápidas si se dominan combustible, confinamiento, masa y calor."
+        ],
+        [
+          "sistemas semilla",
+          "Paquetes autónomos podrían construir infraestructura o incluso organismos al llegar, planteando control y legitimidad extremos."
+        ],
+        [
+          "comunicación interestelar",
+          "Cada mensaje tardaría años o siglos, convirtiendo diálogo en correspondencia entre generaciones."
+        ],
+        [
+          "colonias aisladas",
+          "La separación prolongada produciría evolución cultural, política y quizá biológica independiente."
+        ]
+      ],
+      "p0": 0.7894736842,
+      "p1": 0.8421052632,
+      "scene": 15,
+      "sound": {
+        "base": 123.25,
+        "filter": 2470,
+        "noise": 0.016,
+        "pulse": 0.071,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "kardashev-scale",
+      "name": "Escalas de Kardashev",
+      "className": "Herramienta conceptual basada en energía, no en sabiduría",
+      "color": [255, 218, 123],
+      "metric": "Potencia controlada aproximada → escala planetaria, estelar o galáctica",
+      "fact": "La escala de Kardashev mide aproximadamente uso de energía; no mide bienestar, moralidad, sabiduría ni inevitabilidad histórica.",
+      "features": [
+        [
+          "energía planetaria",
+          "Una civilización planetaria gestionaría una fracción grande de la energía disponible en su mundo sin necesariamente hacerlo de forma justa."
+        ],
+        [
+          "energía estelar",
+          "Capturar parte sustancial de la luz de una estrella requeriría una población inmensa de colectores y sistemas orbitales."
+        ],
+        [
+          "enjambres de Dyson",
+          "Millones de estructuras independientes son físicamente más plausibles que una esfera rígida alrededor de una estrella."
+        ],
+        [
+          "computación distribuida",
+          "Energía estelar podría alimentar grandes redes de cálculo limitadas por temperatura, comunicación y materiales."
+        ],
+        [
+          "infraestructura galáctica",
+          "Extender actividad por una galaxia exigiría millones de años incluso con expansión rápida a escala humana."
+        ],
+        [
+          "eficiencia energética",
+          "Una civilización avanzada podría hacer más con menos energía y ser menos visible que otra más derrochadora."
+        ],
+        [
+          "firmas observables",
+          "Calor residual, estructuras orbitales o cambios estelares podrían revelar tecnología sin explicar su cultura."
+        ],
+        [
+          "límites físicos",
+          "Termodinámica, velocidad de la luz, estabilidad orbital y recursos acotan cualquier ingeniería cósmica."
+        ]
+      ],
+      "p0": 0.8421052632,
+      "p1": 0.8947368421,
+      "scene": 16,
+      "sound": {
+        "base": 128,
+        "filter": 2588,
+        "noise": 0.0205,
+        "pulse": 0.092,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "divergent-futures",
+      "name": "Futuros divergentes",
+      "className": "Múltiples resultados · ninguna rama garantizada",
+      "color": [255, 150, 190],
+      "metric": "Capacidad tecnológica × valores × instituciones × accidentes → trayectorias divergentes",
+      "fact": "Cada nueva capacidad abre varias ramas; el poder tecnológico por sí solo no decide cuál se vuelve realidad.",
+      "features": [
+        [
+          "abundancia sostenible",
+          "Energía limpia, automatización y distribución justa podrían elevar bienestar sin exceder límites ecológicos."
+        ],
+        [
+          "control autoritario",
+          "Vigilancia, predicción y dependencia digital podrían concentrar poder con apariencia de eficiencia."
+        ],
+        [
+          "civilización descentralizada",
+          "Producción local, redes abiertas y autonomía comunitaria podrían repartir resiliencia y coordinación."
+        ],
+        [
+          "recuperación ecológica",
+          "Sociedades podrían restaurar ecosistemas y redefinir prosperidad alrededor de continuidad biológica."
+        ],
+        [
+          "estancamiento tecnológico",
+          "Conflicto, límites económicos o elección cultural pueden frenar innovación sin terminar la historia."
+        ],
+        [
+          "transformación posthumana",
+          "Biología, máquinas y cultura podrían producir descendientes que ya no encajen en categorías humanas actuales."
+        ],
+        [
+          "colapso y reconstrucción",
+          "Sistemas complejos pueden perder capacidad y luego reorganizarse con memoria parcial del pasado."
+        ],
+        [
+          "inteligencia cooperativa",
+          "Personas, instituciones y máquinas podrían formar sistemas de decisión más capaces si preservan pluralidad, revisión y control."
+        ]
+      ],
+      "p0": 0.8947368421,
+      "p1": 0.9473684211,
+      "scene": 17,
+      "sound": {
+        "base": 132.75,
+        "filter": 2706,
+        "noise": 0.025,
+        "pulse": 0.113,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "unknown-horizon",
+      "name": "Horizonte desconocido",
+      "className": "Frontera de la imaginación informada",
+      "color": [238, 244, 255],
+      "metric": "Cuanto mayor la distancia temporal → menor predicción y mayor espacio de posibilidades",
+      "fact": "Cuanto más lejos miramos, menos predecimos acontecimientos y más cartografiamos posibilidades.",
+      "features": [
+        [
+          "física desconocida",
+          "Nuevas leyes o fenómenos podrían cambiar límites que hoy parecen fundamentales."
+        ],
+        [
+          "formas nuevas de inteligencia",
+          "La cognición futura podría existir en cuerpos, escalas y ritmos sin equivalentes actuales."
+        ],
+        [
+          "vida alienígena",
+          "Descubrir otra biosfera modificaría nuestra comprensión de evolución, singularidad y responsabilidad cósmica."
+        ],
+        [
+          "identidad transformada",
+          "Cambios biológicos, digitales y sociales pueden volver insuficientes las palabras actuales para persona, especie o sociedad."
+        ],
+        [
+          "restricciones cósmicas",
+          "Energía, entropía, expansión y velocidad de la luz continuarán condicionando cualquier civilización conocida."
+        ],
+        [
+          "civilizaciones irreconocibles",
+          "Tecnología muy avanzada podría no parecer una ciudad, una nave ni una señal deliberada."
+        ],
+        [
+          "vocabulario ausente",
+          "Algunas posibilidades no pueden describirse bien desde conceptos creados para el presente."
+        ],
+        [
+          "más allá",
+          "Si la vida y la inteligencia pueden expandirse por el cosmos, debemos preguntar si estamos solos y cómo reconoceríamos una civilización verdaderamente alienígena."
+        ]
+      ],
+      "p0": 0.9473684211,
+      "p1": 1,
+      "scene": 18,
+      "sound": {
+        "base": 137.5,
+        "filter": 2824,
+        "noise": 0.0295,
+        "pulse": 0.134,
+        "type": "sine"
+      }
+    }
+  ]
+}

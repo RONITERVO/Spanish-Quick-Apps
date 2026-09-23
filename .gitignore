@@ -1,4 +1,10 @@
 # SyncVoice writes same-directory temporaries so canonical outputs can be replaced atomically.
+node_modules/
+dist/
+.migration/
+test-results/
+playwright-report/
+
 .syncvoice/*.tmp
 .syncvoice/*.tmp.*
 .syncvoice/generation-state.json
