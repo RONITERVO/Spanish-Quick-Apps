@@ -1,0 +1,9 @@
+node_modules
+dist
+.migration
+.syncvoice
+assets
+learning-translations
+package-lock.json
+playwright-report
+test-results

@@ -1,0 +1,446 @@
+{
+  "ZONES": [
+    {
+      "id": "local-group-limit",
+      "name": "Límite del Grupo Local",
+      "p0": 0,
+      "p1": 0.065,
+      "color": [198, 194, 255],
+      "metric": "Continuidad · comienza el siguiente salto",
+      "fact": "El recorrido comienza exactamente donde terminó el anterior: en la frontera dinámica y difusa de nuestra pequeña familia de galaxias.",
+      "sound": {
+        "base": 68,
+        "filter": 760,
+        "noise": 0.08,
+        "pulse": 0.34,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "Grupo Local",
+          "La Vía Láctea, Andrómeda, Triángulo y muchas galaxias pequeñas forman nuestra familia galáctica inmediata."
+        ],
+        [
+          "frontera difusa",
+          "No existe una pared. La pertenencia se deduce comparando distancias, velocidades y gravedad."
+        ],
+        [
+          "superficie de velocidad cero",
+          "Es una frontera ideal donde la atracción local y la expansión cósmica llegan aproximadamente a equilibrarse."
+        ],
+        [
+          "salto de escala",
+          "Ahora las galaxias dejan de ser destinos aislados y pasan a formar corrientes, láminas, cúmulos y cuencas."
+        ],
+        [
+          "Laniakea",
+          "El Grupo Local ocupa una pequeña rama dentro de una región dinámica muchísimo mayor."
+        ]
+      ]
+    },
+    {
+      "id": "local-volume",
+      "name": "Volumen local",
+      "p0": 0.065,
+      "p1": 0.17,
+      "color": [132, 189, 255],
+      "metric": "Entorno cercano · grupos y galaxias dispersas",
+      "fact": "Al ampliar la vista aparecen numerosas galaxias y grupos vecinos, separados por grandes extensiones de espacio tenue.",
+      "sound": {
+        "base": 76,
+        "filter": 930,
+        "noise": 0.075,
+        "pulse": 0.31,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "galaxia vecina",
+          "Fuera del Grupo Local existen muchas galaxias cercanas que pertenecen a otros grupos pequeños."
+        ],
+        [
+          "grupo de galaxias",
+          "Varias galaxias pueden compartir una envoltura gravitatoria sin formar todavía un cúmulo gigantesco."
+        ],
+        [
+          "distancia cósmica",
+          "En esta escala, incluso los vecinos más próximos están a millones de años luz unos de otros."
+        ],
+        [
+          "velocidad peculiar",
+          "Además de participar en la expansión del universo, cada galaxia posee un movimiento local causado por la gravedad."
+        ],
+        [
+          "mapa tridimensional",
+          "Las distancias y velocidades permiten reconstruir una geografía invisible alrededor de nosotros."
+        ]
+      ]
+    },
+    {
+      "id": "local-sheet",
+      "name": "Lámina Local",
+      "p0": 0.17,
+      "p1": 0.285,
+      "color": [83, 219, 224],
+      "metric": "Estructura aplanada · nuestro vecindario cósmico",
+      "fact": "El Grupo Local y otras galaxias cercanas ocupan una estructura relativamente delgada llamada Lámina Local.",
+      "sound": {
+        "base": 88,
+        "filter": 1260,
+        "noise": 0.065,
+        "pulse": 0.25,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "lámina galáctica",
+          "Una lámina es una distribución aplanada de galaxias: ancha en dos direcciones y mucho más delgada en la tercera."
+        ],
+        [
+          "Consejo de Gigantes",
+          "Varias galaxias grandes cercanas forman un anillo aproximado alrededor del Grupo Local dentro de la Lámina Local."
+        ],
+        [
+          "plano local",
+          "Nuestro vecindario no está repartido al azar; muchas galaxias cercanas comparten un plano espacial."
+        ],
+        [
+          "borde del Vacío Local",
+          "La Lámina Local limita con una extensa región pobre en galaxias que influye en el patrón de movimientos."
+        ],
+        [
+          "puente hacia Virgo",
+          "La distribución local se conecta con estructuras más densas en dirección al cúmulo de Virgo."
+        ]
+      ]
+    },
+    {
+      "id": "virgo-cluster",
+      "name": "Cúmulo de Virgo",
+      "p0": 0.285,
+      "p1": 0.405,
+      "color": [255, 203, 132],
+      "metric": "Gran nodo cercano · miles de galaxias",
+      "fact": "Virgo es el gran cúmulo de galaxias más cercano: una región densa donde galaxias, gas caliente y materia oscura comparten un profundo potencial gravitatorio.",
+      "sound": {
+        "base": 104,
+        "filter": 1740,
+        "noise": 0.07,
+        "pulse": 0.2,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "cúmulo de galaxias",
+          "Un cúmulo reúne muchísimas galaxias, gas extremadamente caliente y una gran cantidad de materia oscura."
+        ],
+        [
+          "M87",
+          "Esta galaxia elíptica gigante domina una de las regiones centrales de Virgo y alberga un agujero negro supermasivo."
+        ],
+        [
+          "gas intracumular",
+          "Entre las galaxias hay plasma tan caliente que emite principalmente rayos X."
+        ],
+        [
+          "materia oscura",
+          "La mayor parte de la masa gravitatoria del cúmulo no brilla y se detecta por sus efectos."
+        ],
+        [
+          "órbitas rápidas",
+          "Las galaxias atraviesan el cúmulo a grandes velocidades y pueden perder gas durante el recorrido."
+        ]
+      ]
+    },
+    {
+      "id": "virgo-supercluster",
+      "name": "Supercúmulo de Virgo",
+      "p0": 0.405,
+      "p1": 0.515,
+      "color": [255, 143, 188],
+      "metric": "Rama histórica · grupos, cúmulos y filamentos",
+      "fact": "El nombre Supercúmulo de Virgo describe la concentración extensa que incluye nuestro entorno y Virgo; en el mapa dinámico moderno aparece como parte de Laniakea.",
+      "sound": {
+        "base": 116,
+        "filter": 2180,
+        "noise": 0.06,
+        "pulse": 0.18,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "supercúmulo",
+          "Es una asociación enorme de grupos, cúmulos, láminas y filamentos; no tiene por qué estar completamente unida por gravedad."
+        ],
+        [
+          "rama de Virgo",
+          "El Grupo Local ocupa una zona periférica conectada con el gran nodo de Virgo."
+        ],
+        [
+          "cadena de cúmulos",
+          "Las galaxias se concentran en ramificaciones en vez de llenar el espacio de forma uniforme."
+        ],
+        [
+          "escala histórica",
+          "Antes de Laniakea, esta era la dirección cósmica usada habitualmente para describir nuestro domicilio mayor."
+        ],
+        [
+          "subestructura",
+          "Dentro de Laniakea, Virgo es una rama importante de una cuenca de flujo mucho más extensa."
+        ]
+      ]
+    },
+    {
+      "id": "galaxy-flows",
+      "name": "Corrientes galácticas",
+      "p0": 0.515,
+      "p1": 0.645,
+      "color": [104, 208, 255],
+      "metric": "Velocidades peculiares · rutas gravitatorias",
+      "fact": "Al retirar matemáticamente la expansión general, los movimientos residuales dibujan corrientes que siguen valles del campo gravitatorio.",
+      "sound": {
+        "base": 132,
+        "filter": 2600,
+        "noise": 0.052,
+        "pulse": 0.145,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "flujo peculiar",
+          "Es el movimiento de una galaxia respecto a la expansión cósmica media de su entorno."
+        ],
+        [
+          "línea de corriente",
+          "Una línea de corriente representa la dirección reconstruida del movimiento en cada punto del mapa."
+        ],
+        [
+          "valle gravitatorio",
+          "Las regiones con más masa curvan las trayectorias colectivas como valles en un paisaje invisible."
+        ],
+        [
+          "expansión cósmica",
+          "La expansión aumenta las separaciones a gran escala, mientras la gravedad añade movimientos locales sobre ese fondo."
+        ],
+        [
+          "reconstrucción",
+          "Estas corrientes se infieren combinando posiciones, distancias, desplazamientos al rojo y modelos cosmológicos."
+        ]
+      ]
+    },
+    {
+      "id": "local-void",
+      "name": "Vacío Local",
+      "p0": 0.645,
+      "p1": 0.735,
+      "color": [105, 132, 238],
+      "metric": "Región subdensa · pocas galaxias",
+      "fact": "El Vacío Local es una región vecina con mucha menos materia que el promedio. Los flujos se apartan de ella y se dirigen hacia estructuras más densas.",
+      "sound": {
+        "base": 54,
+        "filter": 540,
+        "noise": 0.12,
+        "pulse": 0.42,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "vacío cósmico",
+          "Un vacío no está completamente vacío: contiene materia, pero mucha menos que las láminas y los filamentos vecinos."
+        ],
+        [
+          "subdensidad",
+          "Al haber menos masa, existe menos atracción desde esa dirección que desde las regiones densas opuestas."
+        ],
+        [
+          "expansión más rápida",
+          "Los vacíos tienden a expandirse relativamente y a desplazar materia hacia sus paredes y bordes."
+        ],
+        [
+          "movimiento local",
+          "Parte del movimiento de nuestro vecindario se entiende por la combinación de alejamiento del vacío y atracción hacia zonas densas."
+        ],
+        [
+          "silencio visual",
+          "La oscuridad de esta región contrasta con los nodos luminosos y ayuda a revelar la estructura del mapa."
+        ]
+      ]
+    },
+    {
+      "id": "great-attractor",
+      "name": "Gran Atractor",
+      "p0": 0.735,
+      "p1": 0.875,
+      "color": [255, 170, 108],
+      "metric": "Convergencia gravitatoria · no es un objeto único",
+      "fact": "El Gran Atractor es una región de convergencia del campo de velocidades, asociada a grandes concentraciones de masa; no es una esfera, estrella ni agujero negro gigantesco.",
+      "sound": {
+        "base": 72,
+        "filter": 1180,
+        "noise": 0.09,
+        "pulse": 0.58,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "convergencia",
+          "Muchas líneas de corriente reconstruidas se acercan a esta región desde direcciones distintas."
+        ],
+        [
+          "región de Hydra-Centauro",
+          "La convergencia se relaciona con una extensa concentración de galaxias y cúmulos en esta zona del cielo."
+        ],
+        [
+          "cúmulo de Norma",
+          "Norma es uno de los grandes cúmulos próximos a la región clásica del Gran Atractor."
+        ],
+        [
+          "Zona de Evitación",
+          "El polvo y las estrellas de la Vía Láctea ocultan parte de esta dirección y dificultan observar galaxias lejanas."
+        ],
+        [
+          "depende de la escala",
+          "El punto aparente de convergencia cambia según la resolución y el volumen empleados para reconstruir el flujo."
+        ]
+      ]
+    },
+    {
+      "id": "laniakea-basin",
+      "name": "Cuenca de Laniakea",
+      "p0": 0.875,
+      "p1": 0.955,
+      "color": [205, 146, 255],
+      "metric": "Cuenca de flujo · cientos de millones de años luz",
+      "fact": "Laniakea se define como una inmensa cuenca de velocidades peculiares: dentro de su frontera, las líneas reconstruidas pertenecen al mismo sistema de drenaje cósmico.",
+      "sound": {
+        "base": 154,
+        "filter": 3280,
+        "noise": 0.04,
+        "pulse": 0.11,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "Laniakea",
+          "Su nombre hawaiano suele interpretarse como cielo inmenso o cielo inconmensurable."
+        ],
+        [
+          "cuenca de atracción",
+          "La frontera se dibuja como una divisoria de aguas entre patrones de flujo que convergen hacia regiones diferentes."
+        ],
+        [
+          "decenas de miles de galaxias",
+          "La cuenca contiene una población enorme distribuida en grupos, cúmulos, láminas y ramificaciones."
+        ],
+        [
+          "mapa dinámico",
+          "Laniakea no es una figura sólida: es una clasificación basada en movimientos reconstruidos."
+        ],
+        [
+          "no está totalmente ligada",
+          "A esta escala, la expansión acelerada impide asumir que toda la región colapsará en un único sistema futuro."
+        ]
+      ]
+    },
+    {
+      "id": "laniakea-limit",
+      "name": "Límite de Laniakea",
+      "p0": 0.955,
+      "p1": 1,
+      "color": [190, 213, 255],
+      "metric": "Divisoria dinámica · entrada a la red cósmica",
+      "fact": "En el borde de la cuenca, las líneas de flujo se separan hacia otras grandes regiones. La vista está lista para revelar la red cósmica completa.",
+      "sound": {
+        "base": 202,
+        "filter": 4400,
+        "noise": 0.032,
+        "pulse": 0.065,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "divisoria de flujo",
+          "A cada lado de esta frontera ideal, las trayectorias reconstruidas pertenecen a cuencas cósmicas diferentes."
+        ],
+        [
+          "frontera permeable",
+          "No hay una pared física y la definición puede cambiar al mejorar los datos y los modelos."
+        ],
+        [
+          "cuencas vecinas",
+          "Más allá existen otras regiones dinámicas enormes conectadas por estructuras todavía mayores."
+        ],
+        [
+          "red cósmica",
+          "Filamentos, vacíos y nodos forman el patrón de materia a gran escala del universo."
+        ],
+        [
+          "Más allá",
+          "Más allá: los filamentos, vacíos y nodos de la red cósmica. Allí continúa la siguiente aplicación."
+        ]
+      ]
+    }
+  ],
+  "LANDMARKS": [
+    {
+      "id": "local-group-limit",
+      "p": 0.032,
+      "lane": -0.02,
+      "size": 150
+    },
+    {
+      "id": "local-volume",
+      "p": 0.12,
+      "lane": 0.04,
+      "size": 104
+    },
+    {
+      "id": "local-sheet",
+      "p": 0.225,
+      "lane": -0.04,
+      "size": 140
+    },
+    {
+      "id": "virgo-cluster",
+      "p": 0.345,
+      "lane": 0.09,
+      "size": 112
+    },
+    {
+      "id": "virgo-supercluster",
+      "p": 0.46,
+      "lane": -0.03,
+      "size": 145
+    },
+    {
+      "id": "galaxy-flows",
+      "p": 0.585,
+      "lane": 0,
+      "size": 160
+    },
+    {
+      "id": "local-void",
+      "p": 0.69,
+      "lane": -0.18,
+      "size": 118
+    },
+    {
+      "id": "great-attractor",
+      "p": 0.805,
+      "lane": 0.06,
+      "size": 196
+    },
+    {
+      "id": "laniakea-basin",
+      "p": 0.915,
+      "lane": 0,
+      "size": 230
+    },
+    {
+      "id": "boundary",
+      "p": 0.982,
+      "lane": 0,
+      "size": 180
+    }
+  ]
+}

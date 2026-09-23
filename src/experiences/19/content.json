@@ -1,0 +1,1042 @@
+{
+  "ZONES": [
+    {
+      "id": "planetary-civilization",
+      "name": "Civilización planetaria",
+      "className": "Punto de partida · interdependencia tecnológica global",
+      "color": [116, 228, 255],
+      "metric": "Ciudades + redes + satélites + ciencia + industria → capacidad planetaria desigual",
+      "fact": "Una civilización tecnológicamente conectada no controla por completo los sistemas que ha creado ni distribuye sus beneficios de manera uniforme.",
+      "features": [
+        [
+          "ciudades",
+          "Las ciudades concentran personas, conocimiento, servicios e infraestructuras, pero también consumo, vulnerabilidad y desigualdad."
+        ],
+        [
+          "redes energéticas",
+          "Generación, transmisión, almacenamiento y demanda deben coordinarse continuamente para sostener la vida moderna."
+        ],
+        [
+          "satélites",
+          "Los satélites permiten navegación, observación, ciencia y comunicación, pero también crean dependencia orbital y residuos."
+        ],
+        [
+          "transporte",
+          "Carreteras, puertos, ferrocarriles y aviación conectan economías mientras consumen materiales y energía."
+        ],
+        [
+          "instituciones científicas",
+          "La ciencia organizada combina instrumentos, datos, crítica, financiación y cooperación internacional."
+        ],
+        [
+          "comunicación global",
+          "Mensajes y datos cruzan el planeta casi al instante, aunque el acceso y el control siguen siendo desiguales."
+        ],
+        [
+          "producción industrial",
+          "La producción masiva transforma materias primas en bienes mediante cadenas extensas de energía, trabajo y logística."
+        ],
+        [
+          "observación ambiental",
+          "Sensores terrestres y orbitales revelan cambios planetarios que ninguna persona podría observar por sí sola."
+        ]
+      ],
+      "p0": 0,
+      "p1": 0.05,
+      "scene": 0,
+      "sound": {
+        "base": 54,
+        "filter": 720,
+        "noise": 0.017,
+        "pulse": 0.055,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "manual-tools",
+      "name": "Herramientas manuales",
+      "className": "Extensión directa del cuerpo",
+      "color": [255, 196, 117],
+      "metric": "Cuerpo + material + forma diseñada → acción ampliada",
+      "fact": "Una herramienta transforma la relación entre el cuerpo, los materiales y el entorno.",
+      "features": [
+        [
+          "cuchillo",
+          "Un filo concentra fuerza en un borde estrecho para cortar, tallar o separar materiales."
+        ],
+        [
+          "martillo",
+          "La masa y el mango convierten el movimiento del brazo en un impacto controlado."
+        ],
+        [
+          "cuerda",
+          "Fibras reunidas permiten tensar, unir, elevar, medir y transmitir fuerza."
+        ],
+        [
+          "aguja",
+          "Una punta fina y un ojo pequeño hacen posible perforar y unir materiales flexibles."
+        ],
+        [
+          "recipiente",
+          "Contener líquidos, granos o calor amplía la capacidad humana de almacenar, transportar y cocinar."
+        ],
+        [
+          "palanca",
+          "Una barra apoyada puede multiplicar fuerza o cambiar su dirección."
+        ],
+        [
+          "taladro",
+          "La rotación concentrada abre cavidades y permite ensamblajes más precisos."
+        ],
+        [
+          "mantenimiento",
+          "Una herramienta útil depende de afilado, reparación, habilidad y acceso a materiales."
+        ]
+      ],
+      "p0": 0.05,
+      "p1": 0.1,
+      "scene": 1,
+      "sound": {
+        "base": 58.65,
+        "filter": 832,
+        "noise": 0.0215,
+        "pulse": 0.079,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "simple-machines",
+      "name": "Máquinas simples",
+      "className": "Transformación mecánica de fuerza y movimiento",
+      "color": [255, 145, 101],
+      "metric": "Fuerza aplicada × distancia recorrida → trabajo redirigido con pérdidas",
+      "fact": "Las máquinas simples no crean trabajo gratis: intercambian fuerza, distancia, velocidad o dirección.",
+      "features": [
+        [
+          "palanca",
+          "La posición del punto de apoyo determina cuánto se multiplica la fuerza y cuánto debe moverse el brazo."
+        ],
+        [
+          "rueda y eje",
+          "Una rueda reduce fricción de deslizamiento y el eje transmite rotación."
+        ],
+        [
+          "polea",
+          "Una cuerda sobre una rueda cambia la dirección de la fuerza; varias poleas pueden repartir la carga."
+        ],
+        [
+          "plano inclinado",
+          "Subir una carga por una pendiente requiere menos fuerza a cambio de recorrer más distancia."
+        ],
+        [
+          "cuña",
+          "Dos planos inclinados unidos convierten avance en fuerzas laterales para separar o fijar."
+        ],
+        [
+          "tornillo",
+          "Una rampa helicoidal transforma giro en avance preciso y gran presión."
+        ],
+        [
+          "engranajes",
+          "Dientes acoplados intercambian velocidad, par y dirección entre ejes."
+        ],
+        [
+          "fricción",
+          "Toda máquina real pierde parte de la energía útil en calor, deformación, sonido y desgaste."
+        ]
+      ],
+      "p0": 0.1,
+      "p1": 0.15,
+      "scene": 2,
+      "sound": {
+        "base": 63.3,
+        "filter": 944,
+        "noise": 0.026,
+        "pulse": 0.103,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "measurement",
+      "name": "Medición y precisión",
+      "className": "Comparación estandarizada y reproducible",
+      "color": [255, 226, 122],
+      "metric": "Propiedad + unidad + instrumento + incertidumbre → valor comparable",
+      "fact": "Medir permite comparar, reproducir y coordinar acciones entre personas que no están en el mismo lugar.",
+      "features": [
+        [
+          "longitud",
+          "Reglas y patrones de longitud hacen posible fabricar piezas compatibles y describir distancias."
+        ],
+        [
+          "masa",
+          "Comparar masas ayuda a comerciar, formular materiales y controlar procesos."
+        ],
+        [
+          "tiempo",
+          "Relojes compartidos coordinan navegación, industria, comunicaciones y experimentos."
+        ],
+        [
+          "ángulo",
+          "La medición angular sostiene construcción, cartografía, astronomía y control de máquinas."
+        ],
+        [
+          "temperatura",
+          "Un termómetro relaciona cambios físicos observables con una escala acordada."
+        ],
+        [
+          "mapas",
+          "Un mapa convierte relaciones espaciales complejas en un modelo simbólico utilizable."
+        ],
+        [
+          "calibración",
+          "Comparar un instrumento con una referencia conocida reduce errores sistemáticos."
+        ],
+        [
+          "incertidumbre",
+          "Toda medición tiene límites; informar la incertidumbre evita confundir precisión aparente con certeza."
+        ]
+      ],
+      "p0": 0.15,
+      "p1": 0.2,
+      "scene": 3,
+      "sound": {
+        "base": 67.95,
+        "filter": 1056,
+        "noise": 0.0305,
+        "pulse": 0.127,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "materials",
+      "name": "Materiales y metalurgia",
+      "className": "Propiedades diseñadas mediante estructura y proceso",
+      "color": [234, 177, 255],
+      "metric": "Composición + microestructura + proceso → propiedades del material",
+      "fact": "La tecnología de materiales no solo encuentra sustancias: modifica su estructura para obtener propiedades específicas.",
+      "features": [
+        [
+          "piedra",
+          "Dureza, fractura y disponibilidad hicieron de la piedra una plataforma tecnológica duradera."
+        ],
+        [
+          "arcilla y vidrio",
+          "Calor y composición transforman minerales en cerámicas resistentes o vidrios transparentes."
+        ],
+        [
+          "cobre y bronce",
+          "Metales y aleaciones permitieron formas reutilizables, conductoras y reparables."
+        ],
+        [
+          "hierro y acero",
+          "El control del carbono, la temperatura y el enfriamiento produce aceros con comportamientos muy distintos."
+        ],
+        [
+          "aleaciones",
+          "Mezclar elementos puede mejorar resistencia, corrosión, peso o temperatura de servicio."
+        ],
+        [
+          "polímeros",
+          "Cadenas moleculares largas permiten materiales ligeros y moldeables, pero plantean persistencia ambiental."
+        ],
+        [
+          "compuestos",
+          "Combinar materiales distintos reúne propiedades que ninguno ofrece por separado."
+        ],
+        [
+          "ciclo de vida",
+          "Extracción, fabricación, uso, reparación, reciclaje y desecho forman una sola historia material."
+        ]
+      ],
+      "p0": 0.2,
+      "p1": 0.25,
+      "scene": 4,
+      "sound": {
+        "base": 72.6,
+        "filter": 1168,
+        "noise": 0.035,
+        "pulse": 0.151,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "technological-agriculture",
+      "name": "Agricultura tecnológica",
+      "className": "Sistemas de producción biológica y control ambiental",
+      "color": [139, 234, 139],
+      "metric": "Suelo + agua + organismos + herramientas + conocimiento → alimento y efectos ecológicos",
+      "fact": "La tecnología agrícola aumentó la producción, pero también puede concentrar poder, degradar ecosistemas y aumentar dependencias.",
+      "features": [
+        [
+          "arado",
+          "Remover el suelo facilita ciertos cultivos, aunque también puede acelerar erosión y pérdida de carbono."
+        ],
+        [
+          "riego",
+          "Canales, bombas y sensores desplazan agua hacia cultivos, creando productividad y nuevas presiones hídricas."
+        ],
+        [
+          "terrazas",
+          "Modificar pendientes reduce erosión y conserva agua mediante conocimiento local acumulado."
+        ],
+        [
+          "molinos",
+          "Viento, agua o motores convierten energía ambiental en molienda y procesamiento."
+        ],
+        [
+          "selección",
+          "Elegir semillas y animales cambia poblaciones durante generaciones, mucho antes de la genética moderna."
+        ],
+        [
+          "fertilizantes",
+          "Añadir nutrientes puede elevar cosechas, pero el exceso contamina aguas y altera ciclos globales."
+        ],
+        [
+          "conservación",
+          "Secado, salado, frío, fermentación y envasado reducen pérdidas y amplían distribución."
+        ],
+        [
+          "cosecha mecanizada",
+          "Máquinas aceleran trabajo agrícola, pero requieren capital, combustible, mantenimiento y adaptación social."
+        ]
+      ],
+      "p0": 0.25,
+      "p1": 0.3,
+      "scene": 5,
+      "sound": {
+        "base": 77.25,
+        "filter": 1280,
+        "noise": 0.017,
+        "pulse": 0.175,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "engines",
+      "name": "Motores",
+      "className": "Conversión controlada de energía en movimiento",
+      "color": [255, 122, 112],
+      "metric": "Energía de entrada → movimiento útil + calor + sonido + pérdidas",
+      "fact": "Un motor no crea energía: transforma una forma de energía en movimiento útil, siempre con pérdidas.",
+      "features": [
+        [
+          "músculo",
+          "Los músculos convierten energía química en fuerza mediante sistemas biológicos autorreparables y limitados."
+        ],
+        ["viento", "Velas y rotores capturan parte del movimiento del aire."],
+        [
+          "agua",
+          "Ruedas y turbinas aprovechan caudal y desnivel para producir rotación."
+        ],
+        [
+          "vapor",
+          "El calor genera presión que puede mover pistones o turbinas."
+        ],
+        [
+          "combustión",
+          "Quemar combustible dentro de una máquina produce expansión rápida, movimiento y emisiones."
+        ],
+        [
+          "turbina",
+          "Un flujo continuo de vapor, gas, agua o aire hace girar álabes."
+        ],
+        [
+          "motor eléctrico",
+          "Campos magnéticos convierten corriente eléctrica en par con alta eficiencia y control preciso."
+        ],
+        [
+          "cohete",
+          "Expulsar masa a gran velocidad produce empuje incluso en el vacío."
+        ]
+      ],
+      "p0": 0.3,
+      "p1": 0.35,
+      "scene": 6,
+      "sound": {
+        "base": 81.9,
+        "filter": 1392,
+        "noise": 0.0215,
+        "pulse": 0.199,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "industry",
+      "name": "Industria",
+      "className": "Producción coordinada a gran escala",
+      "color": [255, 156, 86],
+      "metric": "Máquinas + energía + trabajo + normas + logística → producción repetible",
+      "fact": "La industria es una red de personas, materiales, energía, organización y mantenimiento, no solo un conjunto de máquinas.",
+      "features": [
+        [
+          "fábrica",
+          "Reunir procesos en un lugar permite coordinación y escala, pero también concentra riesgos y poder."
+        ],
+        [
+          "máquina-herramienta",
+          "Tornos, fresadoras y prensas fabrican piezas precisas para construir otras máquinas."
+        ],
+        [
+          "estandarización",
+          "Dimensiones y procedimientos comunes permiten intercambiabilidad y cooperación entre fabricantes."
+        ],
+        [
+          "línea de montaje",
+          "Dividir una secuencia en tareas repetidas aumenta ritmo y reduce flexibilidad del trabajo."
+        ],
+        [
+          "ferrocarril",
+          "Vías, locomotoras y horarios integran producción y transporte terrestre."
+        ],
+        [
+          "producción masiva",
+          "Grandes volúmenes reducen coste unitario mientras elevan demanda material y residuos."
+        ],
+        [
+          "mantenimiento",
+          "Inspección, lubricación, repuestos y conocimiento técnico sostienen la capacidad productiva real."
+        ],
+        [
+          "trabajo industrial",
+          "La productividad depende de habilidades, seguridad, negociación, salud y distribución de beneficios."
+        ]
+      ],
+      "p0": 0.35,
+      "p1": 0.4,
+      "scene": 7,
+      "sound": {
+        "base": 86.55,
+        "filter": 1504,
+        "noise": 0.026,
+        "pulse": 0.055,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "electricity",
+      "name": "Electricidad",
+      "className": "Infraestructura invisible de energía y control",
+      "color": [118, 198, 255],
+      "metric": "Generación → transformación → transmisión → uso → pérdidas y equilibrio instantáneo",
+      "fact": "La electricidad conecta fuentes y usos distantes, pero la red debe equilibrar producción y consumo continuamente.",
+      "features": [
+        [
+          "generador",
+          "El movimiento relativo entre conductores y campos magnéticos puede producir tensión eléctrica."
+        ],
+        [
+          "circuito",
+          "La corriente necesita un camino cerrado y componentes con funciones definidas."
+        ],
+        [
+          "tensión",
+          "La tensión describe diferencia de potencial eléctrico, no una sustancia almacenada dentro del cable."
+        ],
+        ["corriente", "La corriente mide flujo de carga por unidad de tiempo."],
+        [
+          "transformador",
+          "Campos magnéticos variables permiten cambiar niveles de tensión en corriente alterna."
+        ],
+        [
+          "motor",
+          "La electricidad puede volver a convertirse en movimiento mediante fuerzas electromagnéticas."
+        ],
+        [
+          "red eléctrica",
+          "Centrales, líneas, subestaciones, protecciones y control forman un sistema interdependiente."
+        ],
+        [
+          "almacenamiento",
+          "Baterías, bombeo y otras tecnologías desplazan energía en el tiempo, con límites de coste y materiales."
+        ]
+      ],
+      "p0": 0.4,
+      "p1": 0.45,
+      "scene": 8,
+      "sound": {
+        "base": 91.2,
+        "filter": 1616,
+        "noise": 0.0305,
+        "pulse": 0.079,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "telecommunications",
+      "name": "Telecomunicaciones",
+      "className": "Información separada del transporte físico",
+      "color": [103, 230, 223],
+      "metric": "Mensaje → codificación → señal → canal → decodificación",
+      "fact": "La comunicación tecnológica separó progresivamente la velocidad de la información de la velocidad del transporte físico.",
+      "features": [
+        [
+          "telégrafo",
+          "Pulsos eléctricos codificados permitieron enviar símbolos a gran distancia casi de inmediato."
+        ],
+        [
+          "teléfono",
+          "Convertir sonido en señal eléctrica hizo posible transportar la voz."
+        ],
+        [
+          "radio",
+          "Ondas electromagnéticas llevan información sin un cable continuo entre emisor y receptor."
+        ],
+        [
+          "televisión",
+          "Imagen y sonido se codifican, transmiten y reconstruyen en secuencias rápidas."
+        ],
+        [
+          "fibra óptica",
+          "Pulsos de luz guiados por vidrio transportan enormes cantidades de datos con bajas pérdidas."
+        ],
+        [
+          "red inalámbrica",
+          "Radio, antenas, espectro compartido y protocolos coordinan dispositivos móviles."
+        ],
+        [
+          "satélite",
+          "Enlaces orbitales cubren grandes regiones, aunque introducen distancia, coste y dependencia espacial."
+        ],
+        [
+          "señal digital",
+          "Representar información con estados discretos facilita corrección, copia y procesamiento."
+        ]
+      ],
+      "p0": 0.45,
+      "p1": 0.5,
+      "scene": 9,
+      "sound": {
+        "base": 95.85,
+        "filter": 1728,
+        "noise": 0.035,
+        "pulse": 0.103,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "electronics",
+      "name": "Electrónica",
+      "className": "Control de señales mediante componentes microscópicos",
+      "color": [121, 255, 182],
+      "metric": "Sensores + semiconductores + circuitos → detección, decisión y control",
+      "fact": "La electrónica transforma señales débiles en medición, comunicación, memoria y acción controlada.",
+      "features": [
+        [
+          "válvula de vacío",
+          "Controlar electrones en un recipiente evacuado permitió amplificar y conmutar señales tempranas."
+        ],
+        [
+          "transistor",
+          "Una señal pequeña puede controlar una corriente mayor dentro de un semiconductor."
+        ],
+        [
+          "diodo",
+          "Una unión semiconductor conduce de forma distinta según dirección y condiciones."
+        ],
+        [
+          "sensor",
+          "Un sensor convierte una propiedad física o química en una señal interpretable."
+        ],
+        [
+          "circuito integrado",
+          "Muchos componentes fabricados juntos reducen tamaño, coste y distancia de señal."
+        ],
+        [
+          "microcontrolador",
+          "Procesador, memoria y periféricos reunidos controlan máquinas específicas."
+        ],
+        [
+          "pantalla",
+          "Señales eléctricas modulan luz para convertir datos en imágenes visibles."
+        ],
+        [
+          "procesamiento de señal",
+          "Filtrar, muestrear y transformar señales revela información oculta por ruido o escala."
+        ]
+      ],
+      "p0": 0.5,
+      "p1": 0.55,
+      "scene": 10,
+      "sound": {
+        "base": 100.5,
+        "filter": 1840,
+        "noise": 0.017,
+        "pulse": 0.127,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "computing",
+      "name": "Computación",
+      "className": "Manipulación física de símbolos según reglas",
+      "color": [150, 168, 255],
+      "metric": "Estados físicos + lógica + memoria + instrucciones → cómputo",
+      "fact": "Una computadora no comprende automáticamente lo que procesa: ejecuta operaciones físicas que representan símbolos según reglas diseñadas.",
+      "features": [
+        [
+          "estados binarios",
+          "Dos rangos físicos diferenciables pueden representar 0 y 1 de manera robusta."
+        ],
+        [
+          "puerta lógica",
+          "Transistores conectados implementan relaciones como Y, O y NO."
+        ],
+        [
+          "memoria",
+          "Estados físicos persistentes conservan datos e instrucciones durante distintos intervalos."
+        ],
+        [
+          "procesador",
+          "Un procesador coordina operaciones elementales a gran velocidad."
+        ],
+        [
+          "entrada",
+          "Teclados, sensores, cámaras y redes convierten acontecimientos externos en datos."
+        ],
+        [
+          "salida",
+          "Pantallas, motores, sonidos y mensajes convierten resultados digitales en efectos observables."
+        ],
+        [
+          "algoritmo",
+          "Un algoritmo especifica pasos y decisiones para transformar una entrada en una salida."
+        ],
+        [
+          "programa almacenado",
+          "Guardar instrucciones en memoria permite que la misma máquina ejecute tareas diferentes."
+        ]
+      ],
+      "p0": 0.55,
+      "p1": 0.6,
+      "scene": 11,
+      "sound": {
+        "base": 105.15,
+        "filter": 1952,
+        "noise": 0.0215,
+        "pulse": 0.151,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "software",
+      "name": "Software",
+      "className": "Capas de instrucciones y modelos ejecutables",
+      "color": [194, 144, 255],
+      "metric": "Código + datos + abstracciones + hardware → comportamiento programable",
+      "fact": "El software oculta detalles para permitir nuevas capacidades, pero cada capa añade supuestos, errores y dependencias.",
+      "features": [
+        [
+          "código máquina",
+          "Instrucciones numéricas controlan operaciones concretas del procesador."
+        ],
+        [
+          "sistema operativo",
+          "El sistema operativo reparte memoria, tiempo de procesador, archivos y acceso a dispositivos."
+        ],
+        [
+          "aplicación",
+          "Una aplicación organiza funciones técnicas alrededor de una tarea humana."
+        ],
+        [
+          "base de datos",
+          "Estructuras y consultas permiten conservar, relacionar y recuperar grandes colecciones de información."
+        ],
+        [
+          "simulación",
+          "Un modelo computacional explora cómo podría comportarse un sistema bajo supuestos definidos."
+        ],
+        [
+          "interfaz",
+          "Una interfaz traduce capacidades internas en acciones y señales comprensibles para personas u otros sistemas."
+        ],
+        [
+          "biblioteca",
+          "Código reutilizable acelera desarrollo y transmite decisiones técnicas entre proyectos."
+        ],
+        [
+          "mundo virtual",
+          "Reglas de software pueden construir espacios interactivos que no obedecen todas las limitaciones físicas del mundo real."
+        ]
+      ],
+      "p0": 0.6,
+      "p1": 0.65,
+      "scene": 12,
+      "sound": {
+        "base": 109.8,
+        "filter": 2064,
+        "noise": 0.026,
+        "pulse": 0.175,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "internet",
+      "name": "Internet",
+      "className": "Sistema distribuido de redes interoperables",
+      "color": [105, 170, 255],
+      "metric": "Paquetes + direcciones + rutas + protocolos + infraestructura física → red mundial",
+      "fact": "Internet no es una nube en el cielo: depende de cables, radioenlaces, centros de datos, energía y protocolos acordados.",
+      "features": [
+        [
+          "paquete",
+          "Los datos se dividen en unidades que pueden viajar por rutas distintas y reunirse al final."
+        ],
+        [
+          "dirección",
+          "Identificadores permiten localizar interfaces y servicios dentro de redes cambiantes."
+        ],
+        [
+          "router",
+          "Un router elige el siguiente salto para cada paquete usando información de red."
+        ],
+        [
+          "servidor",
+          "Un servidor ofrece datos o funciones a otros equipos, desde una habitación o un centro de datos."
+        ],
+        [
+          "protocolo",
+          "Reglas compartidas permiten que sistemas diseñados por organizaciones distintas se entiendan."
+        ],
+        [
+          "sitio web",
+          "Documentos, estilos, programas y servicios se combinan para formar experiencias navegables."
+        ],
+        [
+          "nube",
+          "La nube es computación remota distribuida en instalaciones físicas, no un lugar sin materia."
+        ],
+        [
+          "plataforma social",
+          "Las plataformas coordinan publicación y atención, pero sus reglas y algoritmos concentran poder."
+        ]
+      ],
+      "p0": 0.65,
+      "p1": 0.7,
+      "scene": 13,
+      "sound": {
+        "base": 114.45,
+        "filter": 2176,
+        "noise": 0.0305,
+        "pulse": 0.199,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "robotics",
+      "name": "Robótica",
+      "className": "Información digital convertida en acción física",
+      "color": [101, 242, 206],
+      "metric": "Sensores → estimación → control → actuadores → entorno → nuevos sensores",
+      "fact": "Un robot conecta información digital con acciones físicas en el mundo.",
+      "features": [
+        [
+          "sensor",
+          "El robot necesita medir su propio estado y aspectos relevantes del entorno."
+        ],
+        [
+          "actuador",
+          "Motores, válvulas y materiales activos convierten señales en fuerza o movimiento."
+        ],
+        [
+          "bucle de control",
+          "Comparar objetivo y resultado permite corregir continuamente una acción."
+        ],
+        [
+          "navegación",
+          "Localización, mapas y planificación ayudan a moverse entre obstáculos e incertidumbre."
+        ],
+        [
+          "manipulación",
+          "Brazos y pinzas deben controlar posición, fuerza y contacto con objetos variados."
+        ],
+        [
+          "robot industrial",
+          "Movimientos repetibles aceleran tareas estructuradas, pero exigen diseño seguro del espacio."
+        ],
+        [
+          "dron",
+          "Un vehículo aéreo combina sustentación, sensores, comunicación y control rápido."
+        ],
+        [
+          "máquina asistiva",
+          "La robótica puede ampliar movilidad e independencia cuando se diseña con las personas usuarias."
+        ]
+      ],
+      "p0": 0.7,
+      "p1": 0.75,
+      "scene": 14,
+      "sound": {
+        "base": 119.1,
+        "filter": 2288,
+        "noise": 0.035,
+        "pulse": 0.055,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "biotechnology",
+      "name": "Biotecnología",
+      "className": "Sistemas vivos como medio técnico",
+      "color": [151, 255, 128],
+      "metric": "Organismos + información biológica + ambiente + intervención → función modificada",
+      "fact": "Modificar organismos no comenzó con la genética moderna, pero las herramientas actuales aumentaron enormemente precisión, velocidad y consecuencias posibles.",
+      "features": [
+        [
+          "fermentación",
+          "Microorganismos transforman alimentos y materiales mediante metabolismos aprovechados por culturas humanas."
+        ],
+        [
+          "selección artificial",
+          "Elegir qué organismos se reproducen cambia rasgos poblacionales durante generaciones."
+        ],
+        [
+          "vacuna",
+          "Entrenar al sistema inmunitario reduce riesgo de enfermedad sin requerir padecerla plenamente."
+        ],
+        [
+          "secuenciación de ADN",
+          "Leer secuencias genéticas permite comparar organismos, rastrear variantes y diseñar experimentos."
+        ],
+        [
+          "edición genética",
+          "Herramientas moleculares modifican lugares concretos del genoma, con resultados y riesgos dependientes del contexto."
+        ],
+        [
+          "biología sintética",
+          "Componentes biológicos se reorganizan para producir funciones nuevas o controladas."
+        ],
+        [
+          "ingeniería de tejidos",
+          "Células, soportes y señales se combinan para reparar o construir estructuras biológicas."
+        ],
+        [
+          "fabricación biológica",
+          "Organismos pueden producir fármacos, alimentos, enzimas y materiales mediante procesos vivos."
+        ]
+      ],
+      "p0": 0.75,
+      "p1": 0.8,
+      "scene": 15,
+      "sound": {
+        "base": 123.75,
+        "filter": 2400,
+        "noise": 0.017,
+        "pulse": 0.079,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "artificial-intelligence",
+      "name": "Inteligencia artificial",
+      "className": "Modelos que aprenden regularidades de datos",
+      "color": [255, 135, 231],
+      "metric": "Datos + objetivo + modelo + cómputo + evaluación → comportamiento aprendido",
+      "fact": "La inteligencia artificial puede producir resultados complejos sin poseer necesariamente conciencia, comprensión humana o juicio fiable.",
+      "features": [
+        [
+          "clasificación",
+          "Un modelo asigna entradas a categorías aprendidas, con errores que reflejan datos, objetivo y contexto."
+        ],
+        [
+          "predicción",
+          "Regularidades pasadas se usan para estimar resultados futuros, sin garantizar que las condiciones permanezcan iguales."
+        ],
+        [
+          "modelo de lenguaje",
+          "Un modelo de lenguaje estima continuaciones plausibles de símbolos y puede generar texto coherente sin verificar por sí mismo su verdad."
+        ],
+        [
+          "reconocimiento de imágenes",
+          "Patrones visuales se transforman en etiquetas, posiciones o representaciones internas."
+        ],
+        [
+          "recomendación",
+          "Sistemas ordenan opciones según señales de preferencia, pero también moldean atención y comportamiento."
+        ],
+        [
+          "planificación",
+          "Un sistema compara acciones posibles para acercarse a un objetivo definido."
+        ],
+        [
+          "generación",
+          "Modelos producen texto, imágenes, audio, código u otras estructuras a partir de patrones aprendidos."
+        ],
+        [
+          "aprendizaje por refuerzo",
+          "La retroalimentación sobre acciones guía estrategias, aunque la recompensa elegida puede no representar el objetivo humano real."
+        ]
+      ],
+      "p0": 0.8,
+      "p1": 0.85,
+      "scene": 16,
+      "sound": {
+        "base": 128.4,
+        "filter": 2512,
+        "noise": 0.0215,
+        "pulse": 0.103,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "autonomous-systems",
+      "name": "Sistemas autónomos",
+      "className": "Acción sostenida con menor supervisión directa",
+      "color": [255, 110, 175],
+      "metric": "Percepción + objetivos + decisiones + acción + supervisión → autonomía limitada",
+      "fact": "La autonomía técnica no elimina la responsabilidad humana: la desplaza hacia quienes diseñan, entrenan, despliegan y gobiernan el sistema.",
+      "features": [
+        [
+          "vehículo autónomo",
+          "Sensores y modelos deben interpretar tráfico cambiante mientras los límites operativos siguen siendo decisivos."
+        ],
+        [
+          "laboratorio automatizado",
+          "Robots y software pueden ejecutar, medir y ajustar experimentos de manera continua."
+        ],
+        [
+          "sistema de negociación",
+          "Algoritmos actúan en mercados a velocidades que pueden amplificar errores e interacciones inesperadas."
+        ],
+        [
+          "flota robótica",
+          "Múltiples máquinas coordinadas reparten tareas y comparten información."
+        ],
+        [
+          "apoyo a decisiones",
+          "Un sistema puede resumir evidencia o estimar riesgo, pero no sustituye automáticamente responsabilidad ni contexto."
+        ],
+        [
+          "infraestructura adaptativa",
+          "Redes eléctricas, edificios o tráfico ajustan operación según demanda y condiciones."
+        ],
+        [
+          "arma autónoma",
+          "Delegar selección o ataque a máquinas crea riesgos extremos de control, atribución y escalada."
+        ],
+        [
+          "red autorreparable",
+          "Detección automática y rutas alternativas pueden mantener servicios, aunque no eliminan fallos sistémicos."
+        ]
+      ],
+      "p0": 0.85,
+      "p1": 0.9,
+      "scene": 17,
+      "sound": {
+        "base": 133.05,
+        "filter": 2624,
+        "noise": 0.026,
+        "pulse": 0.127,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "planetary-technologies",
+      "name": "Tecnologías planetarias",
+      "className": "Intervención sobre sistemas de escala terrestre",
+      "color": [90, 224, 255],
+      "metric": "Capacidad técnica ≠ viabilidad económica ≠ aceptación social ≠ legitimidad política",
+      "fact": "Actuar a escala planetaria exige distinguir lo físicamente posible de lo gobernable, justo y aceptable.",
+      "features": [
+        [
+          "red energética global",
+          "Interconexiones extensas podrían compartir recursos variables, pero requieren seguridad, acuerdos y distribución justa."
+        ],
+        [
+          "observación climática",
+          "Satélites, boyas, estaciones y modelos integran señales de toda la Tierra."
+        ],
+        [
+          "computación planetaria",
+          "Centros de datos y redes coordinan información global mientras consumen energía, agua y materiales."
+        ],
+        [
+          "eliminación de carbono",
+          "Capturar y almacenar dióxido de carbono puede complementar reducciones, no reemplazar automáticamente el abandono de emisiones."
+        ],
+        [
+          "geoingeniería",
+          "Intervenir deliberadamente en el clima plantea incertidumbres, efectos transfronterizos y problemas de legitimidad."
+        ],
+        [
+          "constelación satelital",
+          "Miles de satélites amplían conectividad y observación, pero alteran órbitas, cielos y riesgos de colisión."
+        ],
+        [
+          "logística mundial",
+          "Puertos, contenedores, software y transporte sincronizan cadenas de suministro vulnerables a perturbaciones."
+        ],
+        [
+          "vigilancia de la biosfera",
+          "Sensores y genética ambiental pueden detectar cambios ecológicos, siempre bajo decisiones sobre acceso y uso de datos."
+        ]
+      ],
+      "p0": 0.9,
+      "p1": 0.95,
+      "scene": 18,
+      "sound": {
+        "base": 137.7,
+        "filter": 2736,
+        "noise": 0.0305,
+        "pulse": 0.151,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "technological-futures",
+      "name": "Futuros tecnológicos",
+      "className": "Ramas abiertas · no un destino único",
+      "color": [230, 240, 255],
+      "metric": "Capacidades + objetivos + poder + gobernanza + azar → futuros divergentes",
+      "fact": "El futuro dependerá no solo de lo que podamos construir, sino de qué objetivos elijamos, quién controle los sistemas y cómo gobernemos sus consecuencias.",
+      "features": [
+        [
+          "energía limpia abundante",
+          "Sistemas bajos en carbono podrían ampliar bienestar si materiales, redes y acceso se distribuyen con justicia."
+        ],
+        [
+          "vigilancia",
+          "Sensores y análisis ubicuos pueden aumentar seguridad o concentrar control sobre la vida cotidiana."
+        ],
+        [
+          "automatización",
+          "Máquinas pueden reducir trabajo peligroso o desplazar ingresos y poder sin instituciones adaptadas."
+        ],
+        [
+          "mejora médica",
+          "Terapias avanzadas podrían reparar cuerpos y ampliar capacidades, con profundas preguntas de acceso e identidad."
+        ],
+        [
+          "restauración ecológica",
+          "Biología, sensores y energía pueden apoyar recuperación de ecosistemas si las causas de degradación también cambian."
+        ],
+        [
+          "inteligencia avanzada",
+          "Sistemas más generales podrían acelerar ciencia o crear riesgos difíciles de controlar y evaluar."
+        ],
+        [
+          "industria espacial",
+          "Recursos y asentamientos fuera de la Tierra podrían ampliar opciones sin eliminar conflictos humanos."
+        ],
+        [
+          "colaboración humano-máquina",
+          "Las herramientas futuras pueden complementar juicio y creatividad cuando sus límites, incentivos y control permanecen visibles."
+        ],
+        [
+          "más allá",
+          "Cuando una civilización puede transformar planetas, crear inteligencias no biológicas y expandirse fuera de su mundo natal, surge una pregunta mayor: ¿qué caminos puede seguir en el futuro?"
+        ]
+      ],
+      "p0": 0.95,
+      "p1": 1,
+      "scene": 19,
+      "sound": {
+        "base": 142.35,
+        "filter": 2848,
+        "noise": 0.035,
+        "pulse": 0.175,
+        "type": "triangle"
+      }
+    }
+  ]
+}

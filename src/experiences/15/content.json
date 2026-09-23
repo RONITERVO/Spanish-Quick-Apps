@@ -1,0 +1,784 @@
+{
+  "ZONES": [
+    {
+      "id": "reality",
+      "name": "La naturaleza de la realidad",
+      "className": "Continuidad con Realidad Emergente",
+      "p0": 0,
+      "p1": 0.052,
+      "color": [176, 212, 255],
+      "metric": "Punto de partida · de lo fundamental a lo emergente",
+      "fact": "El recorrido anterior terminó preguntando qué es fundamental. Este comienza con la dirección inversa: cómo pueden surgir organización, función y novedad colectiva a partir de reglas e ingredientes más simples.",
+      "sound": {
+        "base": 43,
+        "filter": 470,
+        "noise": 0.055,
+        "pulse": 0.02,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "realidad",
+          "La realidad observable contiene niveles de organización cuyas propiedades no aparecen en una sola partícula, molécula o regla aislada."
+        ],
+        [
+          "emergencia",
+          "Una propiedad emergente surge de interacciones colectivas y no puede atribuirse sin más a un componente individual."
+        ],
+        [
+          "nivel",
+          "Las explicaciones pueden operar en niveles distintos: partículas, materiales, redes químicas, células, organismos y ecosistemas."
+        ],
+        [
+          "componente",
+          "Los componentes importan, pero también importan sus conexiones, cantidades, condiciones y flujos de energía."
+        ],
+        [
+          "interacción",
+          "La complejidad empieza cuando muchos elementos se afectan mutuamente mediante reglas locales."
+        ],
+        [
+          "pregunta",
+          "¿Cómo pueden unas pocas leyes producir estructuras y comportamientos que no existen en sus componentes aislados?"
+        ]
+      ]
+    },
+    {
+      "id": "laws",
+      "name": "Leyes y simetrías",
+      "className": "Principios físicos establecidos",
+      "p0": 0.052,
+      "p1": 0.12,
+      "color": [111, 181, 255],
+      "metric": "Reglas locales · conservación · probabilidad · condiciones",
+      "fact": "Una misma ley puede generar resultados muy distintos cuando cambian el estado inicial, los límites o las fluctuaciones. Las reglas restringen lo posible sin especificar cada detalle del resultado.",
+      "sound": {
+        "base": 49,
+        "filter": 650,
+        "noise": 0.045,
+        "pulse": 0.04,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "ley",
+          "Una ley física resume regularidades y relaciones que se cumplen en un dominio de condiciones; no es una instrucción que diseñe cada resultado."
+        ],
+        [
+          "regla",
+          "Una regla local determina cómo responde un elemento a su entorno inmediato."
+        ],
+        [
+          "simetría",
+          "Una simetría expresa que cierta transformación deja invariables las leyes o una descripción física."
+        ],
+        [
+          "conservación",
+          "Magnitudes como energía, momento o carga se conservan bajo condiciones asociadas a simetrías fundamentales."
+        ],
+        [
+          "probabilidad",
+          "La probabilidad organiza resultados posibles cuando existe incertidumbre, ruido o comportamiento cuántico."
+        ],
+        [
+          "condición inicial",
+          "El estado de partida puede dirigir un sistema hacia historias muy diferentes aun cuando las reglas sean idénticas."
+        ],
+        [
+          "condición de frontera",
+          "Los límites de un sistema restringen flujos, formas y patrones posibles."
+        ],
+        [
+          "posibilidad",
+          "Las leyes delimitan un espacio de posibilidades; la historia concreta selecciona una trayectoria dentro de él."
+        ]
+      ]
+    },
+    {
+      "id": "breaking",
+      "name": "Ruptura de simetría",
+      "className": "Fenómeno físico reproducible",
+      "p0": 0.12,
+      "p1": 0.18,
+      "color": [130, 137, 255],
+      "metric": "Estado uniforme → elección colectiva → dominios y defectos",
+      "fact": "Una ley puede ser simétrica aunque el estado producido por ella no lo sea. Pequeñas fluctuaciones pueden decidir qué orientación adopta cada región.",
+      "sound": {
+        "base": 56,
+        "filter": 820,
+        "noise": 0.04,
+        "pulse": 0.07,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "equilibrio inestable",
+          "Un estado perfectamente balanceado puede existir matemáticamente y, sin embargo, ser tan sensible que cualquier perturbación lo aparte de él."
+        ],
+        [
+          "ruptura espontánea",
+          "El sistema selecciona una de varias configuraciones equivalentes sin que la ley favorezca una dirección concreta."
+        ],
+        [
+          "transición de fase",
+          "Al cruzar un umbral de temperatura, presión u otro parámetro, puede cambiar la organización colectiva del sistema."
+        ],
+        [
+          "dominio",
+          "Regiones distintas pueden elegir orientaciones diferentes y formar dominios separados."
+        ],
+        [
+          "defecto",
+          "Donde dominios incompatibles se encuentran pueden quedar fronteras, vórtices u otros defectos."
+        ],
+        [
+          "fluctuación",
+          "Una variación diminuta puede romper la igualdad perfecta y amplificarse durante la transición."
+        ],
+        [
+          "estado colectivo",
+          "La orientación elegida pertenece al conjunto, no a una partícula aislada."
+        ]
+      ]
+    },
+    {
+      "id": "matter",
+      "name": "Estados colectivos de la materia",
+      "className": "Propiedades macroscópicas observadas",
+      "p0": 0.18,
+      "p1": 0.245,
+      "color": [78, 202, 239],
+      "metric": "Muchas partículas → nuevas propiedades del conjunto",
+      "fact": "Ninguna molécula aislada es húmeda y ningún átomo aislado es un sólido. Rigidez, viscosidad, magnetismo y superconductividad aparecen mediante organización colectiva.",
+      "sound": {
+        "base": 63,
+        "filter": 980,
+        "noise": 0.055,
+        "pulse": 0.08,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "sólido",
+          "En un sólido, los componentes mantienen relaciones estructurales persistentes que permiten rigidez y elasticidad."
+        ],
+        [
+          "líquido",
+          "Un líquido conserva cohesión y volumen aproximado, pero reorganiza continuamente sus vecinos y puede fluir."
+        ],
+        [
+          "flujo",
+          "El flujo describe el transporte colectivo de materia o energía a través del espacio."
+        ],
+        [
+          "presión",
+          "La presión macroscópica resume innumerables transferencias microscópicas de momento."
+        ],
+        [
+          "viscosidad",
+          "La viscosidad mide la resistencia interna de un fluido a deformarse o fluir."
+        ],
+        [
+          "magnetismo",
+          "La alineación cooperativa de muchos momentos magnéticos puede producir un imán estable."
+        ],
+        [
+          "superconductividad",
+          "En ciertos materiales y condiciones, un estado cuántico colectivo permite corriente sin resistencia eléctrica convencional."
+        ],
+        [
+          "transición",
+          "Cambiar temperatura, presión o campo puede reorganizar el conjunto y crear una fase diferente."
+        ]
+      ]
+    },
+    {
+      "id": "nonequilibrium",
+      "name": "Lejos del equilibrio",
+      "className": "Termodinámica de sistemas abiertos",
+      "p0": 0.245,
+      "p1": 0.31,
+      "color": [56, 229, 213],
+      "metric": "Gradientes + flujo de energía + disipación",
+      "fact": "Muchos sistemas complejos persisten porque reciben energía, transforman recursos y expulsan entropía hacia su entorno. Cuando el flujo se detiene, su estructura dinámica puede desaparecer.",
+      "sound": {
+        "base": 71,
+        "filter": 1190,
+        "noise": 0.08,
+        "pulse": 0.11,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "gradiente",
+          "Un gradiente es una diferencia espacial de temperatura, concentración, presión o potencial capaz de impulsar un flujo."
+        ],
+        [
+          "sistema abierto",
+          "Un sistema abierto intercambia energía o materia con el entorno y puede sostener estados imposibles en equilibrio cerrado."
+        ],
+        [
+          "flujo de calor",
+          "El calor fluye espontáneamente de regiones más calientes a más frías mientras exista una diferencia de temperatura."
+        ],
+        [
+          "potencial químico",
+          "Las diferencias de potencial químico impulsan reacciones y transporte de componentes."
+        ],
+        [
+          "disipación",
+          "La energía útil se dispersa en formas menos disponibles mientras el sistema realiza procesos irreversibles."
+        ],
+        [
+          "entropía",
+          "El orden local no viola la segunda ley: el sistema y su entorno, considerados juntos, producen entropía."
+        ],
+        [
+          "persistencia",
+          "Una estructura disipativa puede mantenerse solo mientras atraviesa el flujo que la sostiene."
+        ]
+      ]
+    },
+    {
+      "id": "fluctuations",
+      "name": "Fluctuaciones",
+      "className": "Variación inevitable y medible",
+      "p0": 0.31,
+      "p1": 0.365,
+      "color": [87, 243, 178],
+      "metric": "Ruido microscópico · sensibilidad · selección de trayectorias",
+      "fact": "Las fluctuaciones no son siempre un defecto. Pueden explorar posibilidades, iniciar transiciones, romper simetrías y ofrecer variación sobre la que actúan procesos de selección.",
+      "sound": {
+        "base": 78,
+        "filter": 1380,
+        "noise": 0.13,
+        "pulse": 0.14,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "ruido",
+          "El ruido reúne variaciones rápidas o impredecibles. Puede ocultar señales, pero también activar transiciones y exploración."
+        ],
+        [
+          "variación",
+          "Pequeñas diferencias entre elementos o momentos impiden que todos sigan exactamente la misma historia."
+        ],
+        [
+          "sensibilidad",
+          "Algunos sistemas amplifican diferencias iniciales diminutas y producen resultados macroscópicos divergentes."
+        ],
+        [
+          "azar",
+          "El azar introduce resultados no determinados por la información disponible, sin eliminar las restricciones de las leyes."
+        ],
+        [
+          "semilla",
+          "Una perturbación local puede actuar como semilla de un dominio, cristal, onda o nueva rama química."
+        ],
+        [
+          "exploración",
+          "La variación permite que un sistema visite estados alternativos en lugar de quedar fijado en una única configuración."
+        ]
+      ]
+    },
+    {
+      "id": "patterns",
+      "name": "Patrones espontáneos",
+      "className": "Autoorganización física reproducible",
+      "p0": 0.365,
+      "p1": 0.435,
+      "color": [151, 246, 116],
+      "metric": "Ondas · espirales · franjas · manchas · ramificación",
+      "fact": "El orden puede aparecer sin un controlador central. Interacciones locales, difusión, reacción y flujo pueden producir formas globales regulares.",
+      "sound": {
+        "base": 86,
+        "filter": 1580,
+        "noise": 0.075,
+        "pulse": 0.18,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "convección",
+          "Un fluido calentado desde abajo puede organizarse en celdas de circulación cuando el gradiente supera un umbral."
+        ],
+        [
+          "cristalización",
+          "Un patrón cristalino crece cuando unidades compatibles se incorporan a una estructura ordenada."
+        ],
+        [
+          "reacción-difusión",
+          "La combinación de reacciones locales y velocidades distintas de difusión puede generar manchas, franjas y ondas."
+        ],
+        [
+          "onda",
+          "Una perturbación puede propagarse mediante acoplamiento local sin transportar permanentemente los mismos componentes."
+        ],
+        [
+          "espiral",
+          "Frentes de excitación y recuperación pueden enrollarse y mantener ondas rotatorias."
+        ],
+        [
+          "ramificación",
+          "El crecimiento guiado por transporte y competencia puede producir árboles, venas, descargas y dendritas."
+        ],
+        [
+          "sincronización",
+          "Osciladores conectados pueden ajustar sus ritmos y formar un pulso colectivo."
+        ],
+        [
+          "sin diseñador",
+          "Que un patrón sea ordenado no implica que una mente haya especificado cada una de sus partes."
+        ]
+      ]
+    },
+    {
+      "id": "feedback",
+      "name": "Retroalimentación",
+      "className": "Mecanismo general de regulación",
+      "p0": 0.435,
+      "p1": 0.5,
+      "color": [235, 232, 91],
+      "metric": "Señal → respuesta → nueva señal",
+      "fact": "La retroalimentación positiva amplifica cambios; la negativa los corrige o estabiliza. Combinadas con retrasos y umbrales, ambas pueden producir regulación, oscilaciones o colapso.",
+      "sound": {
+        "base": 94,
+        "filter": 1760,
+        "noise": 0.06,
+        "pulse": 0.24,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "señal",
+          "Una señal es una variación capaz de modificar el comportamiento de otra parte del sistema."
+        ],
+        [
+          "respuesta",
+          "La respuesta transforma el estado del sistema y puede alterar la señal que la produjo."
+        ],
+        [
+          "retroalimentación positiva",
+          "Una salida refuerza el cambio inicial y puede acelerar crecimiento, activación o comportamiento desbocado."
+        ],
+        [
+          "retroalimentación negativa",
+          "Una salida contrarresta la desviación y favorece estabilidad o recuperación."
+        ],
+        [
+          "umbral",
+          "Una respuesta puede activarse solo después de superar cierto nivel de señal."
+        ],
+        [
+          "oscilación",
+          "Los retrasos entre señal y corrección pueden generar ciclos repetidos en vez de un equilibrio estático."
+        ],
+        [
+          "homeostasis",
+          "La homeostasis mantiene variables dentro de intervalos viables mediante múltiples bucles de regulación."
+        ],
+        [
+          "colapso",
+          "Cuando la amplificación supera la capacidad de regulación, el sistema puede abandonar su estado organizado."
+        ]
+      ]
+    },
+    {
+      "id": "networks",
+      "name": "Redes complejas",
+      "className": "Estructura matemática y física observable",
+      "p0": 0.5,
+      "p1": 0.57,
+      "color": [255, 184, 81],
+      "metric": "Nodos + conexiones → rutas, centros, cascadas",
+      "fact": "La organización de las conexiones puede importar tanto como la naturaleza de los componentes. La misma lógica de red aparece en moléculas, neuronas, ecosistemas, redes eléctricas y sociedades.",
+      "sound": {
+        "base": 103,
+        "filter": 1980,
+        "noise": 0.052,
+        "pulse": 0.28,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "nodo",
+          "Un nodo representa una unidad del sistema: molécula, especie, neurona, central eléctrica, persona u otra entidad."
+        ],
+        [
+          "enlace",
+          "Un enlace representa interacción, transporte, dependencia o comunicación entre nodos."
+        ],
+        [
+          "centro",
+          "Un centro o hub concentra muchas conexiones y puede facilitar coordinación o crear dependencia crítica."
+        ],
+        [
+          "grupo",
+          "Los nodos pueden formar comunidades densamente conectadas con enlaces más escasos hacia otras comunidades."
+        ],
+        [
+          "cascada",
+          "Una alteración puede propagarse de nodo en nodo y producir una respuesta extensa."
+        ],
+        [
+          "robustez",
+          "Rutas alternativas y diversidad pueden permitir que una red mantenga función después de perder componentes."
+        ],
+        [
+          "fragilidad",
+          "Una red eficiente puede ser vulnerable si depende de pocos centros o carece de redundancia."
+        ],
+        [
+          "topología",
+          "La topología describe quién se conecta con quién y condiciona el comportamiento colectivo."
+        ]
+      ]
+    },
+    {
+      "id": "selforganization",
+      "name": "Autoorganización",
+      "className": "Orden descentralizado observado",
+      "p0": 0.57,
+      "p1": 0.64,
+      "color": [255, 139, 93],
+      "metric": "Reglas locales + energía + feedback + red",
+      "fact": "Ningún objeto maestro dirige la escena. El orden global emerge de coordinación local, circulación de señales, adaptación y mantenimiento continuo.",
+      "sound": {
+        "base": 112,
+        "filter": 2200,
+        "noise": 0.05,
+        "pulse": 0.32,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "regla local",
+          "Cada elemento responde a vecinos y señales próximas sin conocer el estado completo del sistema."
+        ],
+        [
+          "comportamiento colectivo",
+          "El conjunto puede desplazarse, oscilar, dividir tareas o mantener forma de maneras ausentes en cada unidad."
+        ],
+        [
+          "atractor",
+          "Un atractor es un estado o patrón dinámico hacia el que convergen múltiples trayectorias del sistema."
+        ],
+        [
+          "adaptación",
+          "Una organización adaptativa modifica su respuesta según condiciones y experiencias anteriores."
+        ],
+        [
+          "automantenimiento",
+          "Un sistema se mantiene cuando sus procesos reparan o reemplazan componentes y conservan las condiciones necesarias para continuar."
+        ],
+        [
+          "coordinación",
+          "La coordinación descentralizada distribuye decisiones entre interacciones locales en lugar de concentrarlas en un controlador."
+        ],
+        [
+          "identidad dinámica",
+          "Un sistema puede conservar organización aunque sus componentes materiales cambien con el tiempo."
+        ]
+      ]
+    },
+    {
+      "id": "information",
+      "name": "Información funcional",
+      "className": "Concepto dependiente del sistema",
+      "p0": 0.64,
+      "p1": 0.71,
+      "color": [255, 105, 136],
+      "metric": "Patrón + contexto + efecto sobre la persistencia",
+      "fact": "No todo orden es información biológicamente útil. Un patrón se vuelve funcional cuando, dentro de un sistema, contribuye de forma reproducible a mantener, regular o reproducir una organización.",
+      "sound": {
+        "base": 122,
+        "filter": 2440,
+        "noise": 0.043,
+        "pulse": 0.38,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "patrón",
+          "Un patrón contiene regularidades, pero su sola existencia no garantiza una función."
+        ],
+        [
+          "memoria",
+          "La memoria permite que un estado anterior influya en respuestas posteriores."
+        ],
+        [
+          "señal",
+          "Una señal funcional modifica procesos de manera dependiente del contexto."
+        ],
+        [
+          "instrucción",
+          "Una secuencia puede actuar como instrucción solo si existe una maquinaria capaz de interpretarla y producir consecuencias."
+        ],
+        [
+          "error",
+          "Copiar, transmitir o ejecutar patrones introduce errores que pueden degradar función o generar novedad."
+        ],
+        [
+          "corrección",
+          "La detección y reparación de errores aumenta la persistencia de información a través del tiempo."
+        ],
+        [
+          "función",
+          "Una función se define por el efecto que una estructura o proceso tiene dentro de un sistema y un entorno."
+        ],
+        [
+          "respuesta ambiental",
+          "La información funcional puede relacionar señales externas con acciones que favorecen la continuidad del sistema."
+        ]
+      ]
+    },
+    {
+      "id": "chemistry",
+      "name": "Química organizada",
+      "className": "Química y autoensamblaje observados",
+      "p0": 0.71,
+      "p1": 0.78,
+      "color": [239, 92, 195],
+      "metric": "Catálisis · ciclos · reconocimiento · compartimentos",
+      "fact": "Las moléculas pueden formar ciclos mutuamente sostenidos en los que los productos de unas reacciones facilitan otras. La organización química convierte una lista de sustancias en una red dinámica.",
+      "sound": {
+        "base": 133,
+        "filter": 2670,
+        "noise": 0.05,
+        "pulse": 0.43,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "catalizador",
+          "Un catalizador acelera una reacción al ofrecer una ruta alternativa sin consumirse de forma neta en el proceso idealizado."
+        ],
+        [
+          "ciclo de reacción",
+          "En un ciclo, una secuencia de reacciones regenera componentes necesarios para continuar."
+        ],
+        [
+          "reconocimiento molecular",
+          "La forma, carga y afinidad permiten que moléculas se asocien selectivamente."
+        ],
+        [
+          "portador de energía",
+          "Ciertas moléculas acoplan reacciones favorables con procesos que requieren aporte energético."
+        ],
+        [
+          "conjunto autocatalítico",
+          "Una red autocatalítica contiene reacciones cuyos catalizadores son producidos, directa o indirectamente, por la propia red."
+        ],
+        [
+          "cooperación molecular",
+          "Múltiples especies químicas pueden sostenerse mutuamente aunque ninguna sea autosuficiente."
+        ],
+        [
+          "compartimento",
+          "Una frontera física concentra reactivos, limita pérdidas y modifica qué reacciones pueden sostenerse."
+        ]
+      ]
+    },
+    {
+      "id": "replication",
+      "name": "Replicación y variación",
+      "className": "Principios evolutivos demostrados",
+      "p0": 0.78,
+      "p1": 0.845,
+      "color": [195, 103, 241],
+      "metric": "Copia imperfecta + herencia + persistencia diferencial",
+      "fact": "Replicar no basta. Para que exista evolución abierta deben aparecer diferencias heredables y algunas variantes deben persistir o reproducirse más que otras en un entorno determinado.",
+      "sound": {
+        "base": 145,
+        "filter": 2920,
+        "noise": 0.047,
+        "pulse": 0.49,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "copia",
+          "Copiar conserva una organización o secuencia a través de nuevas instancias."
+        ],
+        [
+          "herencia",
+          "La herencia transmite características entre generaciones o ciclos de reproducción."
+        ],
+        [
+          "mutación",
+          "Una mutación es un cambio heredable en la información copiada."
+        ],
+        [
+          "replicación imperfecta",
+          "La copia con errores combina continuidad con aparición de variantes."
+        ],
+        [
+          "competencia",
+          "Las variantes pueden depender de recursos limitados o interferir entre sí."
+        ],
+        [
+          "selección",
+          "La selección ocurre cuando diferencias heredables causan diferencias sistemáticas de supervivencia o reproducción."
+        ],
+        [
+          "adaptación",
+          "Una adaptación es una característica acumulada porque mejoró la persistencia o reproducción en contextos pasados."
+        ],
+        [
+          "deriva",
+          "El azar también puede cambiar la frecuencia de variantes, especialmente en poblaciones pequeñas."
+        ]
+      ]
+    },
+    {
+      "id": "protocells",
+      "name": "Compartimentos y protocélulas",
+      "className": "Modelos experimentales, no antepasados confirmados",
+      "p0": 0.845,
+      "p1": 0.91,
+      "color": [132, 129, 255],
+      "metric": "Membrana + interior + transporte + crecimiento + división",
+      "fact": "Vesículas y protocélulas experimentales muestran cómo una membrana puede concentrar química, crecer y dividirse. Son modelos de posibilidades, no reconstrucciones confirmadas de la primera célula.",
+      "sound": {
+        "base": 157,
+        "filter": 3180,
+        "noise": 0.04,
+        "pulse": 0.55,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "membrana",
+          "Una membrana crea una frontera semipermeable entre interior y exterior."
+        ],
+        [
+          "interior",
+          "El interior puede mantener concentraciones y reacciones diferentes de las del entorno."
+        ],
+        [
+          "exterior",
+          "El exterior suministra materia y energía, pero también impone cambios y perturbaciones."
+        ],
+        [
+          "transporte selectivo",
+          "Una frontera selectiva deja pasar algunas sustancias más fácilmente que otras."
+        ],
+        [
+          "alimento",
+          "Un recurso químico puede aportar materia o energía a procesos internos."
+        ],
+        [
+          "crecimiento",
+          "Una protocélula puede incorporar componentes y aumentar su membrana o contenido."
+        ],
+        [
+          "división",
+          "La deformación y separación de un compartimento puede distribuir su contenido entre descendientes."
+        ],
+        [
+          "acoplamiento",
+          "Para evolucionar como unidad, la membrana, el metabolismo y la información deben beneficiarse mutuamente."
+        ]
+      ]
+    },
+    {
+      "id": "chemicalevolution",
+      "name": "Evolución química",
+      "className": "Múltiples rutas activas de investigación",
+      "p0": 0.91,
+      "p1": 0.972,
+      "color": [103, 179, 255],
+      "metric": "Química observada → historia posible → origen desconocido",
+      "fact": "Existen varias familias de hipótesis compatibles en parte y competidoras en parte. La evidencia identifica procesos posibles, pero todavía no determina la secuencia histórica real.",
+      "sound": {
+        "base": 171,
+        "filter": 3440,
+        "noise": 0.055,
+        "pulse": 0.62,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "mundo de ARN",
+          "Las hipótesis de mundo de ARN estudian moléculas capaces de almacenar información y catalizar reacciones antes del sistema moderno de ADN y proteínas."
+        ],
+        [
+          "metabolismo primero",
+          "Los modelos de metabolismo primero priorizan redes químicas autosostenidas antes de replicadores informacionales complejos."
+        ],
+        [
+          "mundo lipídico",
+          "Los modelos lipídicos investigan conjuntos de moléculas anfipáticas capaces de formar compartimentos, crecer y transmitir composiciones."
+        ],
+        [
+          "fuentes hidrotermales",
+          "Gradientes químicos y minerales de entornos hidrotermales podrían haber impulsado reacciones y compartimentación natural."
+        ],
+        [
+          "superficies minerales",
+          "Minerales pueden concentrar moléculas, orientar reacciones y ofrecer catálisis o plantillas físicas."
+        ],
+        [
+          "ciclos húmedo-seco",
+          "Ciclos de evaporación y rehidratación pueden concentrar reactivos y favorecer la formación de enlaces."
+        ],
+        [
+          "aporte extraterrestre",
+          "Meteoritos y polvo cósmico entregan compuestos orgánicos, aunque eso no explica por sí solo su organización en vida."
+        ],
+        [
+          "certeza",
+          "Se observan química orgánica y autoorganización; se conocen componentes prebióticos; se fabrican protocélulas. La ruta histórica concreta sigue abierta."
+        ]
+      ]
+    },
+    {
+      "id": "threshold",
+      "name": "El umbral de la vida",
+      "className": "Frontera científica aún abierta",
+      "p0": 0.972,
+      "p1": 1.0001,
+      "color": [127, 255, 171],
+      "metric": "Automantenimiento + herencia + variación + evolución",
+      "fact": "La física permite la química, y la química puede generar redes que se organizan, conservan información y se reproducen. Aún no sabemos qué secuencia concreta transformó materia no viva en los primeros sistemas biológicos.",
+      "sound": {
+        "base": 187,
+        "filter": 3800,
+        "noise": 0.035,
+        "pulse": 0.7,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "umbral",
+          "No existe una línea universalmente simple entre química compleja y vida; varios criterios pueden aparecer gradualmente y en distinto orden."
+        ],
+        [
+          "automantenimiento",
+          "Un sistema vivo conserva activamente condiciones internas mediante flujos de materia y energía."
+        ],
+        [
+          "herencia",
+          "La continuidad evolutiva requiere que parte de la organización pase a nuevas generaciones."
+        ],
+        [
+          "evolución",
+          "La selección acumulativa puede convertir variación heredable en adaptación histórica."
+        ],
+        [
+          "primera vida",
+          "No conocemos la identidad, el lugar ni la secuencia exacta de los primeros sistemas biológicos de la Tierra."
+        ],
+        [
+          "nueva historia",
+          "Más allá, cuando la química comenzó a heredarse, adaptarse y evolucionar, apareció una nueva historia: la vida."
+        ],
+        [
+          "siguiente viaje",
+          "Espectro de la Vida: de la Primera Célula a la Conciencia."
+        ]
+      ]
+    }
+  ]
+}

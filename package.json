@@ -1,0 +1,26 @@
+{
+  "name": "spanish-quick-apps",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node scripts/serve.mjs --watch",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/serve.mjs",
+    "test": "node --test tests/unit/*.test.mjs",
+    "test:e2e": "playwright test",
+    "check": "npm run build && npm test && npm run validate:audio",
+    "validate:audio": "node scripts/validate-syncvoice.mjs --require-assets=es-ES",
+    "audio:extract": "node scripts/extract-syncvoice.mjs",
+    "format": "prettier --write src scripts tests *.mjs *.json *.md docs .github",
+    "format:check": "prettier --check src scripts tests *.mjs *.json *.md docs .github"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "esbuild": "0.28.2",
+    "prettier": "3.9.9"
+  }
+}

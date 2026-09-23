@@ -1,0 +1,44 @@
+<canvas
+  id="local-group-spectrum"
+  role="application"
+  tabindex="0"
+  aria-describedby="instructions"
+  aria-label="Mapa táctil desde el borde de la Vía Láctea hasta Andrómeda y el límite del Grupo Local"
+></canvas>
+<p id="instructions" class="sr-only">
+  La aventura continúa exactamente en el borde galáctico. Toca o arrastra hacia
+  arriba para viajar por el halo exterior, las galaxias vecinas, Andrómeda y el
+  límite del Grupo Local. Arrastra horizontalmente para descubrir palabras
+  distintas dentro de cada región. También puedes usar las flechas del teclado.
+</p>
+
+<div id="light-field" aria-hidden="true"></div>
+<div id="scan-line" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<div id="hint" aria-hidden="true">
+  <div id="hint-ring"></div>
+  <div id="hint-text">La Vía Láctea queda debajo</div>
+  <div id="hint-subtext">
+    Asciende por nuestra familia galáctica · explora de lado a lado
+  </div>
+</div>
+
+<div id="readout" aria-live="polite" aria-atomic="true">
+  <span id="zone-name"></span>
+  <span id="feature-name"></span>
+  <span id="metric"></span>
+  <span id="fact"></span>
+</div>
+
+<div id="touch-orb" aria-hidden="true"></div>
+
+<div id="journey-scale" aria-hidden="true">
+  <div id="scale-track"><div id="scale-fill"></div></div>
+  <div id="scale-dot"></div>
+  <span id="scale-bottom">Borde galáctico</span>
+  <span id="scale-home">Vía Láctea</span>
+  <span id="scale-value">Escala educativa · distancias comprimidas</span>
+  <span id="scale-top">Límite local</span>
+</div>

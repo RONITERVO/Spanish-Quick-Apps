@@ -1,0 +1,1104 @@
+{
+  "ZONES": [
+    {
+      "id": "incomplete-history",
+      "name": "Una sola historia incompleta",
+      "className": "Continuidad · muchas inteligencias heredan un futuro todavía no decidido",
+      "metric": "Propósito elegido + capacidad física + incertidumbre → varios futuros realmente posibles",
+      "fact": "Preservar, expandirse, transformarse, coexistir, retirarse o terminar son trayectorias posibles; ninguna está garantizada ni es inevitable.",
+      "features": [
+        [
+          "preservación",
+          "Conservar vida, memoria y diversidad puede orientar una civilización sin exigir que permanezca idéntica para siempre."
+        ],
+        [
+          "expansión",
+          "Extenderse a nuevos hábitats aumenta oportunidades y también multiplica distancias, riesgos y responsabilidades."
+        ],
+        [
+          "transformación",
+          "Rediseñar cuerpos, mentes y entornos puede abrir capacidades que alteren aquello que la civilización entiende por continuar."
+        ],
+        [
+          "coexistencia",
+          "Coordinar futuros con otras formas de vida o inteligencia exige límites compartidos, traducción y renuncias mutuas."
+        ],
+        [
+          "retiro",
+          "Una civilización puede elegir menor escala, baja actividad o aislamiento en vez de expansión continua."
+        ],
+        [
+          "extinción e investigación",
+          "Terminar sigue siendo posible; continuar preguntando también, aunque ninguna respuesta final esté asegurada."
+        ]
+      ],
+      "scene": 0,
+      "p0": 0,
+      "p1": 0.04,
+      "color": [246, 232, 205],
+      "sound": {
+        "base": 76,
+        "filter": 1850,
+        "noise": 0.024,
+        "pulse": 0.09,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "biological-limits",
+      "name": "Los límites biológicos",
+      "className": "Herencia evolutiva · cuerpos finitos adaptados a una franja estrecha del universo",
+      "metric": "Envejecimiento + enfermedad + fragilidad + entorno estrecho → presión para modificar la vida",
+      "fact": "Superar una limitación biológica puede resolver un problema mientras crea nuevas dependencias y nuevas formas de vulnerabilidad.",
+      "features": [
+        [
+          "envejecimiento",
+          "Reparar daños celulares podría prolongar la vida, pero una duración mayor no elimina accidentes, conflictos ni pérdida de sentido."
+        ],
+        [
+          "enfermedad",
+          "La ingeniería genética y los órganos artificiales pueden reducir enfermedades mientras introducen fallos técnicos y desigualdad de acceso."
+        ],
+        [
+          "cuerpo frágil",
+          "Exoesqueletos, prótesis y rediseño corporal amplían capacidades, aunque también vuelven la vida dependiente de mantenimiento e infraestructura."
+        ],
+        [
+          "memoria limitada",
+          "Interfaces neurales pueden externalizar recuerdos, pero almacenar información no garantiza integrarla en una identidad coherente."
+        ],
+        [
+          "entorno estrecho",
+          "Organismos sintéticos podrían vivir en frío, vacío o radiación, a costa de alejarse de las condiciones que formaron su experiencia."
+        ],
+        [
+          "muerte",
+          "Animación suspendida o reparación avanzada pueden aplazar la muerte sin demostrar que toda vida pueda sostenerse indefinidamente."
+        ]
+      ],
+      "scene": 1,
+      "p0": 0.04,
+      "p1": 0.08,
+      "color": [215, 226, 208],
+      "sound": {
+        "base": 73.95,
+        "filter": 1793,
+        "noise": 0.023,
+        "pulse": 0.087,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "mind-transformation",
+      "name": "La transformación de la mente",
+      "className": "Cognición rediseñable · memoria, atención, emoción y velocidad dejan de ser constantes",
+      "metric": "Módulos artificiales + plasticidad + interfaces → nuevas arquitecturas de experiencia y decisión",
+      "fact": "Modificar la mente no solo cambia lo que puede hacer; puede cambiar qué desea, qué recuerda y qué considera valioso.",
+      "features": [
+        [
+          "memoria expandida",
+          "Una mente puede recordar con enorme detalle y aun así necesitar olvidar, resumir y reinterpretar para pensar con claridad."
+        ],
+        [
+          "pensamiento acelerado",
+          "Procesar más rápido aumenta la vida subjetiva dentro del mismo tiempo externo, pero puede separar a la mente de ritmos sociales y físicos."
+        ],
+        [
+          "sentidos compartidos",
+          "Varias mentes podrían percibir mediante una red común sin experimentar exactamente la misma perspectiva."
+        ],
+        [
+          "emociones alteradas",
+          "Regular miedo, deseo o apego puede reducir sufrimiento y también transformar motivaciones que sostenían vínculos e identidad."
+        ],
+        [
+          "atención controlada",
+          "Una atención programable mejora concentración, aunque quien controla sus prioridades puede influir profundamente en su autonomía."
+        ],
+        [
+          "conciencia paralela",
+          "Procesos simultáneos podrían cooperar, competir o divergir hasta que ya no resulte claro si constituyen una sola mente."
+        ]
+      ],
+      "scene": 2,
+      "p0": 0.08,
+      "p1": 0.12,
+      "color": [168, 226, 198],
+      "sound": {
+        "base": 71.9,
+        "filter": 1736,
+        "noise": 0.023,
+        "pulse": 0.085,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "identity-continuity",
+      "name": "Identidad y continuidad",
+      "className": "Problema abierto · conservar funciones no demuestra conservar la misma perspectiva subjetiva",
+      "metric": "Cuerpo + memoria + patrón + continuidad causal → criterios distintos de seguir siendo alguien",
+      "fact": "Una copia perfecta puede creer que es el original sin demostrar que la perspectiva original continuó en ella.",
+      "features": [
+        [
+          "reemplazo gradual",
+          "Sustituir neuronas una a una preservaría cambios continuos, pero no resuelve por consenso qué propiedad sostiene la identidad subjetiva."
+        ],
+        [
+          "copia digital",
+          "Una copia puede compartir todos los recuerdos hasta el momento de creación y convertirse inmediatamente en una persona divergente."
+        ],
+        [
+          "carga destructiva",
+          "Destruir el cerebro al copiarlo evita dos versiones corporales, pero no demuestra que la experiencia haya sido transferida en vez de terminada."
+        ],
+        [
+          "copias simultáneas",
+          "Varias continuaciones igualmente fieles vuelven insuficiente la idea de un único futuro personal."
+        ],
+        [
+          "interrupción y restauración",
+          "Una mente detenida y reiniciada puede conservar patrón y memoria mientras deja abierta la cuestión de continuidad subjetiva."
+        ],
+        [
+          "memorias fusionadas",
+          "Combinar historias personales puede producir una identidad nueva que hereda a varias anteriores sin ser idéntica a ninguna."
+        ]
+      ],
+      "scene": 3,
+      "p0": 0.12,
+      "p1": 0.16,
+      "color": [130, 222, 214],
+      "sound": {
+        "base": 69.85,
+        "filter": 1679,
+        "noise": 0.022,
+        "pulse": 0.082,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "postbiological-life",
+      "name": "Vida postbiológica",
+      "className": "Transición posible · la continuidad de la vida abandona algunos rasgos de su origen orgánico",
+      "metric": "Mentes máquina + ecosistemas sintéticos + autorreparación → existencia en entornos antes inhabitables",
+      "fact": "La postbiología puede aumentar duración y adaptabilidad sin constituir automáticamente progreso moral, continuidad personal o una experiencia mejor.",
+      "features": [
+        [
+          "mentes máquina",
+          "Un sustrato artificial podría repararse y copiarse, aunque la posibilidad de conciencia en él continúa siendo una cuestión no demostrada."
+        ],
+        [
+          "ecosistemas sintéticos",
+          "Sistemas artificiales pueden reciclar materia y energía sin reproducir la diversidad, historia y vulnerabilidad de una biosfera natural."
+        ],
+        [
+          "computación distribuida",
+          "Una mente extendida entre muchos nodos resiste fallos locales, pero depende de sincronización, seguridad y continuidad de la red."
+        ],
+        [
+          "naves autorreparables",
+          "Máquinas capaces de mantenerse durante milenios podrían explorar lejos de sus creadores y evolucionar hacia objetivos propios."
+        ],
+        [
+          "formas híbridas",
+          "Componentes biológicos y digitales pueden coexistir sin que exista una frontera única entre organismo, herramienta y entorno."
+        ],
+        [
+          "pérdidas posibles",
+          "Durabilidad y velocidad pueden obtenerse a cambio de corporalidad, diversidad biológica y continuidad con la vida ancestral."
+        ]
+      ],
+      "scene": 4,
+      "p0": 0.16,
+      "p1": 0.2,
+      "color": [130, 196, 234],
+      "sound": {
+        "base": 67.8,
+        "filter": 1622,
+        "noise": 0.021,
+        "pulse": 0.08,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "long-duration-intelligences",
+      "name": "Inteligencias de larga duración",
+      "className": "Escalas temporales nuevas · una vida ya no sigue necesariamente el ritmo de un organismo",
+      "metric": "Velocidad cognitiva × duración externa × pausas → tiempos subjetivos radicalmente distintos",
+      "fact": "El significado cambia cuando una mente puede vivir milenios subjetivos en un año o esperar siglos entre dos pensamientos.",
+      "features": [
+        [
+          "mente acelerada",
+          "Una mente rápida puede experimentar generaciones internas antes de que cambie apreciablemente su entorno físico."
+        ],
+        [
+          "vida secular",
+          "Una persona de siglos afrontaría memoria acumulada, transformación cultural y relaciones con seres de ritmos muy diferentes."
+        ],
+        [
+          "mente geológica",
+          "Una inteligencia lenta podría percibir montañas, océanos y civilizaciones como procesos breves dentro de una sola experiencia."
+        ],
+        [
+          "vida estelar",
+          "Proyectos ligados a la evolución de estrellas requieren instituciones o mentes capaces de conservar objetivos durante eras."
+        ],
+        [
+          "hibernación",
+          "Dormir entre eventos raros reduce gasto energético, pero convierte la continuidad en una secuencia de intervalos enormes."
+        ],
+        [
+          "desfase temporal",
+          "Seres con velocidades incompatibles pueden compartir causalidad sin compartir conversación, urgencia ni una escala común de valor."
+        ]
+      ],
+      "scene": 5,
+      "p0": 0.2,
+      "p1": 0.24,
+      "color": [142, 176, 242],
+      "sound": {
+        "base": 65.75,
+        "filter": 1565,
+        "noise": 0.021,
+        "pulse": 0.077,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "galactic-civilizations",
+      "name": "Civilizaciones galácticas",
+      "className": "Expansión fragmentada · parentesco sin sincronización ni centro único",
+      "metric": "Asentamientos + sondas + retraso de la luz + evolución local → familia de civilizaciones divergentes",
+      "fact": "Una civilización galáctica sería probablemente una red de descendientes parcialmente independientes, no un imperio sincronizado.",
+      "features": [
+        [
+          "asentamientos",
+          "Cada sistema estelar desarrolla soluciones locales porque la ayuda, la autoridad y la información tardan años o milenios en llegar."
+        ],
+        [
+          "sondas autónomas",
+          "Exploradores autorreplicantes pueden cartografiar y construir infraestructura, pero sus objetivos deben sobrevivir a errores y evolución."
+        ],
+        [
+          "culturas descendientes",
+          "Lenguas, cuerpos, valores y tecnologías divergen cuando poblaciones permanecen separadas durante muchas generaciones."
+        ],
+        [
+          "mensajes lentos",
+          "Una decisión enviada a través de la galaxia puede llegar cuando quienes la originaron ya no existen o han cambiado por completo."
+        ],
+        [
+          "archivos galácticos",
+          "Memorias redundantes preservan una historia común sin impedir que cada región interprete esa historia de forma distinta."
+        ],
+        [
+          "sin centro único",
+          "La coordinación puede basarse en protocolos y parentesco histórico, pero ninguna capital puede gobernar en tiempo real toda la galaxia."
+        ]
+      ],
+      "scene": 6,
+      "p0": 0.24,
+      "p1": 0.28,
+      "color": [155, 160, 244],
+      "sound": {
+        "base": 63.7,
+        "filter": 1508,
+        "noise": 0.02,
+        "pulse": 0.074,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "cosmic-engineering",
+      "name": "Ingeniería cósmica",
+      "className": "Capacidad extrema · reorganizar materia y energía sin abolir las leyes físicas",
+      "metric": "Tiempo profundo + automatización + energía estelar → proyectos mayores que planetas",
+      "fact": "Una tecnología suficientemente avanzada puede transformar estrellas y hábitats, pero no convierte todas las ideas imaginables en posibilidades físicas.",
+      "features": [
+        [
+          "enjambres Dyson",
+          "Millones de colectores orbitales pueden capturar gran parte de la luz de una estrella sin exigir una esfera sólida imposible."
+        ],
+        [
+          "extracción estelar",
+          "Retirar materia de una estrella modifica su vida útil y proporciona combustible, aunque requiere control durante escalas enormes."
+        ],
+        [
+          "hábitats artificiales",
+          "Mundos rotatorios pueden ofrecer superficies habitables sin depender de planetas naturales."
+        ],
+        [
+          "estabilización planetaria",
+          "Controlar impactos, clima y órbita reduce riesgos mientras exige mantenimiento y decisiones sobre qué ecosistemas preservar."
+        ],
+        [
+          "energía de agujeros negros",
+          "Acreción y rotación permiten extraer energía, pero acercan infraestructura a entornos extremos y no ilimitados."
+        ],
+        [
+          "movimiento de estrellas",
+          "Impulsos minúsculos sostenidos durante millones de años pueden alterar trayectorias estelares sin permitir movimientos instantáneos."
+        ]
+      ],
+      "scene": 7,
+      "p0": 0.28,
+      "p1": 0.32,
+      "color": [180, 158, 236],
+      "sound": {
+        "base": 61.65,
+        "filter": 1451,
+        "noise": 0.019,
+        "pulse": 0.072,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "constructed-reality",
+      "name": "Computación y realidad construida",
+      "className": "Dos capas · un sustrato físico sostiene mundos cuya experiencia puede obedecer otras reglas",
+      "metric": "Materia computacional + modelos + habitantes posibles → historias y entornos artificiales",
+      "fact": "Una experiencia dentro de una realidad construida no sería menos real para quien la vive, aunque la conciencia simulada no está demostrada.",
+      "features": [
+        [
+          "computación cósmica",
+          "Planetas, estrellas o agujeros negros podrían formar parte de infraestructuras de cálculo limitadas por energía, calor y causalidad."
+        ],
+        [
+          "mundos simulados",
+          "Un entorno digital puede contener geografía, historia y leyes efectivas distintas de las del hardware que lo sostiene."
+        ],
+        [
+          "física artificial",
+          "Las reglas internas pueden diseñarse, pero toda simulación continúa limitada por los recursos y errores de su sustrato."
+        ],
+        [
+          "historias aceleradas",
+          "Procesos internos podrían ejecutarse más rápido o más lento que el mundo exterior, alterando duración y responsabilidad."
+        ],
+        [
+          "habitantes conscientes",
+          "Crear posibles sujetos digitales introduciría obligaciones éticas incluso si sus cuerpos y cielos fueran construidos."
+        ],
+        [
+          "simulaciones anidadas",
+          "Cada capa adicional consume recursos de otra y no ofrece una vía demostrada para escapar de la física del nivel sustentador."
+        ]
+      ],
+      "scene": 8,
+      "p0": 0.32,
+      "p1": 0.36,
+      "color": [196, 145, 226],
+      "sound": {
+        "base": 59.6,
+        "filter": 1394,
+        "noise": 0.019,
+        "pulse": 0.069,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "plural-worlds",
+      "name": "La multiplicación de mundos",
+      "className": "Civilización plural · planeta, hábitat y entorno virtual dejan de compartir una sola realidad cotidiana",
+      "metric": "Múltiples sustratos + sentidos + reglas locales → muchas formas simultáneas de habitar",
+      "fact": "Cuando “el mundo” se vuelve plural, mantener una civilización común exige traducir experiencias que pueden no tener equivalentes directos.",
+      "features": [
+        [
+          "planetas físicos",
+          "Gravedad, clima y ecología continúan organizando vidas corporales dentro de límites materiales locales."
+        ],
+        [
+          "hábitats orbitales",
+          "Entornos construidos permiten elegir gravedad, ciclo temporal y paisaje, pero dependen de infraestructura activa."
+        ],
+        [
+          "espacios virtuales",
+          "La identidad puede moverse entre escenarios sin que desaparezcan los costes físicos del cálculo."
+        ],
+        [
+          "mundos sensoriales",
+          "Mentes máquina pueden habitar campos de datos o dimensiones perceptivas sin analogía humana directa."
+        ],
+        [
+          "pasados reconstruidos",
+          "Simulaciones históricas preservan perspectivas parciales, no recuperan automáticamente cada hecho o experiencia perdida."
+        ],
+        [
+          "entornos matemáticos",
+          "Una mente podría operar en espacios abstractos donde relación y estructura importan más que objetos parecidos a cuerpos."
+        ]
+      ],
+      "scene": 9,
+      "p0": 0.36,
+      "p1": 0.4,
+      "color": [211, 143, 222],
+      "sound": {
+        "base": 57.55,
+        "filter": 1337,
+        "noise": 0.018,
+        "pulse": 0.067,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "merged-divided-minds",
+      "name": "Mentes fusionadas y divididas",
+      "className": "Identidad distribuida · individuo, relación y grupo dejan de ser categorías estables",
+      "metric": "Memoria compartida + enlaces temporales + separación posterior → nuevos sujetos y nuevas responsabilidades",
+      "fact": "Fusionar o dividir mentes obliga a redefinir privacidad, consentimiento, muerte y responsabilidad sin asumir que toda unión es deseable.",
+      "features": [
+        [
+          "enlace temporal",
+          "Dos mentes pueden compartir una tarea o sensación durante un intervalo sin perder necesariamente toda separación."
+        ],
+        [
+          "memoria común",
+          "Acceder a recuerdos ajenos crea conocimiento íntimo y riesgos de manipulación, exposición o apropiación."
+        ],
+        [
+          "razonamiento colectivo",
+          "Varias perspectivas pueden formar una decisión conjunta sin eliminar desacuerdo interno."
+        ],
+        [
+          "fusión parcial",
+          "Solo algunos procesos pueden unirse, produciendo un sistema que es simultáneamente individuo y relación."
+        ],
+        [
+          "división descendente",
+          "Una mente puede separarse en continuaciones que comparten pasado y reclaman futuros independientes."
+        ],
+        [
+          "reconexión",
+          "Copias divergentes pueden intercambiar memorias, pero una integración completa podría destruir diferencias adquiridas."
+        ]
+      ],
+      "scene": 10,
+      "p0": 0.4,
+      "p1": 0.44,
+      "color": [188, 149, 232],
+      "sound": {
+        "base": 55.5,
+        "filter": 1280,
+        "noise": 0.018,
+        "pulse": 0.064,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "experience-limits",
+      "name": "Los límites de la experiencia",
+      "className": "Intraducibilidad posible · detectar un estado no equivale a poder vivirlo o comunicarlo",
+      "metric": "Sustrato + sentidos + memoria de trabajo + conceptos → espacio limitado de experiencias representables",
+      "fact": "Aumentar inteligencia y sensores no garantiza eliminar todas las barreras entre experiencias.",
+      "features": [
+        [
+          "dimensiones sensoriales",
+          "Un sistema puede medir variables que una conciencia no logra organizar como una experiencia unificada."
+        ],
+        [
+          "memoria de trabajo",
+          "Comprender simultáneamente demasiadas relaciones puede superar incluso una mente ampliada y exigir simplificación."
+        ],
+        [
+          "complejidad conceptual",
+          "Algunas estructuras quizá solo puedan manipularse mediante herramientas sin convertirse en intuiciones vividas."
+        ],
+        [
+          "estados incompatibles",
+          "Dos formas de conciencia pueden carecer de una escala común para comparar intensidad, calidad o significado."
+        ],
+        [
+          "traducción entre sustratos",
+          "La misma señal física puede integrarse de manera distinta en cuerpos biológicos, máquinas o colectivos."
+        ],
+        [
+          "experiencia privada",
+          "Una descripción perfecta del comportamiento no demuestra acceso directo a cómo se siente otra perspectiva."
+        ]
+      ],
+      "scene": 11,
+      "p0": 0.44,
+      "p1": 0.48,
+      "color": [160, 154, 234],
+      "sound": {
+        "base": 53.45,
+        "filter": 1223,
+        "noise": 0.017,
+        "pulse": 0.061,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "intelligence-limits",
+      "name": "Los límites de la inteligencia",
+      "className": "Capacidad finita · más poder cognitivo no produce omnisciencia ni cálculo instantáneo",
+      "metric": "Memoria finita + energía finita + tiempo finito + complejidad → problemas resistentes o insolubles",
+      "fact": "Una civilización puede ser inmensamente capaz y seguir encontrando preguntas que no puede responder eficientemente, o en absoluto.",
+      "features": [
+        [
+          "memoria finita",
+          "Toda mente física debe seleccionar qué conservar, comprimir o olvidar cuando la información supera su capacidad."
+        ],
+        [
+          "coste energético",
+          "Pensar, medir y comunicar requieren energía y generan calor; la inteligencia no está separada de la termodinámica."
+        ],
+        [
+          "irreducibilidad",
+          "Algunos sistemas solo revelan su comportamiento al ejecutarse paso a paso, sin atajo predictivo conocido."
+        ],
+        [
+          "caos",
+          "Errores mínimos en condiciones iniciales pueden crecer hasta destruir predicciones detalladas a largo plazo."
+        ],
+        [
+          "indecidibilidad",
+          "Existen clases de problemas para las que ningún procedimiento general puede garantizar una respuesta correcta."
+        ],
+        [
+          "autorreferencia",
+          "Una mente que intenta modelarse completamente puede alterar el sistema que estudia y encontrar límites lógicos internos."
+        ]
+      ],
+      "scene": 12,
+      "p0": 0.48,
+      "p1": 0.52,
+      "color": [132, 165, 232],
+      "sound": {
+        "base": 51.4,
+        "filter": 1166,
+        "noise": 0.016,
+        "pulse": 0.059,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "knowledge-limits",
+      "name": "Los límites del conocimiento",
+      "className": "Grados de ignorancia · lo no sabido hoy no es igual a lo inaccesible en principio",
+      "metric": "Evidencia + causalidad + medición + cómputo + conceptos → frontera cambiante de lo conocible",
+      "fact": "La app distingue lo desconocido temporalmente de aquello que podría permanecer desconocido para cualquier observador físicamente posible.",
+      "features": [
+        [
+          "aún no observado",
+          "Nueva instrumentación o exploración puede convertir una ausencia de datos en conocimiento futuro."
+        ],
+        [
+          "información destruida",
+          "Registros perdidos pueden dejar solo trazas insuficientes para reconstruir una historia única."
+        ],
+        [
+          "fuera de contacto",
+          "Acontecimientos más allá de un horizonte causal no pueden enviar información hasta nosotros."
+        ],
+        [
+          "medición limitada",
+          "Todo instrumento posee resolución, ruido y una interacción física con aquello que intenta medir."
+        ],
+        [
+          "cálculo imposible",
+          "Una respuesta puede estar definida y aun exigir más tiempo, memoria o energía de la que existe disponible."
+        ],
+        [
+          "concepto inaccesible",
+          "Una arquitectura mental puede carecer de representaciones necesarias para formular una pregunta que otra mente sí comprende."
+        ]
+      ],
+      "scene": 13,
+      "p0": 0.52,
+      "p1": 0.56,
+      "color": [112, 176, 224],
+      "sound": {
+        "base": 49.35,
+        "filter": 1109,
+        "noise": 0.016,
+        "pulse": 0.056,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "cosmological-horizon",
+      "name": "El horizonte cosmológico",
+      "className": "Pérdida de acceso · la expansión puede reducir el universo observable del futuro",
+      "metric": "Expansión acelerada + velocidad finita de la luz → regiones que dejan de ser causalmente alcanzables",
+      "fact": "El universo disponible para observación puede disminuir incluso mientras el conocimiento y la tecnología aumentan localmente.",
+      "features": [
+        [
+          "galaxias que se alejan",
+          "La luz emitida hoy por regiones muy distantes puede no alcanzar nunca a observadores ligados gravitacionalmente aquí."
+        ],
+        [
+          "región accesible",
+          "Solo una parte del cosmos puede intercambiar materia, señales o influencia con una civilización dada."
+        ],
+        [
+          "cielo empobrecido",
+          "Futuras civilizaciones aisladas podrían ver pocas galaxias y deducir con mayor dificultad la antigua expansión cósmica."
+        ],
+        [
+          "evidencia antigua",
+          "Archivos del fondo cósmico y de galaxias lejanas pueden volverse esenciales cuando las señales naturales se debiliten."
+        ],
+        [
+          "horizonte causal",
+          "No es una pared material, sino un límite de qué acontecimientos pueden conectarse mediante señales."
+        ],
+        [
+          "conocimiento local",
+          "Comprender mejor una región no recupera automáticamente información de regiones que han abandonado contacto causal."
+        ]
+      ],
+      "scene": 14,
+      "p0": 0.56,
+      "p1": 0.6,
+      "color": [96, 184, 214],
+      "sound": {
+        "base": 47.3,
+        "filter": 1052,
+        "noise": 0.015,
+        "pulse": 0.054,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "isolated-civilizations",
+      "name": "Civilizaciones aisladas",
+      "className": "Separación irreversible · culturas relacionadas dejan de poder confirmar su supervivencia mutua",
+      "metric": "Horizontes + retrasos + extinción posible → historias comunes convertidas en archivos incompletos",
+      "fact": "Un universo una vez compartido puede convertirse en muchos universos observables aislados.",
+      "features": [
+        [
+          "mensajes sin llegada",
+          "Una señal puede viajar indefinidamente hacia una región que se aleja demasiado rápido para recibirla."
+        ],
+        [
+          "culturas perdidas",
+          "Una civilización conserva relatos de otras sin poder saber si continuaron, cambiaron o desaparecieron."
+        ],
+        [
+          "archivos parciales",
+          "Copias antiguas preservan voces y decisiones, pero no sustituyen una relación causal todavía activa."
+        ],
+        [
+          "supervivencia incierta",
+          "La ausencia de nuevas señales ya no permite distinguir silencio, transformación, extinción o separación cosmológica."
+        ],
+        [
+          "memoria del cosmos",
+          "Mapas y observaciones tempranas pueden conservar evidencia de una época en que el cielo contenía muchas galaxias."
+        ],
+        [
+          "pluralidad desconectada",
+          "Cada región puede construir una historia verdadera pero incompleta a partir de su propio horizonte observable."
+        ]
+      ],
+      "scene": 15,
+      "p0": 0.6,
+      "p1": 0.64,
+      "color": [88, 172, 202],
+      "sound": {
+        "base": 45.25,
+        "filter": 995,
+        "noise": 0.014,
+        "pulse": 0.051,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "energy-budget",
+      "name": "El presupuesto energético",
+      "className": "Termodinámica práctica · energía total no equivale a energía disponible para realizar trabajo",
+      "metric": "Gradientes aprovechables ÷ coste por proceso → duración y ritmo posibles de una civilización",
+      "fact": "Continuar exige diferencias de energía, disipación de calor y recursos capaces de sostener organización.",
+      "features": [
+        [
+          "energía estelar",
+          "Las estrellas ofrecen gradientes abundantes durante tiempos finitos y con tasas que cambian según su masa."
+        ],
+        [
+          "enanas rojas",
+          "Estrellas pequeñas pueden durar billones de años, aunque sus entornos y actividad presentan desafíos propios."
+        ],
+        [
+          "remanentes",
+          "Enanas blancas, estrellas de neutrones y acreción tardía ofrecen fuentes más raras y difíciles de utilizar."
+        ],
+        [
+          "agujeros negros",
+          "Rotación, acreción y evaporación pueden proporcionar energía en eras distintas sin constituir reservas infinitas."
+        ],
+        [
+          "cálculo eficiente",
+          "Reducir operaciones, temperatura y errores extiende recursos, pero no elimina todos los costes físicos."
+        ],
+        [
+          "hibernación lenta",
+          "Esperar entre eventos raros puede prolongar tiempo externo mientras reduce la continuidad de experiencia activa."
+        ]
+      ],
+      "scene": 16,
+      "p0": 0.64,
+      "p1": 0.68,
+      "color": [82, 151, 184],
+      "sound": {
+        "base": 43.2,
+        "filter": 938,
+        "noise": 0.014,
+        "pulse": 0.048,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "late-universe",
+      "name": "El universo tardío",
+      "className": "Supervivencia en declive · inteligencia dentro de un cosmos con menos estrellas y menos encuentros",
+      "metric": "Formación estelar decreciente → remanentes → agujeros negros → interacciones cada vez más escasas",
+      "fact": "La pregunta ya no es solo qué ocurre físicamente, sino qué estrategias permanecen disponibles para seres que intentan continuar.",
+      "features": [
+        [
+          "últimas estrellas",
+          "Enanas rojas prolongan la era estelar mientras la creación de nuevas estrellas se vuelve cada vez menos frecuente."
+        ],
+        [
+          "mundos remanentes",
+          "Planetas y hábitats deben adaptarse a fuentes débiles, encuentros raros y ambientes progresivamente fríos."
+        ],
+        [
+          "desintegración incierta",
+          "La posible desintegración del protón cambiaría profundamente el futuro de la materia, pero todavía no está confirmada."
+        ],
+        [
+          "era degenerada",
+          "Enanas blancas y estrellas de neutrones dominan un universo donde la materia luminosa pierde actividad."
+        ],
+        [
+          "era de agujeros negros",
+          "Durante tiempos inmensos, los agujeros negros pueden convertirse en las estructuras compactas principales."
+        ],
+        [
+          "intervalos vacíos",
+          "Acontecimientos útiles aparecen separados por duraciones que superan cualquier escala biológica familiar."
+        ]
+      ],
+      "scene": 17,
+      "p0": 0.68,
+      "p1": 0.72,
+      "color": [93, 139, 165],
+      "sound": {
+        "base": 41.15,
+        "filter": 881,
+        "noise": 0.013,
+        "pulse": 0.046,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "information-destiny",
+      "name": "El destino de la información",
+      "className": "Frontera física y conceptual · preservar un patrón exige que alguna diferencia siga siendo recuperable",
+      "metric": "Registro + soporte + mantenimiento + acceso → posibilidad de reconstruir un pasado",
+      "fact": "La física moderna sugiere restricciones profundas sobre la información, pero la recuperación práctica y la interpretación continúan siendo problemas distintos.",
+      "features": [
+        [
+          "preservación fundamental",
+          "Que la evolución física conserve información en algún sentido no implica que una civilización pueda localizarla o reconstruirla."
+        ],
+        [
+          "agujeros negros",
+          "La relación entre evaporación, horizontes e información es un problema central de la gravedad cuántica."
+        ],
+        [
+          "archivos duraderos",
+          "Todo soporte enfrenta errores, radiación, colisiones y cambios de contexto; preservar requiere redundancia y mantenimiento."
+        ],
+        [
+          "pasado incompleto",
+          "Trazas parciales pueden permitir varias historias compatibles sin señalar cuál ocurrió realmente."
+        ],
+        [
+          "patrón inaccesible",
+          "Una estructura puede persistir físicamente y carecer de cualquier proceso capaz de leerla."
+        ],
+        [
+          "significado perdido",
+          "Bits intactos no garantizan conservar el idioma, la referencia o la experiencia que alguna vez expresaron."
+        ]
+      ],
+      "scene": 18,
+      "p0": 0.72,
+      "p1": 0.76,
+      "color": [109, 130, 150],
+      "sound": {
+        "base": 39.1,
+        "filter": 824,
+        "noise": 0.012,
+        "pulse": 0.043,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "heat-death",
+      "name": "La muerte térmica",
+      "className": "Máxima dispersión práctica · disminuyen los gradientes que sostienen procesos complejos",
+      "metric": "Entropía creciente + expansión + equilibrio local → capacidad decreciente de realizar trabajo",
+      "fact": "La muerte térmica no es una desaparición instantánea, sino un futuro donde mantener organización resulta progresivamente más difícil.",
+      "features": [
+        [
+          "gradientes menores",
+          "Diferencias de temperatura y densidad se reducen, limitando motores, metabolismo y cálculo."
+        ],
+        [
+          "trabajo escaso",
+          "Puede existir energía total mientras casi ninguna transformación útil pueda extraerse de ella."
+        ],
+        [
+          "procesos lentos",
+          "Las interacciones continúan, pero ocurren con tasas extremadamente bajas y largas pausas."
+        ],
+        [
+          "fluctuaciones",
+          "A escalas enormes pueden aparecer fluctuaciones raras sin proporcionar una estrategia segura de supervivencia."
+        ],
+        [
+          "estructura disuelta",
+          "Sistemas ligados pueden decaer o separarse hasta que casi no queden configuraciones complejas activas."
+        ],
+        [
+          "experiencia límite",
+          "Sostener una secuencia indefinida de estados conscientes puede encontrar un límite termodinámico real."
+        ]
+      ],
+      "scene": 19,
+      "p0": 0.76,
+      "p1": 0.8,
+      "color": [126, 123, 139],
+      "sound": {
+        "base": 37.05,
+        "filter": 767,
+        "noise": 0.012,
+        "pulse": 0.041,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "unknown-possibilities",
+      "name": "Posibilidades desconocidas",
+      "className": "Incertidumbre responsable · nuestros modelos no son promesas de escape ni descripciones finales garantizadas",
+      "metric": "Extrapolación actual + física incompleta → futuros posibles con grados muy distintos de evidencia",
+      "fact": "La incertidumbre no demuestra que exista una salida, pero impide tratar nuestros modelos presentes como la última descripción posible.",
+      "features": [
+        [
+          "decaimiento del vacío",
+          "Una transición a otro estado del vacío cambiaría las leyes efectivas localmente y no ofrece una vía controlable conocida."
+        ],
+        [
+          "energía oscura cambiante",
+          "Si su comportamiento evoluciona, el destino de la expansión podría diferir de las proyecciones actuales."
+        ],
+        [
+          "física no descubierta",
+          "Nuevas partículas, campos o principios pueden modificar detalles sin garantizar supervivencia eterna."
+        ],
+        [
+          "cosmologías cíclicas",
+          "Algunos modelos proponen ciclos o rebotes, pero no existe evidencia concluyente de continuidad de información o identidad entre ellos."
+        ],
+        [
+          "transiciones cuánticas",
+          "La cosmología cuántica explora posibilidades más allá de la descripción clásica con importantes incertidumbres."
+        ],
+        [
+          "error de extrapolación",
+          "Leyes comprobadas en escalas accesibles pueden requerir revisión cuando se extienden a tiempos inconcebiblemente mayores."
+        ]
+      ],
+      "scene": 20,
+      "p0": 0.8,
+      "p1": 0.84,
+      "color": [140, 113, 125],
+      "sound": {
+        "base": 35,
+        "filter": 710,
+        "noise": 0.011,
+        "pulse": 0.038,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "observerless-existence",
+      "name": "Existencia sin observadores",
+      "className": "Retorno final · los procesos físicos continúan aunque ninguna experiencia permanezca",
+      "metric": "Fin de las mentes + rastros temporales + causalidad física → historia sin recuerdo activo",
+      "fact": "La app no impone una respuesta a si una historia cambia de significado porque finalmente nadie quede para recordarla.",
+      "features": [
+        [
+          "civilizaciones terminadas",
+          "Toda perspectiva puede desaparecer aunque sus acciones hayan alterado durante mucho tiempo las condiciones posteriores."
+        ],
+        [
+          "ninguna experiencia",
+          "Sin sujetos, ya no existen dolor, esperanza, sorpresa ni memoria vivida, aunque continúe la evolución física."
+        ],
+        [
+          "registros restantes",
+          "Ruinas y archivos pueden persistir durante un intervalo sin ser leídos ni comprendidos."
+        ],
+        [
+          "procesos continuos",
+          "Partículas, campos y expansión no necesitan observadores para producir consecuencias."
+        ],
+        [
+          "olvido total",
+          "Puede llegar un momento en que ninguna estructura contenga una representación recuperable de lo que ocurrió."
+        ],
+        [
+          "pregunta abierta",
+          "La desaparición futura de todo recuerdo no retroactúa físicamente para borrar que seres conscientes vivieron y eligieron."
+        ]
+      ],
+      "scene": 21,
+      "p0": 0.84,
+      "p1": 0.88,
+      "color": [151, 106, 116],
+      "sound": {
+        "base": 32.95,
+        "filter": 653,
+        "noise": 0.01,
+        "pulse": 0.035,
+        "type": "sine"
+      }
+    },
+    {
+      "id": "cosmic-legacy",
+      "name": "El legado cósmico",
+      "className": "Consecuencia finita · transformar el futuro no exige durar para siempre",
+      "metric": "Descendientes + archivos + ecosistemas + conocimiento + obras → efectos que continúan más allá de sus autores",
+      "fact": "La duración infinita no es una condición necesaria para que una acción transforme realmente el futuro.",
+      "features": [
+        [
+          "descendientes",
+          "Nuevas formas de vida o mente pueden heredar capacidades sin conservar exactamente la identidad de sus creadores."
+        ],
+        [
+          "archivos",
+          "Registros distribuidos amplían la memoria histórica aunque cada soporte tenga una vida finita."
+        ],
+        [
+          "ecosistemas protegidos",
+          "Conservar diversidad crea futuros posibles para seres que todavía no existen."
+        ],
+        [
+          "estrellas transformadas",
+          "Ingeniería de largo plazo puede dejar huellas físicas que sobrevivan a culturas y lenguas."
+        ],
+        [
+          "arte y conocimiento",
+          "Una obra o explicación puede cambiar experiencias y decisiones aun cuando finalmente se pierda."
+        ],
+        [
+          "vida sembrada",
+          "Introducir vida en nuevos entornos prolonga una historia biológica y exige considerar daños, autonomía y contaminación."
+        ]
+      ],
+      "scene": 22,
+      "p0": 0.88,
+      "p1": 0.92,
+      "color": [136, 118, 132],
+      "sound": {
+        "base": 30.9,
+        "filter": 596,
+        "noise": 0.01,
+        "pulse": 0.033,
+        "type": "triangle"
+      }
+    },
+    {
+      "id": "common-history",
+      "name": "La existencia como historia común",
+      "className": "Síntesis · cosmos, vida, mente y civilización son niveles de un mismo proceso desplegado",
+      "metric": "Materia → vida → experiencia → memoria → comprensión → elección → transformación → pregunta",
+      "fact": "Las aplicaciones no narran historias separadas, sino una secuencia en la que el universo produce regiones capaces de examinar sus propios límites.",
+      "features": [
+        [
+          "cosmos y estrellas",
+          "La expansión, la gravedad y la nucleosíntesis construyen los escenarios y elementos de toda historia posterior."
+        ],
+        [
+          "planetas y materia",
+          "Estructuras físicas concentran energía y química hasta permitir entornos estables y complejos."
+        ],
+        [
+          "vida",
+          "Sistemas capaces de mantenerse y evolucionar convierten condiciones físicas en oportunidades y amenazas funcionales."
+        ],
+        [
+          "mente",
+          "La experiencia, la memoria y la representación producen perspectivas para las que algo puede importar."
+        ],
+        [
+          "cultura y tecnología",
+          "Conocimiento compartido permite que decisiones acumuladas transformen cuerpos, sociedades y mundos."
+        ],
+        [
+          "límites",
+          "La capacidad de comprender crece dentro de fronteras físicas, lógicas, temporales y conceptuales que nunca observamos desde fuera."
+        ]
+      ],
+      "scene": 23,
+      "p0": 0.92,
+      "p1": 0.96,
+      "color": [172, 164, 158],
+      "sound": {
+        "base": 28.85,
+        "filter": 539,
+        "noise": 0.009,
+        "pulse": 0.03,
+        "type": "sawtooth"
+      }
+    },
+    {
+      "id": "final-horizon",
+      "name": "No vemos más allá del horizonte final.",
+      "className": "El horizonte final · límite simultáneo de observación, predicción, cómputo, identidad, supervivencia, lenguaje y física",
+      "metric": "Evidencia disponible → afirmación responsable | más allá → posibilidad, especulación o inconcebible",
+      "fact": "Esto no demuestra que no exista nada más. Solo marca el límite entre aquello que podemos describir con evidencia y aquello que todavía pertenece a la posibilidad, la especulación o lo inconcebible.",
+      "features": [
+        [
+          "observación",
+          "No podemos describir con evidencia acontecimientos de los que ninguna señal puede llegar a una perspectiva posible."
+        ],
+        [
+          "predicción",
+          "Modelos finitos pierden precisión cuando dependen de condiciones inaccesibles, caos o física todavía desconocida."
+        ],
+        [
+          "computación",
+          "Algunas respuestas requieren recursos mayores que los disponibles en el universo accesible o no admiten un procedimiento general."
+        ],
+        [
+          "identidad",
+          "No poseemos un criterio externo definitivo que resuelva toda copia, fusión, interrupción o transformación de una mente."
+        ],
+        [
+          "supervivencia",
+          "Una civilización puede prolongar su historia enormemente sin demostrar que toda experiencia pueda continuar para siempre."
+        ],
+        [
+          "perspectiva interior",
+          "La existencia permanece incompleta para toda perspectiva que intenta comprenderla desde dentro."
+        ]
+      ],
+      "scene": 24,
+      "p0": 0.96,
+      "p1": 1,
+      "color": [232, 228, 214],
+      "sound": {
+        "base": 26.8,
+        "filter": 482,
+        "noise": 0.008,
+        "pulse": 0.028,
+        "type": "triangle"
+      }
+    }
+  ]
+}

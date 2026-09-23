@@ -1,0 +1,781 @@
+import { createSceneAudio } from "../../shared/audio.js";
+import {
+  requestSceneFrame as requestAnimationFrame,
+  cancelSceneFrame as cancelAnimationFrame,
+} from "../../shared/animation.js";
+import content from "./content.json";
+const { NOTES } = content;
+
+export function mountScene() {
+  const canvas = document.getElementById("scene");
+  const ctx = canvas.getContext("2d");
+  const root = document.documentElement;
+
+  const voices = new Map();
+  const particles = [];
+  const waves = [];
+  const floatingTexts = [];
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  let audioCtx = null;
+  let master = null;
+  let compressor = null;
+  let delay = null;
+  let delayGain = null;
+  let feedback = null;
+  let dpr = 1;
+  let width = 1;
+  let height = 1;
+  let raf = 0;
+  let lastTime = performance.now();
+  let speechUnlocked = false;
+  let speechTimer = 0;
+  let lastSpoken = "";
+  window.addEventListener("spectrum:cancel-tts", () => {
+    clearTimeout(speechTimer);
+    speechTimer = 0;
+  });
+
+  function initAudio() {
+    if (audioCtx) {
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return;
+    }
+
+    audioCtx = createSceneAudio();
+    if (!audioCtx) return;
+
+    master = audioCtx.createGain();
+    master.gain.value = 0.56;
+
+    compressor = audioCtx.createDynamicsCompressor();
+    compressor.threshold.value = -16;
+    compressor.knee.value = 22;
+    compressor.ratio.value = 5;
+    compressor.attack.value = 0.004;
+    compressor.release.value = 0.24;
+
+    delay = audioCtx.createDelay(1.2);
+    delay.delayTime.value = 0.29;
+
+    delayGain = audioCtx.createGain();
+    delayGain.gain.value = 0.18;
+
+    feedback = audioCtx.createGain();
+    feedback.gain.value = 0.26;
+
+    master.connect(compressor);
+    compressor.connect(audioCtx.destination);
+
+    master.connect(delay);
+    delay.connect(delayGain);
+    delayGain.connect(compressor);
+
+    delay.connect(feedback);
+    feedback.connect(delay);
+  }
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    canvas.width = Math.max(1, Math.round(width * dpr));
+    canvas.height = Math.max(1, Math.round(height * dpr));
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function noteAtX(x) {
+    const totalNotes = 48;
+    const normalized = Math.max(0, Math.min(0.999999, x / width));
+    return 48 + Math.floor(normalized * totalNotes);
+  }
+
+  function frequencyForMidi(midi) {
+    return 440 * Math.pow(2, (midi - 69) / 12);
+  }
+
+  function colorForMidi(midi) {
+    const note = midi % 12;
+    const hue = (note / 12) * 360;
+    return {
+      hue,
+      css: `hsl(${hue} 100% 65%)`,
+    };
+  }
+
+  function showFloatingText(
+    text,
+    x,
+    y,
+    color = "#b8860b",
+    subtext = "",
+    owner = null,
+  ) {
+    const life = reducedMotion.matches ? 0.72 : 1.05;
+    floatingTexts.push({
+      text,
+      subtext,
+      x: Math.max(82, Math.min(width - 82, x)),
+      y: y < height * 0.24 ? y + 96 : y - 58,
+      color,
+      owner,
+      life,
+      maxLife: life,
+      angle: (Math.random() - 0.5) * 0.055,
+    });
+  }
+
+  function showNoteFloatingText(midi, timbre, x, y, pointerId) {
+    const noteIndex = midi % 12;
+    const octave = Math.floor(midi / 12) - 1;
+    const [spanish, symbol] = NOTES[noteIndex];
+    showFloatingText(
+      spanish,
+      x,
+      y,
+      colorForMidi(midi).css,
+      `${symbol}${octave} · ${timbre.label}`,
+      pointerId,
+    );
+    window.dispatchEvent(
+      new CustomEvent("spectrum:learning-target", {
+        detail: {
+          parts: [spanish, `octava ${octave}`, timbre.label],
+          x,
+          y,
+          color: colorForMidi(midi).css,
+        },
+      }),
+    );
+  }
+
+  function queueSpeech(label) {
+    if (!speechUnlocked || !("speechSynthesis" in window) || !label) return;
+    clearTimeout(speechTimer);
+    if (label === lastSpoken) return;
+    speechTimer = window.setTimeout(() => {
+      try {
+        speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(label);
+        utterance.lang = "es-ES";
+        utterance.rate = 0.86;
+        utterance.pitch = 1;
+        const availableVoices = speechSynthesis.getVoices();
+        const spanishVoice =
+          availableVoices.find((voice) => /^es(-|_)/i.test(voice.lang)) ||
+          availableVoices.find((voice) => /spanish|español/i.test(voice.name));
+        if (spanishVoice) utterance.voice = spanishVoice;
+        speechSynthesis.speak(utterance);
+        lastSpoken = label;
+      } catch (_) {}
+    }, 360);
+  }
+
+  function clearVoiceFloatingText(pointerId) {
+    for (let i = floatingTexts.length - 1; i >= 0; i--) {
+      if (floatingTexts[i].owner === pointerId) floatingTexts.splice(i, 1);
+    }
+  }
+
+  function hasVoiceFloatingText(pointerId) {
+    return floatingTexts.some((text) => text.owner === pointerId);
+  }
+
+  function scheduleVoiceFloatingText(voice) {
+    const signature = `${voice.midi}\u0000${voice.timbre.label}`;
+    const targetChanged = signature !== voice.feedbackSignature;
+    if (targetChanged) voice.feedbackSignature = signature;
+    const radius = Math.min(42, Math.max(28, Math.min(width, height) * 0.07));
+    const deltaX = voice.x - voice.feedbackAnchorX;
+    const deltaY = voice.y - voice.feedbackAnchorY;
+    const movedSignificantly =
+      deltaX * deltaX + deltaY * deltaY > radius * radius;
+    if (movedSignificantly || targetChanged) {
+      voice.feedbackAnchorX = voice.x;
+      voice.feedbackAnchorY = voice.y;
+      clearTimeout(voice.feedbackTimer);
+      voice.feedbackTimer = 0;
+      clearVoiceFloatingText(voice.pointerId);
+    }
+    if (voice.shownFeedbackSignatures.has(signature)) return;
+    if (
+      (movedSignificantly ||
+        targetChanged ||
+        !hasVoiceFloatingText(voice.pointerId)) &&
+      !voice.feedbackTimer
+    ) {
+      voice.feedbackTimer = window.setTimeout(() => {
+        voice.feedbackTimer = 0;
+        if (voice.ended) return;
+        const currentSignature = `${voice.midi}\u0000${voice.timbre.label}`;
+        if (
+          currentSignature !== signature ||
+          voice.shownFeedbackSignatures.has(signature)
+        )
+          return;
+        showNoteFloatingText(
+          voice.midi,
+          voice.timbre,
+          voice.x,
+          voice.y,
+          voice.pointerId,
+        );
+        voice.shownFeedbackSignatures.add(signature);
+      }, 400);
+    }
+  }
+
+  function flushVoiceFloatingText(voice) {
+    clearTimeout(voice.feedbackTimer);
+    voice.feedbackTimer = 0;
+    const signature = `${voice.midi}\u0000${voice.timbre.label}`;
+    if (
+      !voice.shownFeedbackSignatures.has(signature) &&
+      !hasVoiceFloatingText(voice.pointerId)
+    ) {
+      showNoteFloatingText(
+        voice.midi,
+        voice.timbre,
+        voice.x,
+        voice.y,
+        voice.pointerId,
+      );
+      voice.shownFeedbackSignatures.add(signature);
+    }
+  }
+
+  function updateFloatingTexts(dt) {
+    floatingTexts.forEach((text) => {
+      text.life -= dt;
+      if (!reducedMotion.matches) text.y -= 42 * dt;
+    });
+    for (let i = floatingTexts.length - 1; i >= 0; i--) {
+      if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
+    }
+  }
+
+  function drawFloatingTexts(drawCtx) {
+    floatingTexts.forEach((text) => {
+      const progress = 1 - text.life / text.maxLife;
+      const alpha = Math.max(0, text.life / text.maxLife);
+      const size =
+        Math.min(68, Math.max(34, width * 0.06)) * (1 + progress * 0.14);
+
+      drawCtx.save();
+      drawCtx.translate(text.x, text.y);
+      drawCtx.rotate(text.angle * (1 - progress * 0.35));
+      drawCtx.globalAlpha = alpha;
+      drawCtx.textAlign = "center";
+      drawCtx.textBaseline = "middle";
+      drawCtx.lineJoin = "round";
+      drawCtx.shadowBlur = 22;
+      drawCtx.shadowColor = text.color;
+      drawCtx.font = `bold ${size}px Caveat, "Segoe Print", "Bradley Hand", cursive`;
+      drawCtx.lineWidth = Math.max(4, size * 0.105);
+      drawCtx.strokeStyle = "rgba(5,5,12,.82)";
+      drawCtx.strokeText(text.text.toUpperCase(), 0, 0);
+      drawCtx.fillStyle = text.color;
+      drawCtx.fillText(text.text.toUpperCase(), 0, 0);
+
+      if (text.subtext) {
+        const subSize = Math.max(13, size * 0.28);
+        drawCtx.shadowBlur = 10;
+        drawCtx.font = `700 ${subSize}px Inter, ui-rounded, system-ui, sans-serif`;
+        drawCtx.lineWidth = 3;
+        drawCtx.strokeStyle = "rgba(5,5,12,.86)";
+        drawCtx.strokeText(text.subtext.toUpperCase(), 0, size * 0.72);
+        drawCtx.fillStyle = "rgba(255,255,255,.9)";
+        drawCtx.fillText(text.subtext.toUpperCase(), 0, size * 0.72);
+      }
+      drawCtx.restore();
+    });
+  }
+
+  function timbreForY(y) {
+    const n = Math.max(0, Math.min(1, y / height));
+    if (n < 0.25)
+      return {
+        label: "cristal",
+        type: "sine",
+        detune: 7,
+        filter: 5200,
+        attack: 0.015,
+        release: 0.62,
+      };
+    if (n < 0.5)
+      return {
+        label: "aire",
+        type: "triangle",
+        detune: 5,
+        filter: 3400,
+        attack: 0.025,
+        release: 0.46,
+      };
+    if (n < 0.75)
+      return {
+        label: "cálido",
+        type: "sawtooth",
+        detune: 3,
+        filter: 1900,
+        attack: 0.035,
+        release: 0.38,
+      };
+    return {
+      label: "profundo",
+      type: "square",
+      detune: 2,
+      filter: 980,
+      attack: 0.045,
+      release: 0.5,
+    };
+  }
+
+  function buildVoice(pointerId, x, y) {
+    initAudio();
+
+    const midi = noteAtX(x);
+    const freq = frequencyForMidi(midi);
+    const timbre = timbreForY(y);
+    if (!audioCtx) {
+      const voice = {
+        pointerId,
+        midi,
+        freq,
+        x,
+        y,
+        timbre,
+        ui: createVoiceUI(pointerId, x, y, midi, timbre),
+        feedbackTimer: 0,
+        feedbackAnchorX: x,
+        feedbackAnchorY: y,
+        feedbackSignature: `${midi}\u0000${timbre.label}`,
+        shownFeedbackSignatures: new Set(),
+        ended: false,
+        silent: true,
+      };
+      voices.set(pointerId, voice);
+      burst(x, y, colorForMidi(midi).hue, 20);
+      wave(x, y, colorForMidi(midi).hue);
+      scheduleVoiceFloatingText(voice);
+      return voice;
+    }
+    const now = audioCtx.currentTime;
+
+    const osc1 = audioCtx.createOscillator();
+    const osc2 = audioCtx.createOscillator();
+    const filter = audioCtx.createBiquadFilter();
+    const gain = audioCtx.createGain();
+    const pan = audioCtx.createStereoPanner
+      ? audioCtx.createStereoPanner()
+      : null;
+
+    osc1.type = timbre.type;
+    osc2.type = timbre.type;
+    osc1.frequency.setValueAtTime(freq, now);
+    osc2.frequency.setValueAtTime(freq, now);
+    osc1.detune.setValueAtTime(-timbre.detune, now);
+    osc2.detune.setValueAtTime(timbre.detune, now);
+
+    filter.type = "lowpass";
+    filter.Q.value = 1.4;
+    filter.frequency.setValueAtTime(timbre.filter, now);
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.18, now + timbre.attack);
+
+    osc1.connect(filter);
+    osc2.connect(filter);
+    filter.connect(gain);
+
+    if (pan) {
+      pan.pan.value = Math.max(-1, Math.min(1, (x / width) * 2 - 1));
+      gain.connect(pan);
+      pan.connect(master);
+    } else {
+      gain.connect(master);
+    }
+
+    osc1.start(now);
+    osc2.start(now);
+
+    const ui = createVoiceUI(pointerId, x, y, midi, timbre);
+
+    const voice = {
+      pointerId,
+      osc1,
+      osc2,
+      filter,
+      gain,
+      pan,
+      midi,
+      freq,
+      x,
+      y,
+      timbre,
+      ui,
+      feedbackTimer: 0,
+      feedbackAnchorX: x,
+      feedbackAnchorY: y,
+      feedbackSignature: `${midi}\u0000${timbre.label}`,
+      shownFeedbackSignatures: new Set(),
+      ended: false,
+    };
+
+    voices.set(pointerId, voice);
+    burst(x, y, colorForMidi(midi).hue, 20);
+    wave(x, y, colorForMidi(midi).hue);
+    scheduleVoiceFloatingText(voice);
+    return voice;
+  }
+
+  function updateVoice(voice, x, y) {
+    if (voice.ended) return;
+    if (voice.silent) {
+      voice.midi = noteAtX(x);
+      voice.freq = frequencyForMidi(voice.midi);
+      voice.timbre = timbreForY(y);
+      voice.x = x;
+      voice.y = y;
+      updateVoiceUI(voice);
+      scheduleVoiceFloatingText(voice);
+      return;
+    }
+
+    const midi = noteAtX(x);
+    const freq = frequencyForMidi(midi);
+    const timbre = timbreForY(y);
+    const now = audioCtx.currentTime;
+    const noteChanged = midi !== voice.midi;
+
+    voice.osc1.frequency.cancelScheduledValues(now);
+    voice.osc2.frequency.cancelScheduledValues(now);
+    voice.osc1.frequency.setTargetAtTime(freq, now, 0.025);
+    voice.osc2.frequency.setTargetAtTime(freq, now, 0.025);
+
+    voice.osc1.type = timbre.type;
+    voice.osc2.type = timbre.type;
+
+    voice.osc1.detune.setTargetAtTime(-timbre.detune, now, 0.03);
+    voice.osc2.detune.setTargetAtTime(timbre.detune, now, 0.03);
+    voice.filter.frequency.setTargetAtTime(timbre.filter, now, 0.035);
+
+    if (voice.pan) {
+      voice.pan.pan.setTargetAtTime(
+        Math.max(-1, Math.min(1, (x / width) * 2 - 1)),
+        now,
+        0.03,
+      );
+    }
+
+    if (noteChanged) {
+      burst(x, y, colorForMidi(midi).hue, 8);
+      wave(x, y, colorForMidi(midi).hue);
+    }
+
+    voice.midi = midi;
+    voice.freq = freq;
+    voice.x = x;
+    voice.y = y;
+    voice.timbre = timbre;
+    updateVoiceUI(voice);
+    scheduleVoiceFloatingText(voice);
+  }
+
+  function stopVoice(pointerId, showFeedback = true) {
+    const voice = voices.get(pointerId);
+    if (!voice || voice.ended) return;
+
+    voice.ended = true;
+    if (showFeedback) flushVoiceFloatingText(voice);
+    else {
+      clearTimeout(voice.feedbackTimer);
+      clearVoiceFloatingText(pointerId);
+    }
+    if (voice.silent) {
+      voice.ui.ring.remove();
+      voices.delete(pointerId);
+      return;
+    }
+    const now = audioCtx.currentTime;
+    const release = voice.timbre.release;
+
+    voice.gain.gain.cancelScheduledValues(now);
+    voice.gain.gain.setTargetAtTime(0.0001, now, release / 4);
+
+    try {
+      voice.osc1.stop(now + release + 0.12);
+      voice.osc2.stop(now + release + 0.12);
+    } catch (_) {}
+
+    voice.ui.ring.dataset.released = "true";
+    voice.ui.ring.classList.remove("visible");
+
+    setTimeout(() => {
+      voice.ui.ring.remove();
+    }, 500);
+
+    setTimeout(
+      () => {
+        if (voices.get(pointerId) === voice) voices.delete(pointerId);
+      },
+      (release + 0.2) * 1000,
+    );
+  }
+
+  function createVoiceUI(pointerId, x, y, midi, timbre) {
+    const ring = document.createElement("div");
+    ring.className = "touch-ring";
+
+    document.body.append(ring);
+
+    const ui = { ring };
+    updateUIElements(ui, x, y, midi, timbre);
+
+    requestAnimationFrame(() => {
+      if (!ring.dataset.released && ring.isConnected)
+        ring.classList.add("visible");
+    });
+
+    const ripple = document.createElement("div");
+    ripple.className = "ripple";
+    ripple.style.left = x + "px";
+    ripple.style.top = y + "px";
+    ripple.style.setProperty("--note-color", colorForMidi(midi).css);
+    document.body.appendChild(ripple);
+    ripple.addEventListener("animationend", () => ripple.remove(), {
+      once: true,
+    });
+
+    return ui;
+  }
+
+  function updateVoiceUI(voice) {
+    updateUIElements(voice.ui, voice.x, voice.y, voice.midi, voice.timbre);
+  }
+
+  function updateUIElements(ui, x, y, midi, timbre) {
+    const color = colorForMidi(midi).css;
+
+    ui.ring.style.left = x + "px";
+    ui.ring.style.top = y + "px";
+    ui.ring.style.setProperty("--note-color", color);
+
+    root.style.setProperty("--glow-x", x + "px");
+    root.style.setProperty("--glow-y", y + "px");
+    root.style.setProperty("--glow-color", color);
+  }
+
+  function burst(x, y, hue, count) {
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 35 + Math.random() * 130;
+      particles.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 0.55 + Math.random() * 0.55,
+        age: 0,
+        size: 1.5 + Math.random() * 4.5,
+        hue,
+      });
+    }
+  }
+
+  function wave(x, y, hue) {
+    waves.push({
+      x,
+      y,
+      radius: 5,
+      life: 0.9,
+      age: 0,
+      hue,
+    });
+  }
+
+  function drawBackground(t) {
+    ctx.clearRect(0, 0, width, height);
+
+    const bg = ctx.createLinearGradient(0, 0, width, height);
+    bg.addColorStop(0, "#070712");
+    bg.addColorStop(0.45, "#101027");
+    bg.addColorStop(1, "#05050a");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, width, height);
+
+    const columns = 48;
+    const columnWidth = width / columns;
+
+    for (let i = 0; i < columns; i++) {
+      const midi = 48 + i;
+      const hue = colorForMidi(midi).hue;
+      const pulse = 0.08 + 0.035 * Math.sin(t * 0.0016 + i * 0.62);
+
+      const grad = ctx.createLinearGradient(0, 0, 0, height);
+      grad.addColorStop(0, `hsla(${hue}, 100%, 74%, ${pulse * 1.25})`);
+      grad.addColorStop(0.38, `hsla(${hue}, 100%, 60%, ${pulse})`);
+      grad.addColorStop(1, `hsla(${hue}, 100%, 45%, ${pulse * 0.55})`);
+      ctx.fillStyle = grad;
+      ctx.fillRect(i * columnWidth, 0, columnWidth + 1, height);
+
+      ctx.strokeStyle = `hsla(${hue}, 100%, 80%, 0.055)`;
+      ctx.beginPath();
+      ctx.moveTo(i * columnWidth, 0);
+      ctx.lineTo(i * columnWidth, height);
+      ctx.stroke();
+    }
+
+    for (let j = 1; j < 4; j++) {
+      const y = (height / 4) * j;
+      ctx.strokeStyle = "rgba(255,255,255,.055)";
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    }
+
+    ctx.save();
+    ctx.globalCompositeOperation = "screen";
+    ctx.lineWidth = 1.2;
+
+    for (let band = 0; band < 4; band++) {
+      ctx.beginPath();
+      for (let x = 0; x <= width; x += 8) {
+        const y =
+          height * (0.19 + band * 0.2) +
+          Math.sin(x * 0.012 + t * 0.0012 + band) * 10 +
+          Math.sin(x * 0.027 - t * 0.0008) * 4;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = `rgba(255,255,255,${0.055 + band * 0.012})`;
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  function animate(now) {
+    const dt = Math.min(0.033, (now - lastTime) / 1000);
+    lastTime = now;
+    updateFloatingTexts(dt);
+
+    drawBackground(now);
+
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+
+    for (let i = waves.length - 1; i >= 0; i--) {
+      const w = waves[i];
+      w.age += dt;
+      w.radius += dt * 180;
+
+      const alpha = Math.max(0, 1 - w.age / w.life);
+      ctx.strokeStyle = `hsla(${w.hue},100%,70%,${alpha * 0.5})`;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(w.x, w.y, w.radius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      if (w.age >= w.life) waves.splice(i, 1);
+    }
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.age += dt;
+      p.vx *= Math.pow(0.985, dt * 60);
+      p.vy *= Math.pow(0.985, dt * 60);
+      p.vy += 22 * dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+
+      const alpha = Math.max(0, 1 - p.age / p.life);
+      ctx.fillStyle = `hsla(${p.hue},100%,72%,${alpha})`;
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = `hsl(${p.hue} 100% 62%)`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * alpha, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (p.age >= p.life) particles.splice(i, 1);
+    }
+
+    ctx.restore();
+
+    for (const voice of voices.values()) {
+      if (voice.ended) continue;
+
+      const hue = colorForMidi(voice.midi).hue;
+      const radius = 26 + Math.sin(now * 0.012 + voice.pointerId) * 5;
+
+      ctx.save();
+      ctx.globalCompositeOperation = "screen";
+      const glow = ctx.createRadialGradient(
+        voice.x,
+        voice.y,
+        0,
+        voice.x,
+        voice.y,
+        radius * 4,
+      );
+      glow.addColorStop(0, `hsla(${hue},100%,82%,.9)`);
+      glow.addColorStop(0.22, `hsla(${hue},100%,65%,.32)`);
+      glow.addColorStop(1, `hsla(${hue},100%,50%,0)`);
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(voice.x, voice.y, radius * 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    drawFloatingTexts(ctx);
+
+    raf = requestAnimationFrame(animate);
+  }
+
+  function onPointerDown(event) {
+    event.preventDefault();
+    speechUnlocked = true;
+    canvas.setPointerCapture?.(event.pointerId);
+    buildVoice(event.pointerId, event.clientX, event.clientY);
+  }
+
+  function onPointerMove(event) {
+    const voice = voices.get(event.pointerId);
+    if (!voice || voice.ended) return;
+    event.preventDefault();
+    updateVoice(voice, event.clientX, event.clientY);
+  }
+
+  function onPointerEnd(event) {
+    event.preventDefault();
+    stopVoice(event.pointerId);
+  }
+
+  canvas.addEventListener("pointerdown", onPointerDown);
+  canvas.addEventListener("pointermove", onPointerMove);
+  canvas.addEventListener("pointerup", onPointerEnd);
+  canvas.addEventListener("pointercancel", onPointerEnd);
+  canvas.addEventListener("lostpointercapture", onPointerEnd);
+
+  document.addEventListener("contextmenu", (e) => e.preventDefault());
+  window.addEventListener("resize", resize, { passive: true });
+  window.addEventListener("blur", () => {
+    for (const id of [...voices.keys()]) stopVoice(id, false);
+    clearTimeout(speechTimer);
+    if ("speechSynthesis" in window) speechSynthesis.cancel();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) return;
+    clearTimeout(speechTimer);
+    if ("speechSynthesis" in window) speechSynthesis.cancel();
+  });
+
+  resize();
+  cancelAnimationFrame(raf);
+  raf = requestAnimationFrame(animate);
+}

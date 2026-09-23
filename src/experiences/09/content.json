@@ -1,0 +1,422 @@
+{
+  "ZONES": [
+    {
+      "id": "large-scale-structure",
+      "name": "Estructura a gran escala",
+      "p0": 0,
+      "p1": 0.065,
+      "color": [126, 204, 255],
+      "metric": "Continuidad · la red cósmica en el universo cercano",
+      "fact": "El recorrido comienza exactamente donde terminó el anterior: filamentos, nodos, paredes y vacíos aún forman una red tridimensional reconocible.",
+      "sound": {
+        "base": 66,
+        "filter": 820,
+        "noise": 0.055,
+        "pulse": 0.3,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "red cósmica",
+          "La materia se distribuye en filamentos, nodos, paredes y grandes vacíos; los trazos luminosos no son tubos físicos."
+        ],
+        [
+          "universo cercano",
+          "Esta zona representa estructuras cuya luz llega desde épocas relativamente recientes de la historia cósmica."
+        ],
+        [
+          "escala ampliada",
+          "Al ascender, la misma red ocupa una fracción cada vez menor del campo y se mezcla con capas más lejanas."
+        ],
+        [
+          "luz en viaje",
+          "Cada galaxia aparece como era cuando emitió la luz que finalmente alcanza nuestros telescopios."
+        ],
+        [
+          "punto de partida",
+          "La exploración deja de ser solo un aumento de tamaño: a partir de aquí también retrocede en el tiempo."
+        ]
+      ]
+    },
+    {
+      "id": "deep-universe",
+      "name": "Universo profundo",
+      "p0": 0.065,
+      "p1": 0.155,
+      "color": [97, 169, 244],
+      "metric": "Campo profundo · muchas épocas en una misma mirada",
+      "fact": "Un campo profundo reúne galaxias situadas a distancias muy distintas. Las más tenues suelen mostrarnos etapas más antiguas del universo.",
+      "sound": {
+        "base": 73,
+        "filter": 980,
+        "noise": 0.065,
+        "pulse": 0.27,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "campo profundo",
+          "Una exposición prolongada revela miles de galaxias en una porción diminuta del cielo."
+        ],
+        [
+          "capas de distancia",
+          "Objetos próximos y remotos se proyectan en la misma imagen aunque estén separados por enormes profundidades."
+        ],
+        [
+          "galaxia tenue",
+          "La debilidad aparente puede deberse a gran distancia, poca luminosidad o ambas cosas."
+        ],
+        [
+          "lente gravitatoria",
+          "La masa intermedia puede ampliar y deformar la luz de galaxias todavía más lejanas."
+        ],
+        [
+          "universo en evolución",
+          "Comparar distintas profundidades permite estudiar cómo cambian las galaxias a lo largo del tiempo cósmico."
+        ]
+      ]
+    },
+    {
+      "id": "lookback-time",
+      "name": "Tiempo de retrospección",
+      "p0": 0.155,
+      "p1": 0.245,
+      "color": [127, 139, 255],
+      "metric": "Distancia y pasado · observamos luz, no el presente remoto",
+      "fact": "Cuanto más lejos observamos, más antigua es la luz que recibimos. Mirar profundamente en el espacio es mirar profundamente en el pasado.",
+      "sound": {
+        "base": 82,
+        "filter": 1180,
+        "noise": 0.07,
+        "pulse": 0.24,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "tiempo de viaje",
+          "La luz tarda tiempo en cruzar el espacio; una galaxia distante se ve como era al emitir sus fotones."
+        ],
+        [
+          "año luz",
+          "Es una unidad de distancia: lo que la luz recorre en un año, no una unidad de tiempo."
+        ],
+        [
+          "corrimiento al rojo",
+          "La expansión estira la longitud de onda de la luz y ayuda a ordenar las observaciones por época cósmica."
+        ],
+        [
+          "cono de luz pasado",
+          "Solo recibimos señales procedentes de regiones y momentos capaces de conectarse causalmente con nosotros."
+        ],
+        [
+          "sin presente simultáneo",
+          "No existe una fotografía instantánea accesible de todo el universo lejano tal como es ahora."
+        ]
+      ]
+    },
+    {
+      "id": "distant-galaxies",
+      "name": "Galaxias lejanas",
+      "p0": 0.245,
+      "p1": 0.345,
+      "color": [179, 129, 255],
+      "metric": "Universo más joven · formas pequeñas, turbulentas y compactas",
+      "fact": "Las galaxias lejanas suelen verse más jóvenes, compactas e irregulares. Su luz revela etapas en las que todavía estaban ensamblando estrellas y estructura.",
+      "sound": {
+        "base": 93,
+        "filter": 1450,
+        "noise": 0.06,
+        "pulse": 0.2,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "galaxia joven",
+          "Muchas todavía no han desarrollado los discos y brazos espirales tranquilos comunes en épocas posteriores."
+        ],
+        [
+          "formación estelar",
+          "Nubes de gas producen estrellas con gran intensidad y llenan las galaxias de regiones luminosas."
+        ],
+        [
+          "fusión galáctica",
+          "Las interacciones y fusiones contribuyen a construir sistemas mayores y a transformar sus formas."
+        ],
+        [
+          "metallicidad baja",
+          "Las primeras generaciones estelares habían enriquecido menos el gas con elementos pesados."
+        ],
+        [
+          "imagen estirada",
+          "La expansión, el corrimiento al rojo y los instrumentos determinan qué parte de su luz podemos detectar."
+        ]
+      ]
+    },
+    {
+      "id": "quasar-era",
+      "name": "Era de los cuásares",
+      "p0": 0.345,
+      "p1": 0.45,
+      "color": [255, 151, 103],
+      "metric": "Núcleos activos · un universo joven y extremadamente energético",
+      "fact": "En una época temprana abundaron los cuásares: núcleos galácticos alimentados por agujeros negros supermasivos, visibles a través de distancias inmensas.",
+      "sound": {
+        "base": 116,
+        "filter": 2380,
+        "noise": 0.045,
+        "pulse": 0.14,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "cuásar",
+          "Un núcleo galáctico activo tan luminoso que puede superar el brillo combinado de su galaxia anfitriona."
+        ],
+        [
+          "disco de acreción",
+          "Gas muy caliente gira y cae hacia un agujero negro supermasivo, liberando enorme energía antes de cruzar el horizonte."
+        ],
+        [
+          "chorro relativista",
+          "Algunos núcleos lanzan haces de plasma a velocidades cercanas a la de la luz."
+        ],
+        [
+          "galaxia anfitriona",
+          "El cuásar no es una estrella aislada: ocupa el centro de una galaxia en crecimiento."
+        ],
+        [
+          "baliza cósmica",
+          "Su gran luminosidad permite estudiar gas y materia situados entre el cuásar y nosotros."
+        ]
+      ]
+    },
+    {
+      "id": "first-galaxies",
+      "name": "Primeras galaxias",
+      "p0": 0.45,
+      "p1": 0.555,
+      "color": [255, 197, 125],
+      "metric": "Amanecer cósmico · nacen estrellas, cúmulos y galaxias",
+      "fact": "Las primeras galaxias surgieron de pequeñas concentraciones de materia. Eran menos maduras y ayudaron a transformar el gas neutro del universo temprano.",
+      "sound": {
+        "base": 132,
+        "filter": 2860,
+        "noise": 0.052,
+        "pulse": 0.12,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "amanecer cósmico",
+          "Es la etapa en la que aparecen las primeras estrellas y galaxias después de las edades oscuras."
+        ],
+        [
+          "halo primordial",
+          "La gravedad concentra materia oscura y gas en pequeñas regiones donde puede comenzar la formación estelar."
+        ],
+        [
+          "estrella primitiva",
+          "Las primeras estrellas se formaron con hidrógeno, helio y trazas de litio, antes del enriquecimiento químico posterior."
+        ],
+        [
+          "ensamblaje",
+          "Sistemas pequeños se fusionan y alimentan para construir galaxias progresivamente mayores."
+        ],
+        [
+          "luz ultravioleta",
+          "La radiación de estrellas jóvenes y núcleos activos empieza a cambiar el estado del gas intergaláctico."
+        ]
+      ]
+    },
+    {
+      "id": "reionization",
+      "name": "Época de reionización",
+      "p0": 0.555,
+      "p1": 0.665,
+      "color": [255, 112, 169],
+      "metric": "Burbujas ionizadas · la luz transforma el hidrógeno neutro",
+      "fact": "La radiación de las primeras fuentes abrió burbujas ionizadas en el hidrógeno neutro. Estas regiones crecieron y se unieron hasta volver transparente gran parte del medio intergaláctico.",
+      "sound": {
+        "base": 145,
+        "filter": 3260,
+        "noise": 0.075,
+        "pulse": 0.11,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "burbuja ionizada",
+          "Una región donde fotones energéticos han separado electrones de átomos de hidrógeno."
+        ],
+        [
+          "hidrógeno neutro",
+          "Fuera de las burbujas, gran parte del gas conserva sus electrones y absorbe ciertas longitudes de onda."
+        ],
+        [
+          "frente de ionización",
+          "El límite entre gas neutro e ionizado avanza alrededor de las primeras fuentes luminosas."
+        ],
+        [
+          "solapamiento",
+          "Las burbujas crecen, se conectan y cambian globalmente el medio intergaláctico."
+        ],
+        [
+          "transición gradual",
+          "La reionización no ocurrió de golpe ni exactamente al mismo tiempo en todas partes."
+        ]
+      ]
+    },
+    {
+      "id": "dark-ages",
+      "name": "Edades oscuras",
+      "p0": 0.665,
+      "p1": 0.765,
+      "color": [76, 91, 145],
+      "metric": "Antes de las estrellas · gas neutro en un universo en expansión",
+      "fact": "Después de liberarse el fondo cósmico y antes de encenderse las primeras estrellas, el universo atravesó una etapa sin fuentes visibles de luz estelar.",
+      "sound": {
+        "base": 58,
+        "filter": 520,
+        "noise": 0.12,
+        "pulse": 0.38,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "oscuridad cósmica",
+          "No significa ausencia de materia o radiación: todavía existe gas, materia oscura y el fondo cósmico enfriándose."
+        ],
+        [
+          "gas neutro",
+          "El hidrógeno y el helio llenan el espacio mientras pequeñas variaciones de densidad crecen por gravedad."
+        ],
+        [
+          "semillas de estructura",
+          "Las irregularidades iniciales evolucionan hacia los halos que más tarde alojarán estrellas y galaxias."
+        ],
+        [
+          "línea de 21 centímetros",
+          "La señal del hidrógeno neutro puede ofrecer una futura cartografía de esta etapa difícil de observar."
+        ],
+        [
+          "antes del amanecer",
+          "La zona termina cuando las primeras fuentes luminosas comienzan a encender el universo."
+        ]
+      ]
+    },
+    {
+      "id": "cmb",
+      "name": "Fondo cósmico de microondas",
+      "p0": 0.765,
+      "p1": 0.875,
+      "color": [255, 205, 142],
+      "metric": "Luz fósil · universo de unos 380 000 años",
+      "fact": "El fondo cósmico de microondas es la luz electromagnética más antigua que podemos observar directamente. Sus pequeñas variaciones conservan las semillas de la estructura posterior.",
+      "sound": {
+        "base": 74,
+        "filter": 910,
+        "noise": 0.19,
+        "pulse": 0.31,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "última dispersión",
+          "La luz dejó de rebotar continuamente cuando el plasma se enfrió y los electrones se unieron a los núcleos."
+        ],
+        [
+          "recombinación",
+          "El universo se volvió mayormente transparente a los fotones que hoy detectamos como microondas."
+        ],
+        [
+          "anisotropía",
+          "Diferencias diminutas de temperatura indican pequeñas variaciones de densidad en el universo temprano."
+        ],
+        [
+          "superficie aparente",
+          "La vemos alrededor de nosotros en todas direcciones, como una capa de tiempo pasado, no como una esfera material centrada en la Tierra."
+        ],
+        [
+          "luz estirada",
+          "La expansión transformó aquella radiación caliente en el tenue fondo de microondas actual."
+        ]
+      ]
+    },
+    {
+      "id": "cosmological-horizon",
+      "name": "Horizonte cosmológico",
+      "p0": 0.875,
+      "p1": 0.955,
+      "color": [240, 225, 204],
+      "metric": "Límite causal · solo llega la luz con tiempo para alcanzarnos",
+      "fact": "El horizonte cosmológico marca una frontera de observabilidad, no una pared. Depende de la historia de expansión y de cuánto tiempo ha podido viajar la luz.",
+      "sound": {
+        "base": 86,
+        "filter": 1240,
+        "noise": 0.16,
+        "pulse": 0.28,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "horizonte de partículas",
+          "Es la máxima distancia desde la que una señal pudo alcanzarnos desde el comienzo de la evolución cósmica observable."
+        ],
+        [
+          "límite causal",
+          "Regiones más allá no han tenido tiempo de enviarnos información, aunque puedan formar parte de un universo mayor."
+        ],
+        [
+          "expansión cósmica",
+          "El espacio cambió mientras la luz viajaba; por eso distancia actual y tiempo de viaje no son la misma cifra."
+        ],
+        [
+          "no es una pared",
+          "No encontraríamos una superficie sólida al viajar hacia allí; el horizonte depende del observador y del tiempo."
+        ],
+        [
+          "más allá del fondo",
+          "Podemos inferir física anterior al fondo cósmico, pero no verla con luz electromagnética ordinaria."
+        ]
+      ]
+    },
+    {
+      "id": "observable-limit",
+      "name": "Límite del universo observable",
+      "p0": 0.955,
+      "p1": 1,
+      "color": [255, 240, 218],
+      "metric": "Borde de nuestro mapa · no borde físico del universo",
+      "fact": "Aquí termina lo que puede mostrarnos la luz disponible. El universo completo puede extenderse mucho más, pero esa región no es actualmente visible de forma directa.",
+      "sound": {
+        "base": 96,
+        "filter": 1500,
+        "noise": 0.14,
+        "pulse": 0.25,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "universo observable",
+          "Es la región desde la que alguna señal ha podido llegar hasta nosotros durante la historia cósmica."
+        ],
+        [
+          "sin borde físico",
+          "El límite pertenece a nuestra observación; no demuestra que el espacio termine allí."
+        ],
+        [
+          "edad finita",
+          "La historia cósmica disponible impone un tiempo máximo para el viaje de cualquier señal."
+        ],
+        [
+          "plasma opaco",
+          "Antes de la última dispersión, la luz electromagnética no podía propagarse libremente a través del plasma primordial."
+        ],
+        [
+          "conocimiento indirecto",
+          "Modelos, abundancias, ondas gravitacionales futuras y otras huellas pueden informar sobre épocas que la luz no muestra directamente."
+        ]
+      ]
+    }
+  ]
+}

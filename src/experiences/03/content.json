@@ -1,0 +1,578 @@
+{
+  "ZONES": [
+    {
+      "id": "space",
+      "name": "Espacio",
+      "y0": 0,
+      "y1": 0.08,
+      "high": 100000,
+      "low": 10000,
+      "unit": "altitude",
+      "color": [99, 119, 255],
+      "material": "vacío casi total",
+      "fact": "La atmósfera ya se ha fundido gradualmente con el entorno interplanetario.",
+      "sound": {
+        "base": 122,
+        "filter": 6800,
+        "noise": 0.015,
+        "pulse": 0.07,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "viento solar",
+          "Una corriente de partículas procedente del Sol atraviesa el espacio cercano."
+        ],
+        [
+          "magnetosfera",
+          "El campo magnético terrestre desvía gran parte del viento solar."
+        ],
+        [
+          "radiación cósmica",
+          "Partículas de enorme energía llegan desde el Sol y desde más allá del sistema solar."
+        ],
+        [
+          "satélite lejano",
+          "Los satélites de órbita alta observan, comunican y navegan alrededor del planeta."
+        ],
+        [
+          "vacío interplanetario",
+          "No está completamente vacío: contiene campos, fotones y partículas muy dispersas."
+        ]
+      ]
+    },
+    {
+      "id": "exosphere",
+      "name": "Exosfera",
+      "y0": 0.08,
+      "y1": 0.155,
+      "high": 10000,
+      "low": 700,
+      "unit": "altitude",
+      "color": [91, 158, 255],
+      "material": "átomos extremadamente dispersos",
+      "fact": "Es la capa exterior de la atmósfera y se mezcla poco a poco con el espacio.",
+      "sound": {
+        "base": 146,
+        "filter": 5200,
+        "noise": 0.025,
+        "pulse": 0.09,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "hidrógeno",
+          "Los átomos ligeros de hidrógeno pueden recorrer grandes distancias sin chocar."
+        ],
+        [
+          "helio",
+          "El helio es uno de los gases que dominan en esta región extremadamente tenue."
+        ],
+        [
+          "escape atmosférico",
+          "Algunas partículas rápidas vencen la gravedad y abandonan la Tierra."
+        ],
+        [
+          "geocorona",
+          "Una nube muy tenue de hidrógeno rodea al planeta y se extiende mucho más allá."
+        ],
+        [
+          "satélite",
+          "Numerosos satélites de órbita alta atraviesan esta frontera difusa."
+        ]
+      ]
+    },
+    {
+      "id": "thermosphere",
+      "name": "Termosfera",
+      "y0": 0.155,
+      "y1": 0.24,
+      "high": 700,
+      "low": 80,
+      "unit": "altitude",
+      "color": [56, 214, 222],
+      "material": "gas muy tenue y parcialmente ionizado",
+      "fact": "Absorbe radiación solar energética; aquí brillan muchas auroras y orbita la estación espacial.",
+      "sound": {
+        "base": 174,
+        "filter": 3900,
+        "noise": 0.05,
+        "pulse": 0.12,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "aurora",
+          "Partículas solares excitan gases de la alta atmósfera y producen cortinas de luz."
+        ],
+        [
+          "ionosfera",
+          "La radiación solar libera electrones y transforma parte del gas en plasma."
+        ],
+        [
+          "estación espacial",
+          "La Estación Espacial Internacional orbita dentro de la termosfera."
+        ],
+        [
+          "oxígeno atómico",
+          "La radiación rompe moléculas y deja átomos de oxígeno muy separados."
+        ],
+        [
+          "onda de radio",
+          "La ionosfera modifica y, en ciertas frecuencias, devuelve ondas de radio."
+        ]
+      ]
+    },
+    {
+      "id": "mesosphere",
+      "name": "Mesosfera",
+      "y0": 0.24,
+      "y1": 0.31,
+      "high": 80,
+      "low": 50,
+      "unit": "altitude",
+      "color": [76, 166, 255],
+      "material": "aire extremadamente tenue",
+      "fact": "Es la capa atmosférica más fría y el lugar donde se desintegran la mayoría de los meteoros.",
+      "sound": {
+        "base": 202,
+        "filter": 3300,
+        "noise": 0.08,
+        "pulse": 0.15,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "meteoro",
+          "La fricción y la compresión del aire calientan y erosionan partículas espaciales."
+        ],
+        [
+          "nube noctilucente",
+          "Cristales de hielo muy altos pueden brillar después de la puesta del Sol."
+        ],
+        [
+          "mesopausa",
+          "Cerca del borde superior se encuentran algunas de las temperaturas más bajas de la Tierra."
+        ],
+        [
+          "cohete sonda",
+          "Los cohetes científicos cruzan esta región difícil de alcanzar."
+        ],
+        [
+          "aire tenue",
+          "Aunque casi no se nota, todavía hay suficiente gas para frenar meteoros."
+        ]
+      ]
+    },
+    {
+      "id": "stratosphere",
+      "name": "Estratosfera",
+      "y0": 0.31,
+      "y1": 0.385,
+      "high": 50,
+      "low": 12,
+      "unit": "altitude",
+      "color": [71, 187, 255],
+      "material": "aire seco y estable",
+      "fact": "La capa de ozono absorbe gran parte de la radiación ultravioleta y calienta esta región desde arriba.",
+      "sound": {
+        "base": 232,
+        "filter": 2800,
+        "noise": 0.12,
+        "pulse": 0.17,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "capa de ozono",
+          "La mayor parte del ozono atmosférico está aquí y ayuda a filtrar radiación ultravioleta."
+        ],
+        [
+          "globo estratosférico",
+          "Globos científicos ascienden hasta el aire delgado para observar la Tierra y el cielo."
+        ],
+        [
+          "avión a reacción",
+          "Los vuelos de gran altitud aprovechan el aire más estable cerca de la baja estratosfera."
+        ],
+        [
+          "aire estratificado",
+          "Las capas se mezclan lentamente porque la temperatura aumenta con la altura."
+        ],
+        [
+          "radiación ultravioleta",
+          "El ozono y el oxígeno absorben energía ultravioleta procedente del Sol."
+        ]
+      ]
+    },
+    {
+      "id": "troposphere",
+      "name": "Troposfera",
+      "y0": 0.385,
+      "y1": 0.46,
+      "high": 12,
+      "low": 0,
+      "unit": "altitude",
+      "color": [113, 207, 255],
+      "material": "aire denso, vapor y aerosoles",
+      "fact": "Es la capa que respiramos: contiene casi todo el vapor de agua y donde ocurre el tiempo meteorológico.",
+      "sound": {
+        "base": 154,
+        "filter": 2100,
+        "noise": 0.22,
+        "pulse": 0.14,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "nube",
+          "El vapor de agua se condensa en gotas o cristales de hielo suspendidos."
+        ],
+        [
+          "tormenta",
+          "El aire cálido asciende y puede organizar nubes, lluvia, rayos y fuertes corrientes."
+        ],
+        [
+          "viento",
+          "Las diferencias de presión ponen el aire en movimiento alrededor del planeta."
+        ],
+        [
+          "avión",
+          "La mayoría de los vuelos atraviesan la troposfera y su borde superior."
+        ],
+        [
+          "vapor de agua",
+          "Casi todo el vapor atmosférico está concentrado en esta capa inferior."
+        ]
+      ]
+    },
+    {
+      "id": "surface",
+      "name": "Superficie",
+      "y0": 0.46,
+      "y1": 0.505,
+      "high": 2,
+      "low": -11,
+      "unit": "surface",
+      "color": [107, 231, 155],
+      "material": "roca, suelo, agua y vida",
+      "fact": "Una frontera finísima separa la atmósfera del océano y de la Tierra sólida.",
+      "sound": {
+        "base": 118,
+        "filter": 1700,
+        "noise": 0.16,
+        "pulse": 0.12,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "océano",
+          "El agua líquida cubre la mayor parte de la superficie terrestre."
+        ],
+        [
+          "costa",
+          "Aquí se encuentran y cambian continuamente el océano, la roca y la atmósfera."
+        ],
+        [
+          "bosque",
+          "La vida intercambia agua, carbono, oxígeno y energía con el aire y el suelo."
+        ],
+        [
+          "montaña",
+          "La corteza continental se eleva y deja expuestas rocas formadas durante millones de años."
+        ],
+        [
+          "suelo",
+          "Una capa viva y compleja conecta la roca, el agua, el aire y los organismos."
+        ]
+      ]
+    },
+    {
+      "id": "crust",
+      "name": "Corteza",
+      "y0": 0.505,
+      "y1": 0.57,
+      "high": 0,
+      "low": 35,
+      "unit": "depth",
+      "color": [218, 158, 95],
+      "material": "roca sólida y quebradiza",
+      "fact": "Es la piel rocosa del planeta: delgada bajo los océanos y más gruesa bajo los continentes.",
+      "sound": {
+        "base": 94,
+        "filter": 1250,
+        "noise": 0.18,
+        "pulse": 0.16,
+        "type": "triangle"
+      },
+      "features": [
+        [
+          "corteza oceánica",
+          "Es más delgada y densa, formada principalmente por rocas basálticas."
+        ],
+        [
+          "corteza continental",
+          "Es más gruesa, menos densa y conserva rocas muy antiguas."
+        ],
+        [
+          "placa tectónica",
+          "La corteza y el manto superior rígido se desplazan juntos como placas."
+        ],
+        [
+          "falla",
+          "Una fractura permite que bloques de roca se muevan y liberen energía sísmica."
+        ],
+        [
+          "cámara magmática",
+          "Roca fundida puede acumularse antes de ascender hacia un volcán."
+        ]
+      ]
+    },
+    {
+      "id": "lithosphere",
+      "name": "Litosfera",
+      "y0": 0.57,
+      "y1": 0.625,
+      "high": 35,
+      "low": 100,
+      "unit": "depth",
+      "color": [197, 112, 69],
+      "material": "roca rígida",
+      "fact": "Incluye la corteza y la parte superior rígida del manto; está fragmentada en placas tectónicas.",
+      "sound": {
+        "base": 76,
+        "filter": 1000,
+        "noise": 0.21,
+        "pulse": 0.2,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "placa tectónica",
+          "Una gran pieza rígida se desplaza lentamente sobre roca más dúctil."
+        ],
+        [
+          "subducción",
+          "Una placa se hunde bajo otra y transporta material hacia el manto."
+        ],
+        [
+          "raíz continental",
+          "La corteza gruesa bajo una cordillera se prolonga hacia el manto."
+        ],
+        [
+          "falla profunda",
+          "Las tensiones de las placas deforman y rompen la roca rígida."
+        ],
+        [
+          "manto superior rígido",
+          "Esta roca forma la base fuerte de la litosfera."
+        ]
+      ]
+    },
+    {
+      "id": "asthenosphere",
+      "name": "Astenosfera",
+      "y0": 0.625,
+      "y1": 0.695,
+      "high": 100,
+      "low": 410,
+      "unit": "depth",
+      "color": [231, 92, 55],
+      "material": "roca sólida, caliente y dúctil",
+      "fact": "No es un océano de magma: la roca es mayormente sólida, pero puede fluir muy lentamente.",
+      "sound": {
+        "base": 62,
+        "filter": 760,
+        "noise": 0.23,
+        "pulse": 0.26,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "roca dúctil",
+          "La presión y la temperatura permiten que la roca se deforme sin romperse de inmediato."
+        ],
+        [
+          "convección",
+          "El calor impulsa movimientos lentos que ayudan a desplazar las placas."
+        ],
+        [
+          "fusión parcial",
+          "Una pequeña fracción de la roca puede fundirse y alimentar magmas."
+        ],
+        [
+          "pluma mantélica",
+          "Una columna de material caliente puede ascender desde gran profundidad."
+        ],
+        [
+          "onda sísmica",
+          "Las ondas cambian de velocidad y revelan las propiedades de esta zona."
+        ]
+      ]
+    },
+    {
+      "id": "transition",
+      "name": "Zona de transición",
+      "y0": 0.695,
+      "y1": 0.75,
+      "high": 410,
+      "low": 660,
+      "unit": "depth",
+      "color": [244, 117, 44],
+      "material": "minerales comprimidos por enorme presión",
+      "fact": "Los minerales cambian de estructura aquí, aumentando la densidad sin cambiar su composición básica.",
+      "sound": {
+        "base": 53,
+        "filter": 620,
+        "noise": 0.2,
+        "pulse": 0.31,
+        "type": "square"
+      },
+      "features": [
+        [
+          "olivino transformado",
+          "La presión reorganiza los átomos del mineral en estructuras más compactas."
+        ],
+        [
+          "alta presión",
+          "La materia ocupa menos volumen y se vuelve más densa con la profundidad."
+        ],
+        [
+          "agua mineral",
+          "Algunos minerales pueden almacenar hidrógeno dentro de su estructura cristalina."
+        ],
+        [
+          "discontinuidad sísmica",
+          "Las ondas sísmicas cambian bruscamente al cruzar transformaciones minerales."
+        ],
+        [
+          "límite de 660 km",
+          "Esta frontera marca el paso hacia el manto inferior."
+        ]
+      ]
+    },
+    {
+      "id": "lower-mantle",
+      "name": "Manto inferior",
+      "y0": 0.75,
+      "y1": 0.845,
+      "high": 660,
+      "low": 2900,
+      "unit": "depth",
+      "color": [238, 70, 32],
+      "material": "roca sólida que fluye lentamente",
+      "fact": "Es la capa más voluminosa de la Tierra y transporta calor mediante convección extremadamente lenta.",
+      "sound": {
+        "base": 43,
+        "filter": 460,
+        "noise": 0.18,
+        "pulse": 0.36,
+        "type": "sawtooth"
+      },
+      "features": [
+        [
+          "bridgmanita",
+          "Este mineral de alta presión es probablemente el más abundante de la Tierra."
+        ],
+        [
+          "convección profunda",
+          "La roca caliente asciende y la más fría desciende durante millones de años."
+        ],
+        [
+          "pluma caliente",
+          "Grandes columnas térmicas pueden conectar el manto profundo con volcanismo superficial."
+        ],
+        [
+          "roca densa",
+          "La presión mantiene la materia sólida incluso a temperaturas muy elevadas."
+        ],
+        [
+          "capa D doble prima",
+          "La base del manto contiene estructuras complejas junto al núcleo."
+        ]
+      ]
+    },
+    {
+      "id": "outer-core",
+      "name": "Núcleo externo",
+      "y0": 0.845,
+      "y1": 0.935,
+      "high": 2900,
+      "low": 5150,
+      "unit": "depth",
+      "color": [255, 166, 35],
+      "material": "hierro y níquel líquidos",
+      "fact": "El metal líquido en movimiento genera la mayor parte del campo magnético terrestre.",
+      "sound": {
+        "base": 34,
+        "filter": 330,
+        "noise": 0.15,
+        "pulse": 0.48,
+        "type": "square"
+      },
+      "features": [
+        [
+          "hierro líquido",
+          "La temperatura supera el punto de fusión del metal bajo esta presión."
+        ],
+        [
+          "níquel líquido",
+          "El núcleo contiene principalmente hierro, acompañado de níquel y elementos ligeros."
+        ],
+        [
+          "geodinamo",
+          "Convección, rotación y electricidad convierten el núcleo en un generador planetario."
+        ],
+        [
+          "convección metálica",
+          "El metal caliente asciende y el más frío desciende, transportando calor."
+        ],
+        [
+          "campo magnético",
+          "Las corrientes eléctricas del núcleo producen una envoltura magnética global."
+        ]
+      ]
+    },
+    {
+      "id": "inner-core",
+      "name": "Núcleo interno",
+      "y0": 0.935,
+      "y1": 1,
+      "high": 5150,
+      "low": 6371,
+      "unit": "depth",
+      "color": [255, 229, 152],
+      "material": "hierro y níquel sólidos",
+      "fact": "Aunque está extremadamente caliente, la presión colosal mantiene sólido el centro del planeta.",
+      "sound": {
+        "base": 29,
+        "filter": 250,
+        "noise": 0.08,
+        "pulse": 0.62,
+        "type": "sine"
+      },
+      "features": [
+        [
+          "hierro sólido",
+          "La presión impide que el hierro se funda pese a la temperatura extrema."
+        ],
+        [
+          "cristales metálicos",
+          "La orientación de los cristales influye en cómo viajan las ondas sísmicas."
+        ],
+        [
+          "presión extrema",
+          "En el centro, millones de atmósferas comprimen la materia."
+        ],
+        [
+          "crecimiento del núcleo",
+          "Al enfriarse lentamente la Tierra, parte del núcleo externo se solidifica."
+        ],
+        [
+          "centro terrestre",
+          "A unos 6 371 kilómetros bajo la superficie termina toda dirección descendente."
+        ]
+      ]
+    }
+  ]
+}

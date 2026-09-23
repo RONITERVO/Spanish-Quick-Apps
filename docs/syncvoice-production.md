@@ -4,14 +4,14 @@ Spanish Quick Apps uses the `Kore` narrator for the held-target learning overlay
 
 ## Casting and runtime inventory
 
-| Surface | Locale | Speaker / role | Voice | Direction | Delivery |
-| --- | --- | --- | --- | --- | --- |
-| Shared learning overlay, Spanish phase | `es-ES` | `narrator` | `Kore` | Warm, patient educational narration; clear neutral Spanish, unhurried pacing, and gentle emphasis on key terms. | Committed MP3 + cues; browser fallback on asset failure |
-| Shared learning overlay, English phase | `en-US` | `narrator` | `Kore` | Warm, patient educational narration for a school audience; clear neutral American English, unhurried pacing, and gentle emphasis on key terms. | Committed MP3 + cues; browser fallback on asset failure |
-| Shared learning overlay, Finnish phase | `fi-FI` | `narrator` | `Kore` | Warm, patient educational narration for a school audience; clear neutral Finnish, unhurried pacing, and gentle emphasis on key terms. | Committed MP3 + cues; browser fallback on asset failure |
-| Immediate interaction labels in apps that define local speech | Existing app locale | Existing browser narrator | Best locale match | Existing per-app settings | Existing browser speech; unchanged |
+| Surface                                                       | Locale              | Speaker / role            | Voice             | Direction                                                                                                                                      | Delivery                                                |
+| ------------------------------------------------------------- | ------------------- | ------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Shared learning overlay, Spanish phase                        | `es-ES`             | `narrator`                | `Kore`            | Warm, patient educational narration; clear neutral Spanish, unhurried pacing, and gentle emphasis on key terms.                                | Committed MP3 + cues; browser fallback on asset failure |
+| Shared learning overlay, English phase                        | `en-US`             | `narrator`                | `Kore`            | Warm, patient educational narration for a school audience; clear neutral American English, unhurried pacing, and gentle emphasis on key terms. | Committed MP3 + cues; browser fallback on asset failure |
+| Shared learning overlay, Finnish phase                        | `fi-FI`             | `narrator`                | `Kore`            | Warm, patient educational narration for a school audience; clear neutral Finnish, unhurried pacing, and gentle emphasis on key terms.          | Committed MP3 + cues; browser fallback on asset failure |
+| Immediate interaction labels in apps that define local speech | Existing app locale | Existing browser narrator | Best locale match | Existing per-app settings                                                                                                                      | Existing browser speech; unchanged                      |
 
-Every app loads `learning-narration.js`. Apps 01 and 02 publish purpose-built learning targets. The shared semantic readout bridge publishes the common `feature-name`, `metric`, and `fact` target used by apps 03–25. Signature deduplication prevents duplicate narration.
+Every generated app entry mounts `src/shared/learning-narration.js`. Apps 01 and 02 publish purpose-built learning targets. The shared semantic readout bridge publishes the common `feature-name`, `metric`, and `fact` target used by apps 03–25. Signature deduplication prevents duplicate narration.
 
 The runtime owns one persistent hidden `HTMLAudioElement` per app page. The first pointer or keyboard interaction unlocks that element with a short local silent WAV, and every Spanish, English, and Finnish asset reuses it. Do not create a new media element per narration chunk: embedded mobile browsers can expire transient user activation midway through a multi-line sequence and reject later `play()` calls. The persistent element is also the single cancellation boundary for swipe, visibility, and navigation events.
 

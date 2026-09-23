@@ -1,0 +1,53 @@
+<canvas
+  id="observable-universe-spectrum"
+  role="application"
+  tabindex="0"
+  aria-describedby="instructions"
+  aria-label="Mapa táctil desde la estructura a gran escala hasta el límite del universo observable"
+></canvas>
+<p id="instructions" class="sr-only">
+  La aventura continúa exactamente en la estructura a gran escala. Toca o
+  arrastra hacia arriba para explorar el universo profundo, el tiempo de
+  retrospección, las galaxias lejanas, la era de los cuásares, las primeras
+  galaxias, la reionización, las edades oscuras, el fondo cósmico de microondas
+  y el horizonte observable. Cuanto más lejos observamos, más antigua es la luz
+  que recibimos. Arrastra horizontalmente para descubrir palabras distintas
+  dentro de cada región. También puedes usar las flechas del teclado.
+</p>
+
+<div id="light-field" aria-hidden="true"></div>
+<div id="scan-line" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<div id="hint" aria-hidden="true">
+  <div id="hint-ring"></div>
+  <div id="hint-text">La red cósmica queda debajo</div>
+  <div id="hint-subtext">Asciende en distancia · retrocede en el tiempo</div>
+</div>
+
+<div id="readout" aria-live="polite" aria-atomic="true">
+  <span id="zone-name"></span>
+  <span id="feature-name"></span>
+  <span id="metric"></span>
+  <span id="fact"></span>
+</div>
+
+<div id="touch-orb" aria-hidden="true"></div>
+
+<div id="journey-scale" aria-hidden="true">
+  <div id="scale-track"><div id="scale-fill"></div></div>
+  <div id="scale-dot"></div>
+  <span id="scale-bottom">Estructura a gran escala</span>
+  <span id="scale-home">Ahora</span>
+  <span id="scale-value">Más distancia · luz más antigua</span>
+  <span id="scale-top">Horizonte observable</span>
+</div>
+
+<!--
+    Visualización educativa sin dependencias externas.
+    La altura combina distancia comóvil, corrimiento al rojo y tiempo de retrospección de forma
+    deliberadamente comprimida: no es una regla lineal ni un mapa métrico. El horizonte observable
+    no es una pared física. El fondo cósmico de microondas es la luz electromagnética más antigua
+    que podemos recibir directamente, liberada cuando el plasma primordial se volvió transparente.
+  -->

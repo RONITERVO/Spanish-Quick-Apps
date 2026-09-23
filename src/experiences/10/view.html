@@ -1,0 +1,55 @@
+<canvas
+  id="early-universe-spectrum"
+  role="application"
+  tabindex="0"
+  aria-describedby="instructions"
+  aria-label="Mapa táctil desde el fondo cósmico de microondas hasta la inflación y el límite de la física conocida"
+></canvas>
+<p id="instructions" class="sr-only">
+  La aventura comienza exactamente en el fondo cósmico de microondas. Toca o
+  arrastra hacia arriba para retroceder por recombinación, plasma primordial,
+  nucleosíntesis primordial, era de los leptones, era de los quarks, transición
+  electrodébil, universo inflacionario y límite de la física conocida. Antes del
+  fondo cósmico, la historia no se observa directamente con luz: se reconstruye
+  mediante evidencias físicas. Arrastra horizontalmente para descubrir palabras
+  distintas dentro de cada región. También puedes usar las flechas del teclado.
+</p>
+
+<div id="light-field" aria-hidden="true"></div>
+<div id="scan-line" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<div id="hint" aria-hidden="true">
+  <div id="hint-ring"></div>
+  <div id="hint-text">La luz más antigua queda debajo</div>
+  <div id="hint-subtext">Asciende · retrocede por la historia inferida</div>
+</div>
+
+<div id="readout" aria-live="polite" aria-atomic="true">
+  <span id="zone-name"></span>
+  <span id="feature-name"></span>
+  <span id="metric"></span>
+  <span id="fact"></span>
+</div>
+
+<div id="touch-orb" aria-hidden="true"></div>
+
+<div id="journey-scale" aria-hidden="true">
+  <div id="scale-track"><div id="scale-fill"></div></div>
+  <div id="scale-dot"></div>
+  <span id="scale-bottom">Fondo cósmico de microondas</span>
+  <span id="scale-value">Historia física inferida</span>
+  <span id="scale-top">Límite de la física conocida</span>
+</div>
+
+<!--
+    Visualización educativa sin dependencias externas.
+    La altura representa una cronología conceptual comprimida y no una escala temporal lineal.
+    Antes de la recombinación, la luz electromagnética ordinaria no ofrece una imagen directa del
+    universo. Las épocas anteriores se reconstruyen combinando el fondo cósmico, abundancias
+    primordiales, física de partículas, estructura a gran escala y posibles mensajeros relictos.
+    La inflación se muestra como expansión del propio espacio en todas partes, no como una explosión
+    desde un centro. La región superior expresa incertidumbre: no representa una singularidad observada,
+    un borde físico, un multiverso confirmado ni un conocimiento establecido de algo “anterior”.
+  -->
