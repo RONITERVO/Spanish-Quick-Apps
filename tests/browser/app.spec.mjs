@@ -142,15 +142,14 @@ test("wheel from embedded scene navigates and cancels narration", async ({
 for (const locale of ["en-US", "fi-FI"])
   test(`hold plays Spanish production audio with ${locale} translation catalog`, async ({
     browser,
+    baseURL,
   }) => {
     const context = await browser.newContext({
       locale,
       viewport: { width: 390, height: 844 },
     });
     const page = await context.newPage();
-    await page.goto(
-      `${test.info().project.use.baseURL || process.env.TEST_BASE_URL || "http://127.0.0.1:4183"}/${apps[0].file}`,
-    );
+    await page.goto(new URL(apps[0].file, baseURL).href);
     await expect(page.locator("html")).toHaveAttribute(
       "data-learning-locale",
       locale.slice(0, 2),

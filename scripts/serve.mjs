@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 import { createReadStream, watch } from "node:fs";
-import { stat } from "node:fs/promises";
+import { cp, stat } from "node:fs/promises";
 import path from "node:path";
 import { build, root, output } from "./build.mjs";
 
@@ -85,7 +85,14 @@ if (development) {
     }
     rebuilding = true;
     try {
-      await build({ clean: false });
+      // Audio is copied once at startup; editing code must not recopy thousands
+      // of recordings. Translation catalogs are small and can change with text.
+      await cp(
+        path.join(root, "learning-translations"),
+        path.join(output, "learning-translations"),
+        { recursive: true },
+      );
+      await build({ clean: false, copyAssets: false });
     } catch (error) {
       console.error(error);
     }

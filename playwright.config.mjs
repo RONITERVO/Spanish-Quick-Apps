@@ -9,7 +9,7 @@ export default defineConfig({
   reporter: [["list"], ["html", { open: "never" }]],
   timeout: 30000,
   use: {
-    baseURL: process.env.TEST_BASE_URL || "http://127.0.0.1:4183",
+    baseURL: `${(process.env.TEST_BASE_URL || "http://127.0.0.1:4183").replace(/\/$/, "")}/`,
     locale: "en-US",
     reducedMotion: "reduce",
     trace: "retain-on-failure",
