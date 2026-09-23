@@ -1,4 +1,5 @@
 import "./app-navigation.css";
+import { isControlEvent } from "./playback-speed.js";
 import registry from "../registry.json";
 import {
   requestSceneFrame as requestAnimationFrame,
@@ -198,6 +199,7 @@ export function mountNavigation() {
   document.addEventListener(
     "pointerdown",
     (event) => {
+      if (isControlEvent(event)) return;
       if (!event.isPrimary || activePointer !== null) return;
       activePointer = event.pointerId;
       pointerStart = createPointerGesture(event, performance.now());
@@ -257,6 +259,7 @@ export function mountNavigation() {
   document.addEventListener(
     "wheel",
     (event) => {
+      if (isControlEvent(event)) return;
       if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
       cancelTts();
       markActivity();
@@ -279,6 +282,7 @@ export function mountNavigation() {
   document.addEventListener(
     "keydown",
     (event) => {
+      if (isControlEvent(event)) return;
       if (event.key !== "PageDown" && event.key !== "PageUp") {
         markActivity();
         return;

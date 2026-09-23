@@ -4,6 +4,8 @@
 
 Hold one place to hear the Spanish readout, followed by a translation selected from the browser language. English is the fallback; Finnish is also supported. Recorded SyncVoice audio and synchronized cues are preferred, with browser speech as a fallback. Spanish recordings are included here; English and Finnish recordings remain on the companion audio site's existing origin.
 
+Use the speaker/speed selector at the top left to set narration from 1× to 3× in 0.25× steps. Recorded speech changes speed immediately, preserves pitch, and keeps captions synchronized. The setting is remembered across experiences and visits. Browser speech fallback uses the selected speed from its next spoken segment.
+
 ## Development
 
 Requires Node 24 or newer.

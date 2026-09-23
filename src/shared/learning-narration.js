@@ -1,4 +1,5 @@
 import "./learning-narration.css";
+import { isControlEvent, mountPlaybackSpeed } from "./playback-speed.js";
 import {
   requestSceneFrame as requestAnimationFrame,
   cancelSceneFrame as cancelAnimationFrame,
@@ -114,6 +115,11 @@ export function mountNarration() {
   let catalog = Object.create(null);
   let assetCatalog = Object.create(null);
   const assetAudio = new Audio();
+  const playbackSpeed = mountPlaybackSpeed((rate) => {
+    assetAudio.defaultPlaybackRate = rate;
+    assetAudio.playbackRate = rate;
+    assetAudio.preservesPitch = true;
+  }, locale);
   const assetUnlockUrl = createSilentWavUrl();
   let assetAudioUnlocked = false;
   let assetUnlockPromise = null;
@@ -844,7 +850,7 @@ export function mountNarration() {
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = language;
-      utterance.rate = 0.84;
+      utterance.rate = 0.84 * playbackSpeed.getRate();
       utterance.pitch = 1;
       const voice = chooseVoice(language);
       if (voice) utterance.voice = voice;
@@ -875,7 +881,8 @@ export function mountNarration() {
         if (elapsed > lastBoundaryTime && event.charIndex > lastBoundaryIndex) {
           const observed =
             (event.charIndex - lastBoundaryIndex) /
-            (elapsed - lastBoundaryTime);
+            (elapsed - lastBoundaryTime) /
+            utterance.rate;
           charsPerSecond = Math.max(6, Math.min(30, observed));
         }
         lastBoundaryTime = elapsed;
@@ -1115,6 +1122,7 @@ export function mountNarration() {
   document.addEventListener(
     "pointerdown",
     (event) => {
+      if (isControlEvent(event)) return;
       stopNarration(true, "pointerdown");
       interactionUnlocked = true;
       unlockAssetAudio();
@@ -1133,6 +1141,7 @@ export function mountNarration() {
   document.addEventListener(
     "keydown",
     (event) => {
+      if (isControlEvent(event)) return;
       if (
         [
           "ArrowUp",
@@ -1179,6 +1188,7 @@ export function mountNarration() {
   document.addEventListener(
     "pointercancel",
     (event) => {
+      if (isControlEvent(event)) return;
       finishPointer(event);
       stopNarration(true, "pointer-cancel");
     },
