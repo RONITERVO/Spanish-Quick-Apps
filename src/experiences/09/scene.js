@@ -1,3 +1,4 @@
+import { setReadoutRegion } from "../../shared/narration-target.js";
 import { createSceneAudio } from "../../shared/audio.js";
 import {
   requestSceneFrame as requestAnimationFrame,
@@ -465,6 +466,7 @@ export function mountScene() {
               ? "Luz fósil del universo temprano"
               : "Límite de observación · no pared física";
 
+    setReadoutRegion(readout, zone.id);
     zoneName.textContent = zone.name;
     zoneName.className =
       zone.name.length > 26 ? "long" : zone.name.length > 18 ? "compact" : "";

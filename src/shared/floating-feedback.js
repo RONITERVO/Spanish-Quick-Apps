@@ -1,5 +1,6 @@
 import "./floating-feedback.css";
 import { isControlEvent } from "./playback-speed.js";
+import { readNarrationTarget } from "./narration-target.js";
 import {
   requestSceneFrame as requestAnimationFrame,
   cancelSceneFrame as cancelAnimationFrame,
@@ -110,7 +111,6 @@ export function mountFeedback() {
     touchOverride = null,
     dedupeTouch = false,
   ) {
-    const evidence = textFrom("evidence-class");
     const title = textFrom("zone-name");
     const feature = textFrom("feature-name");
     const metric = textFrom("metric");
@@ -138,7 +138,7 @@ export function mountFeedback() {
     window.dispatchEvent(
       new CustomEvent("spectrum:learning-target", {
         detail: {
-          parts: [evidence, descriptor.title, descriptor.feature, metric, fact],
+          ...readNarrationTarget(),
           x: touch.x,
           y: touch.y,
           color: descriptor.color,

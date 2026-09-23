@@ -6,6 +6,8 @@ Hold one place to hear each Spanish line followed immediately by its translation
 
 Use the speaker/speed selector at the top left to set narration from 1× to 3× in 0.25× steps. Recorded speech changes speed immediately, preserves pitch, and keeps captions synchronized. The setting is remembered across experiences and visits. Browser speech fallback uses the selected speed from its next spoken segment.
 
+When exploring nearby items in the same region, fully heard headings and shared context stay visible without being spoken again. Both the Spanish and translation must finish before a shared line can be skipped. Item names, explanations, and changed context still play. Moving to another region or experience, leaving the tab, or reloading clears this temporary memory.
+
 ## Development
 
 Requires Node 24 or newer.
