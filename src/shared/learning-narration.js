@@ -918,58 +918,50 @@ export function mountNarration() {
     });
   }
 
-  async function speakPhase(
-    displayParts,
-    spokenParts,
-    sourceKeys,
+  async function speakLine(
+    index,
+    displayPart,
+    part,
+    sourceKey,
     phase,
-    label,
     language,
-    assetLocale,
     token,
   ) {
     if (token !== runToken) return false;
     languageElement.textContent =
-      phase === "spanish" ? "ESPAÑOL" : `ESPAÑOL → ${label}`;
-    overlay.classList.remove("learning-narration--complete");
+      phase === "spanish" ? "ESPAÑOL" : `ESPAÑOL → ${languageLabel}`;
 
-    for (let index = 0; index < spokenParts.length; index += 1) {
-      if (token !== runToken) return false;
-      const part = spokenParts[index];
-      const displayPart = displayParts[index] || part;
-      const line = narrationLine(index);
-      if (!line) continue;
-      if (phase === "translation")
-        line.classList.add("learning-narration__line--translating");
-      line.querySelector(".learning-narration__ink").textContent = "";
-      line.classList.add("learning-narration__line--speaking");
-      const spokenPart = /[.!?…:]$/.test(part) ? part : `${part}.`;
-      const mapProgress = (progress) =>
-        revealLine(
-          index,
-          displayPart,
-          (displayPart.length * progress) / Math.max(1, part.length),
-        );
-      const ok = await speakChunk(
-        spokenPart,
-        language,
-        mapProgress,
-        token,
-        sourceKeys[index] || part,
-        assetLocale,
-        part,
+    const line = narrationLine(index);
+    if (!line) return true;
+    if (phase === "translation")
+      line.classList.add("learning-narration__line--translating");
+    line.querySelector(".learning-narration__ink").textContent = "";
+    line.classList.add("learning-narration__line--speaking");
+    const spokenPart = /[.!?…:]$/.test(part) ? part : `${part}.`;
+    const mapProgress = (progress) =>
+      revealLine(
+        index,
+        displayPart,
+        (displayPart.length * progress) / Math.max(1, part.length),
       );
-      if (!ok) return false;
-      revealLine(index, displayPart, displayPart.length);
-      line.classList.remove("learning-narration__line--speaking");
-      if (phase === "translation") {
-        line.classList.remove("learning-narration__line--translating");
-        line.classList.add("learning-narration__line--translated");
-      } else {
-        line.classList.add("learning-narration__line--spanish-complete");
-      }
+    const ok = await speakChunk(
+      spokenPart,
+      language,
+      mapProgress,
+      token,
+      sourceKey,
+      language,
+      part,
+    );
+    if (!ok || token !== runToken) return false;
+    revealLine(index, displayPart, displayPart.length);
+    line.classList.remove("learning-narration__line--speaking");
+    if (phase === "translation") {
+      line.classList.remove("learning-narration__line--translating");
+      line.classList.add("learning-narration__line--translated");
+    } else {
+      line.classList.add("learning-narration__line--spanish-complete");
     }
-    overlay.classList.add("learning-narration--complete");
     return true;
   }
 
@@ -989,37 +981,39 @@ export function mountNarration() {
     const translated = translatedParts(narrationParts);
     setOverlayLines(parts, translated, capturedTarget.color, capturedTarget);
 
-    const spanishDone = await speakPhase(
-      parts,
-      narrationParts,
-      narrationParts,
-      "spanish",
-      "ESPAÑOL",
-      "es-ES",
-      "es-ES",
-      token,
-    );
-    if (!spanishDone || token !== runToken) {
-      if (token === runToken) stopNarration(true, "spanish-playback-failed");
-      return;
+    for (let index = 0; index < narrationParts.length; index += 1) {
+      const sourceKey = narrationParts[index];
+      const spanishDone = await speakLine(
+        index,
+        parts[index] || sourceKey,
+        sourceKey,
+        sourceKey,
+        "spanish",
+        "es-ES",
+        token,
+      );
+      if (!spanishDone || token !== runToken) {
+        if (token === runToken) stopNarration(true, "spanish-playback-failed");
+        return;
+      }
+
+      const translationDone = await speakLine(
+        index,
+        translated[index],
+        translated[index],
+        sourceKey,
+        "translation",
+        speechLocale,
+        token,
+      );
+      if (!translationDone || token !== runToken) {
+        if (token === runToken)
+          stopNarration(true, "translation-playback-failed");
+        return;
+      }
     }
 
-    const translationDone = await speakPhase(
-      translated,
-      translated,
-      narrationParts,
-      "translation",
-      languageLabel,
-      speechLocale,
-      speechLocale,
-      token,
-    );
-    if (!translationDone || token !== runToken) {
-      if (token === runToken)
-        stopNarration(true, "translation-playback-failed");
-      return;
-    }
-
+    overlay.classList.add("learning-narration--complete");
     hideRestingPointer();
     hideTimer = window.setTimeout(() => {
       if (token !== runToken) return;
