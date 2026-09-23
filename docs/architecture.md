@@ -20,6 +20,8 @@ The migration preserves all translation keys, all 18,898 catalog entries, and al
 
 `playback-speed.js` owns the accessible narration speed selector and its local preference. Storage events keep already-loaded experiences and other tabs synchronized. Narration applies both the current and default media playback rates, preserving pitch; transcript cues follow media time rather than wall time. Browser speech uses the same multiplier at the start of each utterance. Shared gesture handlers exclude controls, and control events do not reach scene keyboard shortcuts.
 
+Narration completes each Spanish/translation pair before advancing to the next content segment. Both recordings use the same source key and caption row: translated ink writes over the faint Spanish source. Completed rows remain visible while later pairs play, and the overlay is marked complete only after the final translation. Cancellation tokens guard every segment and language transition.
+
 ## Validation and release
 
 `npm run check` builds the public site, runs content and lifecycle tests, and validates the complete Spanish audio inventory and all three locales' catalog identities. Playwright exercises the actual built output in mobile Chromium, desktop Chromium, and mobile WebKit. Preservation fixtures were captured from commit `21a6ff75df64412c269489f177e8ddbad837c044` before migration.
