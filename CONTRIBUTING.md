@@ -13,6 +13,8 @@ Start with the smallest appropriate file. Preserve Spanish source keys unless ch
 
 Shared navigation, narration, feedback, audio capability handling, animation scheduling, and drawing helpers live in `src/shared/`. Import `requestSceneFrame` and `cancelSceneFrame` instead of using the browser's animation functions directly. Create synthesized audio with `createSceneAudio()` and handle its `null` result. These boundaries keep off-screen experiences quiet and still.
 
+For a region-based readout, call `setReadoutRegion(readout, zone.id)` on selection, keeping region IDs stable and unique within the experience. Label fields with `data-narration-role="region-heading"`, `"shared-context"`, `"item"`, or `"explanation"`, and use `readNarrationTarget()` when publishing a custom learning-target event. Only genuine shared headings/context should opt into skipping; item names and explanations stay repeatable. Missing or unknown metadata leaves narration enabled. Keep `data-learning-narration` for spoken forms of dynamic text: both its visible value and spoken form must match before a completed pair can be skipped. See [the narration contract](docs/architecture.md).
+
 `src/registry.json` is the ordered route and metadata registry. IDs and filenames are public compatibility contracts. To add an experience, choose a new two-digit ID and filename, create the four experience files, register the metadata, and supply its English/Finnish translations and SyncVoice catalog. The build generates its page and includes it in navigation automatically. Do not copy a complete generated HTML page. The original 25-app preservation assertions should be deliberately extended when the collection grows.
 
 Before opening a PR:

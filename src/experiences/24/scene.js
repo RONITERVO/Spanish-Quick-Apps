@@ -1,3 +1,4 @@
+import { setReadoutRegion } from "../../shared/narration-target.js";
 import { createSceneAudio } from "../../shared/audio.js";
 import { clamp, mix, smooth, fract, seeded, rgba } from "../../shared/math.js";
 import {
@@ -374,6 +375,7 @@ export function mountScene() {
     const changed = zone.id !== lastZoneId || feature.index !== lastFeature;
     if (changed || isNewPress) {
       evidenceClass.textContent = zone.className;
+      setReadoutRegion(readout, zone.id);
       zoneName.textContent = zone.name;
       zoneName.className =
         zone.name.length > 31 ? "long" : zone.name.length > 21 ? "compact" : "";

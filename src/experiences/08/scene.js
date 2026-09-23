@@ -1,3 +1,4 @@
+import { setReadoutRegion } from "../../shared/narration-target.js";
 import { createSceneAudio } from "../../shared/audio.js";
 import {
   requestSceneFrame as requestAnimationFrame,
@@ -503,6 +504,7 @@ export function mountScene() {
     scaleDot.style.bottom = `${20 + progress * trackHeight}px`;
     scaleValue.textContent = zone.metric;
 
+    setReadoutRegion(readout, zone.id);
     zoneName.textContent = zone.name;
     zoneName.classList.toggle("compact", zone.name.length > 17);
     zoneName.classList.toggle("long", zone.name.length > 23);

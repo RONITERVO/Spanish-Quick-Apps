@@ -1,3 +1,4 @@
+import { setReadoutRegion } from "../../shared/narration-target.js";
 import { createSceneAudio } from "../../shared/audio.js";
 import {
   requestSceneFrame as requestAnimationFrame,
@@ -431,6 +432,7 @@ export function mountScene() {
     root.style.setProperty("--progress", `${journey * 100}%`);
     scaleDot.style.bottom = `${20 + journey * Math.max(0, journeyScale.clientHeight - 40)}px`;
 
+    setReadoutRegion(readout, zone.id);
     zoneName.textContent = zone.name;
     featureName.textContent = feature[0];
     metric.textContent = formatMetric(zone, journey);

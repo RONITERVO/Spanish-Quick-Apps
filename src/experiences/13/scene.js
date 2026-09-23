@@ -1,3 +1,4 @@
+import { setReadoutRegion } from "../../shared/narration-target.js";
 import { createSceneAudio } from "../../shared/audio.js";
 import {
   requestSceneFrame as requestAnimationFrame,
@@ -475,6 +476,7 @@ export function mountScene() {
     const changed = zone.id !== lastZoneId || feature.index !== lastFeature;
     if (changed || isNewPress) {
       certaintyClass.textContent = zone.className;
+      setReadoutRegion(readout, zone.id);
       zoneName.textContent = zone.name;
       zoneName.className =
         zone.name.length > 30 ? "long" : zone.name.length > 20 ? "compact" : "";

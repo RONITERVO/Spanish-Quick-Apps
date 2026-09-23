@@ -1,3 +1,4 @@
+import { setReadoutRegion } from "../../shared/narration-target.js";
 import { createSceneAudio } from "../../shared/audio.js";
 import {
   requestSceneFrame as requestAnimationFrame,
@@ -459,6 +460,7 @@ export function mountScene() {
     root.style.setProperty("--scan-x", x + "px");
     root.style.setProperty("--scan-y", y + "px");
 
+    setReadoutRegion(readout, zone.id);
     setTextIfChanged(zoneName, zone.name);
     setTextIfChanged(featureName, feature[0]);
     setTextIfChanged(metric, formatMetric(zone, yNorm));

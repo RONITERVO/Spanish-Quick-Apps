@@ -1,5 +1,7 @@
 import "./learning-narration.css";
 import { isControlEvent, mountPlaybackSpeed } from "./playback-speed.js";
+import { readNarrationTarget } from "./narration-target.js";
+import { createSharedNarrationMemory } from "./shared-narration-memory.js";
 import {
   requestSceneFrame as requestAnimationFrame,
   cancelSceneFrame as cancelAnimationFrame,
@@ -38,6 +40,12 @@ export function mountNarration() {
   const JITTER_MIN = 28;
   const JITTER_MAX = 42;
   const SYNCVOICE_CATALOG_REVISION = "8";
+  const sharedMemory = createSharedNarrationMemory();
+  window.addEventListener("spectrum:narration-region", (event) => {
+    sharedMemory.setRegion(event.detail?.regionId);
+  });
+  window.addEventListener("spectrum:scene-inactive", sharedMemory.reset);
+  window.addEventListener("pagehide", sharedMemory.reset);
 
   function configuredAssetBaseUrl() {
     const searches = [location.search];
@@ -393,7 +401,7 @@ export function mountNarration() {
       );
   }
 
-  function cleanNarrationPairs(parts, narrationParts) {
+  function cleanNarrationPairs(parts, narrationParts, segments) {
     const displays = Array.isArray(parts) ? parts : [];
     const spoken = Array.isArray(narrationParts) ? narrationParts : [];
     const semanticNarration = new Map(
@@ -411,23 +419,44 @@ export function mountNarration() {
         .filter(([display, narration]) => display && narration),
     );
     const pairs = [];
-    for (let index = 0; index < displays.length; index += 1) {
-      const display = String(displays[index] || "")
+    const descriptors = Array.isArray(segments)
+      ? segments
+      : displays.map((display, index) => ({
+          display,
+          narration: spoken[index],
+        }));
+    for (const segment of descriptors) {
+      if (!segment || typeof segment !== "object") continue;
+      const display = String(segment.display || "")
         .replace(/\s+/g, " ")
         .trim();
-      if (!display || pairs.at(-1)?.display === display) continue;
-      const supplied = String(spoken[index] || "")
+      if (!display) continue;
+      const supplied = String(segment.narration || "")
         .replace(/\s+/g, " ")
         .trim();
       const narration =
         supplied && supplied !== display
           ? supplied
           : semanticNarration.get(display) || supplied || display;
-      pairs.push({ display, narration });
+      if (pairs.at(-1)?.display === display) {
+        // A shared heading that also names the selected item must still be read.
+        const previous = pairs.at(-1);
+        if (
+          previous.role !== segment.role ||
+          previous.id !== segment.id ||
+          previous.narration !== narration
+        ) {
+          previous.role = undefined;
+          previous.id = undefined;
+        }
+        continue;
+      }
+      pairs.push({ display, narration, id: segment.id, role: segment.role });
     }
     return {
       parts: pairs.map((pair) => pair.display),
       narrationParts: pairs.map((pair) => pair.narration),
+      segments: pairs,
     };
   }
 
@@ -932,7 +961,7 @@ export function mountNarration() {
       phase === "spanish" ? "ESPAÑOL" : `ESPAÑOL → ${languageLabel}`;
 
     const line = narrationLine(index);
-    if (!line) return true;
+    if (!line) return false;
     if (phase === "translation")
       line.classList.add("learning-narration__line--translating");
     line.querySelector(".learning-narration__ink").textContent = "";
@@ -977,11 +1006,29 @@ export function mountNarration() {
     showRestingPointer(capturedTarget, capturedTarget.color);
 
     await catalogReady;
-    if (token !== runToken) return;
+    if (token !== runToken || capturedTarget !== target) return;
     const translated = translatedParts(narrationParts);
+    const memory = sharedMemory.begin(
+      capturedTarget.regionId,
+      capturedTarget.segments.map((segment, index) => ({
+        ...segment,
+        translation: translated[index],
+      })),
+      locale,
+    );
     setOverlayLines(parts, translated, capturedTarget.color, capturedTarget);
+    for (let index = 0; index < parts.length; index += 1) {
+      if (!memory.skipped[index]) continue;
+      const line = narrationLine(index);
+      line.classList.add(
+        "learning-narration__line--translated",
+        "learning-narration__line--remembered",
+      );
+      revealLine(index, translated[index], translated[index].length);
+    }
 
     for (let index = 0; index < narrationParts.length; index += 1) {
+      if (memory.skipped[index]) continue;
       const sourceKey = narrationParts[index];
       const spanishDone = await speakLine(
         index,
@@ -1011,6 +1058,7 @@ export function mountNarration() {
           stopNarration(true, "translation-playback-failed");
         return;
       }
+      memory.completePair(index);
     }
 
     overlay.classList.add("learning-narration--complete");
@@ -1043,18 +1091,10 @@ export function mountNarration() {
   function publishSemanticReadout(point) {
     const readout = document.getElementById("readout");
     if (!readout?.classList.contains("visible")) return;
-    const elements = ["feature-name", "metric", "fact"].map((id) =>
-      document.getElementById(id),
-    );
-    const parts = elements.map((element) => element?.textContent);
-    const narrationParts = elements.map(
-      (element) => element?.dataset.learningNarration || element?.textContent,
-    );
     window.dispatchEvent(
       new CustomEvent("spectrum:learning-target", {
         detail: {
-          parts,
-          narrationParts,
+          ...readNarrationTarget(),
           x: point?.x,
           y: point?.y,
           color:
@@ -1083,14 +1123,20 @@ export function mountNarration() {
     const cleaned = cleanNarrationPairs(
       detail.parts || [detail.text],
       detail.narrationParts,
+      detail.segments,
     );
     const parts = cleaned.parts;
     if (!parts.length) return;
     const narrationParts = cleaned.narrationParts;
-    const signature = `${parts.join("\u0000")}\u0001${narrationParts.join("\u0000")}`;
+    const regionId =
+      typeof detail.regionId === "string" ? detail.regionId : null;
+    sharedMemory.setRegion(regionId);
+    const signature = JSON.stringify([regionId, cleaned.segments]);
     const nextTarget = {
       parts,
       narrationParts,
+      segments: cleaned.segments,
+      regionId,
       signature,
       x: Number.isFinite(detail.x) ? detail.x : innerWidth * 0.5,
       y: Number.isFinite(detail.y) ? detail.y : innerHeight * 0.5,
