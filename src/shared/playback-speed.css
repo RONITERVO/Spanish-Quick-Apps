@@ -1,0 +1,56 @@
+.playback-speed {
+  position: fixed;
+  z-index: 2147483645;
+  top: max(12px, env(safe-area-inset-top));
+  left: max(14px, env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid rgb(255 255 255 / 0.25);
+  border-radius: 999px;
+  background: rgb(5 7 14 / 0.8);
+  color: #fff;
+  color-scheme: dark;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 0.15);
+  touch-action: manipulation;
+}
+
+.playback-speed svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+#playback-speed {
+  min-height: 44px;
+  width: 66px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font:
+    600 14px/1 system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+
+#playback-speed option {
+  background: #11151e;
+  color: #fff;
+}
+
+.playback-speed:focus-within {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+#playback-speed:focus-visible {
+  outline: none;
+}

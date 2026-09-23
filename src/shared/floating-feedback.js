@@ -1,4 +1,5 @@
 import "./floating-feedback.css";
+import { isControlEvent } from "./playback-speed.js";
 import {
   requestSceneFrame as requestAnimationFrame,
   cancelSceneFrame as cancelAnimationFrame,
@@ -336,6 +337,7 @@ export function mountFeedback() {
   document.addEventListener(
     "pointerdown",
     (event) => {
+      if (isControlEvent(event)) return;
       activePointer = event.pointerId;
       shownSignaturesThisTouch.clear();
       point.x = event.clientX;

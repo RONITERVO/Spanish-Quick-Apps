@@ -157,6 +157,7 @@ for (const locale of ["en-US", "fi-FI"])
     await expect
       .poll(() => page.locator("html").getAttribute("data-syncvoice-entries"))
       .toMatch(/^[1-9]\d*$/);
+    await page.locator("#playback-speed").selectOption("3");
     await page.mouse.move(195, 422);
     await page.mouse.down();
     await expect
@@ -171,6 +172,7 @@ for (const locale of ["en-US", "fi-FI"])
     );
     await page.mouse.up();
     await expect(page.locator("audio")).toHaveCount(1);
+    await expect(page.locator("audio")).toHaveJSProperty("playbackRate", 3);
     await page.keyboard.press("PageDown");
     await expect(page).toHaveURL(new RegExp(apps[1].file));
     await context.close();
